@@ -25,10 +25,10 @@ The load time can be improved a bit by compiling the Ruby source files:
 ## Colaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
-is really easy and gratifying. You even get push access when one of your specs
-or patches is accepted.
+is really easy and gratifying. You even get push access when one of your patches
+is accepted.
 
-Follow [@CocoaPodsOrg](twitter) to get up to date information about what's
+Follow [@CocoaPodsOrg][twitter] to get up to date information about what's
 going on in the CocoaPods world.
 
 If you're really oldschool and you want to discuss Xcodeproj development you
