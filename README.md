@@ -1,8 +1,8 @@
 # Xcodeproj
 
-Xcodeproj lets you create and modify Xcode projects from MacRuby. Script boring
-management tasks or build Xcode-friendly libraries. Also includes support for
-Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
+Xcodeproj lets you create and modify Xcode projects from [MacRuby][macruby].
+Script boring management tasks or build Xcode-friendly libraries. Also includes
+support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
 
 It is used in [CocoaPods](https://github.com/cocoapods/cocoapods) to create a
 static library from scratch, for both iOS and OSX.
@@ -11,8 +11,8 @@ static library from scratch, for both iOS and OSX.
 ## Installing Xcodeproj
 
 You’ll need MacRuby. xcodeproj itself installs through RubyGems, the Ruby
-package manager. Download and install [version 0.10][macruby] and then perform
-the following command:
+package manager. Download and install [version 0.10][macruby-dl] and then
+perform the following command:
 
     $ sudo macgem install xcodeproj
 
@@ -49,7 +49,8 @@ Included in this package is the [inflector part of ActiveSupport][activesupport]
 which is also available under the MIT license.
 
 [twitter]: http://twitter.com/CocoaPodsOrg
-[macruby]: http://www.macruby.org/files
+[macruby]: http://www.macruby.org
+[macruby-dl]: http://www.macruby.org/files
 [xcodeproj]: https://github.com/cocoapods/xcodeproj
 [tickets]: https://github.com/cocoapods/xcodeproj/issues
 [license]: xcodeproj/blob/master/LICENSE
