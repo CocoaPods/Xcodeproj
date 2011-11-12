@@ -16,7 +16,7 @@ desc "Install a gem version of the current code"
 task :install do
   require 'lib/xcodeproj'
   sh "gem build xcodeproj.gemspec"
-  sh "sudo macgem install xcodeproj-#{Xcode::VERSION}.gem"
+  sh "sudo macgem install xcodeproj-#{Xcodeproj::VERSION}.gem"
   sh "sudo macgem compile xcodeproj"
 end
 
