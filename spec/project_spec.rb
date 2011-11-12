@@ -223,7 +223,7 @@ describe "Xcodeproj::Project" do
 
       it "returns an empty 'copy headers' phase" do
         phase = @target.buildPhases.select_by_class(Xcodeproj::Project::PBXCopyFilesBuildPhase).first
-        phase.dstPath.should == "$(PUBLIC_HEADERS_FOLDER_PATH)"
+        phase.dstPath.should == "$(PRODUCT_NAME)"
         phase.files.to_a.should == []
       end
     end

@@ -383,7 +383,7 @@ module Xcodeproj
           buildPhase.files << framework.buildFiles.new
         end
 
-        target.buildPhases.add(PBXCopyFilesBuildPhase, 'dstPath' => '$(PUBLIC_HEADERS_FOLDER_PATH)')
+        target.buildPhases.add(PBXCopyFilesBuildPhase, 'dstPath' => '$(PRODUCT_NAME)')
         target
       end
 
