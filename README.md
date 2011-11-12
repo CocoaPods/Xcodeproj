@@ -1,9 +1,14 @@
-# xcodeproj
+# Xcodeproj
 
-xcodeproj is an Xcode project, workspace, and configuration helper.
+Xcodeproj lets you create and modify Xcode projects from MacRuby. Script boring
+management tasks or build Xcode-friendly libraries. Also includes support for
+Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
+
+It is used in [CocoaPods](https://github.com/cocoapods/cocoapods) to create a
+static library from scratch, for both iOS and OSX.
 
 
-## Installing xcodeproj
+## Installing Xcodeproj
 
 You’ll need MacRuby. xcodeproj itself installs through RubyGems, the Ruby
 package manager. Download and install [version 0.10][macruby] and then perform
@@ -17,23 +22,22 @@ The load time can be improved a bit by compiling the Ruby source files:
     $ sudo macgem compile xcodeproj
 
 
-## Contributing
+## Colaborate
 
-* File [tickets][tickets] for anything you need!
+All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
+is really easy and gratifying. You even get push access when one of your specs
+or patches is accepted.
 
-* It'd be nice to support plain Ruby as well as MacRuby. (MacRuby is currently 
-  only used for property list (de)serialization and UUID generation.)
+Follow [@CocoaPodsOrg](twitter) to get up to date information about what's
+going on in the CocoaPods world.
+
+If you're really oldschool and you want to discuss Xcodeproj development you
+can join #cocoapods on irc.freenode.net.
 
 
-## Contact
+## Contributors
 
-* #cocoapods on `irc.freenode.net` (xcodeproj is borne of CocoaPods.)
-
-Eloy Durán:
-
-* http://github.com/alloy
-* http://twitter.com/alloy
-* eloy.de.enige@gmail.com
+* [Nolan Waite](https://github.com/nolanw)
 
 
 ## LICENSE
@@ -41,8 +45,12 @@ Eloy Durán:
 These works are available under the MIT license. See the [LICENSE][license] file
 for more info.
 
+Included in this package is the [inflector part of ActiveSupport][activesupport]
+which is also available under the MIT license.
 
+[twitter]: http://twitter.com/CocoaPodsOrg
 [macruby]: http://www.macruby.org/files
-[xcodeproj]: https://github.com/alloy/xcodeproj
-[tickets]: https://github.com/alloy/xcodeproj/issues
+[xcodeproj]: https://github.com/cocoapods/xcodeproj
+[tickets]: https://github.com/cocoapods/xcodeproj/issues
 [license]: xcodeproj/blob/master/LICENSE
+[activesupport]: https://github.com/rails/rails/tree/2-3-stable/activesupport
