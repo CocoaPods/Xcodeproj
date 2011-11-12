@@ -1,9 +1,6 @@
 framework 'Foundation'
 require 'fileutils'
-
-require 'rubygems'
-require 'active_support/inflector'
-require 'active_support/core_ext/string/inflections'
+require 'xcodeproj/inflector'
 
 module Xcode
   class Project
