@@ -1,4 +1,4 @@
-module Xcode
+module Xcodeproj
   class Config
     def initialize(xcconfig = {})
       @attributes = {}

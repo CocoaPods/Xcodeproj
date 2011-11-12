@@ -2,7 +2,7 @@ framework 'Foundation'
 require 'fileutils'
 require 'xcodeproj/inflector'
 
-module Xcode
+module Xcodeproj
   class Project
     class PBXObject
       class AssociationReflection
@@ -282,7 +282,7 @@ module Xcode
       attributes :sourceTree
 
       has_many :children, :class => PBXFileReference do |object|
-        if object.is_a?(Xcode::Project::PBXFileReference)
+        if object.is_a?(Xcodeproj::Project::PBXFileReference)
           # Associating the file to this group through the inverse
           # association will also remove it from the group it was in.
           object.group = self
@@ -300,20 +300,20 @@ module Xcode
       end
 
       def files
-        list_by_class(childReferences, Xcode::Project::PBXFileReference) do |file|
+        list_by_class(childReferences, Xcodeproj::Project::PBXFileReference) do |file|
           file.group = self
         end
       end
 
       def source_files
         files = self.files.reject { |file| file.buildFiles.empty? }
-        list_by_class(childReferences, Xcode::Project::PBXFileReference, files) do |file|
+        list_by_class(childReferences, Xcodeproj::Project::PBXFileReference, files) do |file|
           file.group = self
         end
       end
 
       def groups
-        list_by_class(childReferences, Xcode::Project::PBXGroup)
+        list_by_class(childReferences, Xcodeproj::Project::PBXGroup)
       end
 
       def <<(child)
@@ -566,7 +566,7 @@ module Xcode
           'objectVersion' => '46',
           'objects' => {}
         }
-        self.root_object = objects.add(Xcode::Project::PBXProject, {
+        self.root_object = objects.add(Xcodeproj::Project::PBXProject, {
           'attributes' => { 'LastUpgradeCheck' => '0420' },
           'compatibilityVersion' => 'Xcode 3.2',
           'developmentRegion' => 'English',
@@ -621,7 +621,7 @@ module Xcode
     end
     
     def add_shell_script_build_phase(name, script_path)
-      objects.add(Xcode::Project::PBXShellScriptBuildPhase, {
+      objects.add(Xcodeproj::Project::PBXShellScriptBuildPhase, {
         'name' => name,
         'files' => [],
         'inputPaths' => [],

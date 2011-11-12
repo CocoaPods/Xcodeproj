@@ -1,7 +1,7 @@
 framework 'Foundation'
 require 'fileutils'
 
-module Xcode
+module Xcodeproj
   class Workspace
     def initialize(*projpaths)
       @projpaths = projpaths

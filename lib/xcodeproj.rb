@@ -1,4 +1,4 @@
-module Xcode
+module Xcodeproj
   VERSION = '0.0.1'
   
   autoload :Config,    'xcodeproj/config'

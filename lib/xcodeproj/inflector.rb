@@ -11,7 +11,7 @@
 
 require 'singleton'
 
-module Xcode
+module Xcodeproj
   module ActiveSupport
     # The Inflector transforms words from singular to plural, class names to table names, modularized class names to ones without,
     # and class names to foreign keys. The default inflections for pluralization, singularization, and uncountable words are kept
@@ -347,7 +347,7 @@ end
 
 # String inflections define new methods on the String class to transform names for different purposes.
 class NSString
-  include Xcode::ActiveSupport
+  include Xcodeproj::ActiveSupport
 
   # Returns the plural form of the word in the string.
   #

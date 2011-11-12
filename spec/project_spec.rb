@@ -1,10 +1,10 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe "Xcode::Project" do
+describe "Xcodeproj::Project" do
   extend SpecHelper::TemporaryDirectory
 
   before do
-    @project = Xcode::Project.new
+    @project = Xcodeproj::Project.new
   end
 
   def find_objects(conditions)
@@ -27,7 +27,7 @@ describe "Xcode::Project" do
 
   describe "PBXObject" do
     before do
-      @object = Xcode::Project::PBXObject.new(@project, nil, 'name' => 'AnObject')
+      @object = Xcodeproj::Project::PBXObject.new(@project, nil, 'name' => 'AnObject')
     end
 
     it "merges the class name into the attributes" do
@@ -88,7 +88,7 @@ describe "Xcode::Project" do
 
   describe "a new PBXBuildPhase" do
     before do
-      @phase = @project.objects.add(Xcode::Project::PBXBuildPhase)
+      @phase = @project.objects.add(Xcodeproj::Project::PBXBuildPhase)
     end
 
     it "has an empty list of files" do
@@ -106,11 +106,11 @@ describe "Xcode::Project" do
 
   describe "a new PBXCopyFilesBuildPhase" do
     before do
-      @phase = @project.objects.add(Xcode::Project::PBXCopyFilesBuildPhase, 'dstPath' => 'some/path')
+      @phase = @project.objects.add(Xcodeproj::Project::PBXCopyFilesBuildPhase, 'dstPath' => 'some/path')
     end
 
     it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of Xcode::Project::PBXBuildPhase
+      @phase.should.be.kind_of Xcodeproj::Project::PBXBuildPhase
     end
 
     it "returns the dstPath" do
@@ -124,27 +124,27 @@ describe "Xcode::Project" do
 
   describe "a new PBXSourcesBuildPhase" do
     before do
-      @phase = @project.objects.add(Xcode::Project::PBXSourcesBuildPhase)
+      @phase = @project.objects.add(Xcodeproj::Project::PBXSourcesBuildPhase)
     end
 
     it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of Xcode::Project::PBXBuildPhase
+      @phase.should.be.kind_of Xcodeproj::Project::PBXBuildPhase
     end
   end
 
   describe "a new PBXFrameworksBuildPhase" do
     before do
-      @phase = @project.objects.add(Xcode::Project::PBXFrameworksBuildPhase)
+      @phase = @project.objects.add(Xcodeproj::Project::PBXFrameworksBuildPhase)
     end
 
     it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of Xcode::Project::PBXBuildPhase
+      @phase.should.be.kind_of Xcodeproj::Project::PBXBuildPhase
     end
   end
 
   describe "a new XCBuildConfiguration" do
     before do
-      @configuration = @project.objects.add(Xcode::Project::XCBuildConfiguration)
+      @configuration = @project.objects.add(Xcodeproj::Project::XCBuildConfiguration)
     end
 
     it "returns the xcconfig that this configuration is based on (baseConfigurationReference)" do
@@ -156,11 +156,11 @@ describe "Xcode::Project" do
 
   describe "a new XCConfigurationList" do
     before do
-      @list = @project.objects.add(Xcode::Project::XCConfigurationList)
+      @list = @project.objects.add(Xcodeproj::Project::XCConfigurationList)
     end
 
     it "returns the configurations" do
-      configuration = @project.objects.add(Xcode::Project::XCBuildConfiguration)
+      configuration = @project.objects.add(Xcodeproj::Project::XCBuildConfiguration)
       @list.buildConfigurations.to_a.should == []
       @list.buildConfigurations = [configuration]
       @list.buildConfigurationReferences.should == [configuration.uuid]
@@ -176,7 +176,7 @@ describe "Xcode::Project" do
     it "returns the product" do
       product = @target.product
       product.uuid.should == @target.productReference
-      product.should.be.instance_of Xcode::Project::PBXFileReference
+      product.should.be.instance_of Xcodeproj::Project::PBXFileReference
       product.path.should == "libPods.a"
       product.name.should == "libPods.a"
       product.group.name.should == "Products"
@@ -191,7 +191,7 @@ describe "Xcode::Project" do
 
     it "returns the buildConfigurationList" do
       list = @target.buildConfigurationList
-      list.should.be.instance_of Xcode::Project::XCConfigurationList
+      list.should.be.instance_of Xcodeproj::Project::XCConfigurationList
       list.buildConfigurations.each do |configuration|
         configuration.buildSettings.should == {
           'DSTROOT'                      => '/tmp/xcodeproj.dst',
@@ -212,17 +212,17 @@ describe "Xcode::Project" do
       extend SpecHelper::TemporaryDirectory
 
       it "returns an empty sources build phase" do
-        phase = @target.buildPhases.select_by_class(Xcode::Project::PBXSourcesBuildPhase).first
+        phase = @target.buildPhases.select_by_class(Xcodeproj::Project::PBXSourcesBuildPhase).first
         phase.files.to_a.should == []
       end
 
       it "returns a libraries/frameworks build phase, which by default is empty" do
-        phase = @target.buildPhases.select_by_class(Xcode::Project::PBXFrameworksBuildPhase).first
+        phase = @target.buildPhases.select_by_class(Xcodeproj::Project::PBXFrameworksBuildPhase).first
         phase.should.not == nil
       end
 
       it "returns an empty 'copy headers' phase" do
-        phase = @target.buildPhases.select_by_class(Xcode::Project::PBXCopyFilesBuildPhase).first
+        phase = @target.buildPhases.select_by_class(Xcodeproj::Project::PBXCopyFilesBuildPhase).first
         phase.dstPath.should == "$(PUBLIC_HEADERS_FOLDER_PATH)"
         phase.files.to_a.should == []
       end
@@ -236,7 +236,7 @@ describe "Xcode::Project" do
   end
 
   it "adds any type of new PBXObject to the objects hash" do
-    object = @project.objects.add(Xcode::Project::PBXObject, 'name' => 'An Object')
+    object = @project.objects.add(Xcodeproj::Project::PBXObject, 'name' => 'An Object')
     object.name.should == 'An Object'
     @project.objects_hash[object.uuid].should == object.attributes
   end
@@ -273,10 +273,10 @@ describe "Xcode::Project" do
       # ensure that it was added to all objects
       file = @project.objects[file.uuid]
 
-      phase = @target.buildPhases.find { |phase| phase.is_a?(Xcode::Project::PBXSourcesBuildPhase) }
+      phase = @target.buildPhases.find { |phase| phase.is_a?(Xcodeproj::Project::PBXSourcesBuildPhase) }
       phase.files.map { |buildFile| buildFile.file }.should.include file
 
-      phase = @target.buildPhases.find { |phase| phase.is_a?(Xcode::Project::PBXCopyFilesBuildPhase) }
+      phase = @target.buildPhases.find { |phase| phase.is_a?(Xcodeproj::Project::PBXCopyFilesBuildPhase) }
       phase.files.map { |buildFile| buildFile.file }.should.not.include file
     end
   end
@@ -302,10 +302,10 @@ describe "Xcode::Project" do
     # ensure that it was added to all objects
     file = @project.objects[file.uuid]
 
-    phase = @target.buildPhases.find { |phase| phase.is_a?(Xcode::Project::PBXSourcesBuildPhase) }
+    phase = @target.buildPhases.find { |phase| phase.is_a?(Xcodeproj::Project::PBXSourcesBuildPhase) }
     phase.files.map { |buildFile| buildFile.file }.should.not.include file
 
-    phase = @target.buildPhases.find { |phase| phase.is_a?(Xcode::Project::PBXCopyFilesBuildPhase) }
+    phase = @target.buildPhases.find { |phase| phase.is_a?(Xcodeproj::Project::PBXCopyFilesBuildPhase) }
     phase.files.map { |buildFile| buildFile.file }.should.include file
   end
 

@@ -1,8 +1,8 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe "Xcode::Workspace" do
+describe "Xcodeproj::Workspace" do
   before do
-    @workspace = Xcode::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
+    @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
   end
   
   it "accepts new projects" do

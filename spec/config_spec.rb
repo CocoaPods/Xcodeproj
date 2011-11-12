@@ -1,10 +1,10 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe "Xcode::Config" do
+describe "Xcodeproj::Config" do
   extend SpecHelper::TemporaryDirectory
 
   before do
-    @config = Xcode::Config.new('OTHER_LD_FLAGS' => '-framework Foundation')
+    @config = Xcodeproj::Config.new('OTHER_LD_FLAGS' => '-framework Foundation')
   end
 
   it "merges another config hash in place" do
