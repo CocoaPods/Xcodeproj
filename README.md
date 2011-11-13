@@ -18,7 +18,7 @@ perform the following command:
 
 The load time can be improved a bit by compiling the Ruby source files:
 
-    $ sudo macgem install rubygems-compile
+    $ sudo macgem install rubygems-compile --version 0.2.0
     $ sudo macgem compile xcodeproj
 
 
