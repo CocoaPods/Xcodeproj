@@ -9,6 +9,7 @@
 
 VALUE Xcodeproj = Qnil;
 
+
 static VALUE
 cfstr_to_str(const void *cfstr) {
   long len = (long)CFStringGetLength(cfstr);
@@ -19,6 +20,12 @@ cfstr_to_str(const void *cfstr) {
   free(buf);
   return str;
 }
+
+static CFStringRef
+str_to_cfstr(VALUE str) {
+  return CFStringCreateWithCString(NULL, RSTRING_PTR(str), kCFStringEncodingUTF8);
+}
+
 
 static VALUE
 generate_uuid(void) {
@@ -40,6 +47,7 @@ generate_uuid(void) {
   CFRelease(strRef2);
   return str;
 }
+
 
 static void
 hash_set(const void *keyRef, const void *valueRef, void *hash) {
@@ -71,6 +79,42 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
   rb_hash_aset((VALUE)hash, key, value);
 }
 
+static int
+dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
+  CFStringRef keyRef = str_to_cfstr(key);
+
+  CFTypeRef valueRef = NULL;
+  if (TYPE(value) == T_STRING) {
+    valueRef = str_to_cfstr(value);
+
+  } else if (TYPE(value) == T_HASH) {
+    valueRef = CFDictionaryCreateMutable(NULL,
+                                         0,
+                                         &kCFTypeDictionaryKeyCallBacks,
+                                         &kCFTypeDictionaryValueCallBacks);
+    st_foreach(RHASH_TBL(value), dictionary_set, (st_data_t)valueRef);
+
+  } else if (TYPE(value) == T_ARRAY) {
+    long i, count = RARRAY_LEN(value);
+    valueRef = CFArrayCreateMutable(NULL, count, &kCFTypeArrayCallBacks);
+    for (i = 0; i < count; i++) {
+      CFStringRef x = str_to_cfstr(RARRAY_PTR(value)[i]);
+      CFArrayAppendValue((CFMutableArrayRef)valueRef, x);
+      CFRelease(x);
+    }
+
+  } else {
+    printf("SOMETHING ELSE!\n");
+    abort();
+  }
+
+  CFDictionaryAddValue(dict, keyRef, valueRef);
+  CFRelease(keyRef);
+  CFRelease(valueRef);
+  return ST_CONTINUE;
+}
+
+
 // TODO handle errors
 static VALUE
 read_plist(VALUE self, VALUE path) {
@@ -92,43 +136,6 @@ read_plist(VALUE self, VALUE path) {
   CFRelease(dict);
 
   return hash;
-}
-
-#define STR_TO_CFSTR(str) CFStringCreateWithCString(NULL, RSTRING_PTR(str), kCFStringEncodingUTF8)
-
-static int
-dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
-  CFStringRef keyRef = STR_TO_CFSTR(key);
-
-  CFTypeRef valueRef = NULL;
-  if (TYPE(value) == T_STRING) {
-    valueRef = STR_TO_CFSTR(value);
-
-  } else if (TYPE(value) == T_HASH) {
-    valueRef = CFDictionaryCreateMutable(NULL,
-                                         0,
-                                         &kCFTypeDictionaryKeyCallBacks,
-                                         &kCFTypeDictionaryValueCallBacks);
-    st_foreach(RHASH_TBL(value), dictionary_set, (st_data_t)valueRef);
-
-  } else if (TYPE(value) == T_ARRAY) {
-    long i, count = RARRAY_LEN(value);
-    valueRef = CFArrayCreateMutable(NULL, count, &kCFTypeArrayCallBacks);
-    for (i = 0; i < count; i++) {
-      CFStringRef x = STR_TO_CFSTR(RARRAY_PTR(value)[i]);
-      CFArrayAppendValue((CFMutableArrayRef)valueRef, x);
-      CFRelease(x);
-    }
-
-  } else {
-    printf("SOMETHING ELSE!\n");
-    abort();
-  }
-
-  CFDictionaryAddValue(dict, keyRef, valueRef);
-  CFRelease(keyRef);
-  CFRelease(valueRef);
-  return ST_CONTINUE;
 }
 
 static VALUE
@@ -156,6 +163,7 @@ write_plist(VALUE self, VALUE hash, VALUE path) {
   CFRelease(dict);
   return success ? Qtrue : Qfalse;
 }
+
 
 void Init_xcodeproj_ext() {
   Xcodeproj = rb_define_module("Xcodeproj");
