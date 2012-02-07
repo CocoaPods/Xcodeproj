@@ -36,7 +36,7 @@ task :install do
 end
 
 namespace :spec do
-  task :all do
+  task :all => "ext:cleanbuild" do
     sh "bacon spec/*_spec.rb"
   end
 end
