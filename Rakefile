@@ -35,7 +35,7 @@ end
 
 namespace :spec do
   task :all do
-    sh "macbacon -a"
+    sh "bacon spec/*_spec.rb"
   end
 end
 

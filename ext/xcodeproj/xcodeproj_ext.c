@@ -12,9 +12,12 @@ VALUE Xcodeproj = Qnil;
 static VALUE
 cfstr_to_str(const void *cfstr) {
   long len = (long)CFStringGetLength(cfstr);
-  char buf[len+1];
+  char *buf = (char *)malloc(len+1);
+  assert(buf != NULL);
   CFStringGetCString(cfstr, buf, len+1, kCFStringEncodingUTF8);
-  return rb_str_new(buf, len);
+  register VALUE str = rb_str_new(buf, len);
+  free(buf);
+  return str;
 }
 
 static VALUE
@@ -41,7 +44,7 @@ generate_uuid(void) {
 static void
 hash_set(const void *keyRef, const void *valueRef, void *hash) {
   VALUE key = cfstr_to_str(keyRef);
-  VALUE value = Qnil;
+  register VALUE value = Qnil;
 
   CFTypeID valueType = CFGetTypeID(valueRef);
   if (valueType == CFStringGetTypeID()) {
@@ -84,7 +87,7 @@ read_plist(VALUE self, VALUE path) {
   dict = CFPropertyListCreateFromXMLData(NULL, resourceData, kCFPropertyListImmutable, &errorString);
   CFRelease(resourceData);
 
-  VALUE hash = rb_hash_new();
+  register VALUE hash = rb_hash_new();
   CFDictionaryApplyFunction(dict, hash_set, (void *)hash);
   CFRelease(dict);
 
