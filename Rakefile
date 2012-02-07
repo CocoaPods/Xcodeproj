@@ -9,6 +9,8 @@ namespace :ext do
       sh "make"
     end
   end
+
+  task :cleanbuild => [:clean, :build]
 end
 
 desc "Compile the source files (as rbo files)"

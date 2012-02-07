@@ -216,7 +216,7 @@ module Xcodeproj
     # valid classes in a Xcode project. A new PBXObject subclass is created
     # for the constant and returned.
     def self.const_missing(name)
-      if name =~ /^(PBX|XC)/
+      if name.to_s =~ /^(PBX|XC)/
         klass = Class.new(PBXObject)
         const_set(name, klass)
         klass
@@ -529,7 +529,7 @@ module Xcodeproj
 
       # Only makes sense on lists that contain mixed classes.
       def select_by_class(klass)
-        scoped = @scoped_hash.select { |_, attr| attr['isa'] == klass.isa }
+        scoped = Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
         PBXObjectList.new(klass, @project, scoped) do |object|
           # Objects added to the subselection should still use the same
           # callback as this list.

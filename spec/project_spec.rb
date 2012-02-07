@@ -330,7 +330,7 @@ describe "Xcodeproj::Project" do
   it "saves the template with the adjusted project" do
     @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
     project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
-    NSDictionary.dictionaryWithContentsOfFile(project_file.to_s).should == @project.to_hash
+    Xcodeproj.read_plist(project_file.to_s).should == @project.to_hash
   end
 
   it "returns all source files" do
