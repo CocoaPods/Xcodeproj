@@ -1,6 +1,6 @@
 namespace :ext do
   task :clean do
-    sh "cd ext/xcodeproj && rm Makefile *.o *.bundle"
+    sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle"
   end
 
   task :build do

@@ -1,1 +1,6 @@
 *.swp
+Makefile
+*.log
+*.bundle
+*.o
+.rbenv-version
