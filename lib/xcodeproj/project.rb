@@ -1,6 +1,6 @@
-framework 'Foundation'
 require 'fileutils'
 require 'xcodeproj/inflector'
+require 'xcodeproj/xcodeproj_ext'
 
 module Xcodeproj
   class Project
@@ -194,12 +194,7 @@ module Xcodeproj
       private
 
       def generate_uuid
-        _uuid = CFUUIDCreate(nil)
-        uuid = CFUUIDCreateString(nil, _uuid)
-        CFRelease(_uuid)
-        CFMakeCollectable(uuid)
-        # Xcode's version is actually shorter, not worrying about collisions too much right now.
-        uuid.gsub('-', '')[0..23]
+        Xcodeproj.generate_uuid
       end
 
       def list_by_class(uuids, klass, scoped = nil, &block)
@@ -558,7 +553,7 @@ module Xcodeproj
     def initialize(xcodeproj = nil)
       if xcodeproj
         file = File.join(xcodeproj, 'project.pbxproj')
-        @plist = NSMutableDictionary.dictionaryWithContentsOfFile(file.to_s)
+        @plist = Xcodeproj.read_plist(file.to_s)
       else
         @plist = {
           'archiveVersion' => '1',
@@ -658,7 +653,7 @@ module Xcodeproj
     def save_as(projpath)
       projpath = projpath.to_s
       FileUtils.mkdir_p(projpath)
-      @plist.writeToFile(File.join(projpath, 'project.pbxproj'), atomically:true)
+      Xcodeproj.write_plist(@plist, File.join(projpath, 'project.pbxproj'))
     end
   end
 end

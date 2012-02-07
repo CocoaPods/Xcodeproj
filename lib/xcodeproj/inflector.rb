@@ -346,7 +346,7 @@ module Xcodeproj
 end
 
 # String inflections define new methods on the String class to transform names for different purposes.
-class NSString
+class String
   include Xcodeproj::ActiveSupport
 
   # Returns the plural form of the word in the string.

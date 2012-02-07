@@ -1,3 +1,16 @@
+namespace :ext do
+  task :clean do
+    sh "cd ext/xcodeproj && rm Makefile *.o *.bundle"
+  end
+
+  task :build do
+    Dir.chdir 'ext/xcodeproj' do
+      ruby "extconf.rb"
+      sh "make"
+    end
+  end
+end
+
 desc "Compile the source files (as rbo files)"
 task :compile do
   Dir.glob("lib/**/*.rb").each do |file|
