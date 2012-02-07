@@ -75,3 +75,5 @@ end
 
 desc "Run all specs"
 task :spec => 'spec:all'
+
+task :default => :spec
