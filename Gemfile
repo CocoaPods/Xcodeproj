@@ -1,5 +1,6 @@
 source "http://rubygems.org"
 
 group :development do
-  gem 'bacon'
+  gem "rake"
+  gem "bacon"
 end
