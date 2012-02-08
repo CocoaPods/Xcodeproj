@@ -1,6 +1,5 @@
 // TODO
-// * raise when there are objects other than string, hash, or array in the given list
-// * there should only be arrays with strings in a pbxproj! raise if there are other types
+// * free memory when raising
 
 
 #include "ruby.h"
@@ -21,9 +20,10 @@ cfstr_to_str(const void *cfstr) {
   return str;
 }
 
+// Coerces to String as well.
 static CFStringRef
 str_to_cfstr(VALUE str) {
-  return CFStringCreateWithCString(NULL, RSTRING_PTR(str), kCFStringEncodingUTF8);
+  return CFStringCreateWithCString(NULL, RSTRING_PTR(rb_String(str)), kCFStringEncodingUTF8);
 }
 
 
@@ -67,13 +67,15 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
     CFIndex i, count = CFArrayGetCount(valueRef);
     for (i = 0; i < count; i++) {
       CFStringRef x = CFArrayGetValueAtIndex(valueRef, i);
-      rb_ary_push(value, cfstr_to_str(x));
+      if (CFGetTypeID(x) == CFStringGetTypeID()) {
+        rb_ary_push(value, cfstr_to_str(x));
+      } else {
+        rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj.");
+      }
     }
 
   } else {
-    // TODO raise!
-    printf("Unknown type in property list.\n");
-    abort();
+    rb_raise(rb_eTypeError, "Plist contains a hash value object type unsupported by Xcodeproj.");
   }
 
   rb_hash_aset((VALUE)hash, key, value);
@@ -84,10 +86,7 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
   CFStringRef keyRef = str_to_cfstr(key);
 
   CFTypeRef valueRef = NULL;
-  if (TYPE(value) == T_STRING) {
-    valueRef = str_to_cfstr(value);
-
-  } else if (TYPE(value) == T_HASH) {
+  if (TYPE(value) == T_HASH) {
     valueRef = CFDictionaryCreateMutable(NULL,
                                          0,
                                          &kCFTypeDictionaryKeyCallBacks,
@@ -104,14 +103,27 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
     }
 
   } else {
-    printf("SOMETHING ELSE!\n");
-    abort();
+    valueRef = str_to_cfstr(value);
   }
 
   CFDictionaryAddValue(dict, keyRef, valueRef);
   CFRelease(keyRef);
   CFRelease(valueRef);
   return ST_CONTINUE;
+}
+
+static CFURLRef
+str_to_url(VALUE path) {
+#ifdef FilePathValue
+  VALUE p = FilePathValue(path);
+#else
+  VALUE p = rb_String(path);
+#endif
+  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, RSTRING_PTR(p), RSTRING_LEN(p), false);
+  if (!fileURL) {
+    rb_raise(rb_eArgError, "Unable to create CFURL from `%s'.", RSTRING_PTR(rb_inspect(path)));
+  }
+  return fileURL;
 }
 
 
@@ -121,14 +133,20 @@ read_plist(VALUE self, VALUE path) {
   CFPropertyListRef dict;
   CFStringRef       errorString;
   CFDataRef         resourceData;
-  Boolean           status;
   SInt32            errorCode;
 
-  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, RSTRING_PTR(path), RSTRING_LEN(path), false);
-  status = CFURLCreateDataAndPropertiesFromResource(NULL, fileURL, &resourceData, NULL, NULL, &errorCode);
-  CFRelease(fileURL);
+  CFURLRef fileURL = str_to_url(path);
+  if (CFURLCreateDataAndPropertiesFromResource(NULL, fileURL, &resourceData, NULL, NULL, &errorCode)) {
+    CFRelease(fileURL);
+  }
+  if (!resourceData) {
+    rb_raise(rb_eArgError, "Unable to read data from `%s'", RSTRING_PTR(rb_inspect(path)));
+  }
 
   dict = CFPropertyListCreateFromXMLData(NULL, resourceData, kCFPropertyListImmutable, &errorString);
+  if (!dict) {
+    rb_raise(rb_eArgError, "Unable to read plist data from `%s': %s", RSTRING_PTR(rb_inspect(path)), RSTRING_PTR(cfstr_to_str(errorString)));
+  }
   CFRelease(resourceData);
 
   register VALUE hash = rb_hash_new();
@@ -140,14 +158,21 @@ read_plist(VALUE self, VALUE path) {
 
 static VALUE
 write_plist(VALUE self, VALUE hash, VALUE path) {
+  VALUE h = rb_check_convert_type(hash, T_HASH, "Hash", "to_hash");
+  if (NIL_P(h)) {
+    rb_raise(rb_eTypeError, "%s can't be coerced to Hash", rb_obj_classname(hash));
+  }
+
   CFMutableDictionaryRef dict = CFDictionaryCreateMutable(NULL,
                                                           0,
                                                           &kCFTypeDictionaryKeyCallBacks,
                                                           &kCFTypeDictionaryValueCallBacks);
-  st_foreach(RHASH_TBL(hash), dictionary_set, (st_data_t)dict);
 
-  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, RSTRING_PTR(path), RSTRING_LEN(path), false);
+  st_foreach(RHASH_TBL(h), dictionary_set, (st_data_t)dict);
+
+  CFURLRef fileURL = str_to_url(path);
   CFWriteStreamRef stream = CFWriteStreamCreateWithFile(NULL, fileURL);
+  CFRelease(fileURL);
 
   CFIndex success = 0;
   if (CFWriteStreamOpen(stream)) {
