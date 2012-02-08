@@ -1,12 +1,12 @@
-framework 'Foundation'
 require 'fileutils'
+require 'rexml/document'
 
 module Xcodeproj
   class Workspace
     def initialize(*projpaths)
       @projpaths = projpaths
     end
-    
+
     def self.new_from_xcworkspace(path)
       begin
         from_s(File.read(File.join(path, 'contents.xcworkspacedata')))
@@ -14,36 +14,37 @@ module Xcodeproj
         new
       end
     end
-    
+
     def self.from_s(xml)
-      doc = NSXMLDocument.alloc.initWithXMLString(xml, options:0, error:nil)
-      projpaths = doc.nodesForXPath("/Workspace/FileRef", error:nil).map do |node|
-        node.attributeForName("location").stringValue.sub(/^group:/, '')
+      document = REXML::Document.new(xml)
+      projpaths = document.get_elements("/Workspace/FileRef").map do |node|
+        node.attribute("location").to_s.sub(/^group:/, '')
       end
       new(*projpaths)
     end
-    
+
     attr_reader :projpaths
-    
+
     def <<(projpath)
       @projpaths << projpath
     end
-    
+
     def include?(projpath)
       @projpaths.include?(projpath)
     end
-    
+
     TEMPLATE = %q[<?xml version="1.0" encoding="UTF-8"?><Workspace version="1.0"></Workspace>]
+
     def to_s
-      doc = NSXMLDocument.alloc.initWithXMLString(TEMPLATE, options:0, error:nil)
-      @projpaths.each do |projpath|
-        el = NSXMLNode.elementWithName("FileRef")
-        el.addAttribute(NSXMLNode.attributeWithName("location", stringValue:"group:#{projpath}"))
-        doc.rootElement.addChild(el)
-      end
-      NSString.alloc.initWithData(doc.XMLData, encoding:NSUTF8StringEncoding)
+      REXML::Document.new(TEMPLATE).tap do |document|
+        @projpaths.each do |projpath|
+          document.root << REXML::Element.new("FileRef").tap do |el|
+            el.attributes['location'] = "group:#{projpath}"
+          end
+        end
+      end.to_s
     end
-    
+
     def save_as(path)
       FileUtils.mkdir_p(path)
       File.open(File.join(path, 'contents.xcworkspacedata'), 'w') do |out|

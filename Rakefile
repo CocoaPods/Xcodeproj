@@ -1,3 +1,18 @@
+namespace :ext do
+  task :clean do
+    sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle"
+  end
+
+  task :build do
+    Dir.chdir 'ext/xcodeproj' do
+      ruby "extconf.rb"
+      sh "make"
+    end
+  end
+
+  task :cleanbuild => [:clean, :build]
+end
+
 desc "Compile the source files (as rbo files)"
 task :compile do
   Dir.glob("lib/**/*.rb").each do |file|
@@ -21,8 +36,8 @@ task :install do
 end
 
 namespace :spec do
-  task :all do
-    sh "macbacon -a"
+  task :all => "ext:cleanbuild" do
+    sh "bacon spec/*_spec.rb"
   end
 end
 
@@ -60,3 +75,5 @@ end
 
 desc "Run all specs"
 task :spec => 'spec:all'
+
+task :default => :spec

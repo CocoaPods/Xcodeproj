@@ -1,6 +1,6 @@
-framework 'Foundation'
 require 'fileutils'
 require 'xcodeproj/inflector'
+require 'xcodeproj/xcodeproj_ext'
 
 module Xcodeproj
   class Project
@@ -194,12 +194,7 @@ module Xcodeproj
       private
 
       def generate_uuid
-        _uuid = CFUUIDCreate(nil)
-        uuid = CFUUIDCreateString(nil, _uuid)
-        CFRelease(_uuid)
-        CFMakeCollectable(uuid)
-        # Xcode's version is actually shorter, not worrying about collisions too much right now.
-        uuid.gsub('-', '')[0..23]
+        Xcodeproj.generate_uuid
       end
 
       def list_by_class(uuids, klass, scoped = nil, &block)
@@ -221,7 +216,7 @@ module Xcodeproj
     # valid classes in a Xcode project. A new PBXObject subclass is created
     # for the constant and returned.
     def self.const_missing(name)
-      if name =~ /^(PBX|XC)/
+      if name.to_s =~ /^(PBX|XC)/
         klass = Class.new(PBXObject)
         const_set(name, klass)
         klass
@@ -534,7 +529,7 @@ module Xcodeproj
 
       # Only makes sense on lists that contain mixed classes.
       def select_by_class(klass)
-        scoped = @scoped_hash.select { |_, attr| attr['isa'] == klass.isa }
+        scoped = Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
         PBXObjectList.new(klass, @project, scoped) do |object|
           # Objects added to the subselection should still use the same
           # callback as this list.
@@ -558,7 +553,7 @@ module Xcodeproj
     def initialize(xcodeproj = nil)
       if xcodeproj
         file = File.join(xcodeproj, 'project.pbxproj')
-        @plist = NSMutableDictionary.dictionaryWithContentsOfFile(file.to_s)
+        @plist = Xcodeproj.read_plist(file.to_s)
       else
         @plist = {
           'archiveVersion' => '1',
@@ -658,7 +653,7 @@ module Xcodeproj
     def save_as(projpath)
       projpath = projpath.to_s
       FileUtils.mkdir_p(projpath)
-      @plist.writeToFile(File.join(projpath, 'project.pbxproj'), atomically:true)
+      Xcodeproj.write_plist(@plist, File.join(projpath, 'project.pbxproj'))
     end
   end
 end

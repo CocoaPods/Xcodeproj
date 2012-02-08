@@ -1,26 +1,53 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 describe "Xcodeproj::Workspace" do
-  before do
-    @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
-  end
-  
-  it "accepts new projects" do
-    @workspace << 'Framework.xcodeproj'
-    @workspace.projpaths.should.include 'Framework.xcodeproj'
+  describe "from new" do
+    before do
+      @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
+    end
+
+    it "accepts new projects" do
+      @workspace << 'Framework.xcodeproj'
+      @workspace.projpaths.should.include 'Framework.xcodeproj'
+    end
   end
     
-  before do
-    @doc = NSXMLDocument.alloc.initWithXMLString(@workspace.to_s, options:0, error:nil)
+  describe "converted to XML" do
+    before do
+      @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
+      @doc = REXML::Document.new(@workspace.to_s)
+    end
+
+    it "is the right xml workspace version" do
+      @doc.root.attributes['version'].to_s.should == "1.0"
+    end
+
+    it "refers to the projects in xml" do
+      @doc.root.get_elements("/Workspace/FileRef").map do |node|
+        node.attributes["location"]
+      end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj']
+    end
   end
   
-  it "is the right xml workspace version" do
-    @doc.rootElement.attributeForName("version").stringValue.should == "1.0"
+  describe "built from a workspace file" do
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("libPusher.xcworkspace"))
+    end
+    
+    it "contains all of the projects in the workspace" do
+      @workspace.projpaths.should.include "libPusher.xcodeproj"
+      @workspace.projpaths.should.include "libPusher-OSX/libPusher-OSX.xcodeproj"
+      @workspace.projpaths.should.include "Pods/Pods.xcodeproj"
+    end
   end
   
-  it "refers to the projects in xml" do
-    @doc.nodesForXPath("/Workspace/FileRef", error:nil).map do |node|
-      node.attributeForName("location").stringValue.sub(/^group:/, '')
-    end.sort.should == ['App.xcodeproj', 'Pods/Pods.xcodeproj']
+  describe "built from an empty/invalid workspace file" do
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace("doesn't exist")
+    end
+    
+    it "contains no projects" do
+      @workspace.projpaths.should.be.empty
+    end
   end
 end

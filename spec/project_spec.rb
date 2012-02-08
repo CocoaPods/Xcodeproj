@@ -9,7 +9,7 @@ describe "Xcodeproj::Project" do
 
   def find_objects(conditions)
     @project.objects_hash.select do |_, object|
-      object.objectsForKeys(conditions.keys, notFoundMarker:Object.new) == conditions.values
+      object.keys == conditions.keys && object == conditions
     end
   end
 
@@ -26,6 +26,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "PBXObject" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @object = Xcodeproj::Project::PBXObject.new(@project, nil, 'name' => 'AnObject')
     end
@@ -53,6 +55,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a PBXFileReference" do
+    extend SpecHelper::TemporaryDirectory
+
     it "sets a default file type" do
       framework, library, xcconfig = %w[framework a xcconfig].map { |n| @project.files.new('path' => "Rockin.#{n}") }
       framework.lastKnownFileType.should == 'wrapper.framework'
@@ -87,6 +91,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new PBXBuildPhase" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @phase = @project.objects.add(Xcodeproj::Project::PBXBuildPhase)
     end
@@ -105,6 +111,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new PBXCopyFilesBuildPhase" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @phase = @project.objects.add(Xcodeproj::Project::PBXCopyFilesBuildPhase, 'dstPath' => 'some/path')
     end
@@ -123,6 +131,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new PBXSourcesBuildPhase" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @phase = @project.objects.add(Xcodeproj::Project::PBXSourcesBuildPhase)
     end
@@ -133,6 +143,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new PBXFrameworksBuildPhase" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @phase = @project.objects.add(Xcodeproj::Project::PBXFrameworksBuildPhase)
     end
@@ -143,6 +155,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new XCBuildConfiguration" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @configuration = @project.objects.add(Xcodeproj::Project::XCBuildConfiguration)
     end
@@ -155,6 +169,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new XCConfigurationList" do
+    extend SpecHelper::TemporaryDirectory
+
     before do
       @list = @project.objects.add(Xcodeproj::Project::XCConfigurationList)
     end
@@ -168,6 +184,8 @@ describe "Xcodeproj::Project" do
   end
 
   describe "a new PBXNativeTarget" do
+    extend SpecHelper::TemporaryDirectory
+
     it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
       @target.name.should == "Pods"
       @target.productName.should == "Pods"
@@ -312,7 +330,7 @@ describe "Xcodeproj::Project" do
   it "saves the template with the adjusted project" do
     @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
     project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
-    NSDictionary.dictionaryWithContentsOfFile(project_file.to_s).should == @project.to_hash
+    Xcodeproj.read_plist(project_file.to_s).should == @project.to_hash
   end
 
   it "returns all source files" do
