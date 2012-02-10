@@ -54,6 +54,19 @@ namespace :ext do
   task :cleanbuild => [:clean, :build]
 end
 
+namespace :gem do
+  desc "Build the gem"
+  task :build do
+    sh "gem build xcodeproj.gemspec"
+  end
+  
+  desc "Install a gem version of the current code"
+  task :install => :build do
+    require 'lib/xcodeproj'
+    sh "sudo gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
+  end
+end
+
 desc "Compile the source files (as rbo files)"
 task :compile do
   Dir.glob("lib/**/*.rb").each do |file|
