@@ -4,3 +4,4 @@ Makefile
 *.bundle
 *.o
 .rbenv-version
+ext/xcodeproj/extconf.h

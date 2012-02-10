@@ -25,7 +25,10 @@ checking_for "-std=c99 option to compiler" do
 end
 
 unless have_framework('CoreFoundation')
-  unless have_library('CoreFoundation')
+  if have_library('CoreFoundation')
+    # this is needed for opencflite, assume it's on linux
+    $defs << '-DTARGET_OS_LINUX'
+  else
     $stderr.puts "CoreFoundation is needed to build the Xcodeproj C extension."
     exit -1
   end
@@ -35,4 +38,5 @@ have_header 'CoreFoundation/CoreFoundation.h'
 have_header 'CoreFoundation/CFStream.h'
 have_header 'CoreFoundation/CFPropertyList.h'
 
+create_header
 create_makefile 'xcodeproj_ext'

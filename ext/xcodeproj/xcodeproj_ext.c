@@ -1,6 +1,7 @@
 // TODO
 // * free memory when raising
 
+#include "extconf.h"
 
 #include "ruby.h"
 #include "ruby/st.h"
