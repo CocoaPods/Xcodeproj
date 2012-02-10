@@ -14,10 +14,14 @@ namespace :ext do
     sh "svn co https://opencflite.svn.sourceforge.net/svnroot/opencflite/trunk opencflite"
     sh "cd opencflite && ./configure --target=linux --with-uuid=/usr --with-tz-includes=./include --prefix=/usr/local && make && sudo make install"
     sh "sudo /sbin/ldconfig"
+  end
 
-    # Make Ruby headers available, RVM seems to do not create a include dir. Is there a better fix?
-    sh "mkdir '#{rvm_ruby_dir}/include'"
-    sh "ln -s '#{rvm_ruby_dir}/lib/ruby/1.8/i686-linux' '#{rvm_ruby_dir}/include/ruby'"
+  task :fix_rvm_include_dir do
+    unless File.exist?(File.join(rvm_ruby_dir, 'include'))
+      # Make Ruby headers available, RVM seems to do not create a include dir on 1.8.7, but it does on 1.9.3.
+      sh "mkdir '#{rvm_ruby_dir}/include'"
+      sh "ln -s '#{rvm_ruby_dir}/lib/ruby/1.8/i686-linux' '#{rvm_ruby_dir}/include/ruby'"
+    end
   end
 
   task :clean do
@@ -27,6 +31,7 @@ namespace :ext do
   task :build do
     Dir.chdir 'ext/xcodeproj' do
       if on_rvm?
+        Rake::Task['ext:fix_rvm_include_dir'].invoke
         sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
       else
         sh "ruby extconf.rb"
