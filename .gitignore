@@ -5,3 +5,4 @@ Makefile
 *.o
 .rbenv-version
 ext/xcodeproj/extconf.h
+*.gem
