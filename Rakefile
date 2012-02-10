@@ -16,6 +16,17 @@ namespace :ext do
     sh "sudo /sbin/ldconfig"
   end
 
+  task :install_opencflite_debs do
+    sh "mkdir -p debs"
+    Dir.chdir("debs") do
+      base_url = "https://github.com/downloads/CocoaPods/OpenCFLite"
+      %w{ opencflite1_248-1_i386.deb opencflite-dev_248-1_i386.deb }.each do |deb|
+        sh "wget #{File.join(base_url, deb)}" unless File.exist?(deb)
+      end
+      sh "sudo dpkg -i *.deb"
+    end
+  end
+
   task :fix_rvm_include_dir do
     unless File.exist?(File.join(rvm_ruby_dir, 'include'))
       # Make Ruby headers available, RVM seems to do not create a include dir on 1.8.7, but it does on 1.9.3.
