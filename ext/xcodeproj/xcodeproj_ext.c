@@ -4,7 +4,9 @@
 
 #include "ruby.h"
 #include "ruby/st.h"
-#include <CoreFoundation/CoreFoundation.h>
+#include "CoreFoundation/CoreFoundation.h"
+#include "CoreFoundation/CFStream.h"
+#include "CoreFoundation/CFPropertyList.h"
 
 VALUE Xcodeproj = Qnil;
 
