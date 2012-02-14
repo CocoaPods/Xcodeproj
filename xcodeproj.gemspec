@@ -17,10 +17,9 @@ Gem::Specification.new do |s|
     support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
   ).strip.gsub(/\s+/, ' ')
 
-  s.files    = Dir["lib/**/*.rb"] +
-               %w{ README.md LICENSE }
-
-  s.require_paths = %w{ lib }
+  s.extensions    = "ext/xcodeproj/extconf.rb"
+  s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/*.{rb,c}"] + %w{ README.md LICENSE }
+  s.require_paths = %w{ ext lib }
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
