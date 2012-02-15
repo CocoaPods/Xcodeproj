@@ -1,5 +1,7 @@
 # Xcodeproj
 
+[![Build Status](https://secure.travis-ci.org/CocoaPods/Xcodeproj.png)](https://secure.travis-ci.org/CocoaPods/Xcodeproj)
+
 Xcodeproj lets you create and modify Xcode projects from [Ruby][ruby].
 Script boring management tasks or build Xcode-friendly libraries. Also includes
 support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
