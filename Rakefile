@@ -95,9 +95,10 @@ namespace :spec do
 end
 
 desc "Dumps a Xcode project as YAML, meant for diffing"
-task :dump_xcodeproj do
+task :dump_xcodeproj => 'ext:cleanbuild' do
+  require 'ext/xcodeproj/xcodeproj_ext'
   require 'yaml'
-  hash = NSDictionary.dictionaryWithContentsOfFile(File.join(ENV['xcodeproj'], 'project.pbxproj'))
+  hash = Xcodeproj.read_plist(File.join(ENV['xcodeproj'], 'project.pbxproj'))
   objects = hash['objects']
   result = objects.values.map do |object|
     if children = object['children']
