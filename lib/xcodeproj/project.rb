@@ -296,6 +296,16 @@ module Xcodeproj
         self.childReferences ||= []
       end
 
+      def name
+        if name = super
+          name
+        elsif attributes.has_key?('path')
+          File.basename(attributes['path'])
+        elsif @project.main_group.uuid == uuid
+          'Main Group'
+        end
+      end
+
       def files
         list_by_class(childReferences, Xcodeproj::Project::PBXFileReference) do |file|
           file.group = self

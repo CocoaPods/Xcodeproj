@@ -102,6 +102,19 @@ describe "Xcodeproj::Project" do
       @group.files.new('path' => 'Banana.m')
     end
 
+    it "returns its name" do
+      @group.name.should == 'Parent'
+    end
+
+    it "returns the basename of the path as its name" do
+      @project.groups.new('path' => 'some/dir').name.should == 'dir'
+    end
+
+    it "returns that it's the main group if it is" do
+      @project.groups.new.name.should == nil
+      @project.main_group.name.should == 'Main Group'
+    end
+
     it "returns a list of files and groups" do
       @group.children.map(&:name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
     end
