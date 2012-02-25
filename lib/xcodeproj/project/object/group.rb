@@ -34,20 +34,32 @@ module Xcodeproj
         end
 
         def files
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference) do |file|
+          list_by_class(childReferences, Xcodeproj::Project::PBXFileReference) do |file|
             file.group = self
           end
         end
 
+        def create_file(path)
+          files.new("path" => path)
+        end
+
+        def file_with_path(path)
+          files.find { |f| f.path == path }
+        end
+
         def source_files
           files = self.files.reject { |file| file.buildFiles.empty? }
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference, files) do |file|
+          list_by_class(childReferences, Xcodeproj::Project::PBXFileReference, files) do |file|
             file.group = self
           end
         end
 
         def groups
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXGroup)
+          list_by_class(childReferences, Xcodeproj::Project::PBXGroup)
+        end
+
+        def create_group(name)
+          groups.new("name" => name)
         end
 
         def <<(child)

@@ -62,6 +62,10 @@ module Xcodeproj
       def inspect
         "<PBXObjectList: #{map(&:inspect)}>"
       end
+      
+      def object_named(name)
+        find { |o| o.name == name }
+      end
 
       # Only makes sense on lists that contain mixed classes.
       def select_by_class(klass)

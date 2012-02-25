@@ -7,7 +7,6 @@ require 'xcodeproj/project/object'
 
 module Xcodeproj
   class Project
-
     module Object
       class PBXProject < PBXObject
         has_many :targets, :class => PBXNativeTarget
@@ -62,6 +61,10 @@ module Xcodeproj
 
     def groups
       objects.select_by_class(Object::PBXGroup)
+    end
+    
+    def group(name)
+      groups.object_named(name)
     end
     
     def main_group
