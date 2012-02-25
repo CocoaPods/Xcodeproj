@@ -299,6 +299,14 @@ module Xcodeproj
           file.group = self
         end
       end
+      
+      def create_file(path)
+        files.new("path" => path)
+      end
+      
+      def file_with_path(path)
+        files.find { |f| f.path == path }
+      end
 
       def source_files
         files = self.files.reject { |file| file.buildFiles.empty? }
@@ -309,6 +317,10 @@ module Xcodeproj
 
       def groups
         list_by_class(childReferences, Xcodeproj::Project::PBXGroup)
+      end
+      
+      def create_group(name)
+        groups.new("name" => name)
       end
 
       def <<(child)
@@ -525,6 +537,10 @@ module Xcodeproj
 
       def inspect
         "<PBXObjectList: #{map(&:inspect)}>"
+      end
+      
+      def object_named(name)
+        find { |o| o.name == name }
       end
 
       # Only makes sense on lists that contain mixed classes.
