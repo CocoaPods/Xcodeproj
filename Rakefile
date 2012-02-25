@@ -90,7 +90,7 @@ end
 
 namespace :spec do
   task :all => "ext:cleanbuild" do
-    sh "bacon spec/*_spec.rb"
+    sh "bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
   end
 end
 
