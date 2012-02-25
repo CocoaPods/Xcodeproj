@@ -90,6 +90,38 @@ describe "Xcodeproj::Project" do
     end
   end
 
+  describe "a PBXGroup" do
+    extend SpecHelper::TemporaryDirectory
+
+    before do
+      @group = @project.groups.new('name' => 'Parent')
+      @group.files.new('path' => 'Abracadabra.h')
+      @group.files.new('path' => 'Banana.h')
+      @group.groups.new('name' => 'ZappMachine')
+      @group.files.new('path' => 'Abracadabra.m')
+      @group.files.new('path' => 'Banana.m')
+    end
+
+    it "returns a list of files and groups" do
+      @group.children.map(&:name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
+    end
+
+    it "adds the UUID of the added object to the list of child UUIDS" do
+      file = @project.files.new('path' => 'File')
+      @group << file
+      @group.childReferences.last.should == file.uuid
+
+      group = @project.groups.new
+      @group << group
+      @group.childReferences.last.should == group.uuid
+    end
+
+    it "maintains the order of the assigned children" do
+      @group.children = @group.children.sort_by(&:name)
+      @group.children.map(&:name).should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
+    end
+  end
+
   describe "a new PBXBuildPhase" do
     extend SpecHelper::TemporaryDirectory
 

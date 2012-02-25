@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'pathname'
 require 'xcodeproj/inflector'
 require 'xcodeproj/xcodeproj_ext'
 
@@ -41,7 +42,8 @@ module Xcodeproj
         end
 
         def plural_name
-          @name.pluralize
+          # this makes 'children' work, otherwise it returns 'childrens' :-/
+          @name.singularize.pluralize
         end
 
         def plural_getter
@@ -276,7 +278,7 @@ module Xcodeproj
     class PBXGroup < PBXObject
       attributes :sourceTree
 
-      has_many :children, :class => PBXFileReference do |object|
+      has_many :children, :class => PBXObject do |object|
         if object.is_a?(Xcodeproj::Project::PBXFileReference)
           # Associating the file to this group through the inverse
           # association will also remove it from the group it was in.
@@ -471,6 +473,7 @@ module Xcodeproj
       has_one :products, :singular_name => :products, :uuid => :productRefGroup, :class => PBXGroup
     end
 
+    # In case `scoped` is an Array the list's order is maintained.
     class PBXObjectList
       include Enumerable
 
@@ -478,11 +481,16 @@ module Xcodeproj
         @represented_class = represented_class
         @project           = project
         @scoped_hash       = scoped.is_a?(Array) ? scoped.inject({}) { |h, o| h[o.uuid] = o.attributes; h } : scoped
+        @scoped_uuids      = scoped.map(&:uuid) if scoped.is_a?(Array)
         @callback          = new_object_callback
       end
 
       def empty?
         @scoped_hash.empty?
+      end
+
+      def scoped_uuids
+        @scoped_uuids || @scoped_hash.keys
       end
 
       def [](uuid)
@@ -493,7 +501,7 @@ module Xcodeproj
 
       def add(klass, hash = {})
         object = klass.new(@project, nil, hash)
-        @callback.call(object) if @callback
+        add_object(object)
         object
       end
 
@@ -502,11 +510,11 @@ module Xcodeproj
       end
 
       def <<(object)
-        @callback.call(object) if @callback
+        add_object(object)
       end
 
       def each
-        @scoped_hash.keys.each do |uuid|
+        scoped_uuids.each do |uuid|
           yield self[uuid]
         end
       end
@@ -542,11 +550,18 @@ module Xcodeproj
           object = @represented_class.send(name, @project, *args)
           # The callbacks are only for PBXObject instances instantiated
           # from the class method that we forwarded the message to.
-          @callback.call(object) if object.is_a?(PBXObject)
+          add_object(object) if object.is_a?(PBXObject)
           object
         else
           super
         end
+      end
+
+      private
+
+      def add_object(object)
+        @scoped_uuids << object.uuid if @scoped_uuids
+        @callback.call(object) if @callback
       end
     end
 
