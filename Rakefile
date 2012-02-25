@@ -42,6 +42,8 @@ namespace :travis do
       sh "ln -s '#{rvm_ruby_dir}/lib/ruby/1.8/i686-linux' '#{rvm_ruby_dir}/include/ruby'"
     end
   end
+
+  task :setup => [:install_opencflite_debs, :ensure_ruby_version, :fix_rvm_include_dir]
 end
 
 namespace :ext do
@@ -84,9 +86,6 @@ namespace :spec do
   task :all => "ext:cleanbuild" do
     sh "bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
   end
-
-  desc "Install Travis dependencies and run all specs"
-  task :travis => ["travis:install_opencflite_debs", "travis:ensure_ruby_version", "travis:fix_rvm_include_dir", :all]
 end
 
 desc "Dumps a Xcode project as YAML, meant for diffing"
