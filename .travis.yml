@@ -4,5 +4,5 @@ rvm:
   - 1.8.7-p249
   - 1.8.7
   - 1.9.3
-install: rake travis:setup
-script: rake spec
+install: bundle install && bundle exec rake travis:setup --trace
+script: bundle exec rake spec --trace
