@@ -43,7 +43,7 @@ namespace :travis do
     end
   end
 
-  task :setup => [:install_opencflite_debs, :ensure_ruby_version, :fix_rvm_include_dir]
+  task :setup => [:install_opencflite_debs, :fix_rvm_include_dir]
 end
 
 namespace :ext do
