@@ -34,7 +34,7 @@ module Xcodeproj
         end
 
         def files
-          list_by_class(childReferences, Xcodeproj::Project::PBXFileReference) do |file|
+          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference) do |file|
             file.group = self
           end
         end
@@ -49,13 +49,13 @@ module Xcodeproj
 
         def source_files
           files = self.files.reject { |file| file.buildFiles.empty? }
-          list_by_class(childReferences, Xcodeproj::Project::PBXFileReference, files) do |file|
+          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference, files) do |file|
             file.group = self
           end
         end
 
         def groups
-          list_by_class(childReferences, Xcodeproj::Project::PBXGroup)
+          list_by_class(childReferences, Xcodeproj::Project::Object::PBXGroup)
         end
 
         def create_group(name)
