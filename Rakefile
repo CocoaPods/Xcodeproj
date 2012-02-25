@@ -29,6 +29,7 @@ namespace :travis do
     end
   end
 
+  # Can't get this to work...
   task :ensure_ruby_version do
     if ENV['TRAVIS_RUBY_VERSION'] == '1.8.7-p249'
       sh "rvm install ruby-1.8.7-p249"
@@ -73,7 +74,7 @@ namespace :gem do
   task :build do
     sh "gem build xcodeproj.gemspec"
   end
-  
+
   desc "Install a gem version of the current code"
   task :install => :build do
     require File.expand_path('../lib/xcodeproj', __FILE__)
