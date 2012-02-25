@@ -7,9 +7,11 @@ def rvm_ruby_dir
   @rvm_ruby_dir ||= File.expand_path('../..', `which ruby`.strip)
 end
 
-namespace :ext do
+namespace :travis do
+  # Used to create the deb package.
+  #
   # Known to work with opencflite rev 248.
-  task :install_travis_dependencies do
+  task :prepare_deb do
     sh "sudo apt-get install subversion libicu-dev"
     sh "svn co https://opencflite.svn.sourceforge.net/svnroot/opencflite/trunk opencflite"
     sh "cd opencflite && ./configure --target=linux --with-uuid=/usr --with-tz-includes=./include --prefix=/usr/local && make && sudo make install"
@@ -27,6 +29,12 @@ namespace :ext do
     end
   end
 
+  task :ensure_ruby_version do
+    if ENV['TRAVIS_RUBY_VERSION'] == '1.8.7-p249'
+      sh "rvm install ruby-1.8.7-p249"
+    end
+  end
+
   task :fix_rvm_include_dir do
     unless File.exist?(File.join(rvm_ruby_dir, 'include'))
       # Make Ruby headers available, RVM seems to do not create a include dir on 1.8.7, but it does on 1.9.3.
@@ -34,15 +42,18 @@ namespace :ext do
       sh "ln -s '#{rvm_ruby_dir}/lib/ruby/1.8/i686-linux' '#{rvm_ruby_dir}/include/ruby'"
     end
   end
+end
 
+namespace :ext do
+  desc "Clean the ext files"
   task :clean do
     sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle"
   end
 
+  desc "Build the ext"
   task :build do
     Dir.chdir 'ext/xcodeproj' do
       if on_rvm?
-        Rake::Task['ext:fix_rvm_include_dir'].invoke
         sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
       else
         sh "ruby extconf.rb"
@@ -51,6 +62,7 @@ namespace :ext do
     end
   end
 
+  desc "Clean and build the ext"
   task :cleanbuild => [:clean, :build]
 end
 
@@ -62,36 +74,19 @@ namespace :gem do
   
   desc "Install a gem version of the current code"
   task :install => :build do
-    require 'lib/xcodeproj'
+    require File.expand_path('../lib/xcodeproj', __FILE__)
     sh "sudo gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
   end
 end
 
-desc "Compile the source files (as rbo files)"
-task :compile do
-  Dir.glob("lib/**/*.rb").each do |file|
-    sh "macrubyc #{file} -C -o #{file}o"
-  end
-end
-
-desc "Remove rbo files"
-task :clean do
-  sh "rm -f lib/**/*.rbo"
-  sh "rm -f lib/**/*.o"
-  sh "rm -f *.gem"
-end
-
-desc "Install a gem version of the current code"
-task :install do
-  require File.expand_path('../lib/xcodeproj', __FILE__)
-  sh "gem build xcodeproj.gemspec"
-  sh "sudo gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
-end
-
 namespace :spec do
+  desc "Run all specs"
   task :all => "ext:cleanbuild" do
     sh "bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
   end
+
+  desc "Install Travis dependencies and run all specs"
+  task :travis => ["travis:install_opencflite_debs", "travis:ensure_ruby_version", "travis:fix_rvm_include_dir", :all]
 end
 
 desc "Dumps a Xcode project as YAML, meant for diffing"
