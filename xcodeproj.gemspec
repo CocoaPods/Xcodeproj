@@ -4,15 +4,15 @@ require File.expand_path('../lib/xcodeproj', __FILE__)
 Gem::Specification.new do |s|
   s.name     = "xcodeproj"
   s.version  = Xcodeproj::VERSION
-  s.date     = "2011-11-10"
+  s.date     = Date.today
   s.license  = "MIT"
   s.email    = "eloy.de.enige@gmail.com"
   s.homepage = "https://github.com/cocoapods/xcodeproj"
   s.authors  = ["Eloy Duran"]
 
-  s.summary     = "Create and modify Xcode projects from MacRuby."
+  s.summary     = "Create and modify Xcode projects from Ruby."
   s.description = %(
-    Xcodeproj lets you create and modify Xcode projects from MacRuby. Script
+    Xcodeproj lets you create and modify Xcode projects from Ruby. Script
     boring management tasks or build Xcode-friendly libraries. Also includes
     support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
   ).strip.gsub(/\s+/, ' ')
