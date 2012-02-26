@@ -202,6 +202,18 @@ module Xcodeproj
         def inspect
           "#<#{isa} UUID: `#{uuid}', name: `#{name}'>"
         end
+        
+        def matches_attributes?(attributes)
+          attributes.all? do |attribute, expected_value| 
+            return nil unless respond_to?(attribute)
+
+            if expected_value.is_a?(Hash)
+              send(attribute).matches_attributes?(expected_value)
+            else
+              send(attribute) == expected_value
+            end
+          end
+        end
 
         private
 

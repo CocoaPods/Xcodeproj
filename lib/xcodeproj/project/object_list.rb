@@ -63,6 +63,10 @@ module Xcodeproj
         "<PBXObjectList: #{map(&:inspect)}>"
       end
       
+      def where(attributes)
+        find { |o| o.matches_attributes?(attributes) }
+      end
+      
       def object_named(name)
         find { |o| o.name == name }
       end
