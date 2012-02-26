@@ -29,7 +29,14 @@ str_to_cfstr(VALUE str) {
   return CFStringCreateWithCString(NULL, RSTRING_PTR(rb_String(str)), kCFStringEncodingUTF8);
 }
 
-
+/* Generates a UUID. The original version is truncated, so this is not 100%
+ * guaranteed to be unique. However, the `PBXObject#generate_uuid` method
+ * checks that the UUID does not exist yet, in the project, before using it.
+ *
+ * @return [String] A 24 characters long UUID.
+ *
+ * @private
+ */
 static VALUE
 generate_uuid(void) {
   CFUUIDRef uuid = CFUUIDCreate(NULL);
@@ -130,7 +137,19 @@ str_to_url(VALUE path) {
 }
 
 
-// TODO handle errors
+/* @overload read_plist(path)
+ *
+ * Reads from the specified path and de-serializes the property list.
+ *
+ * @note This currently only assumes to be given an Xcode project document.
+ *       This means that it only accepts dictionaries, arrays, and strings in
+ *       the document.
+ *
+ * @param [String] path  The path to the property list file.
+ * @return [Hash]        The dictionary contents of the document.
+ *
+ * @private
+ */
 static VALUE
 read_plist(VALUE self, VALUE path) {
   CFPropertyListRef dict;
@@ -159,6 +178,20 @@ read_plist(VALUE self, VALUE path) {
   return hash;
 }
 
+/* @overload write_plist(hash, path)
+ *
+ * Writes the serialized contents of a property list to the specified path.
+ *
+ * @note This currently only assumes to be given an Xcode project document.
+ *       This means that it only accepts dictionaries, arrays, and strings in
+ *       the document.
+ *
+ * @param [Hash] hash     The property list to serialize.
+ * @param [String] path   The path to the property list file.
+ * @return [true, false]  Wether or not serialization was successful.
+ *
+ * @private
+ */
 static VALUE
 write_plist(VALUE self, VALUE hash, VALUE path) {
   VALUE h = rb_check_convert_type(hash, T_HASH, "Hash", "to_hash");

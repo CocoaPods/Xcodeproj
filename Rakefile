@@ -69,13 +69,13 @@ begin
 
   namespace :doc do
     YARD::Rake::YardocTask.new(:generate) do |t|
-      t.options = %w{ --markup=markdown }
+      t.options = %w{ --no-private --markup=markdown }
       t.files = ['ext/xcodeproj/xcodeproj_ext.c', 'lib/**/*.rb', '-', 'README.md', 'LICENSE']
     end
 
     desc "Starts a server which re-generates the docs on reload."
     task :server do
-      sh "bundle exec yard server --reload"
+      sh "bundle exec yard server --reload --markup=markdown"
     end
   end
 
