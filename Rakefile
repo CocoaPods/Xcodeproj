@@ -69,7 +69,7 @@ begin
 
   namespace :doc do
     YARD::Rake::YardocTask.new(:generate) do |t|
-      t.options = %w{ --markup=markdown }
+      t.options = %w{ --default-return=void --hide-void-return --no-private --markup=markdown }
       lib_files = FileList['lib/**/*.rb'].exclude(/inflector\.rb/)
       t.files = lib_files + ['ext/xcodeproj/xcodeproj_ext.c', '-', 'README.md', 'LICENSE']
     end

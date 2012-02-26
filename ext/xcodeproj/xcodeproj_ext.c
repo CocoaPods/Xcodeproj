@@ -33,7 +33,6 @@ str_to_cfstr(VALUE str) {
  * guaranteed to be unique. However, the `PBXObject#generate_uuid` method
  * checks that the UUID does not exist yet, in the project, before using it.
  *
- * @private
  * @note Meant for internal use only.
  *
  * @return [String] A 24 characters long UUID.
@@ -142,7 +141,6 @@ str_to_url(VALUE path) {
  *
  * Reads from the specified path and de-serializes the property list.
  *
- * @private
  * @note Meant for internal use only.
  *
  * @note This currently only assumes to be given an Xcode project document.
@@ -184,7 +182,6 @@ read_plist(VALUE self, VALUE path) {
  *
  * Writes the serialized contents of a property list to the specified path.
  *
- * @private
  * @note Meant for internal use only.
  *
  * @note This currently only assumes to be given an Xcode project document.
