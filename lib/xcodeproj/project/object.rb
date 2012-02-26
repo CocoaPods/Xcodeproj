@@ -38,7 +38,7 @@ module Xcodeproj
           @project, @attributes = project, attributes
           unless uuid
             # Add new objects to the main hash with a unique UUID
-            begin; uuid = generate_uuid; end while @project.objects_hash.has_key?(uuid)
+            uuid = generate_uuid
             @project.objects_hash[uuid] = @attributes
           end
           @uuid = uuid
@@ -67,8 +67,13 @@ module Xcodeproj
 
         private
 
+        # Generate a truly unique UUID. This is to ensure that cutting up the
+        # UUID in the xcodeproj extension doesn't cause a collision.
         def generate_uuid
-          Xcodeproj.generate_uuid
+          begin
+            uuid = Xcodeproj.generate_uuid
+          end while @project.objects_hash.has_key?(uuid)
+          uuid
         end
 
         def list_by_class(uuids, klass, scoped = nil, &block)
