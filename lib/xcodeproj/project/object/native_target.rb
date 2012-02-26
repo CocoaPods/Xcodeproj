@@ -71,6 +71,10 @@ module Xcodeproj
         def frameworks_build_phases
           buildPhases.select_by_class(PBXFrameworksBuildPhase)
         end
+        
+        def shell_script_build_phases
+          buildPhases.select_by_class(PBXShellScriptBuildPhase)
+        end
 
         # Finds an existing file reference or creates a new one.
         def add_source_file(path, copy_header_phase = nil, compiler_flags = nil)
