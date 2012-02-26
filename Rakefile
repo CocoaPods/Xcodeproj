@@ -70,7 +70,8 @@ begin
   namespace :doc do
     YARD::Rake::YardocTask.new(:generate) do |t|
       t.options = %w{ --no-private --markup=markdown }
-      t.files = ['ext/xcodeproj/xcodeproj_ext.c', 'lib/**/*.rb', '-', 'README.md', 'LICENSE']
+      lib_files = FileList['lib/**/*.rb'].exclude(/inflector\.rb/)
+      t.files = lib_files + ['ext/xcodeproj/xcodeproj_ext.c', '-', 'README.md', 'LICENSE']
     end
 
     desc "Starts a server which re-generates the docs on reload."
