@@ -1,9 +1,5 @@
 language: ruby
 rvm:
-  # 1.8.7-p249 is what is the current OS X system version
-  #
-  # Can't get this to work on Travis.
-  #- 1.8.7-p249
   - 1.8.7
   - 1.9.3
 install: bundle install && rake travis:setup --trace

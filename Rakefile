@@ -29,13 +29,6 @@ namespace :travis do
     end
   end
 
-  # Can't get this to work...
-  task :ensure_ruby_version do
-    if ENV['TRAVIS_RUBY_VERSION'] == '1.8.7-p249'
-      sh "rvm install ruby-1.8.7-p249"
-    end
-  end
-
   task :fix_rvm_include_dir do
     unless File.exist?(File.join(rvm_ruby_dir, 'include'))
       # Make Ruby headers available, RVM seems to do not create a include dir on 1.8.7, but it does on 1.9.3.
