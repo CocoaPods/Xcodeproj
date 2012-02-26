@@ -3,6 +3,8 @@ GEM
   specs:
     bacon (1.1.0)
     rake (0.9.2.2)
+    redcarpet (2.1.0)
+    yard (0.7.5)
 
 PLATFORMS
   ruby
@@ -10,3 +12,5 @@ PLATFORMS
 DEPENDENCIES
   bacon
   rake
+  redcarpet
+  yard

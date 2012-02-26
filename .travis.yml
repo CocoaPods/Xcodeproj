@@ -2,5 +2,5 @@ language: ruby
 rvm:
   - 1.8.7
   - 1.9.3
-install: bundle install && rake travis:setup --trace
+install: bundle install --without=documentation && rake travis:setup --trace
 script: bundle exec rake spec --trace

@@ -62,6 +62,27 @@ namespace :ext do
   task :cleanbuild => [:clean, :build]
 end
 
+begin
+  require 'rubygems'
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+
+  namespace :doc do
+    YARD::Rake::YardocTask.new(:generate) do |t|
+      t.options = %w{ --markup=markdown }
+      t.files = ['ext/xcodeproj/xcodeproj_ext.c', 'lib/**/*.rb', '-', 'README.md', 'LICENSE']
+    end
+
+    desc "Starts a server which re-generates the docs on reload."
+    task :server do
+      sh "bundle exec yard server --reload"
+    end
+  end
+
+rescue LoadError
+  puts "[!] Install the required dependencies to generate documentation: $ bundle install"
+end
+
 namespace :gem do
   desc "Build the gem"
   task :build do

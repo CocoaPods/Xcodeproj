@@ -6,3 +6,5 @@ Makefile
 .rbenv-version
 ext/xcodeproj/extconf.h
 *.gem
+.yardoc
+doc
