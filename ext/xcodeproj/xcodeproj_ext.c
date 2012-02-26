@@ -33,9 +33,10 @@ str_to_cfstr(VALUE str) {
  * guaranteed to be unique. However, the `PBXObject#generate_uuid` method
  * checks that the UUID does not exist yet, in the project, before using it.
  *
- * @return [String] A 24 characters long UUID.
- *
  * @private
+ * @note Meant for internal use only.
+ *
+ * @return [String] A 24 characters long UUID.
  */
 static VALUE
 generate_uuid(void) {
@@ -141,14 +142,15 @@ str_to_url(VALUE path) {
  *
  * Reads from the specified path and de-serializes the property list.
  *
+ * @private
+ * @note Meant for internal use only.
+ *
  * @note This currently only assumes to be given an Xcode project document.
  *       This means that it only accepts dictionaries, arrays, and strings in
  *       the document.
  *
  * @param [String] path  The path to the property list file.
  * @return [Hash]        The dictionary contents of the document.
- *
- * @private
  */
 static VALUE
 read_plist(VALUE self, VALUE path) {
@@ -182,6 +184,9 @@ read_plist(VALUE self, VALUE path) {
  *
  * Writes the serialized contents of a property list to the specified path.
  *
+ * @private
+ * @note Meant for internal use only.
+ *
  * @note This currently only assumes to be given an Xcode project document.
  *       This means that it only accepts dictionaries, arrays, and strings in
  *       the document.
@@ -189,8 +194,6 @@ read_plist(VALUE self, VALUE path) {
  * @param [Hash] hash     The property list to serialize.
  * @param [String] path   The path to the property list file.
  * @return [true, false]  Wether or not serialization was successful.
- *
- * @private
  */
 static VALUE
 write_plist(VALUE self, VALUE hash, VALUE path) {

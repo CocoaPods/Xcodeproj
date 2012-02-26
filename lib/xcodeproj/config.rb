@@ -15,7 +15,7 @@ module Xcodeproj
       @attributes
     end
 
-    # Merges the given xcconfig hash into the internal data.
+    # Merges the given xcconfig hash or Config into the internal data.
     #
     # If a key in the given hash already exists, in the internal data, then its
     # value is appended to the value in the internal data.
@@ -26,7 +26,7 @@ module Xcodeproj
     #   config.merge!('OTHER_LDFLAGS' => '-lz', 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers"')
     #   config.to_hash # => { 'PODS_ROOT' => '"$(SRCROOT)/Pods"', 'OTHER_LDFLAGS' => '-lxml2 -lz', 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers"' }
     #
-    # @param [Hash] xcconfig  The data to merge into the internal data.
+    # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
       xcconfig.to_hash.each do |key, value|
         if existing_value = @attributes[key]
