@@ -1,6 +1,5 @@
 require 'fileutils'
 require 'pathname'
-require 'xcodeproj/inflector'
 require 'xcodeproj/xcodeproj_ext'
 
 require 'xcodeproj/project/object'
