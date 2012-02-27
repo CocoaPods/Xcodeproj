@@ -63,6 +63,7 @@ end
 class Xcodeproj::Project::Object::PBXFileReference
   alias_method :_path, :path
   def path
+    # TODO somethings not working right, I'm seeing the dir being prepended twice with ZipKit
     if (sourceTree == '<group>') && dir = group.path
       File.join(dir, _path)
     else
