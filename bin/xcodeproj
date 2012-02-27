@@ -57,9 +57,22 @@ def xcodeproj
 end
 
 
+class Xcodeproj::Project::Object::PBXGroup
+  attributes :path
+end
+class Xcodeproj::Project::Object::PBXFileReference
+  alias_method :_path, :path
+  def path
+    if (sourceTree == '<group>') && dir = group.path
+      File.join(dir, _path)
+    else
+      _path
+    end
+  end
+end
 def target_source_files(project, target_name)
   project.targets.object_named(target_name).source_build_phases.map do |source_build_phase|
-    source_build_phase.files.map { |buildFile| buildFile.file.name }
+    source_build_phase.files.map { |buildFile| buildFile.file.path }
   end.flatten.sort
 end
 
