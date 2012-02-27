@@ -61,7 +61,7 @@ EOS
     lambda { Xcodeproj.read_plist(@plist) }.should.raise TypeError
   end
 
-  it "raises if a plist array value contains any other object type than string" do
+  it "raises if a plist array value contains any other object type than string, or dictionary" do
     @plist.open('w') do |f|
       f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -71,6 +71,10 @@ EOS
   <key>uhoh</key>
   <array>
     <integer>42</integer>
+    <dict>
+      <key>uhoh</key>
+      <integer>42</integer>
+    </dict>
   </array>
 </dict>
 </plist>

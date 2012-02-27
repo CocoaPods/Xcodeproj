@@ -76,11 +76,22 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
     value = rb_ary_new();
     CFIndex i, count = CFArrayGetCount(valueRef);
     for (i = 0; i < count; i++) {
-      CFStringRef x = CFArrayGetValueAtIndex(valueRef, i);
-      if (CFGetTypeID(x) == CFStringGetTypeID()) {
-        rb_ary_push(value, cfstr_to_str(x));
+      CFTypeRef elementRef = CFArrayGetValueAtIndex(valueRef, i);
+      CFTypeID elementType = CFGetTypeID(elementRef);
+      if (elementType == CFStringGetTypeID()) {
+        rb_ary_push(value, cfstr_to_str(elementRef));
+
+      } else if (elementType == CFDictionaryGetTypeID()) {
+        VALUE hashElement = rb_hash_new();
+        CFDictionaryApplyFunction(elementRef, hash_set, (void *)hashElement);
+        rb_ary_push(value, hashElement);
+
       } else {
-        rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj.");
+        CFStringRef descriptionRef = CFCopyDescription(elementRef);
+        // obviously not optimial, but we're raising here, so it doesn't really matter
+        VALUE description = cfstr_to_str(descriptionRef);
+        rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj. In: `%s'", RSTRING_PTR(description));
+        CFRelease(descriptionRef);
       }
     }
 
