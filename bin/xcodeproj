@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+
+if $0 == __FILE__
+  $:.unshift File.expand_path('../../ext', __FILE__)
+  $:.unshift File.expand_path('../../lib', __FILE__)
+end
+
+require 'xcodeproj'
+
+require 'optparse'
+$options = {}
+$option_parser = OptionParser.new do |opts|
+  opts.banner  = "Usage: xcodeproj [command] [options]"
+  opts.separator ""
+  opts.separator "Commands:"
+  opts.separator ""
+  opts.separator "  targets-diff [target 1] [target 2]\tShows the difference between two targets. (Only build source files atm.)"
+  opts.separator ""
+
+  opts.separator "Options:"
+  opts.separator ""
+
+  opts.on('--project PATH', "The Xcode project document to use.") do |xcodeproj|
+    $options[:xcodeproj] = xcodeproj
+  end
+
+  opts.on("--version", "Show xcodeproj version.") do |v|
+    puts Xcodeproj::VERSION
+    exit
+  end
+end
+$option_parser.parse!
+
+
+def invalid_command(msg = nil)
+  if msg
+    puts msg
+    puts
+  end
+  puts $option_parser
+  exit 1
+end
+
+
+def xcodeproj
+  unless xcodeproj = $options[:xcodeproj]
+    projects = Dir.glob('*.xcodeproj')
+    if projects.size == 1
+      xcodeproj = projects.first
+    elsif projects.size > 1
+      invalid_command('There are more than one Xcode project documents in the current working directory. Please specify which to use.')
+    else
+      invalid_command('No Xcode project document found in the current working directory. Please specify which to use.')
+    end
+  end
+  File.expand_path(xcodeproj)
+end
+
+
+def target_source_files(project, target_name)
+  project.targets.object_named(target_name).source_build_phases.map do |source_build_phase|
+    source_build_phase.files.map { |buildFile| buildFile.file.name }
+  end.flatten.sort
+end
+
+
+case cmd = ARGV.shift
+when 'targets-diff'
+  target1, target2 = ARGV.first(2)
+  if target1 && target2
+    project = Xcodeproj::Project.new(xcodeproj)
+    target1_files = target_source_files(project, target1)
+    target2_files = target_source_files(project, target2)
+
+    diff = target1_files - target2_files
+    puts "Files in `#{target1}' which are not present in `#{target2}':\n* #{diff.join("\n* ")}\n\n" unless diff.empty?
+
+    diff = target2_files - target1_files
+    puts "Files in `#{target2}' which are not present in `#{target1}':\n* #{diff.join("\n* ")}\n\n" unless diff.empty?
+  else
+    invalid_command("Needs the names of the two targets to diff.")
+  end
+
+else
+  invalid_command(cmd.nil? ? nil : "Unknown command: #{cmd}")
+end
