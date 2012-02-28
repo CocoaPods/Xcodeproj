@@ -41,7 +41,7 @@ module Xcodeproj
           'objectVersion' => '46',
           'objects' => {}
         }
-        self.root_object = objects.add(Object::PBXProject, {
+        self.root_object = objects.add(PBXProject, {
           'attributes' => { 'LastUpgradeCheck' => '0420' },
           'compatibilityVersion' => 'Xcode 3.2',
           'developmentRegion' => 'English',
@@ -78,13 +78,13 @@ module Xcodeproj
     # @return [PBXObjectList<PBXObject>]  A list of all the objects in the
     #                                     project.
     def objects
-      @objects ||= PBXObjectList.new(Object::PBXObject, self, objects_hash)
+      @objects ||= PBXObjectList.new(PBXObject, self, objects_hash)
     end
 
     # @return [PBXObjectList<PBXGroup>]  A list of all the groups in the
     #                                    project.
     def groups
-      objects.select_by_class(Object::PBXGroup)
+      objects.select_by_class(PBXGroup)
     end
 
     # Tries to find a group with the given name.
@@ -103,7 +103,7 @@ module Xcodeproj
     # @return [PBXObjectList<PBXFileReference>]  A list of all the files in the
     #                                            project.
     def files
-      objects.select_by_class(Object::PBXFileReference)
+      objects.select_by_class(PBXFileReference)
     end
 
     # Adds a file reference for a system framework to the project.
@@ -135,8 +135,10 @@ module Xcodeproj
     # @todo Is this being used? In any case, this should move to
     #       PBXShellScriptBuildPhase and make it possible to do:
     #       target.shell_script_build_phases.new
+    #
+    # @return [PBXShellScriptBuildPhase]
     def add_shell_script_build_phase(name, script_path)
-      objects.add(Object::PBXShellScriptBuildPhase, {
+      objects.add(PBXShellScriptBuildPhase, {
         'name' => name,
         'files' => [],
         'inputPaths' => [],
@@ -150,7 +152,7 @@ module Xcodeproj
     #       interesting in combination with a target, so why not get them from
     #       there?
     def build_files
-      objects.select_by_class(Object::PBXBuildFile)
+      objects.select_by_class(PBXBuildFile)
     end
 
     # @todo There are probably other target types too. E.g. an aggregate.
