@@ -1,10 +1,26 @@
 module Xcodeproj
   class Project
+    # This is the namespace in which all the classes that wrap the objects in
+    # a Xcode project reside.
+    #
+    # The base class from which all classes inherit is PBXObject.
+    #
+    # If you need to deal with these classes directly, it's possible to include
+    # this namespace into yours, making it unnecessary to prefix them with
+    # Xcodeproj::Project::Object.
+    #
+    # @example
+    #
+    #     class SourceFileSorter
+    #       include Xcodeproj::Project::Object
+    #     end
     module Object
 
       # Missing constants that begin with either `PBX' or `XC' are assumed to be
       # valid classes in a Xcode project. A new PBXObject subclass is created
       # for the constant and returned.
+      #
+      # @return [Class]  The generated class inhertiting from PBXObject.
       def self.const_missing(name)
         if name.to_s =~ /^(PBX|XC)/
           klass = Class.new(PBXObject)
@@ -15,6 +31,8 @@ module Xcodeproj
         end
       end
 
+      # @note The PXBObject class does *not* actually exist in a Xcode project
+      #       It's purely used to provide common behavior to all objects.
       class PBXObject
         def self.attribute(attribute_name, accessor_name = nil)
           attribute_name = attribute_name.to_s

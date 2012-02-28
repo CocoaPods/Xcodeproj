@@ -10,7 +10,8 @@ module Xcodeproj
   # It can be used to manipulate existing documents or even create new ones
   # from scratch.
   #
-  # Internally, the document is stored as a hash.
+  # The Project API returns instances of PBXObject which wrap the objects
+  # described in the Xcode project document.
   class Project
     module Object
       class PBXProject < PBXObject
