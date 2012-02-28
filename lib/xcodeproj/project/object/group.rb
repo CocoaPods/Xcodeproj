@@ -23,12 +23,16 @@ module Xcodeproj
           self.childReferences ||= []
         end
 
+        def main_group?
+          @project.main_group.uuid == uuid
+        end
+
         def name
           if name = super
             name
           elsif attributes.has_key?('path')
             File.basename(attributes['path'])
-          elsif @project.main_group.uuid == uuid
+          elsif main_group?
             'Main Group'
           end
         end

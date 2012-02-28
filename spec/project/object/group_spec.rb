@@ -19,6 +19,11 @@ module ProjectSpecs
       @project.groups.new('path' => 'some/dir').name.should == 'dir'
     end
 
+    it "returns whether or not it's the main group" do
+      @project.groups.new.should.not.be.main_group
+      @project.main_group.should.be.main_group
+    end
+
     it "returns that it's the main group if it is" do
       @project.groups.new.name.should == nil
       @project.main_group.name.should == 'Main Group'

@@ -108,9 +108,18 @@ module Xcodeproj
 
     # Adds a file reference for a system framework to the project.
     #
+    # The file reference can then be added to the buildFiles of a
+    # PBXFrameworksBuildPhase.
+    #
     # @example
     #
-    #     project.add_system_framework('QuartzCore')
+    #     framework = project.add_system_framework('QuartzCore')
+    #
+    #     target = project.targets.first
+    #     build_phase = target.frameworks_build_phases.first
+    #     build_phase.files << framework.buildFiles.new
+    #
+    # @todo Make it possible to do: build_phase << framework
     #
     # @param [String] name        The name of a framework in the SDK System
     #                             directory.
@@ -123,6 +132,9 @@ module Xcodeproj
       })
     end
 
+    # @todo Is this being used? In any case, this should move to
+    #       PBXShellScriptBuildPhase and make it possible to do:
+    #       target.shell_script_build_phases.new
     def add_shell_script_build_phase(name, script_path)
       objects.add(Object::PBXShellScriptBuildPhase, {
         'name' => name,
@@ -134,16 +146,26 @@ module Xcodeproj
       })
     end
 
+    # @todo How is this being used? I would think that build files are more
+    #       interesting in combination with a target, so why not get them from
+    #       there?
     def build_files
       objects.select_by_class(Object::PBXBuildFile)
     end
 
+    # @todo There are probably other target types too. E.g. an aggregate.
+    #
+    # @return [PBXObjectList<PBXNativeTarget>]  A list of all the targets in
+    #                                           the project.
     def targets
       # Better to check the project object for targets to ensure they are
       # actually there so the project will work
       root_object.targets
     end
 
+    # @todo Return a PBXObjectList with the actual file references.
+    #
+    # @return [PBXGroup]  The group which holds the product file references.
     def products
       root_object.products
     end
@@ -151,6 +173,10 @@ module Xcodeproj
     # @private
     IGNORE_GROUPS = ['Frameworks', 'Products', 'Supporting Files']
 
+    # @todo I think this is here because of easier testing in CocoaPods. Move
+    #       this extension to the CocoaPods specs.
+    #
+    # @return [Hash]  A list of all the groups and their source files.
     def source_files
       source_files = {}
       groups.each do |group|
@@ -160,6 +186,18 @@ module Xcodeproj
       source_files
     end
 
+    # Serializes the internal data as a property list and stores it on disk at
+    # the given path.
+    #
+    # @example
+    #
+    #     project.save_as("path/to/Project.xcodeproj") # => true
+    #
+    # @param [String, Pathname] projpath  The path where the data should be
+    #                                     stored.
+    #
+    # @return [true, false]               Returns whether or not saving was
+    #                                     successful.
     def save_as(projpath)
       projpath = projpath.to_s
       FileUtils.mkdir_p(projpath)

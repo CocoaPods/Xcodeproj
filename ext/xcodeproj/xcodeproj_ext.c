@@ -201,7 +201,7 @@ read_plist(VALUE self, VALUE path) {
  *
  * @param [Hash] hash     The property list to serialize.
  * @param [String] path   The path to the property list file.
- * @return [true, false]  Wether or not serialization was successful.
+ * @return [true, false]  Wether or not saving was successful.
  */
 static VALUE
 write_plist(VALUE self, VALUE hash, VALUE path) {
