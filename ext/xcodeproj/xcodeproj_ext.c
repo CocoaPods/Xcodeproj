@@ -118,9 +118,20 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
     long i, count = RARRAY_LEN(value);
     valueRef = CFArrayCreateMutable(NULL, count, &kCFTypeArrayCallBacks);
     for (i = 0; i < count; i++) {
-      CFStringRef x = str_to_cfstr(RARRAY_PTR(value)[i]);
-      CFArrayAppendValue((CFMutableArrayRef)valueRef, x);
-      CFRelease(x);
+      VALUE element = RARRAY_PTR(value)[i];
+      CFTypeRef elementRef = NULL;
+      if (TYPE(element) == T_HASH) {
+        elementRef = CFDictionaryCreateMutable(NULL,
+                                               0,
+                                               &kCFTypeDictionaryKeyCallBacks,
+                                               &kCFTypeDictionaryValueCallBacks);
+        st_foreach(RHASH_TBL(element), dictionary_set, (st_data_t)elementRef);
+      } else {
+        // otherwise coerce to string
+        elementRef = str_to_cfstr(element);
+      }
+      CFArrayAppendValue((CFMutableArrayRef)valueRef, elementRef);
+      CFRelease(elementRef);
     }
 
   } else {
