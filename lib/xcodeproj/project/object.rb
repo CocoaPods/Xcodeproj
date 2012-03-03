@@ -1,3 +1,5 @@
+require 'xcodeproj/inflector'
+
 module Xcodeproj
   class Project
     # This is the namespace in which all the classes that wrap the objects in
@@ -36,9 +38,16 @@ module Xcodeproj
       # instances of subclasses of PBXObject, because this class does not exist
       # in actual Xcode projects.
       class PBXObject
+        # This defines accessor methods for a key-value pair which occurs in the
+        # attributes hash that the object wraps.
+        #
+        # @param [Symbol, String] attribute_name  The key in snake case.
+        # @param [Symbol, String] accessor_name   An optional custom name for
+        #                                         the getter and setter methods.
         def self.attribute(attribute_name, accessor_name = nil)
           attribute_name = attribute_name.to_s
           name = (accessor_name || attribute_name).to_s
+          attribute_name = attribute_name.camelize(:lower)
           define_method(name) { @attributes[attribute_name] }
           define_method("#{name}=") { |value| @attributes[attribute_name] = value }
         end

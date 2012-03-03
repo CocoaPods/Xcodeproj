@@ -11,11 +11,11 @@ module ProjectSpecs
     end
 
     it "always returns the same buildActionMask (no idea what it is)" do
-      @phase.buildActionMask.should == "2147483647"
+      @phase.build_action_mask.should == "2147483647"
     end
 
     it "always returns zero for runOnlyForDeploymentPostprocessing (no idea what it is)" do
-      @phase.runOnlyForDeploymentPostprocessing.should == "0"
+      @phase.run_only_for_deployment_postprocessing.should == "0"
     end
   end
 
@@ -29,11 +29,11 @@ module ProjectSpecs
     end
 
     it "returns the dstPath" do
-      @phase.dstPath.should == 'some/path'
+      @phase.dst_path.should == 'some/path'
     end
 
     it "returns the dstSubfolderSpec (no idea what it is yet, but it's not always the same)" do
-      @phase.dstSubfolderSpec.should == "16"
+      @phase.dst_subfolder_spec.should == "16"
     end
   end
 

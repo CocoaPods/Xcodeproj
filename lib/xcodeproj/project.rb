@@ -16,6 +16,7 @@ module Xcodeproj
     module Object
       class PBXProject < PBXObject
         has_many :targets, :class => PBXNativeTarget
+        # TODO the uuid is still camel case
         has_one :products, :singular_name => :products, :uuid => :productRefGroup, :class => PBXGroup
       end
     end

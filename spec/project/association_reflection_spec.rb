@@ -27,14 +27,20 @@ module ProjectSpecs
     end
 
     it "returns the uuid attribute name in singular" do
-      @reflection.uuid_method_name.should == 'childReference'
+      @reflection.uuid_method_name.should == 'child_reference'
     end
 
     it "returns the uuid getter and setter names in singular and plural form" do
-      @reflection.uuid_getter.should == 'childReference'
-      @reflection.uuid_setter.should == 'childReference='
-      @reflection.uuids_getter.should == 'childReferences'
-      @reflection.uuids_setter.should == 'childReferences='
+      @reflection.uuid_getter.should == 'child_reference'
+      @reflection.uuid_setter.should == 'child_reference='
+      @reflection.uuids_getter.should == 'child_references'
+      @reflection.uuids_setter.should == 'child_references='
+    end
+
+    # TODO add a spec which tests PBXObject#attribute to handle case properly
+    it "properly handles case in the reflection name" do
+      reflection = PBXObject::AssociationReflection.new(:build_configuration_list, :class => PBXFileReference)
+      reflection.uuid_method_name.should == 'build_configuration_list_reference'
     end
   end
 end
