@@ -38,18 +38,47 @@ module Xcodeproj
       # instances of subclasses of PBXObject, because this class does not exist
       # in actual Xcode projects.
       class PBXObject
+
         # This defines accessor methods for a key-value pair which occurs in the
         # attributes hash that the object wraps.
         #
+        #
+        # @examples
+        #
+        # Create getter and setter methods named after the key it corresponds to
+        # in the attributes hash:
+        #
+        #     class PBXBuildPhase < PBXObject
+        #       attribute :settings
+        #     end
+        #
+        #     build_phase.attributes # => { 'settings' => { 'COMPILER_FLAGS' => '-fobjc-arc' }, ... }
+        #     build_phase.settings # => { 'COMPILER_FLAGS' => '-fobjc-arc' }
+        #
+        #     build_phase.settings = { 'COMPILER_FLAGS' => '-fobjc-no-arc' }
+        #     build_phase.attributes # => { 'settings' => { 'COMPILER_FLAGS' => '-fobjc-no-arc' }, ... }
+        #
+        # Or with a custom getter and setter methods:
+        #
+        #     class PBXCopyFilesBuildPhase < PBXObject
+        #       attribute :dst_path, :as => :destination_path
+        #     end
+        #
+        #     build_phase.attributes # => { 'dstPath' => 'some/path', ... }
+        #     build_phase.destination_path # => 'some/path'
+        #
+        #     build_phase.destination_path = 'another/path'
+        #     build_phase.attributes # => { 'dstPath' => 'another/path', ... }
+        #
+        #
         # @param [Symbol, String] attribute_name  The key in snake case.
-        # @param [Symbol, String] accessor_name   An optional custom name for
+        # @option options [Symbol String] :as     An optional custom name for
         #                                         the getter and setter methods.
-        def self.attribute(attribute_name, accessor_name = nil)
-          attribute_name = attribute_name.to_s
-          name = (accessor_name || attribute_name).to_s
-          attribute_name = attribute_name.camelize(:lower)
-          define_method(name) { @attributes[attribute_name] }
-          define_method("#{name}=") { |value| @attributes[attribute_name] = value }
+        def self.attribute(name, options = {})
+          accessor_name  = (options[:as] || name).to_s
+          attribute_name = name.to_s.camelize(:lower) # change `foo_bar' to `fooBar'
+          define_method(accessor_name) { @attributes[attribute_name] }
+          define_method("#{accessor_name}=") { |value| @attributes[attribute_name] = value }
         end
 
         def self.attributes(*names)

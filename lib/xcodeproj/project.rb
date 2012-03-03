@@ -17,7 +17,7 @@ module Xcodeproj
       class PBXProject < PBXObject
         has_many :targets, :class => PBXNativeTarget
         # TODO the uuid is still camel case
-        has_one :products, :singular_name => :products, :uuid => :productRefGroup, :class => PBXGroup
+        has_one :products, :singular_name => :products, :uuid => :product_ref_group, :class => PBXGroup
       end
     end
 
@@ -50,10 +50,13 @@ module Xcodeproj
           'hasScannedForEncodings' => '0',
           'knownRegions' => ['en'],
           'mainGroup' => groups.new.uuid,
+          'productRefGroup' => groups.new('name' => 'Products').uuid,
           'projectDirPath' => '',
           'projectRoot' => '',
           'targets' => []
         })
+        # TODO make this work
+        #self.root_object.product_reference = groups.new('name' => 'Products').uuid
       end
     end
 

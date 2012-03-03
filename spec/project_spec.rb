@@ -43,6 +43,12 @@ module ProjectSpecs
       @project.objects_hash[build_file.uuid].should == build_file.attributes
     end
 
+    it "returns the products group" do
+      @project.products.should.be.instance_of PBXGroup
+      @project.root_object.attributes['productRefGroup'].should == @project.products.uuid
+      @project.objects_hash[@project.products.uuid].should == @project.products.attributes
+    end
+
     it "adds an `m' or `c' file to the `sources build' phase list" do
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")

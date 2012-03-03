@@ -17,7 +17,7 @@ module Xcodeproj
               end
             end
           else
-            attribute(reflection.name, reflection.uuids_getter)
+            attribute(reflection.name, :as => reflection.uuids_getter)
             define_method(reflection.name) do
               uuids = send(reflection.uuids_getter)
               if block
@@ -56,7 +56,7 @@ module Xcodeproj
               object.send(reflection.inverse.uuids_getter) << self.uuid if object
             end
           else
-            attribute(reflection.uuid_attribute, reflection.uuid_getter)
+            attribute(reflection.uuid_attribute, :as => reflection.uuid_getter)
             define_method(reflection.name) do
               @project.objects[send(reflection.uuid_getter)]
             end
