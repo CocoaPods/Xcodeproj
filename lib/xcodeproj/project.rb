@@ -16,8 +16,7 @@ module Xcodeproj
     module Object
       class PBXProject < PBXObject
         has_many :targets, :class => PBXNativeTarget
-        # TODO the uuid is still camel case
-        has_one :products, :singular_name => :products, :uuid => :product_ref_group, :class => PBXGroup
+        has_one :products_group, :uuid => :product_ref_group, :class => PBXGroup
       end
     end
 
@@ -170,11 +169,15 @@ module Xcodeproj
       root_object.targets
     end
 
-    # @todo Return a PBXObjectList with the actual file references.
-    #
     # @return [PBXGroup]  The group which holds the product file references.
+    def products_group
+      root_object.products_group
+    end
+
+    # @return [PBXObjectList<PBXFileReference>]  A list of the product file
+    #                                            references.
     def products
-      root_object.products
+      products_group.children
     end
 
     # @private

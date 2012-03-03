@@ -53,7 +53,7 @@ module Xcodeproj
         alias_method :_product=, :product=
         def product=(product)
           self._product = product
-          product.group = @project.products
+          @project.products_group << product
         end
 
         def build_configurations

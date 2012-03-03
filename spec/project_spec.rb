@@ -44,9 +44,15 @@ module ProjectSpecs
     end
 
     it "returns the products group" do
-      @project.products.should.be.instance_of PBXGroup
-      @project.root_object.attributes['productRefGroup'].should == @project.products.uuid
-      @project.objects_hash[@project.products.uuid].should == @project.products.attributes
+      @project.products_group.should.be.instance_of PBXGroup
+      @project.root_object.attributes['productRefGroup'].should == @project.products_group.uuid
+      @project.objects_hash[@project.products_group.uuid].should == @project.products_group.attributes
+    end
+
+    it "returns the product file references" do
+      file = @project.files.new('path' => 'BuildProduct')
+      @project.products_group << file
+      @project.products.last.should == file
     end
 
     it "adds an `m' or `c' file to the `sources build' phase list" do
