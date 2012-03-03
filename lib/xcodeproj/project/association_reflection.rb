@@ -65,6 +65,7 @@ module Xcodeproj
             "#{plural_name}="
           end
 
+          # @todo Where is this being used? It looks a lot like uuid_method_name.
           def uuid_attribute
             @options[:uuid] || @name
           end
