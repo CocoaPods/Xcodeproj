@@ -45,6 +45,7 @@ module ProjectSpecs
 
     it "returns the products group" do
       @project.products_group.should.be.instance_of PBXGroup
+      @project.main_group.children.should.include @project.products_group
       @project.root_object.attributes['productRefGroup'].should == @project.products_group.uuid
       @project.objects_hash[@project.products_group.uuid].should == @project.products_group.attributes
     end

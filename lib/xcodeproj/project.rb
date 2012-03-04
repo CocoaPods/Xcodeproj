@@ -42,14 +42,15 @@ module Xcodeproj
           'objectVersion' => '46',
           'objects' => {}
         }
+        main_group = groups.new
         self.root_object = objects.add(PBXProject, {
           'attributes' => { 'LastUpgradeCheck' => '0420' },
           'compatibilityVersion' => 'Xcode 3.2',
           'developmentRegion' => 'English',
           'hasScannedForEncodings' => '0',
           'knownRegions' => ['en'],
-          'mainGroup' => groups.new.uuid,
-          'productRefGroup' => groups.new('name' => 'Products').uuid,
+          'mainGroup' => main_group.uuid,
+          'productRefGroup' => main_group.groups.new('name' => 'Products').uuid,
           'projectDirPath' => '',
           'projectRoot' => '',
           'targets' => []
