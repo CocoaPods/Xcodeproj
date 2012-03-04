@@ -8,3 +8,4 @@ ext/xcodeproj/extconf.h
 *.gem
 .yardoc
 doc
+tmp
