@@ -4,7 +4,10 @@
 #include "extconf.h"
 
 #include "ruby.h"
+#if HAVE_RUBY_ST_H
 #include "ruby/st.h"
+#endif
+
 #include "CoreFoundation/CoreFoundation.h"
 #include "CoreFoundation/CFStream.h"
 #include "CoreFoundation/CFPropertyList.h"

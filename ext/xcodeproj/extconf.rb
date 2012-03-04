@@ -37,6 +37,7 @@ end
 have_header 'CoreFoundation/CoreFoundation.h'
 have_header 'CoreFoundation/CFStream.h'
 have_header 'CoreFoundation/CFPropertyList.h'
+have_header 'ruby/st.h'
 
 create_header
 create_makefile 'xcodeproj_ext'
