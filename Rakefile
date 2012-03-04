@@ -66,6 +66,7 @@ begin
   require 'rubygems'
   require 'yard'
   require 'yard/rake/yardoc_task'
+  require File.expand_path('../yard_extensions', __FILE__)
 
   namespace :doc do
     YARD::Rake::YardocTask.new(:generate) do |t|

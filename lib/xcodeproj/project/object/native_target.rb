@@ -5,7 +5,11 @@ module Xcodeproj
       class PBXNativeTarget < PBXObject
         STATIC_LIBRARY = 'com.apple.product-type.library.static'
 
-        attributes :product_name, :product_type
+        # [String] the name of the build product
+        attribute :product_name
+
+        # [String] the build product type identifier
+        attribute :product_type
 
         has_many :build_phases
         has_many :dependencies # TODO :class => ?

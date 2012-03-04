@@ -3,7 +3,9 @@ module Xcodeproj
     module Object
 
       class XCBuildConfiguration < PBXObject
+        # [Hash] the build settings used when building a target
         attribute :build_settings
+
         # TODO why do I need to specify the uuid here?
         has_one :base_configuration, :uuid => :base_configuration_reference
 

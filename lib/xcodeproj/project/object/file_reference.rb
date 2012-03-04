@@ -2,15 +2,33 @@ module Xcodeproj
   class Project
     module Object
 
+      # @todo Add a list of all possible file types for `explicit_file_type`
+      #       and `last_known_file_type`.
       class PBXFileReference < PBXObject
-        attributes :path, :source_tree, :explicit_file_type, :last_known_file_type, :include_in_index
+        # [String] the path to the file relative to the source tree
+        attribute :path
+
+        # [String] the source tree to which the file is relative. It can be one
+        #          of `SOURCE_ROOT` or `SDKROOT`
+        attribute :source_tree
+
+        # [String] the file type regardless of what Xcode might think it is
+        attribute :explicit_file_type
+
+        # [String] the file type guessed by Xcode
+        attribute :last_known_file_type
+
+        # [String] wether of not this file should be indexed. This can be
+        #          either "0" or "1".
+        attribute :include_in_index
+
         has_many :build_files, :inverse_of => :file
         has_one :group, :inverse_of => :children
 
         def self.new_static_library(project, productName)
           new(project, nil, {
             "path"             => "lib#{productName}.a",
-            "includeInIndex"   => "0", # no idea what this is
+            "includeInIndex"   => "0",
             "sourceTree"       => "BUILT_PRODUCTS_DIR",
           })
         end

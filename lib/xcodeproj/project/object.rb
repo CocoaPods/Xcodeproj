@@ -43,10 +43,10 @@ module Xcodeproj
         # attributes hash that the object wraps.
         #
         #
-        # @examples
+        # @example
         #
-        # Create getter and setter methods named after the key it corresponds to
-        # in the attributes hash:
+        #     # Create getter and setter methods named after the key it corresponds to
+        #     # in the attributes hash:
         #
         #     class PBXBuildPhase < PBXObject
         #       attribute :settings
@@ -58,7 +58,7 @@ module Xcodeproj
         #     build_phase.settings = { 'COMPILER_FLAGS' => '-fobjc-no-arc' }
         #     build_phase.attributes # => { 'settings' => { 'COMPILER_FLAGS' => '-fobjc-no-arc' }, ... }
         #
-        # Or with a custom getter and setter methods:
+        #     # Or with a custom getter and setter methods:
         #
         #     class PBXCopyFilesBuildPhase < PBXObject
         #       attribute :dst_path, :as => :destination_path
@@ -81,16 +81,17 @@ module Xcodeproj
           define_method("#{accessor_name}=") { |value| @attributes[attribute_name] = value }
         end
 
-        def self.attributes(*names)
-          names.each { |name| attribute(name) }
-        end
-
         def self.isa
           @isa ||= name.split('::').last
         end
 
         attr_reader :uuid, :attributes
-        attributes :isa, :name
+
+        # [String] the object's class name
+        attribute :isa
+
+        # [String] the object's name
+        attribute :name
 
         # It is not recommended that you instantiate objects through this
         # constructor. It is much easier to use associations to create them.

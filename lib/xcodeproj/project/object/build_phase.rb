@@ -3,7 +3,9 @@ module Xcodeproj
     module Object
 
       class PBXBuildFile < PBXObject
-        attributes :settings
+        # [Hash] the list of build settings for this file
+        attribute :settings
+
         has_one :file, :uuid => :file_ref
       end
 
@@ -11,7 +13,12 @@ module Xcodeproj
         # TODO rename this to buildFiles and add a files :through => :buildFiles shortcut
         has_many :files, :class => PBXBuildFile
 
-        attributes :build_action_mask, :run_only_for_deployment_postprocessing
+        # [String] some kind of magic number which seems to always be '2147483647'
+        attribute :build_action_mask
+
+        # [String] wether or not this should only be processed before deployment
+        #          (I guess). This cane be either '0', or '1'
+        attribute :run_only_for_deployment_postprocessing
 
         def initialize(*)
           super
@@ -23,7 +30,11 @@ module Xcodeproj
       end
 
       class PBXCopyFilesBuildPhase < PBXBuildPhase
-        attributes :dst_path, :dst_subfolder_spec
+        # [String] the path where this file should be copied to
+        attribute :dst_path
+
+        # [String] a magic number which always seems to be "16"
+        attribute :dst_subfolder_spec
 
         def initialize(*)
           super
@@ -34,6 +45,7 @@ module Xcodeproj
       class PBXSourcesBuildPhase < PBXBuildPhase;     end
       class PBXFrameworksBuildPhase < PBXBuildPhase;  end
       class PBXShellScriptBuildPhase < PBXBuildPhase
+        # [String] the shell script to perform
         attribute :shell_script
       end
 
