@@ -50,6 +50,10 @@ module Xcodeproj
         def file_with_path(path)
           files.find { |f| f.path == path }
         end
+        
+        def add_file_paths(paths)
+          paths.each { |path| files.new("path" => path) }
+        end
 
         def source_files
           files = self.files.reject { |file| file.buildFiles.empty? }
