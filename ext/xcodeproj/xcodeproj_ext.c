@@ -112,7 +112,7 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
                                          0,
                                          &kCFTypeDictionaryKeyCallBacks,
                                          &kCFTypeDictionaryValueCallBacks);
-    st_foreach(RHASH_TBL(value), dictionary_set, (st_data_t)valueRef);
+    rb_hash_foreach(value, dictionary_set, (st_data_t)valueRef);
 
   } else if (TYPE(value) == T_ARRAY) {
     long i, count = RARRAY_LEN(value);
@@ -125,7 +125,7 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
                                                0,
                                                &kCFTypeDictionaryKeyCallBacks,
                                                &kCFTypeDictionaryValueCallBacks);
-        st_foreach(RHASH_TBL(element), dictionary_set, (st_data_t)elementRef);
+        rb_hash_foreach(element, dictionary_set, (st_data_t)elementRef);
       } else {
         // otherwise coerce to string
         elementRef = str_to_cfstr(element);
@@ -226,7 +226,7 @@ write_plist(VALUE self, VALUE hash, VALUE path) {
                                                           &kCFTypeDictionaryKeyCallBacks,
                                                           &kCFTypeDictionaryValueCallBacks);
 
-  st_foreach(RHASH_TBL(h), dictionary_set, (st_data_t)dict);
+  rb_hash_foreach(h, dictionary_set, (st_data_t)dict);
 
   CFURLRef fileURL = str_to_url(path);
   CFWriteStreamRef stream = CFWriteStreamCreateWithFile(NULL, fileURL);

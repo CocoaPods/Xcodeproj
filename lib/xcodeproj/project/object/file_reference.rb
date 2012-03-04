@@ -3,8 +3,8 @@ module Xcodeproj
     module Object
 
       class PBXFileReference < PBXObject
-        attributes :path, :sourceTree, :explicitFileType, :lastKnownFileType, :includeInIndex
-        has_many :buildFiles, :inverse_of => :file
+        attributes :path, :source_tree, :explicit_file_type, :last_known_file_type, :include_in_index
+        has_many :build_files, :inverse_of => :file
         has_one :group, :inverse_of => :children
 
         def self.new_static_library(project, productName)
@@ -19,7 +19,7 @@ module Xcodeproj
           is_new = uuid.nil?
           super
           self.path = path if path # sets default name
-          self.sourceTree ||= 'SOURCE_ROOT'
+          self.source_tree ||= 'SOURCE_ROOT'
           if is_new
             @project.main_group.children << self
           end
@@ -38,14 +38,14 @@ module Xcodeproj
         end
 
         def set_default_file_type!
-          return if explicitFileType || lastKnownFileType
+          return if explicit_file_type || last_known_file_type
           case path
           when /\.a$/
-            self.explicitFileType = 'archive.ar'
+            self.explicit_file_type = 'archive.ar'
           when /\.framework$/
-            self.lastKnownFileType = 'wrapper.framework'
+            self.last_known_file_type = 'wrapper.framework'
           when /\.xcconfig$/
-            self.lastKnownFileType = 'text.xcconfig'
+            self.last_known_file_type = 'text.xcconfig'
           end
         end
       end

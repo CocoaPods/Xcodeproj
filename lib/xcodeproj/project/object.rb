@@ -1,3 +1,5 @@
+require 'xcodeproj/inflector'
+
 module Xcodeproj
   class Project
     # This is the namespace in which all the classes that wrap the objects in
@@ -16,9 +18,9 @@ module Xcodeproj
     #     end
     module Object
 
-      # Missing constants that begin with either `PBX' or `XC' are assumed to be
-      # valid classes in a Xcode project. A new PBXObject subclass is created
-      # for the constant and returned.
+      # Missing constants that begin with either `PBX' or `XC' are assumed to
+      # be valid classes in a Xcode project. A new PBXObject subclass is
+      # created for the constant and returned.
       #
       # @return [Class]  The generated class inhertiting from PBXObject.
       def self.const_missing(name)
@@ -31,12 +33,21 @@ module Xcodeproj
         end
       end
 
-      # @note The PXBObject class does *not* actually exist in a Xcode project
-      #       It's purely used to provide common behavior to all objects.
+      # This is the base class of all object types that can exist in a Xcode
+      # project. As such it provides common behavior, but you can only use
+      # instances of subclasses of PBXObject, because this class does not exist
+      # in actual Xcode projects.
       class PBXObject
+        # This defines accessor methods for a key-value pair which occurs in the
+        # attributes hash that the object wraps.
+        #
+        # @param [Symbol, String] attribute_name  The key in snake case.
+        # @param [Symbol, String] accessor_name   An optional custom name for
+        #                                         the getter and setter methods.
         def self.attribute(attribute_name, accessor_name = nil)
           attribute_name = attribute_name.to_s
           name = (accessor_name || attribute_name).to_s
+          attribute_name = attribute_name.camelize(:lower)
           define_method(name) { @attributes[attribute_name] }
           define_method("#{name}=") { |value| @attributes[attribute_name] = value }
         end
@@ -52,6 +63,14 @@ module Xcodeproj
         attr_reader :uuid, :attributes
         attributes :isa, :name
 
+        # It is not recommended that you instantiate objects through this
+        # constructor. It is much easier to use associations to create them.
+        #
+        # @example
+        #
+        #     file_reference = project.files.new('path' => 'path/to/file')
+        #
+        # @return [PBXObject]
         def initialize(project, uuid, attributes)
           @project, @attributes = project, attributes
           unless uuid

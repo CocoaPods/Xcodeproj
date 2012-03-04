@@ -36,11 +36,11 @@ module ProjectSpecs
     it "adds the UUID of the added object to the list of child UUIDS" do
       file = @project.files.new('path' => 'File')
       @group << file
-      @group.childReferences.last.should == file.uuid
+      @group.child_references.last.should == file.uuid
 
       group = @project.groups.new
       @group << group
-      @group.childReferences.last.should == group.uuid
+      @group.child_references.last.should == group.uuid
     end
 
     it "maintains the order of the assigned children" do

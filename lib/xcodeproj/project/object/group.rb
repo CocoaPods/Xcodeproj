@@ -3,7 +3,7 @@ module Xcodeproj
     module Object
 
       class PBXGroup < PBXObject
-        attributes :sourceTree
+        attributes :source_tree
 
         has_many :children, :class => PBXObject do |object|
           if object.is_a?(Xcodeproj::Project::Object::PBXFileReference)
@@ -13,14 +13,14 @@ module Xcodeproj
           else
             # TODO What objects can actually be in a group and don't they
             # all need the above treatment.
-            childReferences << object.uuid
+            child_references << object.uuid
           end
         end
 
         def initialize(*)
           super
-          self.sourceTree ||= '<group>'
-          self.childReferences ||= []
+          self.source_tree ||= '<group>'
+          self.child_references ||= []
         end
 
         def main_group?
@@ -38,7 +38,7 @@ module Xcodeproj
         end
 
         def files
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference) do |file|
+          list_by_class(child_references, Xcodeproj::Project::Object::PBXFileReference) do |file|
             file.group = self
           end
         end
@@ -56,14 +56,14 @@ module Xcodeproj
         end
 
         def source_files
-          files = self.files.reject { |file| file.buildFiles.empty? }
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXFileReference, files) do |file|
+          files = self.files.reject { |file| file.build_files.empty? }
+          list_by_class(child_references, Xcodeproj::Project::Object::PBXFileReference, files) do |file|
             file.group = self
           end
         end
 
         def groups
-          list_by_class(childReferences, Xcodeproj::Project::Object::PBXGroup)
+          list_by_class(child_references, Xcodeproj::Project::Object::PBXGroup)
         end
 
         def create_group(name)

@@ -30,15 +30,15 @@ module ProjectSpecs
       file.isa.should == 'PBXFileReference'
       file.name.should == 'file.m'
       file.path.should == '/some/file.m'
-      file.sourceTree.should == 'SOURCE_ROOT'
+      file.source_tree.should == 'SOURCE_ROOT'
       @project.objects_hash[file.uuid].should == file.attributes
     end
 
     it "adds a new PBXBuildFile to the objects hash when a new PBXFileReference is created" do
       file = @project.files.new('name' => '/some/source/file.h')
-      build_file = file.buildFiles.new
+      build_file = file.build_files.new
       build_file.file = file
-      build_file.fileRef.should == file.uuid
+      build_file.file_ref.should == file.uuid
       build_file.isa.should == 'PBXBuildFile'
       @project.objects_hash[build_file.uuid].should == build_file.attributes
     end
@@ -50,11 +50,11 @@ module ProjectSpecs
         # ensure that it was added to all objects
         file = @project.objects[file.uuid]
 
-        phase = @target.buildPhases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-        phase.files.map { |buildFile| buildFile.file }.should.include file
+        phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
+        phase.files.map { |build_file| build_file.file }.should.include file
 
-        phase = @target.buildPhases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-        phase.files.map { |buildFile| buildFile.file }.should.not.include file
+        phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
+        phase.files.map { |build_file| build_file.file }.should.not.include file
       end
     end
 
@@ -79,11 +79,11 @@ module ProjectSpecs
       # ensure that it was added to all objects
       file = @project.objects[file.uuid]
 
-      phase = @target.buildPhases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-      phase.files.map { |buildFile| buildFile.file }.should.not.include file
+      phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
+      phase.files.map { |build_file| build_file.file }.should.not.include file
 
-      phase = @target.buildPhases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-      phase.files.map { |buildFile| buildFile.file }.should.include file
+      phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
+      phase.files.map { |build_file| build_file.file }.should.include file
     end
 
     extend SpecHelper::TemporaryDirectory

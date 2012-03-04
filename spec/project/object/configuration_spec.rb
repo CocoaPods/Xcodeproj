@@ -8,8 +8,8 @@ module ProjectSpecs
 
     it "returns the xcconfig that this configuration is based on (baseConfigurationReference)" do
       xcconfig = @project.objects.new
-      @configuration.baseConfiguration = xcconfig
-      @configuration.baseConfigurationReference.should == xcconfig.uuid
+      @configuration.base_configuration = xcconfig
+      @configuration.base_configuration_reference.should == xcconfig.uuid
     end
   end
 
@@ -20,9 +20,9 @@ module ProjectSpecs
 
     it "returns the configurations" do
       configuration = @project.objects.add(XCBuildConfiguration)
-      @list.buildConfigurations.to_a.should == []
-      @list.buildConfigurations = [configuration]
-      @list.buildConfigurationReferences.should == [configuration.uuid]
+      @list.build_configurations.to_a.should == []
+      @list.build_configurations = [configuration]
+      @list.build_configuration_references.should == [configuration.uuid]
     end
   end
 end
