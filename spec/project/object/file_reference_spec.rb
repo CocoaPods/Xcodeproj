@@ -18,20 +18,5 @@ module ProjectSpecs
       makework = @project.files.new('path' => 'n2m.framework', 'explicitFileType' => 'tree')
       makework.last_known_file_type.should == nil
     end
-    
-    before do
-      @file = @project.files.new('path' => 'some/file.m')
-    end
-
-    it "is automatically added to the main group" do
-      @file.group.should == @project.main_group
-    end
-
-    it "is removed from the original group when added to another group" do
-      group = @project.groups.new
-      group.children << @file
-      @file.group.should == group
-      @project.main_group.children.should.not.include @file
-    end
   end
 end

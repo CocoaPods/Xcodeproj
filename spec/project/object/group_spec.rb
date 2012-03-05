@@ -1,6 +1,23 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
+  describe "Xcodeproj::Project::Object::AbstractGroupEntry" do
+    before do
+      @entry = new_instance(AbstractGroupEntry, {})
+    end
+
+    it "is automatically added to the main group" do
+      @entry.group.should == @project.main_group
+    end
+
+    it "is removed from the original group when added to another group" do
+      group = @project.groups.new
+      group.children << @entry
+      @entry.group.should == group
+      @project.main_group.children.should.not.include @entry
+    end
+  end
+
   describe "Xcodeproj::Project::Object::PBXGroup" do
     before do
       @group = @project.groups.new('name' => 'Parent')

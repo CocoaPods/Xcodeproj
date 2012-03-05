@@ -1,10 +1,12 @@
+require 'xcodeproj/project/object/group'
+
 module Xcodeproj
   class Project
     module Object
 
       # @todo Add a list of all possible file types for `explicit_file_type`
       #       and `last_known_file_type`.
-      class PBXFileReference < AbstractPBXObject
+      class PBXFileReference < AbstractGroupEntry
         # [String] the path to the file relative to the source tree
         attribute :path
 
@@ -23,7 +25,6 @@ module Xcodeproj
         attribute :include_in_index
 
         has_many :build_files, :inverse_of => :file
-        has_one :group, :inverse_of => :children
 
         def self.new_static_library(project, productName)
           new(project, nil, {
@@ -33,14 +34,10 @@ module Xcodeproj
           })
         end
 
-        def initialize(project, uuid, attributes)
-          is_new = uuid.nil?
+        def initialize(*)
           super
           self.path = path if path # sets default name
           self.source_tree ||= 'SOURCE_ROOT'
-          if is_new
-            @project.main_group.children << self
-          end
           set_default_file_type!
         end
 
