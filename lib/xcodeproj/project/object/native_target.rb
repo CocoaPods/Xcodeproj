@@ -2,7 +2,7 @@ module Xcodeproj
   class Project
     module Object
 
-      class PBXNativeTarget < PBXObject
+      class PBXNativeTarget < AbstractPBXObject
         STATIC_LIBRARY = 'com.apple.product-type.library.static'
 
         # [String] the name of the build product

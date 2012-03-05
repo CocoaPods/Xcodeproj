@@ -12,25 +12,25 @@ module ProjectSpecs
       @project.objects_hash['UUID'].should == attributes
     end
 
-    it "raises an argument error if the value of the `isa' attribute is PBXObject, because it doesn't actually belong in an xcodeproject" do
+    it "raises an argument error if the value of the `isa' attribute is AbstractPBXObject, because it doesn't actually belong in an xcodeproject" do
       lambda {
-        @project.add_object_hash('UUID', 'isa' => 'PBXObject')
+        @project.add_object_hash('UUID', 'isa' => 'AbstractPBXObject')
       }.should.raise ArgumentError
     end
 
-    it "returns the objects as PBXObject instances" do
+    it "returns the objects as AbstractPBXObject instances" do
       @project.objects.each do |object|
         @project.objects_hash[object.uuid].should == object.attributes
       end
     end
 
-    it "adds any type of new PBXObject to the objects hash" do
-      object = @project.objects.add(PBXObject, 'name' => 'An Object')
+    it "adds any type of new AbstractPBXObject to the objects hash" do
+      object = new_instance(AbstractPBXObject, 'name' => 'An Object')
       object.name.should == 'An Object'
       @project.objects_hash[object.uuid].should == object.attributes
     end
 
-    it "adds a new PBXObject, of the configured type, to the objects hash" do
+    it "adds a new AbstractPBXObject, of the configured type, to the objects hash" do
       group = @project.groups.new('name' => 'A new group')
       group.isa.should == 'PBXGroup'
       group.name.should == 'A new group'

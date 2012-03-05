@@ -5,7 +5,7 @@ module Xcodeproj
     # This is the namespace in which all the classes that wrap the objects in
     # a Xcode project reside.
     #
-    # The base class from which all classes inherit is PBXObject.
+    # The base class from which all classes inherit is AbstractPBXObject.
     #
     # If you need to deal with these classes directly, it's possible to include
     # this namespace into yours, making it unnecessary to prefix them with
@@ -19,13 +19,13 @@ module Xcodeproj
     module Object
 
       # Missing constants that begin with either `PBX' or `XC' are assumed to
-      # be valid classes in a Xcode project. A new PBXObject subclass is
+      # be valid classes in a Xcode project. A new AbstractPBXObject subclass is
       # created for the constant and returned.
       #
-      # @return [Class]  The generated class inhertiting from PBXObject.
+      # @return [Class]  The generated class inhertiting from AbstractPBXObject.
       def self.const_missing(name)
         if name.to_s =~ /^(PBX|XC)/
-          klass = Class.new(PBXObject)
+          klass = Class.new(AbstractPBXObject)
           const_set(name, klass)
           klass
         else
@@ -35,9 +35,9 @@ module Xcodeproj
 
       # This is the base class of all object types that can exist in a Xcode
       # project. As such it provides common behavior, but you can only use
-      # instances of subclasses of PBXObject, because this class does not exist
-      # in actual Xcode projects.
-      class PBXObject
+      # instances of subclasses of AbstractPBXObject, because this class does
+      # not exist in actual Xcode projects.
+      class AbstractPBXObject
 
         # This defines accessor methods for a key-value pair which occurs in the
         # attributes hash that the object wraps.
@@ -48,7 +48,7 @@ module Xcodeproj
         #     # Create getter and setter methods named after the key it corresponds to
         #     # in the attributes hash:
         #
-        #     class PBXBuildPhase < PBXObject
+        #     class PBXBuildPhase < AbstractPBXObject
         #       attribute :settings
         #     end
         #
@@ -60,7 +60,7 @@ module Xcodeproj
         #
         #     # Or with a custom getter and setter methods:
         #
-        #     class PBXCopyFilesBuildPhase < PBXObject
+        #     class PBXCopyFilesBuildPhase < AbstractPBXObject
         #       attribute :dst_path, :as => :destination_path
         #     end
         #
@@ -100,20 +100,20 @@ module Xcodeproj
         #
         #     file_reference = project.files.new('path' => 'path/to/file')
         #
-        # @return [PBXObject]
+        # @return [AbstractPBXObject]
         def initialize(project, uuid, attributes)
           @project, @attributes = project, attributes
+          self.isa ||= self.class.isa
           unless uuid
             # Add new objects to the main hash with a unique UUID
             uuid = generate_uuid
             @project.add_object_hash(uuid, @attributes)
           end
           @uuid = uuid
-          self.isa ||= self.class.isa
         end
 
         def ==(other)
-          other.is_a?(PBXObject) && self.uuid == other.uuid
+          other.is_a?(AbstractPBXObject) && self.uuid == other.uuid
         end
 
         def inspect
@@ -165,7 +165,7 @@ end
 require 'xcodeproj/project/associations'
 require 'xcodeproj/project/object_list'
 
-# Now load the rest of the classes which inherit from PBXObject.
+# Now load the rest of the classes which inherit from AbstractPBXObject.
 require 'xcodeproj/project/object/build_phase'
 require 'xcodeproj/project/object/configuration'
 require 'xcodeproj/project/object/file_reference'

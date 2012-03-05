@@ -2,7 +2,7 @@ module Xcodeproj
   class Project
     module Object
 
-      class XCBuildConfiguration < PBXObject
+      class XCBuildConfiguration < AbstractPBXObject
         # [Hash] the build settings used when building a target
         attribute :build_settings
 
@@ -22,7 +22,7 @@ module Xcodeproj
         end
       end
 
-      class XCConfigurationList < PBXObject
+      class XCConfigurationList < AbstractPBXObject
         has_many :build_configurations
 
         def initialize(*)

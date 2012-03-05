@@ -10,11 +10,11 @@ module Xcodeproj
   # It can be used to manipulate existing documents or even create new ones
   # from scratch.
   #
-  # The Project API returns instances of PBXObject which wrap the objects
+  # The Project API returns instances of AbstractPBXObject which wrap the objects
   # described in the Xcode project document.
   class Project
     module Object
-      class PBXProject < PBXObject
+      class PBXProject < AbstractPBXObject
         has_many :targets, :class => PBXNativeTarget
         has_one :products_group, :uuid => :product_ref_group, :class => PBXGroup
       end
@@ -81,13 +81,13 @@ module Xcodeproj
     # @param [Hash]   attributes  The attributes of the object.
     #
     # @raise [ArgumentError]      Raised if the value of the `isa` key is equal
-    #                             to `PBXObject`.
+    #                             to `AbstractPBXObject`.
     #
     # @todo Ideally we would do more validation here, but I don't think we know
     #       of all classes that can exist yet.
     def add_object_hash(uuid, attributes)
-      if attributes['isa'] == 'PBXObject'
-        raise ArgumentError, "Attempted to insert a `PBXObject' instance into the objects hash, which is not allowed."
+      if attributes['isa'] !~ /^(PBX|XC)/
+        raise ArgumentError, "Attempted to insert a `#{attributes['isa']}' instance into the objects hash, which is not allowed."
       end
       objects_hash[uuid] = attributes
     end
@@ -102,10 +102,10 @@ module Xcodeproj
       @plist['rootObject'] = object.uuid
     end
 
-    # @return [PBXObjectList<PBXObject>]  A list of all the objects in the
+    # @return [PBXObjectList<AbstractPBXObject>]  A list of all the objects in the
     #                                     project.
     def objects
-      @objects ||= PBXObjectList.new(PBXObject, self, objects_hash)
+      @objects ||= PBXObjectList.new(AbstractPBXObject, self, objects_hash)
     end
 
     # @return [PBXObjectList<PBXGroup>]  A list of all the groups in the

@@ -1,9 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::PBXObject::AssociationReflection" do
+  describe "Xcodeproj::Project::Object::AbstractPBXObject::AssociationReflection" do
     before do
-      @reflection = PBXObject::AssociationReflection.new(:children, :class => PBXFileReference)
+      @reflection = AbstractPBXObject::AssociationReflection.new(:children, :class => PBXFileReference)
     end
 
     it "returns the class of the associated object(s)" do
@@ -37,9 +37,9 @@ module ProjectSpecs
       @reflection.uuids_setter.should == 'child_references='
     end
 
-    # TODO add a spec which tests PBXObject#attribute to handle case properly
+    # TODO add a spec which tests AbstractPBXObject#attribute to handle case properly
     it "properly handles case in the reflection name" do
-      reflection = PBXObject::AssociationReflection.new(:build_configuration_list, :class => PBXFileReference)
+      reflection = AbstractPBXObject::AssociationReflection.new(:build_configuration_list, :class => PBXFileReference)
       reflection.uuid_method_name.should == 'build_configuration_list_reference'
     end
   end

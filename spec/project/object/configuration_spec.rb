@@ -7,7 +7,7 @@ module ProjectSpecs
     end
 
     it "returns the xcconfig that this configuration is based on (baseConfigurationReference)" do
-      xcconfig = @project.objects.new
+      xcconfig = @project.files.new
       @configuration.base_configuration = xcconfig
       @configuration.base_configuration_reference.should == xcconfig.uuid
     end

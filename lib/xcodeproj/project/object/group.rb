@@ -3,12 +3,12 @@ module Xcodeproj
     module Object
 
       # @todo The `source_tree` can probably be more than just `<group>`.
-      class PBXGroup < PBXObject
+      class PBXGroup < AbstractPBXObject
         # [String] the source tree to which this group is relative. It can be
         #          `<group>`.
         attribute :source_tree
 
-        has_many :children, :class => PBXObject do |object|
+        has_many :children, :class => AbstractPBXObject do |object|
           if object.is_a?(Xcodeproj::Project::Object::PBXFileReference)
             # Associating the file to this group through the inverse
             # association will also remove it from the group it was in.

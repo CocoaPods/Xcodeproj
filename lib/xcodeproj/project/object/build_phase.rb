@@ -2,14 +2,14 @@ module Xcodeproj
   class Project
     module Object
 
-      class PBXBuildFile < PBXObject
+      class PBXBuildFile < AbstractPBXObject
         # [Hash] the list of build settings for this file
         attribute :settings
 
         has_one :file, :uuid => :file_ref
       end
 
-      class PBXBuildPhase < PBXObject
+      class PBXBuildPhase < AbstractPBXObject
         # TODO rename this to buildFiles and add a files :through => :buildFiles shortcut
         has_many :files, :class => PBXBuildFile
 

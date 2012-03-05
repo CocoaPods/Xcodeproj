@@ -84,9 +84,9 @@ module Xcodeproj
       def method_missing(name, *args, &block)
         if @represented_class.respond_to?(name)
           object = @represented_class.send(name, @project, *args)
-          # The callbacks are only for PBXObject instances instantiated
+          # The callbacks are only for AbstractPBXObject instances instantiated
           # from the class method that we forwarded the message to.
-          add_object(object) if object.is_a?(Object::PBXObject)
+          add_object(object) if object.is_a?(Object::AbstractPBXObject)
           object
         else
           super

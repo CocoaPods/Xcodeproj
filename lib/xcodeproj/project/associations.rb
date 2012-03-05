@@ -4,7 +4,7 @@ module Xcodeproj
   class Project
     module Object
 
-      class PBXObject
+      class AbstractPBXObject
         def self.has_many(plural_attr_name, options = {}, &block)
           reflection = create_reflection(plural_attr_name, options)
           if reflection.inverse?

@@ -4,7 +4,7 @@ module Xcodeproj
 
       # @todo Add a list of all possible file types for `explicit_file_type`
       #       and `last_known_file_type`.
-      class PBXFileReference < PBXObject
+      class PBXFileReference < AbstractPBXObject
         # [String] the path to the file relative to the source tree
         attribute :path
 

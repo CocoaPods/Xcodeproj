@@ -4,7 +4,7 @@ module Xcodeproj
   class Project
     module Object
 
-      class PBXObject
+      class AbstractPBXObject
         def self.reflections
           @reflections ||= []
         end
