@@ -65,9 +65,31 @@ module Xcodeproj
       @plist
     end
 
+    # This gives access to the objects part of the internal data hash. It is,
+    # however, **not** recommended to use this to add a hash for an object, for
+    # that see `add_object_hash`.
+    #
     # @return [Hash]  The `objects` part of the internal data.
     def objects_hash
       @plist['objects']
+    end
+
+    # This is the preferred way to add an object attributes hash to the objects
+    # hash, as it validates the data before inserting it.
+    #
+    # @param [String] uuid        The UUID of the object.
+    # @param [Hash]   attributes  The attributes of the object.
+    #
+    # @raise [ArgumentError]      Raised if the value of the `isa` key is equal
+    #                             to `PBXObject`.
+    #
+    # @todo Ideally we would do more validation here, but I don't think we know
+    #       of all classes that can exist yet.
+    def add_object_hash(uuid, attributes)
+      if attributes['isa'] == 'PBXObject'
+        raise ArgumentError, "Attempted to insert a `PBXObject' instance into the objects hash, which is not allowed."
+      end
+      objects_hash[uuid] = attributes
     end
 
     # @return [PBXProject]  The root object of the project.
@@ -124,7 +146,7 @@ module Xcodeproj
     #     build_phase = target.frameworks_build_phases.first
     #     build_phase.files << framework.buildFiles.new
     #
-    # @todo Make it possible to do: build_phase << framework
+    # @todo Make it possible to do: `build_phase << framework`
     #
     # @param [String] name        The name of a framework in the SDK System
     #                             directory.
@@ -139,7 +161,7 @@ module Xcodeproj
 
     # @todo Is this being used? In any case, this should move to
     #       PBXShellScriptBuildPhase and make it possible to do:
-    #       target.shell_script_build_phases.new
+    #       `target.shell_script_build_phases.new`
     #
     # @return [PBXShellScriptBuildPhase]
     def add_shell_script_build_phase(name, script_path)

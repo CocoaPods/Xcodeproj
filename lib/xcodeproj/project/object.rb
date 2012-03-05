@@ -106,7 +106,7 @@ module Xcodeproj
           unless uuid
             # Add new objects to the main hash with a unique UUID
             uuid = generate_uuid
-            @project.objects_hash[uuid] = @attributes
+            @project.add_object_hash(uuid, @attributes)
           end
           @uuid = uuid
           self.isa ||= self.class.isa

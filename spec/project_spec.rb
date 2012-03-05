@@ -6,6 +6,18 @@ module ProjectSpecs
       @project.objects_hash.should == @project.to_hash['objects']
     end
 
+    it "adds an object hash to the objects hash" do
+      attributes = { 'isa' => 'PBXFileReference', 'path' => 'some/file.m' }
+      @project.add_object_hash('UUID', attributes)
+      @project.objects_hash['UUID'].should == attributes
+    end
+
+    it "raises an argument error if the value of the `isa' attribute is PBXObject, because it doesn't actually belong in an xcodeproject" do
+      lambda {
+        @project.add_object_hash('UUID', 'isa' => 'PBXObject')
+      }.should.raise ArgumentError
+    end
+
     it "returns the objects as PBXObject instances" do
       @project.objects.each do |object|
         @project.objects_hash[object.uuid].should == object.attributes
