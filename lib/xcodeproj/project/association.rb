@@ -12,7 +12,7 @@ module Xcodeproj
             create_association(:has_many, plural_attr_name, options, &block)
           end
 
-          def has_one(singular_attr_name, options = {}, &block)
+          def has_one(singular_attr_name, options = {})
             create_association(:has_one, singular_attr_name, options)
           end
 
