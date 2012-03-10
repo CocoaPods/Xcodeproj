@@ -9,8 +9,8 @@ module Xcodeproj
           @reflections ||= []
         end
 
-        def self.create_reflection(name, options)
-          (reflections << AssociationReflection.new(name, options)).last
+        def self.create_reflection(type, name, options)
+          (reflections << AssociationReflection.new(type, name, options)).last
         end
 
         def self.reflection(name)
@@ -18,11 +18,11 @@ module Xcodeproj
         end
 
         class AssociationReflection
-          def initialize(name, options)
-            @name, @options = name.to_s, options
+          def initialize(type, name, options)
+            @type, @name, @options = type, name.to_s, options
           end
 
-          attr_reader :name, :options
+          attr_reader :type, :name, :options
 
           def klass
             @options[:class] ||= begin
@@ -40,58 +40,42 @@ module Xcodeproj
             !!@options[:inverse_of]
           end
 
-          def singular_name
-            @options[:singular_name] || @name.singularize
+          def attribute_name
+            (@options[:uuid] || @options[:uuids] || @name).to_sym
           end
 
-          def singular_getter
-            singular_name
+          def attribute_getter
+            case type
+            when :has_many
+              uuid_method_name.pluralize
+            when :has_one
+              uuid_method_name
+            end.to_sym
           end
 
-          def singular_setter
-            "#{singular_name}="
+          def attribute_setter
+            "#{attribute_getter}=".to_sym
           end
 
-          def plural_name
-            # this makes 'children' work, otherwise it returns 'childrens' :-/
-            @name.singularize.pluralize
+          def getter
+            @name.to_sym
           end
 
-          def plural_getter
-            plural_name
+          def setter
+            "#{@name}=".to_sym
           end
 
-          def plural_setter
-            "#{plural_name}="
+          def association_for(owner, &block)
+            case type
+            when :has_many then AbstractPBXObject::Association::HasMany
+            when :has_one  then AbstractPBXObject::Association::HasOne
+            end.new(owner, self, &block)
           end
 
-          # @todo Where is this being used? It looks a lot like uuid_method_name.
-          def uuid_attribute
-            @options[:uuid] || @name
-          end
+          private
 
           def uuid_method_name
-            (@options[:uuid] || @options[:uuids] || "#{singular_name}_reference").to_s.singularize
-          end
-
-          def uuid_getter
-            uuid_method_name
-          end
-
-          def uuid_setter
-            "#{uuid_method_name}="
-          end
-
-          def uuids_method_name
-            uuid_method_name.pluralize
-          end
-
-          def uuids_getter
-            uuids_method_name
-          end
-
-          def uuids_setter
-            "#{uuids_method_name}="
+            (@options[:uuid] || @options[:uuids] || "#{@name.singularize}_reference").to_s.singularize
           end
         end
 

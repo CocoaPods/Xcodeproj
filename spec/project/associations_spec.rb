@@ -4,7 +4,7 @@ module ProjectSpecs
   describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany" do
     before do
       @owner       = @project.groups.new
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:children, :class => PBXFileReference)
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_many, :children, :class => PBXFileReference)
       @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
     end
 
@@ -48,7 +48,7 @@ module ProjectSpecs
   describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany association" do
     before do
       @owner       = @project.files.new('path' => 'some/path')
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:build_files, :inverse_of => :file)
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_many, :build_files, :inverse_of => :file)
       @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
     end
 
@@ -63,7 +63,7 @@ module ProjectSpecs
   describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne" do
     before do
       @owner       = @project.targets.first
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:build_configuration_list, {})
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_one, :build_configuration_list, {})
       @association = AbstractPBXObject::Association::HasOne.new(@owner, @reflection)
     end
 
@@ -87,7 +87,7 @@ module ProjectSpecs
   describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne association" do
     before do
       @owner       = @project.files.new('path' => 'some/path')
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:group, :inverse_of => :children)
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_one, :group, :inverse_of => :children)
       @association = AbstractPBXObject::Association::HasOne.new(@owner, @reflection)
     end
 
