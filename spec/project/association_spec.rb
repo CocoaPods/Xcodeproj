@@ -1,11 +1,11 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany" do
+  describe "Xcodeproj::Project::Object::Association::HasMany" do
     before do
       @owner       = @project.groups.new
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_many, :children, :class => PBXFileReference)
-      @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
+      @reflection  = Association::Reflection.new(:has_many, :children, :class => PBXFileReference)
+      @association = @reflection.association_for(@owner)
     end
 
     it "returns the owner of the associated objects and the reflection" do
@@ -26,7 +26,7 @@ module ProjectSpecs
     it "uses the passed block, in the context of the owner, whenever an object gets added to the list" do
       yielded_scope  = nil
       yielded_object = nil
-      @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection) do |o|
+      @association = Association::HasMany.new(@owner, @reflection) do |o|
         yielded_scope  = self
         yielded_object = o
       end
@@ -45,11 +45,11 @@ module ProjectSpecs
     end
   end
 
-  describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany association" do
+  describe "An inverse Xcodeproj::Project::Object::Association::HasMany association" do
     before do
       @owner       = @project.files.new('path' => 'some/path')
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_many, :build_files, :inverse_of => :file)
-      @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
+      @reflection  = Association::Reflection.new(:has_many, :build_files, :inverse_of => :file)
+      @association = @reflection.association_for(@owner)
     end
 
     it "returns the associated objects by finding the ones that have a has_one association to the owner" do
@@ -60,11 +60,11 @@ module ProjectSpecs
     end
   end
 
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne" do
+  describe "Xcodeproj::Project::Object::Association::HasOne" do
     before do
       @owner       = @project.targets.first
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_one, :build_configuration_list, {})
-      @association = AbstractPBXObject::Association::HasOne.new(@owner, @reflection)
+      @reflection  = Association::Reflection.new(:has_one, :build_configuration_list, {})
+      @association = @reflection.association_for(@owner)
     end
 
     it "returns the owner of the associated objects and the reflection" do
@@ -84,11 +84,11 @@ module ProjectSpecs
     end
   end
 
-  describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne association" do
+  describe "An inverse Xcodeproj::Project::Object::Association::HasOne association" do
     before do
       @owner       = @project.files.new('path' => 'some/path')
-      @reflection  = AbstractPBXObject::AssociationReflection.new(:has_one, :group, :inverse_of => :children)
-      @association = AbstractPBXObject::Association::HasOne.new(@owner, @reflection)
+      @reflection  = Association::Reflection.new(:has_one, :group, :inverse_of => :children)
+      @association = @reflection.association_for(@owner)
     end
 
     it "returns the associated object by finding the one that has a has_many association which includes the owner" do

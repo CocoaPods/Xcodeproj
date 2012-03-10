@@ -162,7 +162,7 @@ module Xcodeproj
   end
 end
 
-require 'xcodeproj/project/associations'
+require 'xcodeproj/project/association'
 require 'xcodeproj/project/object_list'
 
 # Now load the rest of the classes which inherit from AbstractPBXObject.

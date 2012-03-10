@@ -1,9 +1,9 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::AssociationReflection" do
+  describe "Xcodeproj::Project::Object::Association::Reflection" do
     before do
-      @reflection = AbstractPBXObject::AssociationReflection.new(:has_many, :children, :class => PBXFileReference)
+      @reflection = Association::Reflection.new(:has_many, :children, :class => PBXFileReference)
     end
 
     it "returns the class of the associated object(s)" do
@@ -29,9 +29,9 @@ module ProjectSpecs
     #end
   end
 
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::AssociationReflection, with type `:has_many`" do
+  describe "Xcodeproj::Project::Object::Association::Reflection, with type `:has_many`" do
     before do
-      @reflection = AbstractPBXObject::AssociationReflection.new(:has_many, :children, :class => PBXFileReference)
+      @reflection = Association::Reflection.new(:has_many, :children, :class => PBXFileReference)
     end
 
     it "returns the UUIDs attribute name" do
@@ -63,15 +63,15 @@ module ProjectSpecs
     it "returns a new HasMany association for the given owner instance" do
       owner = Object.new
       association = @reflection.association_for(owner)
-      association.should.be.instance_of AbstractPBXObject::Association::HasMany
+      association.should.be.instance_of Association::HasMany
       association.owner.should == owner
       association.reflection.should == @reflection
     end
   end
 
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::AssociationReflection, with type `:has_one`" do
+  describe "Xcodeproj::Project::Object::Association::Reflection, with type `:has_one`" do
     before do
-      @reflection = AbstractPBXObject::AssociationReflection.new(:has_one, :build_configuration_list, :class => PBXFileReference)
+      @reflection = Association::Reflection.new(:has_one, :build_configuration_list, :class => PBXFileReference)
     end
 
     it "returns the UUID attribute name" do
@@ -103,7 +103,7 @@ module ProjectSpecs
     it "returns a new HasOne association for the given owner instance" do
       owner = Object.new
       association = @reflection.association_for(owner)
-      association.should.be.instance_of AbstractPBXObject::Association::HasOne
+      association.should.be.instance_of Association::HasOne
       association.owner.should == owner
       association.reflection.should == @reflection
     end

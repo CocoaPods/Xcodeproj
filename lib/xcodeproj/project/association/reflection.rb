@@ -10,14 +10,16 @@ module Xcodeproj
         end
 
         def self.create_reflection(type, name, options)
-          (reflections << AssociationReflection.new(type, name, options)).last
+          (reflections << Association::Reflection.new(type, name, options)).last
         end
 
         def self.reflection(name)
           reflections.find { |r| r.name.to_s == name.to_s }
         end
+      end
 
-        class AssociationReflection
+      class Association
+        class Reflection
           def initialize(type, name, options)
             @type, @name, @options = type, name.to_s, options
           end
@@ -67,8 +69,8 @@ module Xcodeproj
 
           def association_for(owner, &block)
             case type
-            when :has_many then AbstractPBXObject::Association::HasMany
-            when :has_one  then AbstractPBXObject::Association::HasOne
+            when :has_many then Association::HasMany
+            when :has_one  then Association::HasOne
             end.new(owner, self, &block)
           end
 
