@@ -62,16 +62,17 @@ module Xcodeproj
       def inspect
         "<PBXObjectList: #{map(&:inspect)}>"
       end
-      
+
       def where(attributes)
         find { |o| o.matches_attributes?(attributes) }
       end
-      
+
+      # @todo is it really necessary to have an extra method for this?
       def object_named(name)
-        find { |o| o.name == name }
+        where :name => name
       end
 
-      # Only makes sense on lists that contain mixed classes.
+      # Only makes sense on lists that contain mixed classes. Only the main objects list?
       def select_by_class(klass)
         scoped = Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
         PBXObjectList.new(klass, @project, scoped) do |object|
@@ -81,6 +82,7 @@ module Xcodeproj
         end
       end
 
+      # This only makes sense on those with a specific represented class. Not the main objects list.
       def method_missing(name, *args, &block)
         if @represented_class.respond_to?(name)
           object = @represented_class.send(name, @project, *args)
