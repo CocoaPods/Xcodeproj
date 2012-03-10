@@ -48,5 +48,10 @@ module ProjectSpecs
     it "adds the object to the objects hash" do
       @project.objects_hash[@object.uuid].should == @object.attributes
     end
+
+    it "removes the object from the objects hash" do
+      @object.destroy
+      @project.objects_hash.should.not.has_key @object.uuid
+    end
   end
 end

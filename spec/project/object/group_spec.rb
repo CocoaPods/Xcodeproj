@@ -13,8 +13,15 @@ module ProjectSpecs
     it "is removed from the original group when added to another group" do
       group = @project.groups.new
       group.children << @entry
+      group.children.should.include @entry
       @entry.group.should == group
       @project.main_group.children.should.not.include @entry
+    end
+
+    it "removes the entry from the objects hash and the group it belongs to" do
+      @entry.destroy
+      @project.objects_hash.should.not.has_key @entry.uuid
+      @project.main_group.child_references.should.not.include @entry.uuid
     end
   end
 

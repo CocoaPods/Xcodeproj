@@ -13,6 +13,11 @@ module Xcodeproj
             @project.main_group.children << self
           end
         end
+
+        def destroy
+          group.child_references.delete(uuid)
+          super
+        end
       end
 
       # @todo The `source_tree` can probably be more than just `<group>`.

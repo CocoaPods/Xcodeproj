@@ -112,6 +112,10 @@ module Xcodeproj
           @uuid = uuid
         end
 
+        def destroy
+          @project.objects_hash.delete(uuid)
+        end
+
         def ==(other)
           other.is_a?(AbstractPBXObject) && self.uuid == other.uuid
         end
