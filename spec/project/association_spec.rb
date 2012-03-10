@@ -56,7 +56,8 @@ module ProjectSpecs
       @association.get.should == []
       build_phase = @project.targets.first.source_build_phases.first
       objects = Array.new(2) { |i| o = build_phase.files.new; o.file = @owner; o }
-      @association.get.should == objects
+      # The inverse version traverses the objects hash, so order can't be preserved.
+      @association.get.sort_by(&:uuid).should == objects.sort_by(&:uuid)
     end
   end
 
