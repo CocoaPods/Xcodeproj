@@ -42,5 +42,9 @@ module ProjectSpecs
       reflection = AbstractPBXObject::AssociationReflection.new(:build_configuration_list, :class => PBXFileReference)
       reflection.uuid_method_name.should == 'build_configuration_list_reference'
     end
+
+    #it "returns the association reflection of the other side of the current association" do
+      
+    #end
   end
 end

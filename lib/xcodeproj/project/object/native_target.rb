@@ -14,7 +14,7 @@ module Xcodeproj
         has_many :build_phases
         has_many :dependencies # TODO :class => ?
         has_many :build_rules # TODO :class => ?
-        has_one :build_configuration_list
+        has_one :build_configuration_list, :class => XCConfigurationList
         has_one :product, :uuid => :product_reference
 
         def self.new_static_library(project, productName)

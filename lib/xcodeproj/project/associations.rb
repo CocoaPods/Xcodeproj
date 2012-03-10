@@ -5,6 +5,47 @@ module Xcodeproj
     module Object
 
       class AbstractPBXObject
+        class Association
+          attr_reader :owner, :reflection
+
+          def initialize(owner, reflection, &block)
+            @owner, @reflection, @block = owner, reflection, block
+          end
+
+          class HasMany < Association
+            def get
+              uuids = @owner.send(reflection.uuids_getter)
+              if @block
+                # Evaluate the block, which was specified at the class level, in
+                # the instance’s context.
+                @owner.list_by_class(uuids, reflection.klass) do |new_object|
+                  @owner.instance_exec(new_object, &@block)
+                end
+              else
+                @owner.list_by_class(uuids, @reflection.klass)
+              end
+            end
+
+            # @todo Currently this does not call the @block, which means that
+            #       in theory (like with a group's children) the object stays
+            #       asociated with its old group.
+            def set(list)
+              @owner.send(@reflection.uuids_setter, list.map(&:uuid))
+            end
+          end
+
+          # @todo Does this need 'new object'-callback support too?
+          class HasOne < Association
+            def get
+              @owner.project.objects[@owner.send(@reflection.uuid_getter)]
+            end
+
+            def set(object)
+              @owner.send(@reflection.uuid_setter, object.uuid)
+            end
+          end
+        end
+
         def self.has_many(plural_attr_name, options = {}, &block)
           reflection = create_reflection(plural_attr_name, options)
           if reflection.inverse?
@@ -19,19 +60,10 @@ module Xcodeproj
           else
             attribute(reflection.name, :as => reflection.uuids_getter)
             define_method(reflection.name) do
-              uuids = send(reflection.uuids_getter)
-              if block
-                # Evaluate the block, which was specified at the class level, in
-                # the instance’s context.
-                list_by_class(uuids, reflection.klass) do |object|
-                  instance_exec(object, &block)
-                end
-              else
-                list_by_class(uuids, reflection.klass)
-              end
+              Association::HasMany.new(self, reflection, &block).get
             end
-            define_method(reflection.plural_setter) do |objects|
-              send(reflection.uuids_setter, objects.map(&:uuid))
+            define_method(reflection.plural_setter) do |list|
+              Association::HasMany.new(self, reflection, &block).set(list)
             end
           end
         end
@@ -58,10 +90,10 @@ module Xcodeproj
           else
             attribute(reflection.uuid_attribute, :as => reflection.uuid_getter)
             define_method(reflection.name) do
-              @project.objects[send(reflection.uuid_getter)]
+              Association::HasOne.new(self, reflection).get
             end
-            define_method(reflection.singular_setter) do |object|
-              send(reflection.uuid_setter, object.uuid)
+            define_method(reflection.singular_setter) do |new_object|
+              Association::HasOne.new(self, reflection).set(new_object)
             end
           end
         end

@@ -85,7 +85,7 @@ module Xcodeproj
           @isa ||= name.split('::').last
         end
 
-        attr_reader :uuid, :attributes
+        attr_reader :uuid, :attributes, :project
 
         # [String] the object's class name
         attribute :isa
@@ -132,17 +132,6 @@ module Xcodeproj
           end
         end
 
-        private
-
-        # Generate a truly unique UUID. This is to ensure that cutting up the
-        # UUID in the xcodeproj extension doesn't cause a collision.
-        def generate_uuid
-          begin
-            uuid = Xcodeproj.generate_uuid
-          end while @project.objects_hash.has_key?(uuid)
-          uuid
-        end
-
         def list_by_class(uuids, klass, scoped = nil, &block)
           unless scoped
             scoped = uuids.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }
@@ -155,6 +144,17 @@ module Xcodeproj
               uuids << object.uuid
             end
           end
+        end
+
+        private
+
+        # Generate a truly unique UUID. This is to ensure that cutting up the
+        # UUID in the xcodeproj extension doesn't cause a collision.
+        def generate_uuid
+          begin
+            uuid = Xcodeproj.generate_uuid
+          end while @project.objects_hash.has_key?(uuid)
+          uuid
         end
       end
 
