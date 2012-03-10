@@ -3,7 +3,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 module ProjectSpecs
   describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany" do
     before do
-      @owner      = @project.groups.new
+      @owner       = @project.groups.new
       @reflection  = AbstractPBXObject::AssociationReflection.new(:children, :class => PBXFileReference)
       @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
     end
@@ -45,7 +45,22 @@ module ProjectSpecs
     end
   end
 
-  describe "Xcodeproj::Project::Object::AbstractPBXObject::Associations::HasOne" do
+  describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasMany association" do
+    before do
+      @owner       = @project.files.new('path' => 'some/path')
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:build_files, :inverse_of => :file)
+      @association = AbstractPBXObject::Association::HasMany.new(@owner, @reflection)
+    end
+
+    it "returns the associated objects by finding the ones that have a has_one association to the owner" do
+      @association.get.should == []
+      build_phase = @project.targets.first.source_build_phases.first
+      objects = Array.new(2) { |i| o = build_phase.files.new; o.file = @owner; o }
+      @association.get.should == objects
+    end
+  end
+
+  describe "Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne" do
     before do
       @owner       = @project.targets.first
       @reflection  = AbstractPBXObject::AssociationReflection.new(:build_configuration_list, {})
@@ -66,6 +81,22 @@ module ProjectSpecs
       object = @project.objects.add(XCConfigurationList)
       @association.set(object)
       @owner.attributes['buildConfigurationList'].should == object.uuid
+    end
+  end
+
+  describe "An inverse Xcodeproj::Project::Object::AbstractPBXObject::Association::HasOne association" do
+    before do
+      @owner       = @project.files.new('path' => 'some/path')
+      @reflection  = AbstractPBXObject::AssociationReflection.new(:group, :inverse_of => :children)
+      @association = AbstractPBXObject::Association::HasOne.new(@owner, @reflection)
+    end
+
+    it "returns the associated object by finding the one that has a has_many association which includes the owner" do
+      @owner.group.should == @project.main_group
+      object = @project.groups.new
+      object << @owner
+      @owner.group.should == object
+      @project.main_group.children.should.not.include @owner
     end
   end
 end
