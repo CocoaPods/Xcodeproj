@@ -54,32 +54,29 @@ module Xcodeproj
         end
 
         def files
-          list_by_class(child_references, Xcodeproj::Project::Object::PBXFileReference) do |file|
-            file.group = self
-          end
+          children.list_by_class(PBXFileReference)
         end
 
         def create_file(path)
           files.new("path" => path)
         end
 
-        def file_with_path(path)
-          files.find { |f| f.path == path }
+        def create_files(paths)
+          paths.map { |path| create_file(path) }
         end
-        
-        def add_file_paths(paths)
-          paths.each { |path| files.new("path" => path) }
+
+        # @todo is this really useful?
+        def file_with_path(path)
+          files.where(:path => path)
         end
 
         def source_files
           files = self.files.reject { |file| file.build_files.empty? }
-          list_by_class(child_references, Xcodeproj::Project::Object::PBXFileReference, files) do |file|
-            file.group = self
-          end
+          children.list_by_class(PBXFileReference, files)
         end
 
         def groups
-          list_by_class(child_references, Xcodeproj::Project::Object::PBXGroup)
+          children.list_by_class(PBXGroup)
         end
 
         def create_group(name)

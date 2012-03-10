@@ -12,7 +12,7 @@ module Xcodeproj
           def inverse_get
             # Loop over all objects of the class and find the one that includes
             # this object in the specified uuid list.
-            @owner.project.objects.select_by_class(@reflection.klass).find do |object|
+            @owner.project.objects.list_by_class(@reflection.klass).find do |object|
               object.send(@reflection.inverse.attribute_getter).include?(@owner.uuid)
             end
           end

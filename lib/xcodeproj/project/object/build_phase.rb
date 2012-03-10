@@ -38,6 +38,7 @@ module Xcodeproj
 
         def initialize(*)
           super
+          self.dst_path ||= '$(PRODUCT_NAME)'
           self.dst_subfolder_spec ||= "16"
         end
       end

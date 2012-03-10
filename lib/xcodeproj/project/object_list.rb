@@ -51,6 +51,10 @@ module Xcodeproj
         self.to_a == other.to_a
       end
 
+      def size
+        scoped_uuids.size
+      end
+
       def first
         to_a.first
       end
@@ -73,8 +77,8 @@ module Xcodeproj
       end
 
       # Only makes sense on lists that contain mixed classes. Only the main objects list?
-      def select_by_class(klass)
-        scoped = Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
+      def list_by_class(klass, scoped = nil)
+        scoped ||= Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
         PBXObjectList.new(klass, @project, scoped) do |object|
           # Objects added to the subselection should still use the same
           # callback as this list.

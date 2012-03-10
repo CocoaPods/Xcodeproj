@@ -111,7 +111,7 @@ module Xcodeproj
     # @return [PBXObjectList<PBXGroup>]  A list of all the groups in the
     #                                    project.
     def groups
-      objects.select_by_class(PBXGroup)
+      objects.list_by_class(PBXGroup)
     end
 
     # Tries to find a group with the given name.
@@ -130,7 +130,7 @@ module Xcodeproj
     # @return [PBXObjectList<PBXFileReference>]  A list of all the files in the
     #                                            project.
     def files
-      objects.select_by_class(PBXFileReference)
+      objects.list_by_class(PBXFileReference)
     end
 
     # Adds a file reference for a system framework to the project.
@@ -152,7 +152,8 @@ module Xcodeproj
     #                             directory.
     # @return [PBXFileReference]  The file reference object.
     def add_system_framework(name)
-      files.new({
+      group = groups.where('name' => 'Frameworks') || groups.new('name' => 'Frameworks')
+      group.files.new({
         'name' => "#{name}.framework",
         'path' => "System/Library/Frameworks/#{name}.framework",
         'sourceTree' => 'SDKROOT'
@@ -179,7 +180,7 @@ module Xcodeproj
     #       interesting in combination with a target, so why not get them from
     #       there?
     def build_files
-      objects.select_by_class(PBXBuildFile)
+      objects.list_by_class(PBXBuildFile)
     end
 
     # @todo There are probably other target types too. E.g. an aggregate.

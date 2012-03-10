@@ -18,7 +18,7 @@ module Xcodeproj
           end
 
           def inverse_get
-            scoped = @owner.project.objects.select_by_class(@reflection.klass).select do |object|
+            scoped = @owner.project.objects.list_by_class(@reflection.klass).select do |object|
               object.send(@reflection.inverse.attribute_getter) == @owner.uuid
             end
             PBXObjectList.new(@reflection.klass, @owner.project, scoped) do |new_object|

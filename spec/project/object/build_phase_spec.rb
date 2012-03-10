@@ -21,7 +21,7 @@ module ProjectSpecs
 
   describe "Xcodeproj::Project::Object::PBXCopyFilesBuildPhase" do
     before do
-      @phase = @project.objects.add(PBXCopyFilesBuildPhase, 'dstPath' => 'some/path')
+      @phase = @project.objects.add(PBXCopyFilesBuildPhase)
     end
 
     it "is a PBXBuildPhase" do
@@ -29,7 +29,7 @@ module ProjectSpecs
     end
 
     it "returns the dstPath" do
-      @phase.dst_path.should == 'some/path'
+      @phase.dst_path.should == '$(PRODUCT_NAME)'
     end
 
     it "returns the dstSubfolderSpec (no idea what it is yet, but it's not always the same)" do

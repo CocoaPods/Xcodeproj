@@ -15,25 +15,13 @@ module Xcodeproj
         has_many :dependencies # TODO :class => ?
         has_many :build_rules # TODO :class => ?
         has_one :build_configuration_list, :class => XCConfigurationList
-        has_one :product, :uuid => :product_reference
+        has_one :product
 
+        # @todo a lot of this should move to the normal initialize method, like creating build phases.
         def self.new_static_library(project, productName)
           # TODO should probably switch the uuid and attributes argument
           target = new(project, nil, 'productType' => STATIC_LIBRARY, 'productName' => productName)
-          target.product = project.files.new_static_library(productName)
-          products = project.groups.find { |g| g.name == 'Products' }
-          products ||= project.groups.new({ 'name' => 'Products'})
-          products.children << target.product
-          target.build_phases.add(PBXSourcesBuildPhase)
-
-          build_phase = target.build_phases.add(PBXFrameworksBuildPhase)
-          frameworks = project.groups.find { |g| g.name == 'Frameworks' }
-          frameworks ||= project.groups.new({ 'name' => 'Frameworks'})
-          frameworks.files.each do |framework|
-            build_phase.files << framework.build_files.new
-          end
-
-          target.build_phases.add(PBXCopyFilesBuildPhase, 'dstPath' => '$(PRODUCT_NAME)')
+          target.product.path = "lib#{productName}.a"
           target
         end
 
@@ -44,13 +32,33 @@ module Xcodeproj
           self.name ||= product_name
           self.build_rule_references  ||= []
           self.dependency_references  ||= []
-          self.build_phase_references ||= []
+
+          unless build_phase_references
+            self.build_phase_references = []
+
+            source_build_phases.new
+            copy_files_build_phases.new
+            shell_script_build_phases.new
+
+            phase = frameworks_build_phases.new
+            if frameworks_group = @project.groups.where(:name => 'Frameworks')
+              frameworks_group.files.each do |framework|
+                phase.files << framework.build_files.new
+              end
+            end
+          end
 
           unless build_configuration_list
             self.build_configuration_list = project.objects.add(XCConfigurationList)
             # TODO or should this happen in buildConfigurationList?
             build_configuration_list.build_configurations.new('name' => 'Debug')
             build_configuration_list.build_configurations.new('name' => 'Release')
+          end
+
+          # The path still has to be set by the user!
+          unless product
+            self.product = @project.files.new("includeInIndex" => "0", "sourceTree" => "BUILT_PRODUCTS_DIR")
+            @project.products << product
           end
         end
 
@@ -65,19 +73,19 @@ module Xcodeproj
         end
 
         def source_build_phases
-          build_phases.select_by_class(PBXSourcesBuildPhase)
+          build_phases.list_by_class(PBXSourcesBuildPhase)
         end
 
         def copy_files_build_phases
-          build_phases.select_by_class(PBXCopyFilesBuildPhase)
+          build_phases.list_by_class(PBXCopyFilesBuildPhase)
         end
 
         def frameworks_build_phases
-          build_phases.select_by_class(PBXFrameworksBuildPhase)
+          build_phases.list_by_class(PBXFrameworksBuildPhase)
         end
-        
+
         def shell_script_build_phases
-          build_phases.select_by_class(PBXShellScriptBuildPhase)
+          build_phases.list_by_class(PBXShellScriptBuildPhase)
         end
 
         # Finds an existing file reference or creates a new one.

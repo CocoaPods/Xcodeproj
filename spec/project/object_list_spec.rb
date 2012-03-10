@@ -70,11 +70,12 @@ module ProjectSpecs
     end
 
     it "forwards a missing method to the represented class, if it exists, which is expected to return a new instance" do
-      file = @list.new_static_library('AnotherLib')
-      file.should.be.instance_of PBXFileReference
-      file.name.should == 'libAnotherLib.a'
-      @project.objects[file.uuid].should == file
-      @added_uuids.should == [file.uuid]
+      @list.instance_variable_set(:@represented_class, PBXNativeTarget)
+      target = @list.new_static_library('AnotherLib')
+      target.should.be.instance_of PBXNativeTarget
+      target.product.name.should == 'libAnotherLib.a'
+      @project.objects[target.uuid].should == target
+      @added_uuids.should == [target.uuid]
     end
   end
 end

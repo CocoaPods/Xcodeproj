@@ -19,6 +19,10 @@ module ProjectSpecs
       product.include_in_index.should == "0"
     end
 
+    it "adds the product to the Products group in the main group" do
+      @project.products.should.include @target.product
+    end
+
     it "returns that product type is a static library" do
       @target.product_type.should == "com.apple.product-type.library.static"
     end
@@ -44,20 +48,33 @@ module ProjectSpecs
   end
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
-    it "returns an empty sources build phase" do
-      phase = @target.build_phases.select_by_class(PBXSourcesBuildPhase).first
-      phase.files.to_a.should == []
+    {
+      :source_build_phases       => PBXSourcesBuildPhase,
+      :copy_files_build_phases   => PBXCopyFilesBuildPhase,
+      :frameworks_build_phases   => PBXFrameworksBuildPhase,
+      :shell_script_build_phases => PBXShellScriptBuildPhase
+    }.each do |association_method, klass|
+      it "returns an empty #{klass.isa}" do
+        phases = @target.send(association_method)
+        phases.size.should == 1
+        phases.first.should.be.instance_of klass
+        phases.first.files.to_a.should == []
+      end
+
+      it "adds a #{klass.isa}" do
+        phase = @target.send(association_method).new
+        phase.should.be.instance_of klass
+        phases = @target.send(association_method)
+        phases.size.should == 2
+        phases.should.include phase
+      end
     end
 
-    it "returns a libraries/frameworks build phase, which by default is empty" do
-      phase = @target.build_phases.select_by_class(PBXFrameworksBuildPhase).first
-      phase.should.not == nil
-    end
-
-    it "returns an empty 'copy headers' phase" do
-      phase = @target.build_phases.select_by_class(PBXCopyFilesBuildPhase).first
-      phase.dst_path.should == "$(PRODUCT_NAME)"
-      phase.files.to_a.should == []
+    it "adds frameworks the frameworks in a group named 'Frameworks' in the main group to a new target" do
+      file = @project.add_system_framework('QuartzCore')
+      group = @project.groups.where(:name => 'Frameworks')
+      target = @project.targets.new
+      target.frameworks_build_phases.first.files.map(&:file).should == [file]
     end
   end
 end

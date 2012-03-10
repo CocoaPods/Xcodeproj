@@ -53,6 +53,20 @@ module ProjectSpecs
       @project.main_group.name.should == 'Main Group'
     end
 
+    it "returns a file by path" do
+      @group.file_with_path('Abracadabra.h').should == @group.files.where(:path => 'Abracadabra.h')
+    end
+
+    it "adds files for the given paths" do
+      file = @group.create_file('ZOMG.md')
+      file.path.should == 'ZOMG.md'
+      @group.files.should.include file
+
+      files = @group.create_files(['ZOMG.h', 'ZOMG.m'])
+      files.map(&:path).should == %w{ ZOMG.h ZOMG.m }
+      files.each { |file| @group.files.should.include file }
+    end
+
     it "returns a list of files and groups" do
       @group.children.map(&:name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
     end
@@ -70,6 +84,13 @@ module ProjectSpecs
     it "maintains the order of the assigned children" do
       @group.children = @group.children.sort_by(&:name)
       @group.children.map(&:name).should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
+    end
+
+    it "returns files that have at least one associated build file as the source files" do
+      @group.source_files.should.be.empty
+      file = @group.files.first
+      @target.source_build_phases.first.files << file.build_files.new
+      @group.source_files.should == [file]
     end
   end
 end
