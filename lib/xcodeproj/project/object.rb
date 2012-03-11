@@ -162,6 +162,10 @@ module Xcodeproj
         def list_by_class(uuid_list, klass)
           PBXObjectList.new(klass, @project) do |list|
             list.let(:uuid_scope) do
+              # TODO why does this not work? should be more efficient.
+              #uuid_list.select do |uuid|
+                #@project.objects_hash[uuid]['isa'] == klass.isa
+              #end
               uuid_list.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }.map(&:uuid)
             end
             list.let(:push) do |new_object|
