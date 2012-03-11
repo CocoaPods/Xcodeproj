@@ -23,6 +23,20 @@ module ProjectSpecs
       @project.objects_hash.should.not.has_key @entry.uuid
       @project.main_group.child_references.should.not.include @entry.uuid
     end
+
+    it "sorts by group vs file first, then name" do
+      group = @project.groups.new('name' => 'Parent')
+      group.files.new('path' => 'Abracadabra.h')
+      group.files.new('path' => 'Banana.h')
+      group.groups.new('name' => 'ZappMachine')
+      group.files.new('path' => 'Abracadabra.m')
+      group.files.new('path' => 'Banana.m')
+      group.groups.new('name' => 'Apemachine')
+      group.children.sort.map(&:name).should == %w{
+        Apemachine ZappMachine
+        Abracadabra.h Abracadabra.m Banana.h Banana.m
+      }
+    end
   end
 
   describe "Xcodeproj::Project::Object::PBXGroup" do

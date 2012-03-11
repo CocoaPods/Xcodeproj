@@ -18,6 +18,17 @@ module Xcodeproj
           group.child_references.delete(uuid)
           super
         end
+
+        # Sorts groups before files and inside those sorts by name.
+        def <=>(other)
+          if self.is_a?(PBXGroup) && other.is_a?(PBXFileReference)
+            -1
+          elsif self.is_a?(PBXFileReference) && other.is_a?(PBXGroup)
+            1
+          else
+            self.name <=> other.name
+          end
+        end
       end
 
       # @todo The `source_tree` can probably be more than just `<group>`.

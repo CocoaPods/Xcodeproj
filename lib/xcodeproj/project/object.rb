@@ -120,6 +120,10 @@ module Xcodeproj
           other.is_a?(AbstractPBXObject) && self.uuid == other.uuid
         end
 
+        def <=>(other)
+          self.uuid <=> other.uuid
+        end
+
         def inspect
           "#<#{isa} UUID: `#{uuid}', name: `#{name}'>"
         end

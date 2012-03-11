@@ -53,5 +53,12 @@ module ProjectSpecs
       @object.destroy
       @project.objects_hash.should.not.has_key @object.uuid
     end
+
+    it "sorts by UUID" do
+      object1 = new_instance(AbstractPBXObject, { 'name' => 'low'  }, '1111')
+      object2 = new_instance(AbstractPBXObject, { 'name' => 'mid'  }, '2222')
+      object3 = new_instance(AbstractPBXObject, { 'name' => 'high' }, '3333')
+      [object2, object1, object3].sort.should == [object1, object2, object3]
+    end
   end
 end

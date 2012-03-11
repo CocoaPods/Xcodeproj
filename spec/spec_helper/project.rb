@@ -1,9 +1,9 @@
 module SpecHelper
   module Project
     module Stubbing
-      def new_instance(klass, attributes)
+      def new_instance(klass, attributes, uuid = nil)
         @project.disable_raise = true
-        object = klass.new(@project, nil, attributes)
+        object = klass.new(@project, uuid, attributes)
         @project.disable_raise = false
         object
       end
