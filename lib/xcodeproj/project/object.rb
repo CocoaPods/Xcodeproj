@@ -136,18 +136,22 @@ module Xcodeproj
           end
         end
 
-        def list_by_class(uuids, klass, scoped = nil, &block)
-          unless scoped
-            scoped = uuids.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }
-          end
+        # @todo this can probably be simplified by now.
+        def list_by_class(uuids, klass, scoped_uuids = nil, &block)
+          scoped_uuids ||= lambda {
+            uuids.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }.map(&:uuid)
+          }
+          list = PBXObjectList.new(klass, @project)
+          list.scope_uuids(&scoped_uuids)
           if block
-            PBXObjectList.new(klass, @project, scoped, &block)
+            list.on_add_object(&block)
           else
-            PBXObjectList.new(klass, @project, scoped) do |object|
+            list.on_add_object do |object|
               # Add the uuid of a newly created object to the uuids list
               uuids << object.uuid
             end
           end
+          list
         end
 
         private

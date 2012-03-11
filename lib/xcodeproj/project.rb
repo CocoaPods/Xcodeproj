@@ -105,7 +105,9 @@ module Xcodeproj
     # @return [PBXObjectList<AbstractPBXObject>]  A list of all the objects in the
     #                                     project.
     def objects
-      @objects ||= PBXObjectList.new(AbstractPBXObject, self, objects_hash)
+      objects = PBXObjectList.new(AbstractPBXObject, self)
+      objects.scope_uuids { objects_hash.keys }
+      objects
     end
 
     # @return [PBXObjectList<PBXGroup>]  A list of all the groups in the

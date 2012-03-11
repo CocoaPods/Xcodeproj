@@ -5,24 +5,29 @@ module Xcodeproj
     class PBXObjectList
       include Enumerable
 
-      def initialize(represented_class, project, scoped, &new_object_callback)
+      def initialize(represented_class, project)
         @represented_class = represented_class
         @project           = project
-        @scoped_hash       = scoped.is_a?(Array) ? scoped.inject({}) { |h, o| h[o.uuid] = o.attributes; h } : scoped
-        @scoped_uuids      = scoped.map(&:uuid) if scoped.is_a?(Array)
-        @callback          = new_object_callback
       end
 
-      def empty?
-        @scoped_hash.empty?
+      def scope_uuids(&block)
+        @scope_uuids_callback = block
+      end
+
+      def on_add_object(&block)
+        @add_object_callback = block
       end
 
       def scoped_uuids
-        @scoped_uuids || @scoped_hash.keys
+        @scope_uuids_callback.call
+      end
+
+      def empty?
+        scoped_uuids.empty?
       end
 
       def [](uuid)
-        if hash = @scoped_hash[uuid]
+        if scoped_uuids.include?(uuid) && hash = @project.objects_hash[uuid]
           Object.const_get(hash['isa']).new(@project, uuid, hash)
         end
       end
@@ -77,12 +82,23 @@ module Xcodeproj
       end
 
       # Only makes sense on lists that contain mixed classes. Only the main objects list?
-      def list_by_class(klass, scoped = nil)
-        scoped ||= Hash[*@scoped_hash.select { |_, attr| attr['isa'] == klass.isa }.flatten]
-        PBXObjectList.new(klass, @project, scoped) do |object|
-          # Objects added to the subselection should still use the same
-          # callback as this list.
-          self << object
+      def list_by_class(klass, scoped_uuids = nil)
+        parent = self
+        PBXObjectList.new(klass, @project).tap do |list|
+          list.on_add_object do |object|
+            # Objects added to the subselection should still use the same
+            # callback as this list.
+            parent << object
+          end
+          if scoped_uuids
+            list.scope_uuids(&scoped_uuids)
+          else
+            list.scope_uuids do
+              parent.scoped_uuids.select do |uuid|
+                @project.objects_hash[uuid]['isa'] == klass.isa
+              end
+            end
+          end
         end
       end
 
@@ -102,8 +118,7 @@ module Xcodeproj
       private
 
       def add_object(object)
-        @scoped_uuids << object.uuid if @scoped_uuids
-        @callback.call(object) if @callback
+        @add_object_callback.call(object) if @add_object_callback
       end
     end
 

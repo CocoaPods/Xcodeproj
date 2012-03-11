@@ -5,16 +5,22 @@ module ProjectSpecs
     before do
       @uuid, @attributes = @project.objects_hash.find { |_, attr| attr['isa'] == 'PBXFileReference' }
       @added_uuids = []
-      @list = Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project, { @uuid => @attributes }) do |new_object|
-        @added_uuids << new_object.uuid
+      @list = Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project).tap do |list|
+        list.on_add_object do |new_object|
+          @added_uuids << new_object.uuid
+        end
+        list.scope_uuids do
+          uuid, _ = @project.objects_hash.find { |_, attr| attr['isa'] == 'PBXFileReference' }
+          uuid ? [uuid] : []
+        end
       end
     end
 
-    #it "returns wether or not it's empty" do
-      #@list.should.not.be.empty
-      #@project.objects[@uuid].destroy
-      #@list.should.be.empty
-    #end
+    it "returns wether or not it's empty" do
+      @list.should.not.be.empty
+      @project.objects[@uuid].destroy
+      @list.should.be.empty
+    end
 
     it "returns the UUIDs to which it limits the scope of the list" do
       @list.scoped_uuids.should == [@uuid]
@@ -55,7 +61,9 @@ module ProjectSpecs
     end
 
     it "is comparable to another list" do
-      @list.should == Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project, { @uuid => @attributes })
+      @list.should == Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project).tap do |list|
+        list.scope_uuids { [@uuid] }
+      end
     end
 
     it "returns the object matching the specified attributes (but only if they have accessors)" do
