@@ -5,11 +5,11 @@ module ProjectSpecs
     before do
       @uuid, @attributes = @project.objects_hash.find { |_, attr| attr['isa'] == 'PBXFileReference' }
       @added_uuids = []
-      @list = Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project).tap do |list|
-        list.on_add_object do |new_object|
+      @list = Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project) do |list|
+        list.let(:push) do |new_object|
           @added_uuids << new_object.uuid
         end
-        list.scope_uuids do
+        list.let(:uuid_scope) do
           uuid, _ = @project.objects_hash.find { |_, attr| attr['isa'] == 'PBXFileReference' }
           uuid ? [uuid] : []
         end
@@ -23,7 +23,7 @@ module ProjectSpecs
     end
 
     it "returns the UUIDs to which it limits the scope of the list" do
-      @list.scoped_uuids.should == [@uuid]
+      @list.uuid_scope.should == [@uuid]
     end
 
     it "returns the object for the specified UUID, if it's in the scoped uuids list" do
@@ -61,8 +61,8 @@ module ProjectSpecs
     end
 
     it "is comparable to another list" do
-      @list.should == Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project).tap do |list|
-        list.scope_uuids { [@uuid] }
+      @list.should == Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project) do |list|
+        list.let(:uuid_scope) { [@uuid] }
       end
     end
 

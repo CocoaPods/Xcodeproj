@@ -71,9 +71,11 @@ module Xcodeproj
         end
 
         def source_files
-          children.list_by_class(PBXFileReference, lambda {
-            files.reject { |file| file.build_files.empty? }.map(&:uuid)
-          })
+          children.list_by_class(PBXFileReference) do |list|
+            list.let(:uuid_scope) do
+              files.reject { |file| file.build_files.empty? }.map(&:uuid)
+            end
+          end
         end
 
         def groups

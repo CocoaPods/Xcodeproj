@@ -136,22 +136,40 @@ module Xcodeproj
           end
         end
 
-        # @todo this can probably be simplified by now.
-        def list_by_class(uuids, klass, scoped_uuids = nil, &block)
-          scoped_uuids ||= lambda {
-            uuids.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }.map(&:uuid)
-          }
-          list = PBXObjectList.new(klass, @project)
-          list.scope_uuids(&scoped_uuids)
-          if block
-            list.on_add_object(&block)
-          else
-            list.on_add_object do |object|
-              # Add the uuid of a newly created object to the uuids list
-              uuids << object.uuid
+        # Returns a PBXObjectList instance of objects in the `uuid_list`.
+        #
+        # By default this list will scope the list by objects matching the
+        # specified class and add objects, pushed onto the list, to the given
+        # `uuid_list` array.
+        #
+        # If a block is given the list instance is yielded so that the default
+        # callbacks can be overridden.
+        #
+        # @param  [Array] uuid_list          The UUID array instance which is
+        #                                    part of the internal data. If this
+        #                                    would be an arbitrary array and an
+        #                                    object is added, then it doesn't
+        #                                    actually modify the internal data,
+        #                                    meaning the change is lost.
+        #
+        # @param  [AbstractPBXObject] klass  The AbstractPBXObject subclass to
+        #                                    which the list should be scoped.
+        #
+        # @yield  [PBXObjectList]            The list instance, allowing you to
+        #                                    easily override the callbacks.
+        #
+        # @return [PBXObjectList<klass>]     The list of matching objects.
+        def list_by_class(uuid_list, klass)
+          PBXObjectList.new(klass, @project) do |list|
+            list.let(:uuid_scope) do
+              uuid_list.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }.map(&:uuid)
             end
+            list.let(:push) do |new_object|
+              # Add the uuid of a newly created object to the uuids list
+              uuid_list << new_object.uuid
+            end
+            yield list if block_given?
           end
-          list
         end
 
         private
