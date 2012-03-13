@@ -26,6 +26,14 @@ module Xcodeproj
 
         has_many :build_files, :inverse_of => :file
 
+        def self.new_static_library(project, product_name)
+          new(project, nil,
+            "includeInIndex" => "0",
+            "sourceTree" => "BUILT_PRODUCTS_DIR",
+            "path" => "lib#{product_name}.a"
+          )
+        end
+
         def initialize(*)
           super
           self.path = path if path # sets default name

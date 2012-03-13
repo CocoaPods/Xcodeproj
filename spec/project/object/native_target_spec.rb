@@ -54,18 +54,21 @@ module ProjectSpecs
       :frameworks_build_phases   => PBXFrameworksBuildPhase,
       :shell_script_build_phases => PBXShellScriptBuildPhase
     }.each do |association_method, klass|
-      it "returns an empty #{klass.isa}" do
-        phases = @target.send(association_method)
-        phases.size.should == 1
-        phases.first.should.be.instance_of klass
-        phases.first.files.to_a.should == []
+      unless klass == PBXShellScriptBuildPhase
+        it "returns an empty #{klass.isa}" do
+          phases = @target.send(association_method)
+          phases.size.should == 1
+          phases.first.should.be.instance_of klass
+          phases.first.files.to_a.should == []
+        end
       end
 
       it "adds a #{klass.isa}" do
+        phases = @target.send(association_method)
+        before = phases.size
         phase = @target.send(association_method).new
         phase.should.be.instance_of klass
-        phases = @target.send(association_method)
-        phases.size.should == 2
+        phases.size.should == before + 1
         phases.should.include phase
       end
     end

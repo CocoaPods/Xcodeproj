@@ -67,10 +67,6 @@ module ProjectSpecs
       @project.main_group.name.should == 'Main Group'
     end
 
-    it "returns a file by path" do
-      @group.file_with_path('Abracadabra.h').should == @group.files.where(:path => 'Abracadabra.h')
-    end
-
     it "adds files for the given paths" do
       file = @group.create_file('ZOMG.md')
       file.path.should == 'ZOMG.md'

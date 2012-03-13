@@ -76,11 +76,6 @@ module Xcodeproj
           paths.map { |path| create_file(path) }
         end
 
-        # @todo is this really useful?
-        def file_with_path(path)
-          files.where(:path => path)
-        end
-
         def source_files
           children.list_by_class(PBXFileReference) do |list|
             list.let(:uuid_scope) do

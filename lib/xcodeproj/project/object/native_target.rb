@@ -15,7 +15,7 @@ module Xcodeproj
         has_many :dependencies # TODO :class => ?
         has_many :build_rules # TODO :class => ?
         has_one :build_configuration_list, :class => XCConfigurationList
-        has_one :product
+        has_one :product, :uuid => :product_reference
 
         # @todo a lot of this should move to the normal initialize method, like creating build phases.
         def self.new_static_library(project, productName)
@@ -38,7 +38,7 @@ module Xcodeproj
 
             source_build_phases.new
             copy_files_build_phases.new
-            shell_script_build_phases.new
+            #shell_script_build_phases.new
 
             phase = frameworks_build_phases.new
             if frameworks_group = @project.groups.where(:name => 'Frameworks')
@@ -49,23 +49,24 @@ module Xcodeproj
           end
 
           unless build_configuration_list
-            self.build_configuration_list = project.objects.add(XCConfigurationList)
+            self.build_configuration_list = project.objects.add(XCConfigurationList, {
+              'defaultConfigurationIsVisible' => '0',
+              'defaultConfigurationName' => 'Release',
+            })
             # TODO or should this happen in buildConfigurationList?
             build_configuration_list.build_configurations.new('name' => 'Debug')
             build_configuration_list.build_configurations.new('name' => 'Release')
           end
 
-          # The path still has to be set by the user!
           unless product
-            self.product = @project.files.new("includeInIndex" => "0", "sourceTree" => "BUILT_PRODUCTS_DIR")
-            @project.products << product
+            self.product = @project.files.new_static_library(product_name)
           end
         end
 
         alias_method :_product=, :product=
         def product=(product)
           self._product = product
-          @project.products_group << product
+          @project.products << product
         end
 
         def build_configurations
