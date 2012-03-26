@@ -162,22 +162,6 @@ module Xcodeproj
       })
     end
 
-    # @todo Is this being used? In any case, this should move to
-    #       PBXShellScriptBuildPhase and make it possible to do:
-    #       `target.shell_script_build_phases.new`
-    #
-    # @return [PBXShellScriptBuildPhase]
-    def add_shell_script_build_phase(name, script_path)
-      objects.add(PBXShellScriptBuildPhase, {
-        'name' => name,
-        'files' => [],
-        'inputPaths' => [],
-        'outputPaths' => [],
-        'shellPath' => '/bin/sh',
-        'shellScript' => script_path
-      })
-    end
-
     # @todo How is this being used? I would think that build files are more
     #       interesting in combination with a target, so why not get them from
     #       there?
