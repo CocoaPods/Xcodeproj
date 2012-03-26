@@ -56,4 +56,21 @@ module ProjectSpecs
       @phase.should.be.kind_of PBXBuildPhase
     end
   end
+
+  describe "Xcodeproj::Project::Object::PBXShellScriptBuildPhase" do
+    before do
+      @phase = @project.objects.add(PBXShellScriptBuildPhase)
+    end
+
+    it "uses the shell in /bin/sh as the default interpreter" do
+      @phase.shell_path.should == '/bin/sh'
+    end
+
+    it "has empty defaults for the other attributes" do
+      @phase.files.should == []
+      @phase.input_paths.should == []
+      @phase.output_paths.should == []
+      @phase.shell_script.should == ''
+    end
+  end
 end

@@ -46,7 +46,6 @@ module Xcodeproj
       class PBXSourcesBuildPhase < PBXBuildPhase;     end
       class PBXFrameworksBuildPhase < PBXBuildPhase;  end
 
-
       # @todo Should `files`, `input_paths`, and `output_paths` be has_many
       #       associations with file references?
       class PBXShellScriptBuildPhase < PBXBuildPhase
@@ -64,14 +63,6 @@ module Xcodeproj
 
         def initialize(*)
           super
-          #objects.add(PBXShellScriptBuildPhase, {
-            #'name' => name,
-            #'files' => [],
-            #'inputPaths' => [],
-            #'outputPaths' => [],
-            #'shellPath' => '/bin/sh',
-            #'shellScript' => script_path
-          #})
           self.files        ||= []
           self.input_paths  ||= []
           self.output_paths ||= []
