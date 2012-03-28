@@ -54,6 +54,10 @@ module Xcodeproj
       @attributes.map { |key, value| "#{key} = #{value}" }.join("\n")
     end
 
+    def inspect
+      @attributes.inspect
+    end
+
     # Writes the serialized representation of the internal data to the given
     # path.
     #
