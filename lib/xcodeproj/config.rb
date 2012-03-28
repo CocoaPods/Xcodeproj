@@ -15,6 +15,10 @@ module Xcodeproj
       @attributes
     end
 
+    def ==(other)
+      other.respond_to?(:to_hash) && other.to_hash == self.to_hash
+    end
+
     # Merges the given xcconfig hash or Config into the internal data.
     #
     # If a key in the given hash already exists, in the internal data, then its
