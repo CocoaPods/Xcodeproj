@@ -169,13 +169,6 @@ module Xcodeproj
       })
     end
 
-    # @todo How is this being used? I would think that build files are more
-    #       interesting in combination with a target, so why not get them from
-    #       there?
-    def build_files
-      objects.list_by_class(PBXBuildFile)
-    end
-
     # @return [PBXObjectList<XCBuildConfiguration]  A list of project wide
     #                                               build configurations.
     def build_configurations
