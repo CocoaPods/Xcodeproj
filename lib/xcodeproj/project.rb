@@ -58,6 +58,8 @@ module Xcodeproj
         })
 
         config_list = objects.add(XCConfigurationList)
+        config_list.default_configuration_name = 'Release'
+        config_list.default_configuration_is_visible = '0'
         config_list.build_configurations.new('name' => 'Debug')
         config_list.build_configurations.new('name' => 'Release')
         self.root_object.build_configuration_list = config_list

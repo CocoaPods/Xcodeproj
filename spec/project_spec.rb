@@ -69,6 +69,10 @@ module ProjectSpecs
     end
 
     it "returns the top-level project configurations and build settings" do
+      list = @project.root_object.build_configuration_list
+      list.default_configuration_name.should == 'Release'
+      list.default_configuration_is_visible.should == '0'
+
       @project.build_settings('Debug').should == {}
       @project.build_settings('Release').should == {}
     end

@@ -79,6 +79,9 @@ module Xcodeproj
       end
 
       class XCConfigurationList < AbstractPBXObject
+        attribute :default_configuration_is_visible
+        attribute :default_configuration_name
+
         has_many :build_configurations
 
         def initialize(*)
