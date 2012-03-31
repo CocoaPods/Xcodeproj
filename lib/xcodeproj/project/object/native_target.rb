@@ -17,15 +17,7 @@ module Xcodeproj
         has_one :build_configuration_list, :class => XCConfigurationList
         has_one :product, :uuid => :product_reference
 
-        # @todo a lot of this should move to the normal initialize method, like creating build phases.
-        def self.new_static_library(project, productName)
-          # TODO should probably switch the uuid and attributes argument
-          target = new(project, nil, 'productType' => STATIC_LIBRARY, 'productName' => productName)
-          target.product.path = "lib#{productName}.a"
-          target
-        end
-
-        def self.new_new_static_library(project, platform, name)
+        def self.new_static_library(project, platform, name)
           project.add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa')
 
           target = new(project, nil, 'productType' => STATIC_LIBRARY, 'productName' => name)

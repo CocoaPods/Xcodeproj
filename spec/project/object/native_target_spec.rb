@@ -34,6 +34,11 @@ module ProjectSpecs
   end
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
+    before do
+      @project.groups.where(:name => 'Frameworks').children.each(&:destroy)
+      @target = @project.targets.new
+    end
+
     {
       :source_build_phases       => PBXSourcesBuildPhase,
       :copy_files_build_phases   => PBXCopyFilesBuildPhase,
@@ -80,7 +85,8 @@ module ProjectSpecs
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its iOS specific helpers" do
     before do
-      @target = @project.targets.new_new_static_library(:ios, 'Pods')
+      @project.groups.where(:name => 'Frameworks').children.each(&:destroy)
+      @target = @project.targets.new_static_library(:ios, 'Pods')
     end
 
     it "returns its name and path" do
@@ -101,7 +107,8 @@ module ProjectSpecs
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its OS X specific helpers" do
     before do
-      @target = @project.targets.new_new_static_library(:osx, 'Pods')
+      @project.groups.where(:name => 'Frameworks').children.each(&:destroy)
+      @target = @project.targets.new_static_library(:osx, 'Pods')
     end
 
     it "returns its name and path" do

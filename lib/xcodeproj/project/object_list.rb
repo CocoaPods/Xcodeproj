@@ -82,7 +82,7 @@ module Xcodeproj
       end
 
       def inspect
-        "<PBXObjectList: #{map(&:inspect)}>"
+        "<PBXObjectList: #{map(&:inspect).join(', ')}>"
       end
 
       def where(attributes)

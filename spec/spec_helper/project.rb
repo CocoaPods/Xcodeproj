@@ -37,7 +37,7 @@ module SpecHelper
       context.before do
         @project = Xcodeproj::Project.new
         add_disable_raise_feature_to_project!
-        @target = @project.targets.new_static_library('Pods')
+        @target = @project.targets.new_static_library(:ios, 'Pods')
       end
     end
   end

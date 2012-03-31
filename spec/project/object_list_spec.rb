@@ -3,6 +3,8 @@ require File.expand_path('../../spec_helper', __FILE__)
 module ProjectSpecs
   describe "Xcodeproj::Project::PBXObjectList" do
     before do
+      @project.groups.where(:name => 'Frameworks').files.first.destroy
+
       @uuid, @attributes = @project.objects_hash.find { |_, attr| attr['isa'] == 'PBXFileReference' }
       @added_uuids = []
       @list = Xcodeproj::Project::PBXObjectList.new(PBXFileReference, @project) do |list|
@@ -74,12 +76,13 @@ module ProjectSpecs
 
     it "returns an object with the given name" do
       @list.object_named('DOESNOTEXIST').should == nil
+      p @project.objects
       @list.object_named('libPods.a').should == @project.objects[@uuid]
     end
 
     it "forwards a missing method to the represented class, if it exists, which is expected to return a new instance" do
       @list.instance_variable_set(:@represented_class, PBXNativeTarget)
-      target = @list.new_static_library('AnotherLib')
+      target = @list.new_static_library(:ios, 'AnotherLib')
       target.should.be.instance_of PBXNativeTarget
       target.product.name.should == 'libAnotherLib.a'
       @project.objects[target.uuid].should == target
