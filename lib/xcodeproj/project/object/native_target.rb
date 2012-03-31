@@ -91,9 +91,7 @@ module Xcodeproj
         end
 
         def build_settings(build_configuration_name)
-          if config = build_configurations.where(:name => build_configuration_name)
-            config.build_settings
-          end
+          build_configuration_list.build_settings(build_configuration_name)
         end
 
         def source_build_phases

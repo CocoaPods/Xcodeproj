@@ -68,6 +68,11 @@ module ProjectSpecs
       @project.products.last.should == file
     end
 
+    it "returns the top-level project configurations and build settings" do
+      @project.build_settings('Debug').should == {}
+      @project.build_settings('Release').should == {}
+    end
+
     it "adds an `m' or `c' file to the `sources build' phase list" do
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")

@@ -17,6 +17,7 @@ module Xcodeproj
       class PBXProject < AbstractPBXObject
         has_many :targets, :class => PBXNativeTarget
         has_one :products_group, :uuid => :product_ref_group, :class => PBXGroup
+        has_one :build_configuration_list, :class => XCConfigurationList
       end
     end
 
@@ -55,6 +56,12 @@ module Xcodeproj
           'projectRoot' => '',
           'targets' => []
         })
+
+        config_list = objects.add(XCConfigurationList)
+        config_list.build_configurations.new('name' => 'Debug')
+        config_list.build_configurations.new('name' => 'Release')
+        self.root_object.build_configuration_list = config_list
+
         # TODO make this work
         #self.root_object.product_reference = groups.new('name' => 'Products').uuid
       end
@@ -167,6 +174,20 @@ module Xcodeproj
     #       there?
     def build_files
       objects.list_by_class(PBXBuildFile)
+    end
+
+    # @return [PBXObjectList<XCBuildConfiguration]  A list of project wide
+    #                                               build configurations.
+    def build_configurations
+      root_object.build_configuration_list.build_configurations
+    end
+
+    # @param [String] name  The name of a project wide build configuration.
+    #
+    # @return [Hash]        The build settings of the project wide build
+    #                       configuration with the given name.
+    def build_settings(name)
+      root_object.build_configuration_list.build_settings(name)
     end
 
     # @todo There are probably other target types too. E.g. an aggregate.

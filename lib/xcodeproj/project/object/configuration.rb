@@ -53,11 +53,17 @@ module Xcodeproj
         }.freeze
 
         def self.new_release(project)
-          new(project, nil, 'name' => 'Release')
+          new(project, nil,
+            'name' => 'Release',
+            'buildSettings' => COMMON_BUILD_SETTINGS[:all].dup
+          )
         end
 
         def self.new_debug(project)
-          new(project, nil, 'name' => 'Debug', 'buildSettings' => COMMON_BUILD_SETTINGS[:debug])
+          new(project, nil,
+            'name' => 'Debug',
+            'buildSettings' => COMMON_BUILD_SETTINGS[:all].merge(COMMON_BUILD_SETTINGS[:debug])
+          )
         end
 
         # [Hash] the build settings used when building a target
@@ -68,8 +74,7 @@ module Xcodeproj
 
         def initialize(*)
           super
-          # TODO These are from a static library, need to check if it works for any product type
-          self.build_settings = COMMON_BUILD_SETTINGS[:all].merge(build_settings || {})
+          self.build_settings ||= {}
         end
       end
 
@@ -79,6 +84,12 @@ module Xcodeproj
         def initialize(*)
           super
           self.build_configuration_references ||= []
+        end
+
+        def build_settings(build_configuration_name)
+          if config = build_configurations.where(:name => build_configuration_name)
+            config.build_settings
+          end
         end
       end
 
