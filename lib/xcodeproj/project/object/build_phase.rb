@@ -10,7 +10,7 @@ module Xcodeproj
       end
 
       class PBXBuildPhase < AbstractPBXObject
-        has_many :build_files, :uuids => :file_references #, :class => PBXBuildFile
+        has_many :build_files, :uuids => :file_references
 
         # [String] some kind of magic number which seems to always be '2147483647'
         attribute :build_action_mask
