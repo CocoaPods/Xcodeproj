@@ -27,20 +27,6 @@ module ProjectSpecs
       @target.product_type.should == "com.apple.product-type.library.static"
     end
 
-    it "returns the buildConfigurationList" do
-      list = @target.build_configuration_list
-      list.should.be.instance_of XCConfigurationList
-      list.build_configurations.each do |configuration|
-        configuration.build_settings.should == {
-          'DSTROOT'                      => '/tmp/xcodeproj.dst',
-          'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES',
-          'GCC_VERSION'                  => 'com.apple.compilers.llvm.clang.1_0',
-          'PRODUCT_NAME'                 => '$(TARGET_NAME)',
-          'SKIP_INSTALL'                 => 'YES',
-        }
-      end
-    end
-
     it "returns an empty list of dependencies and buildRules (not sure yet which classes those are yet)" do
       @target.dependencies.to_a.should == []
       @target.build_rules.to_a.should == []
@@ -78,6 +64,59 @@ module ProjectSpecs
       group = @project.groups.where(:name => 'Frameworks')
       target = @project.targets.new
       target.frameworks_build_phases.first.files.should == [file]
+    end
+  end
+
+  describe "A new Xcodeproj::Project::Object::PBXNativeTarget" do
+    before do
+      @target = @project.targets.new
+    end
+
+    it "has a default set of build settings (regardless of platform)" do
+      @target.build_settings('Release').should == settings(:all)
+      @target.build_settings('Debug').should == settings(:all, :debug)
+    end
+  end
+
+  describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its iOS specific helpers" do
+    before do
+      @target = @project.targets.new_new_static_library(:ios, 'Pods')
+    end
+
+    it "returns its name and path" do
+      @target.product_name.should == 'Pods'
+      @target.product.path.should == 'libPods.a'
+    end
+
+    it "links against the Foundation framework" do
+      frameworks = @target.frameworks_build_phases.first.files
+      frameworks.map(&:name).should == ['Foundation.framework']
+    end
+
+    it "includes iOS specific build settings" do
+      @target.build_settings('Release').should == settings(:all, :ios, [:ios, :release])
+      @target.build_settings('Debug').should == settings(:all, :ios, :debug)
+    end
+  end
+
+  describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its OS X specific helpers" do
+    before do
+      @target = @project.targets.new_new_static_library(:osx, 'Pods')
+    end
+
+    it "returns its name and path" do
+      @target.product_name.should == 'Pods'
+      @target.product.path.should == 'libPods.a'
+    end
+
+    it "links against the Cocoa framework" do
+      frameworks = @target.frameworks_build_phases.first.files
+      frameworks.map(&:name).should == ['Cocoa.framework']
+    end
+
+    it "includes OS X specific build settings" do
+      @target.build_settings('Release').should == settings(:all, :osx, [:osx, :release])
+      @target.build_settings('Debug').should == settings(:all, :osx, :debug, [:osx, :debug])
     end
   end
 end

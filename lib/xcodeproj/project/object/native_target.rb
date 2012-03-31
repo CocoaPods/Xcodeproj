@@ -25,6 +25,25 @@ module Xcodeproj
           target
         end
 
+        def self.new_new_static_library(project, platform, name)
+          project.add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa')
+
+          target = new(project, nil, 'productType' => STATIC_LIBRARY, 'productName' => name)
+          target.product.path = "lib#{name}.a"
+
+          target.build_configurations.each do |config|
+            config.build_settings.merge!(XCBuildConfiguration::COMMON_BUILD_SETTINGS[platform])
+
+            # E.g. [:ios, :release]
+            extra_settings_key = [platform, config.name.downcase.to_sym]
+            if extra_settings = XCBuildConfiguration::COMMON_BUILD_SETTINGS[extra_settings_key]
+              config.build_settings.merge!(extra_settings)
+            end
+          end
+
+          target
+        end
+
         # You need to specify a product. For a static library you can use
         # PBXFileReference.new_static_library.
         def initialize(project, *)
@@ -52,8 +71,8 @@ module Xcodeproj
               'defaultConfigurationName' => 'Release',
             })
             # TODO or should this happen in buildConfigurationList?
-            build_configuration_list.build_configurations.new('name' => 'Debug')
-            build_configuration_list.build_configurations.new('name' => 'Release')
+            build_configuration_list.build_configurations.new_debug
+            build_configuration_list.build_configurations.new_release
           end
 
           unless product
@@ -69,6 +88,12 @@ module Xcodeproj
 
         def build_configurations
           build_configuration_list.build_configurations
+        end
+
+        def build_settings(build_configuration_name)
+          if config = build_configurations.where(:name => build_configuration_name)
+            config.build_settings
+          end
         end
 
         def source_build_phases

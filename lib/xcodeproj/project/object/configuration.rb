@@ -3,6 +3,63 @@ module Xcodeproj
     module Object
 
       class XCBuildConfiguration < AbstractPBXObject
+        COMMON_BUILD_SETTINGS = {
+          :all => {
+            'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
+            'GCC_PRECOMPILE_PREFIX_HEADER'      => 'YES',
+            'PRODUCT_NAME'                      => '$(TARGET_NAME)',
+            'SKIP_INSTALL'                      => 'YES',
+            'DSTROOT'                           => '/tmp/xcodeproj.dst',
+            'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
+            'GCC_C_LANGUAGE_STANDARD'           => 'gnu99',
+            'INSTALL_PATH'                      => "$(BUILT_PRODUCTS_DIR)",
+            'GCC_WARN_ABOUT_MISSING_PROTOTYPES' => 'YES',
+            'GCC_WARN_ABOUT_RETURN_TYPE'        => 'YES',
+            'GCC_WARN_UNUSED_VARIABLE'          => 'YES',
+            'OTHER_LDFLAGS'                     => '',
+            'COPY_PHASE_STRIP'                  => 'YES',
+          }.freeze,
+          :debug => {
+            'GCC_DYNAMIC_NO_PIC'                => 'NO',
+            'GCC_PREPROCESSOR_DEFINITIONS'      => ["DEBUG=1", "$(inherited)"],
+            'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
+            'GCC_OPTIMIZATION_LEVEL'            => '0',
+            'COPY_PHASE_STRIP'                  => 'NO',
+          }.freeze,
+          :ios => {
+            'ARCHS'                             => "$(ARCHS_STANDARD_32_BIT)",
+            'GCC_VERSION'                       => 'com.apple.compilers.llvmgcc42',
+            'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
+            'PUBLIC_HEADERS_FOLDER_PATH'        => "$(TARGET_NAME)",
+            'SDKROOT'                           => 'iphoneos',
+          }.freeze,
+          :osx => {
+            'ARCHS'                             => "$(ARCHS_STANDARD_64_BIT)",
+            'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
+            'GCC_WARN_64_TO_32_BIT_CONVERSION'  => 'YES',
+            'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
+            'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
+            'SDKROOT'                           => 'macosx',
+          }.freeze,
+          [:osx, :debug] => {
+            'ONLY_ACTIVE_ARCH'                  => 'YES',
+          }.freeze,
+          [:osx, :release] => {
+            'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
+          }.freeze,
+          [:ios, :release] => {
+            'VALIDATE_PRODUCT'                  => 'YES',
+          }.freeze,
+        }.freeze
+
+        def self.new_release(project)
+          new(project, nil, 'name' => 'Release')
+        end
+
+        def self.new_debug(project)
+          new(project, nil, 'name' => 'Debug', 'buildSettings' => COMMON_BUILD_SETTINGS[:debug])
+        end
+
         # [Hash] the build settings used when building a target
         attribute :build_settings
 
@@ -11,14 +68,8 @@ module Xcodeproj
 
         def initialize(*)
           super
-          # TODO These are from an iOS static library, need to check if it works for any product type
-          self.build_settings = {
-            'DSTROOT'                      => '/tmp/xcodeproj.dst',
-            'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES',
-            'GCC_VERSION'                  => 'com.apple.compilers.llvm.clang.1_0',
-            'PRODUCT_NAME'                 => '$(TARGET_NAME)',
-            'SKIP_INSTALL'                 => 'YES',
-          }.merge(build_settings || {})
+          # TODO These are from a static library, need to check if it works for any product type
+          self.build_settings = COMMON_BUILD_SETTINGS[:all].merge(build_settings || {})
         end
       end
 

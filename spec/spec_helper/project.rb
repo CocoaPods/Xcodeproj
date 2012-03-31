@@ -1,5 +1,10 @@
 module SpecHelper
   module Project
+    def settings(*keys)
+      settings = Xcodeproj::Project::Object::XCBuildConfiguration::COMMON_BUILD_SETTINGS.values_at(*keys)
+      settings.inject({}) { |hash, h| hash.merge(h) }
+    end
+
     module Stubbing
       def new_instance(klass, attributes, uuid = nil)
         @project.disable_raise = true
