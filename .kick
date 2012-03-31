@@ -1,0 +1,34 @@
+recipe :ruby
+
+Kicker::Recipes::Ruby.runner_bin = 'bacon'
+
+process do |files|
+  specs = files.take_and_map do |file|
+    case file
+    when %r{ext/xcodeproj/.+?\.(h|rb|c)$}
+      execute 'rake ext:cleanbuild'
+      'spec/xcodeproj_ext_spec.rb'
+    when %r{lib/xcodeproj/(.+?)\.rb$}
+      s = Dir.glob("spec/**/#{$1}_spec.rb")
+      s unless s.empty?
+    end
+  end
+  Kicker::Recipes::Ruby.run_tests(specs)
+end
+
+# Have written this so many times, probably should make a recipe out of it.
+process do |files|
+  files.each do |file|
+    case file
+    when 'Gemfile'
+      files.delete(file)
+      execute 'bundle install'
+    end
+  end
+end
+
+recipe :ignore
+ignore(/\..+?\.sw.$/)
+ignore(/.*\/?tags/)
+ignore(/.*\/?\.git/)
+

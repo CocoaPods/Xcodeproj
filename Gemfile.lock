@@ -2,7 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     bacon (1.1.0)
+    kicker (2.5.0)
+      rb-fsevent
     rake (0.9.2.2)
+    rb-fsevent (0.9.0)
     redcarpet (2.1.0)
     yard (0.7.5)
 
@@ -11,6 +14,7 @@ PLATFORMS
 
 DEPENDENCIES
   bacon
+  kicker
   rake
   redcarpet
   yard

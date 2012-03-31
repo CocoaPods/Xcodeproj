@@ -101,7 +101,12 @@ end
 namespace :spec do
   desc "Run all specs"
   task :all => "ext:cleanbuild" do
-    sh "bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
+    sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
+  end
+
+  desc "Automatically run specs"
+  task :kick do
+    exec "bundle exec kicker -c"
   end
 end
 
