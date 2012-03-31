@@ -10,8 +10,7 @@ module Xcodeproj
       end
 
       class PBXBuildPhase < AbstractPBXObject
-        # TODO rename this to buildFiles and add a files :through => :buildFiles shortcut
-        has_many :files, :class => PBXBuildFile
+        has_many :build_files, :uuids => :file_references #, :class => PBXBuildFile
 
         # [String] some kind of magic number which seems to always be '2147483647'
         attribute :build_action_mask
@@ -26,6 +25,19 @@ module Xcodeproj
           # These are always the same, no idea what they are.
           self.build_action_mask ||= "2147483647"
           self.run_only_for_deployment_postprocessing ||= "0"
+        end
+
+        def files
+          PBXObjectList.new(PBXFileReference, @project) do |list|
+            list.let(:uuid_scope) { self.build_files.map(&:file_ref) }
+            list.let(:push) do |file|
+              self.build_files << file.build_files.new
+            end
+          end
+        end
+
+        def <<(file)
+          files << file
         end
       end
 

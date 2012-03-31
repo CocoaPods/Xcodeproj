@@ -55,7 +55,7 @@ module ProjectSpecs
     it "returns the associated objects by finding the ones that have a has_one association to the owner" do
       @association.get.should == []
       build_phase = @project.targets.first.source_build_phases.first
-      objects = Array.new(2) { |i| o = build_phase.files.new; o.file = @owner; o }
+      objects = Array.new(2) { |i| o = build_phase.build_files.new; o.file = @owner; o }
       # The inverse version traverses the objects hash, so order can't be preserved.
       @association.get.sort.should == objects.sort
     end

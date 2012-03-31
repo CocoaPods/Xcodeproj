@@ -76,10 +76,10 @@ module ProjectSpecs
         file = @project.objects[file.uuid]
 
         phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-        phase.files.map { |build_file| build_file.file }.should.include file
+        phase.files.should.include file
 
         phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-        phase.files.map { |build_file| build_file.file }.should.not.include file
+        phase.files.should.not.include file
       end
     end
 
@@ -105,10 +105,10 @@ module ProjectSpecs
       file = @project.objects[file.uuid]
 
       phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-      phase.files.map { |build_file| build_file.file }.should.not.include file
+      phase.files.should.not.include file
 
       phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-      phase.files.map { |build_file| build_file.file }.should.include file
+      phase.files.should.include file
     end
 
     extend SpecHelper::TemporaryDirectory

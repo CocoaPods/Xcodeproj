@@ -42,9 +42,7 @@ module Xcodeproj
 
             phase = frameworks_build_phases.new
             if frameworks_group = @project.groups.where(:name => 'Frameworks')
-              frameworks_group.files.each do |framework|
-                phase.files << framework.build_files.new
-              end
+              frameworks_group.files.each { |framework| phase << framework }
             end
           end
 
@@ -99,10 +97,10 @@ module Xcodeproj
             # https://github.com/alloy/cocoapods/issues/13
             #phase = copy_header_phase || headers_build_phases.first
             phase = copy_header_phase || copy_files_build_phases.first
-            phase.files << build_file
+            phase.build_files << build_file
           else
             build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags
-            source_build_phases.first.files << build_file
+            source_build_phases.first.build_files << build_file
           end
           file
         end

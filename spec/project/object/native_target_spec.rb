@@ -77,7 +77,7 @@ module ProjectSpecs
       file = @project.add_system_framework('QuartzCore')
       group = @project.groups.where(:name => 'Frameworks')
       target = @project.targets.new
-      target.frameworks_build_phases.first.files.map(&:file).should == [file]
+      target.frameworks_build_phases.first.files.should == [file]
     end
   end
 end

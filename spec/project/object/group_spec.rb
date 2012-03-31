@@ -99,7 +99,7 @@ module ProjectSpecs
     it "returns files that have at least one associated build file as the source files" do
       @group.source_files.should.be.empty
       file = @group.files.first
-      @target.source_build_phases.first.files << file.build_files.new
+      @target.source_build_phases.first << file
       @group.source_files.should == [file]
     end
   end

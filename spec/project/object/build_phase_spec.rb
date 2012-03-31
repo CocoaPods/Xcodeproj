@@ -6,7 +6,8 @@ module ProjectSpecs
       @phase = @project.objects.add(PBXBuildPhase)
     end
 
-    it "has an empty list of files" do
+    it "has an empty list of (build) files" do
+      @phase.build_files.to_a.should == []
       @phase.files.to_a.should == []
     end
 
@@ -16,6 +17,18 @@ module ProjectSpecs
 
     it "always returns zero for runOnlyForDeploymentPostprocessing (no idea what it is)" do
       @phase.run_only_for_deployment_postprocessing.should == "0"
+    end
+
+    it "adds a build file for a given file to its list of build files" do
+      file = @project.files.new('path' => 'some/file')
+      @phase << file
+      @phase.build_files.map(&:file).should.include file
+    end
+
+    it "returns the files it's associated with through its build files" do
+      file = @project.files.new('path' => 'some/file')
+      @phase.files << file
+      @phase.files.should == [file]
     end
   end
 
