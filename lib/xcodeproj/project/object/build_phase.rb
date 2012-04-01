@@ -10,7 +10,7 @@ module Xcodeproj
       end
 
       class PBXBuildPhase < AbstractPBXObject
-        has_many :build_files, :uuids => :file_references
+        has_many :build_files, :uuids => :files, :uuids_as => :build_file_references
 
         # [String] some kind of magic number which seems to always be '2147483647'
         attribute :build_action_mask
@@ -21,7 +21,7 @@ module Xcodeproj
 
         def initialize(*)
           super
-          self.file_references ||= []
+          self.build_file_references ||= []
           # These are always the same, no idea what they are.
           self.build_action_mask ||= "2147483647"
           self.run_only_for_deployment_postprocessing ||= "0"

@@ -77,7 +77,7 @@ module Xcodeproj
           private
 
           def uuid_method_name
-            (@options[:uuid] || @options[:uuids] || "#{@name.singularize}_reference").to_s.singularize
+            (@options[:uuids_as] || @options[:uuid] || @options[:uuids] || "#{@name.singularize}_reference").to_s.singularize
           end
         end
 

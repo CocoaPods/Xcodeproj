@@ -46,6 +46,9 @@ module ProjectSpecs
       @reflection.options[:uuids] = :build_files
       @reflection.attribute_getter.should == :build_files
       @reflection.attribute_setter.should == :build_files=
+      @reflection.options[:uuids_as] = :build_files_references
+      @reflection.attribute_getter.should == :build_files_references
+      @reflection.attribute_setter.should == :build_files_references=
     end
 
     it "returns the getter method name of the association, on which the UUIDs attribute name has no influence" do

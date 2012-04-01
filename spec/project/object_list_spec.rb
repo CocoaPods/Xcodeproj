@@ -76,7 +76,6 @@ module ProjectSpecs
 
     it "returns an object with the given name" do
       @list.object_named('DOESNOTEXIST').should == nil
-      p @project.objects
       @list.object_named('libPods.a').should == @project.objects[@uuid]
     end
 
