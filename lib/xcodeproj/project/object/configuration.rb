@@ -28,7 +28,6 @@ module Xcodeproj
           }.freeze,
           :ios => {
             'ARCHS'                             => "$(ARCHS_STANDARD_32_BIT)",
-            'GCC_VERSION'                       => 'com.apple.compilers.llvmgcc42',
             'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
             'PUBLIC_HEADERS_FOLDER_PATH'        => "$(TARGET_NAME)",
             'SDKROOT'                           => 'iphoneos',
