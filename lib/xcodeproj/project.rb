@@ -74,6 +74,10 @@ module Xcodeproj
       @plist
     end
 
+    def ==(other)
+      other.respond_to?(:to_hash) && @plist == other.to_hash
+    end
+
     # This gives access to the objects part of the internal data hash. It is,
     # however, **not** recommended to use this to add a hash for an object, for
     # that see `add_object_hash`.

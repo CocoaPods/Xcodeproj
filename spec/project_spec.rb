@@ -6,6 +6,10 @@ module ProjectSpecs
       @project.objects_hash.should == @project.to_hash['objects']
     end
 
+    it "compares the objects hash" do
+      @project.should == @project.to_hash
+    end
+
     it "adds an object hash to the objects hash" do
       attributes = { 'isa' => 'PBXFileReference', 'path' => 'some/file.m' }
       @project.add_object_hash('UUID', attributes)
