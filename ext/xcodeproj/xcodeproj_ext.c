@@ -166,7 +166,7 @@ str_to_url(VALUE path) {
  *
  * Reads from the specified path and de-serializes the property list.
  *
- * @note Meant for internal use only.
+ * @note This does not yet support all possible types that can exist in a valid property list.
  *
  * @note This currently only assumes to be given an Xcode project document.
  *       This means that it only accepts dictionaries, arrays, and strings in
@@ -207,7 +207,7 @@ read_plist(VALUE self, VALUE path) {
  *
  * Writes the serialized contents of a property list to the specified path.
  *
- * @note Meant for internal use only.
+ * @note This does not yet support all possible types that can exist in a valid property list.
  *
  * @note This currently only assumes to be given an Xcode project document.
  *       This means that it only accepts dictionaries, arrays, and strings in
