@@ -1,6 +1,7 @@
 require "rubygems"
 require "test/unit"
 require "xcodeproj"
+require "config_tests_helper"
 
 class TestXcodeprojConfig < Test::Unit::TestCase
   def setup
@@ -10,6 +11,27 @@ class TestXcodeprojConfig < Test::Unit::TestCase
     @value_to_merge = 'Value3'
     @config_data_to_merge = { @key_to_merge => @value_to_merge }
     @config = Xcodeproj::Config.new(@config_data)
+  end
+
+  def test_creation_with_hash
+    key = 'Key'
+    value = 'Value'
+    config = Xcodeproj::Config.new( { key => value } )
+    assert_not_nil(config)
+    validate_xcconfig_contains_key_value(config, key, value)
+  end
+
+  def test_creation_with_path
+    config = Xcodeproj::Config.new(relative_path_for_asset('oneline-key-value.xcconfig'))
+    assert_not_nil(config);
+    validate_xcconfig_contains_key_value(config, 'Key', 'Value')
+  end
+
+  def test_creation_with_file
+    xcconfig_file = File.new(relative_path_for_asset('oneline-key-value.xcconfig'))
+    config = Xcodeproj::Config.new(xcconfig_file)
+    assert_not_nil(config);
+    validate_xcconfig_contains_key_value(config, 'Key', 'Value')
   end
 
   def test_to_s
@@ -45,9 +67,10 @@ class TestXcodeprojConfig < Test::Unit::TestCase
     assert_equal(expected_new_value, @config.to_hash[@existing_key_to_merge])
   end
 
-  def validate_xcconfig_contains_key_value(xcconfig, key, value)
-    config_as_hash = xcconfig.to_hash
-    assert_equal(true, config_as_hash.has_key?(key))
-    assert_equal(value, config_as_hash[key])
+  def test_includes_from_file
+    config = Xcodeproj::Config.new(relative_path_for_asset('include.xcconfig'))
+    assert_equal(1, config.includes.size)
+    assert_equal('Somefile', config.includes.first)
   end
+
 end
