@@ -101,7 +101,7 @@ module Xcodeproj
           @includes.push include
         else
           key, value = extract_key_value(uncommented_line)
-          hash[key] = value
+          hash[key] = value if key
         end
       end
       hash
