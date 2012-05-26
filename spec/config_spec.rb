@@ -4,7 +4,42 @@ describe "Xcodeproj::Config" do
   extend SpecHelper::TemporaryDirectory
 
   before do
-    @config = Xcodeproj::Config.new('OTHER_LD_FLAGS' => '-framework Foundation')
+    @hash = { 'OTHER_LD_FLAGS' => '-framework Foundation' }
+    @config = Xcodeproj::Config.new(@hash)
+    @config_fixture = fixture_path('oneline-key-value.xcconfig')
+  end
+
+  it "can be created with hash" do
+    config = Xcodeproj::Config.new(@hash)
+    config.should.be.equal @hash
+  end
+
+  it "can be created with file path" do
+    config = Xcodeproj::Config.new(@config_fixture)
+    config.should.be.equal @hash
+  end
+
+  it "can be created with File instance" do
+    xcconfig_file = File.new(@config_fixture)
+    xcconfig = Xcodeproj::Config.new(xcconfig_file)
+    xcconfig.should.be.equal @hash
+  end
+
+  it "can be serialized with #to_s" do
+    @config.to_s.should.be.equal "OTHER_LD_FLAGS = -framework Foundation"
+  end
+
+  it "can be serialized with #to_hash" do
+    @config.to_hash.should.be.equal @hash
+  end
+
+  it "does not serialize with #to_s when inspecting the object" do
+    @config.inspect.should == @config.to_hash.inspect
+  end
+
+  it "can be compared with other instances" do
+    config_dupe = Xcodeproj::Config.new(@hash)
+    config_dupe.should.be.equal @config
   end
 
   it "merges another config hash in place" do
@@ -22,10 +57,6 @@ describe "Xcodeproj::Config" do
     }
   end
 
-  it "does not serialize with #to_s when inspecting the object" do
-    @config.inspect.should == @config.to_hash.inspect
-  end
-
   it "creates the config file" do
     @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
     @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
@@ -35,4 +66,11 @@ describe "Xcodeproj::Config" do
       "HEADER_SEARCH_PATHS = /some/path"
     ].sort
   end
+
+  it "contains file path refs to all included xcconfigs" do
+    config = Xcodeproj::Config.new(fixture_path('include.xcconfig'))
+    config.includes.size.should.be.equal 1
+    config.includes.first.should.be.equal 'Somefile'
+  end
+
 end
