@@ -73,4 +73,19 @@ describe "Xcodeproj::Config" do
     config.includes.first.should.be.equal 'Somefile'
   end
 
+  it 'can be created from multiline file' do
+    config = Xcodeproj::Config.new(fixture_path('sample.xcconfig'))
+    config.should == {
+      'Key1' => 'Value1 Value2',
+      'Key2' => 'Value3 Value4 Value5',
+      'Key3' => 'Value6',
+      'Key4' => ''
+    }
+  end
+
+  it 'can be created from file with comments inside' do
+    config = Xcodeproj::Config.new(fixture_path('with-comments.xcconfig'))
+    config.should == { 'Key' => 'Value' }
+  end
+
 end
