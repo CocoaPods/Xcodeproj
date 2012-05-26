@@ -5,7 +5,7 @@ module Xcodeproj
     # Returns a new instance of Config
     #
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
-    def initialize(xcconfig_hash_or_file)
+    def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
       if xcconfig_hash_or_file.respond_to? :read
