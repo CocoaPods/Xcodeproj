@@ -8,14 +8,7 @@ module Xcodeproj
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
-      if xcconfig_hash_or_file.respond_to? :read
-        xcconfig = xcconfig_from_s(xcconfig_hash_or_file.read)
-      elsif File.readable? xcconfig_hash_or_file.to_s
-        xcconfig = xcconfig_from_s(File.read(xcconfig_hash_or_file))
-      else
-        xcconfig = xcconfig_hash_or_file
-      end
-      merge!(xcconfig)
+      merge!(extract_hash(xcconfig_hash_or_file))
     end
 
     # @return [Hash] The internal data.
@@ -90,7 +83,17 @@ module Xcodeproj
 
     private
 
-    def xcconfig_from_s(raw_string)
+    def extract_hash(argument)
+      if argument.respond_to? :read
+        hash_from_file_content(argument.read)
+      elsif File.readable? argument.to_s
+        hash_from_file_content(File.read(argument))
+      else
+        argument
+      end
+    end
+
+    def hash_from_file_content(raw_string)
       hash = {}
       raw_string.split("\n").each do |line|
         uncommented_line = strip_comment(line)
