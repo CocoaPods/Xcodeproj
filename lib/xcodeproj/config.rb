@@ -47,15 +47,30 @@ module Xcodeproj
     #
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
-      xcconfig.to_hash.each do |key, value|
-        if existing_value = @attributes[key]
-          @attributes[key] = "#{existing_value} #{value}"
-        else
-          @attributes[key] = value
-        end
-      end
+      @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
     end
-    alias_method :<<, :merge!
+
+    def merge(config)
+      self.dup.tap { |x|x.merge!(config) }
+    end
+
+    def dup
+      Xcodeproj::Config.new(self.to_hash.dup)
+    end
+
+    def add_libraries(libraries)
+      return if libraries.nil? || libraries.empty?
+      flags = [ @attributes['OTHER_LD_FLAGS'] ] || []
+      flags << "-l#{ libraries.join(' -l') }"
+      @attributes['OTHER_LD_FLAGS'] = flags.compact.map(&:strip).join(' ')
+    end
+
+    def add_frameworks(frameworks)
+      return if frameworks.nil? || frameworks.empty?
+      flags = [ @attributes['OTHER_LD_FLAGS'] ] || []
+      flags << "-framework #{ frameworks.join(' -framework ') }"
+      @attributes['OTHER_LD_FLAGS'] = flags.compact.map(&:strip).join(' ')
+    end
 
     # Serializes the internal data in the xcconfig format.
     #

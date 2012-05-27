@@ -50,6 +50,15 @@ describe "Xcodeproj::Config" do
     }
   end
 
+  it "merges another hash in a new one" do
+    new = @config.merge('HEADER_SEARCH_PATHS' => '/some/path')
+    new.object_id.should.not == @config.object_id
+    new.should == {
+      'OTHER_LD_FLAGS' => '-framework Foundation',
+      'HEADER_SEARCH_PATHS' => '/some/path'
+    }
+  end
+
   it "appends a value for the same key when merging" do
     @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
     @config.should == {
@@ -86,6 +95,17 @@ describe "Xcodeproj::Config" do
   it 'can be created from file with comments inside' do
     config = Xcodeproj::Config.new(fixture_path('with-comments.xcconfig'))
     config.should == { 'Key' => 'Value' }
+  end
+
+
+  it 'has a shortcut for adding libraries' do
+    @config.add_libraries %w[ z ]
+    @config.to_hash['OTHER_LD_FLAGS'].should == '-framework Foundation -lz'
+  end
+
+  it 'has a shortcut for adding framework' do
+    @config.add_frameworks %w[ CoreData UIKit ]
+    @config.to_hash['OTHER_LD_FLAGS'].should == '-framework Foundation -framework CoreData -framework UIKit'
   end
 
 end
