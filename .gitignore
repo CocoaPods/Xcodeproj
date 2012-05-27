@@ -9,3 +9,4 @@ ext/xcodeproj/extconf.h
 .yardoc
 doc
 tmp
+.DS_Store

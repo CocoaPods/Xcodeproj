@@ -1,3 +1,6 @@
+require "rake"
+require "rake/testtask"
+
 # Travis support
 def on_rvm?
   `which ruby`.strip.include?('.rvm')
@@ -147,3 +150,10 @@ desc "Run all specs"
 task :spec => 'spec:all'
 
 task :default => :spec
+
+desc "Run all tests"
+Rake::TestTask.new do |test|
+  test.libs << 'tests'
+  test.pattern = 'tests/test_*.rb'
+  test.verbose = true
+end

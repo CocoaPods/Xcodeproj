@@ -4,9 +4,17 @@ module Xcodeproj
   class Config
     # Returns a new instance of Config
     #
-    # @param [Hash] xcconfig  Initial data.
-    def initialize(xcconfig = {})
+    # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
+    def initialize(xcconfig_hash_or_file)
       @attributes = {}
+      @includes = []
+      if xcconfig_hash_or_file.respond_to? :read
+        xcconfig = xcconfig_from_s(xcconfig_hash_or_file.read)
+      elsif File.readable? xcconfig_hash_or_file.to_s
+        xcconfig = xcconfig_from_s(File.read(xcconfig_hash_or_file))
+      else
+        xcconfig = xcconfig_hash_or_file
+      end
       merge!(xcconfig)
     end
 
@@ -17,6 +25,20 @@ module Xcodeproj
 
     def ==(other)
       other.respond_to?(:to_hash) && other.to_hash == self.to_hash
+    end
+
+    # @return [Array] Config's include file list
+    # @example
+    #
+    # Consider following xcconfig file:
+    #
+    #   #include "SomeConfig"
+    #   Key1 = Value1
+    #   Key2 = Value2
+    #
+    #   config.includes # => [ "SomeConfig" ]
+    def includes
+      @includes
     end
 
     # Merges the given xcconfig hash or Config into the internal data.
@@ -65,5 +87,41 @@ module Xcodeproj
     def save_as(pathname)
       pathname.open('w') { |file| file << to_s }
     end
+
+    private
+
+    def xcconfig_from_s(raw_string)
+      hash = {}
+      raw_string.split("\n").each do |line|
+        uncommented_line = strip_comment(line)
+        if include = extract_include(uncommented_line)
+          @includes.push include
+        else
+          key, value = extract_key_value(uncommented_line)
+          hash[key] = value
+        end
+      end
+      hash
+    end
+
+    def strip_comment(line)
+      line.partition('//').first
+    end
+
+    def extract_include(line)
+      regexp = /#include\s*"(.+)"/
+      match = line.match(regexp)
+      match[1] if match
+    end
+
+    def extract_key_value(line)
+      key, value = line.split('=', 2)
+      if key && value
+        [key.strip, value.strip]
+      else
+        []
+      end
+    end
+
   end
 end
