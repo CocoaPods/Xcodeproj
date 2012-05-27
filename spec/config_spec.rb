@@ -50,6 +50,14 @@ describe "Xcodeproj::Config" do
     }
   end
 
+  it "merges another config hash in place with the `<<` shortcut" do
+    @config << { 'HEADER_SEARCH_PATHS' => '/some/path' }
+    @config.should == {
+      'OTHER_LD_FLAGS' => '-framework Foundation',
+      'HEADER_SEARCH_PATHS' => '/some/path'
+    }
+  end
+
   it "merges another hash in a new one" do
     new = @config.merge('HEADER_SEARCH_PATHS' => '/some/path')
     new.object_id.should.not == @config.object_id

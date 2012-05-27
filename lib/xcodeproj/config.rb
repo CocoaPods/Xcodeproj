@@ -49,6 +49,7 @@ module Xcodeproj
     def merge!(xcconfig)
       @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
     end
+    alias_method :<<, :merge!
 
     def merge(config)
       self.dup.tap { |x|x.merge!(config) }
