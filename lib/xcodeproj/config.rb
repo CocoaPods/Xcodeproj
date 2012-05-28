@@ -5,15 +5,27 @@ module Xcodeproj
     # Returns a new instance of Config
     #
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
+    require 'set'
+
+    attr_accessor :attributes, :frameworks ,:libraries
+
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
+      @frameworks, @libraries = Set.new, Set.new
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
     # @return [Hash] The internal data.
     def to_hash
-      @attributes
+      hash = @attributes.dup
+      flags = hash['OTHER_LD_FLAGS'] || ''
+      flags = flags.dup
+      flags << frameworks.reduce('') {| memo, f | memo << " -framework #{f}" }
+      flags << libraries.reduce('')  {| memo, l | memo << " -l#{l}" }
+      hash['OTHER_LD_FLAGS'] = flags.strip
+      hash.delete('OTHER_LD_FLAGS') if flags.strip.empty?
+      hash
     end
 
     def ==(other)
@@ -47,15 +59,36 @@ module Xcodeproj
     #
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
-      xcconfig.to_hash.each do |key, value|
-        if existing_value = @attributes[key]
-          @attributes[key] = "#{existing_value} #{value}"
-        else
-          @attributes[key] = value
-        end
+      if xcconfig.is_a? Config
+        @attributes.merge! xcconfig.attributes
+        @libraries.merge   xcconfig.libraries
+        @frameworks.merge  xcconfig.frameworks
+      else
+      @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
+      # Parse frameworks and libraries. Then remove the from the linker flags
+      flags = @attributes['OTHER_LD_FLAGS']
+      return unless flags
+
+      frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
+      libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+      @frameworks.merge frameworks
+      @libraries.merge libraries
+
+      new_flags = flags.dup
+      frameworks.each {|f| new_flags.delete! "-framework #{f}"}
+      libraries.each  {|l| new_flags.delete! "-l#{l}"}
+      @attributes['OTHER_LD_FLAGS'] = new_flags
       end
     end
     alias_method :<<, :merge!
+
+    def merge(config)
+      self.dup.tap { |x|x.merge!(config) }
+    end
+
+    def dup
+      Xcodeproj::Config.new(self.to_hash.dup)
+    end
 
     # Serializes the internal data in the xcconfig format.
     #
@@ -66,11 +99,11 @@ module Xcodeproj
     #
     # @return [String]  The serialized internal data.
     def to_s
-      @attributes.map { |key, value| "#{key} = #{value}" }.join("\n")
+      to_hash.map { |key, value| "#{key} = #{value}" }.join("\n")
     end
 
     def inspect
-      @attributes.inspect
+      to_hash.inspect
     end
 
     # Writes the serialized representation of the internal data to the given
