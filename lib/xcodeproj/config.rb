@@ -20,7 +20,7 @@ module Xcodeproj
     def to_hash
       hash = @attributes.dup
       flags = hash['OTHER_LDFLAGS'] || ''
-      flags = flags.dup
+      flags = flags.dup.strip
       flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
       flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
       hash['OTHER_LDFLAGS'] = flags.strip
@@ -60,7 +60,7 @@ module Xcodeproj
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
       if xcconfig.is_a? Config
-        @attributes.merge! xcconfig.attributes
+        @attributes.merge!(xcconfig.attributes) { |key, v1, v2| "#{v1} #{v2}" }
         @libraries.merge   xcconfig.libraries
         @frameworks.merge  xcconfig.frameworks
       else

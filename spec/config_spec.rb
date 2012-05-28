@@ -126,7 +126,7 @@ describe "Xcodeproj::Config" do
     config.should == { 'Key' => 'Value' }
   end
 
-  it "it doesn't duplicates libraries and frameworks" do
+  it "doesn't duplicates libraries and frameworks" do
     hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     # merge the original hahs again
@@ -135,5 +135,12 @@ describe "Xcodeproj::Config" do
     config.libraries.add  'xml2.2.7.3'
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+  end
+
+  it 'it preserves OTHER_LDFLAGS not related to libraries and frameworks' do
+    config1 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => %w{-ObjC -fobjc-arc}.join(' ') })
+    config2 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => '-framework SystemConfiguration' })
+    config1.merge! config2
+    config1.to_hash['OTHER_LDFLAGS'].should == '-ObjC -fobjc-arc -framework SystemConfiguration'
   end
 end
