@@ -21,8 +21,8 @@ module Xcodeproj
       hash = @attributes.dup
       flags = hash['OTHER_LDFLAGS'] || ''
       flags = flags.dup
-      flags << libraries.reduce('')  {| memo, l | memo << " -l#{l}" }
-      flags << frameworks.reduce('') {| memo, f | memo << " -framework #{f}" }
+      flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
+      flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
       hash['OTHER_LDFLAGS'] = flags.strip
       hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
       hash
