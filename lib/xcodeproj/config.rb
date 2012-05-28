@@ -70,14 +70,14 @@ module Xcodeproj
       return unless flags
 
       frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
-      libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+    libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
       @frameworks.merge frameworks
       @libraries.merge libraries
 
       new_flags = flags.dup
-      frameworks.each {|f| new_flags.delete! "-framework #{f}"}
-      libraries.each  {|l| new_flags.delete! "-l#{l}"}
-      @attributes['OTHER_LDFLAGS'] = new_flags
+      frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
+      libraries.each  {|l| new_flags.gsub!(/-l ?#{l}/, "") }
+      @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
       end
     end
     alias_method :<<, :merge!
