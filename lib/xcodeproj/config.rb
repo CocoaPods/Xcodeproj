@@ -5,15 +5,28 @@ module Xcodeproj
     # Returns a new instance of Config
     #
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
+    require 'set'
+
+    attr_accessor :libraries
+    attr_accessor :frameworks
+
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
+      @frameworks, @libraries = Set.new, Set.new
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
     # @return [Hash] The internal data.
     def to_hash
-      @attributes
+      hash = @attributes.dup
+      flags = hash['OTHER_LD_FLAGS'] || ''
+      flags = flags.dup
+      flags << frameworks.reduce('') {| memo, f | memo << " -framework #{f}" }
+      flags << libraries.reduce('')  {| memo, l | memo << " -l#{l}" }
+      hash['OTHER_LD_FLAGS'] = flags.strip
+      hash.delete('OTHER_LD_FLAGS') if flags.strip.empty?
+      hash
     end
 
     def ==(other)
@@ -48,8 +61,28 @@ module Xcodeproj
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
       @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
+      if xcconfig.is_a? Config
+        @libraries.merge xcconfig.libraries
+        @frameworks.merge xcconfig.frameworks
+      end
+      parse!
     end
     alias_method :<<, :merge!
+
+    def parse!
+        flags = @attributes['OTHER_LD_FLAGS']
+        return unless flags
+
+        frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
+        libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+        @frameworks.merge frameworks
+        @libraries.merge libraries
+
+        new_flags = flags.dup
+        frameworks.each {|f| new_flags.delete! "-framework #{f}"}
+        libraries.each  {|l| new_flags.delete! "-l#{l}"}
+        @attributes['OTHER_LD_FLAGS'] = new_flags
+    end
 
     def merge(config)
       self.dup.tap { |x|x.merge!(config) }
@@ -57,20 +90,6 @@ module Xcodeproj
 
     def dup
       Xcodeproj::Config.new(self.to_hash.dup)
-    end
-
-    def add_libraries(libraries)
-      return if libraries.nil? || libraries.empty?
-      flags = [ @attributes['OTHER_LD_FLAGS'] ] || []
-      flags << "-l#{ libraries.join(' -l') }"
-      @attributes['OTHER_LD_FLAGS'] = flags.compact.map(&:strip).join(' ')
-    end
-
-    def add_frameworks(frameworks)
-      return if frameworks.nil? || frameworks.empty?
-      flags = [ @attributes['OTHER_LD_FLAGS'] ] || []
-      flags << "-framework #{ frameworks.join(' -framework ') }"
-      @attributes['OTHER_LD_FLAGS'] = flags.compact.map(&:strip).join(' ')
     end
 
     # Serializes the internal data in the xcconfig format.
@@ -82,11 +101,11 @@ module Xcodeproj
     #
     # @return [String]  The serialized internal data.
     def to_s
-      @attributes.map { |key, value| "#{key} = #{value}" }.join("\n")
+      to_hash.map { |key, value| "#{key} = #{value}" }.join("\n")
     end
 
     def inspect
-      @attributes.inspect
+      to_hash.inspect
     end
 
     # Writes the serialized representation of the internal data to the given

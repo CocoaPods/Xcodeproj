@@ -25,6 +25,26 @@ describe "Xcodeproj::Config" do
     xcconfig.should.be.equal @hash
   end
 
+  it "does not modifies the hahs used for initialization" do
+    original = @hash.dup
+    config = Xcodeproj::Config.new(@hash)
+    @hash.should.be.equal original
+  end
+
+  it "parses the frameworks and the libraries" do
+    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    config = Xcodeproj::Config.new(hash)
+    config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+  end
+
+  it "can handle libraries specified as a separate argument" do
+    # see http://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
+    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -l xml2.2.7.3' }
+    config = Xcodeproj::Config.new(hash)
+    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+  end
+
   it "can be serialized with #to_s" do
     @config.to_s.should.be.equal "OTHER_LD_FLAGS = -framework Foundation"
   end
@@ -65,12 +85,13 @@ describe "Xcodeproj::Config" do
       'OTHER_LD_FLAGS' => '-framework Foundation',
       'HEADER_SEARCH_PATHS' => '/some/path'
     }
+    @config.should == { 'OTHER_LD_FLAGS' => '-framework Foundation' }
   end
 
   it "appends a value for the same key when merging" do
     @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
     @config.should == {
-      'OTHER_LD_FLAGS' => '-framework Foundation -l xml2.2.7.3'
+      'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3'
     }
   end
 
@@ -79,7 +100,7 @@ describe "Xcodeproj::Config" do
     @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
     @config.save_as(temporary_directory + 'Pods.xcconfig')
     (temporary_directory + 'Pods.xcconfig').read.split("\n").sort.should == [
-      "OTHER_LD_FLAGS = -framework Foundation -l xml2.2.7.3",
+      "OTHER_LD_FLAGS = -framework Foundation -lxml2.2.7.3",
       "HEADER_SEARCH_PATHS = /some/path"
     ].sort
   end
@@ -105,15 +126,14 @@ describe "Xcodeproj::Config" do
     config.should == { 'Key' => 'Value' }
   end
 
-
-  it 'has a shortcut for adding libraries' do
-    @config.add_libraries %w[ z ]
-    @config.to_hash['OTHER_LD_FLAGS'].should == '-framework Foundation -lz'
+  it "it doesn't duplicates libraries and frameworks" do
+    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    config = Xcodeproj::Config.new(hash)
+    # merge the original hahs again
+    config.merge!(hash)
+    config.frameworks.merge('Foundation')
+    config.libraries.merge('xml2.2.7.3')
+    config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
-
-  it 'has a shortcut for adding framework' do
-    @config.add_frameworks %w[ CoreData UIKit ]
-    @config.to_hash['OTHER_LD_FLAGS'].should == '-framework Foundation -framework CoreData -framework UIKit'
-  end
-
 end
