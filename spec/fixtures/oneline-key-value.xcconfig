@@ -1,1 +1,1 @@
-OTHER_LD_FLAGS = -framework Foundation
+OTHER_LDFLAGS = -framework Foundation

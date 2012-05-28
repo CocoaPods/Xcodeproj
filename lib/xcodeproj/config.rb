@@ -19,12 +19,12 @@ module Xcodeproj
     # @return [Hash] The internal data.
     def to_hash
       hash = @attributes.dup
-      flags = hash['OTHER_LD_FLAGS'] || ''
+      flags = hash['OTHER_LDFLAGS'] || ''
       flags = flags.dup
       flags << frameworks.reduce('') {| memo, f | memo << " -framework #{f}" }
       flags << libraries.reduce('')  {| memo, l | memo << " -l#{l}" }
-      hash['OTHER_LD_FLAGS'] = flags.strip
-      hash.delete('OTHER_LD_FLAGS') if flags.strip.empty?
+      hash['OTHER_LDFLAGS'] = flags.strip
+      hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
       hash
     end
 
@@ -66,7 +66,7 @@ module Xcodeproj
       else
       @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
       # Parse frameworks and libraries. Then remove the from the linker flags
-      flags = @attributes['OTHER_LD_FLAGS']
+      flags = @attributes['OTHER_LDFLAGS']
       return unless flags
 
       frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
@@ -77,7 +77,7 @@ module Xcodeproj
       new_flags = flags.dup
       frameworks.each {|f| new_flags.delete! "-framework #{f}"}
       libraries.each  {|l| new_flags.delete! "-l#{l}"}
-      @attributes['OTHER_LD_FLAGS'] = new_flags
+      @attributes['OTHER_LDFLAGS'] = new_flags
       end
     end
     alias_method :<<, :merge!

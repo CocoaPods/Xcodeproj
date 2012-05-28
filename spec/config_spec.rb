@@ -4,7 +4,7 @@ describe "Xcodeproj::Config" do
   extend SpecHelper::TemporaryDirectory
 
   before do
-    @hash = { 'OTHER_LD_FLAGS' => '-framework Foundation' }
+    @hash = { 'OTHER_LDFLAGS' => '-framework Foundation' }
     @config = Xcodeproj::Config.new(@hash)
     @config_fixture = fixture_path('oneline-key-value.xcconfig')
   end
@@ -32,7 +32,7 @@ describe "Xcodeproj::Config" do
   end
 
   it "parses the frameworks and the libraries" do
-    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
@@ -40,13 +40,13 @@ describe "Xcodeproj::Config" do
 
   it "can handle libraries specified as a separate argument" do
     # see http://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
-    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -l xml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -l xml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
 
   it "can be serialized with #to_s" do
-    @config.to_s.should.be.equal "OTHER_LD_FLAGS = -framework Foundation"
+    @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework Foundation"
   end
 
   it "can be serialized with #to_hash" do
@@ -65,7 +65,7 @@ describe "Xcodeproj::Config" do
   it "merges another config hash in place" do
     @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
     @config.should == {
-      'OTHER_LD_FLAGS' => '-framework Foundation',
+      'OTHER_LDFLAGS' => '-framework Foundation',
       'HEADER_SEARCH_PATHS' => '/some/path'
     }
   end
@@ -73,7 +73,7 @@ describe "Xcodeproj::Config" do
   it "merges another config hash in place with the `<<` shortcut" do
     @config << { 'HEADER_SEARCH_PATHS' => '/some/path' }
     @config.should == {
-      'OTHER_LD_FLAGS' => '-framework Foundation',
+      'OTHER_LDFLAGS' => '-framework Foundation',
       'HEADER_SEARCH_PATHS' => '/some/path'
     }
   end
@@ -82,25 +82,25 @@ describe "Xcodeproj::Config" do
     new = @config.merge('HEADER_SEARCH_PATHS' => '/some/path')
     new.object_id.should.not == @config.object_id
     new.should == {
-      'OTHER_LD_FLAGS' => '-framework Foundation',
+      'OTHER_LDFLAGS' => '-framework Foundation',
       'HEADER_SEARCH_PATHS' => '/some/path'
     }
-    @config.should == { 'OTHER_LD_FLAGS' => '-framework Foundation' }
+    @config.should == { 'OTHER_LDFLAGS' => '-framework Foundation' }
   end
 
   it "appends a value for the same key when merging" do
-    @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
+    @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
     @config.should == {
-      'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3'
+      'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3'
     }
   end
 
   it "creates the config file" do
     @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
-    @config.merge!('OTHER_LD_FLAGS' => '-l xml2.2.7.3')
+    @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
     @config.save_as(temporary_directory + 'Pods.xcconfig')
     (temporary_directory + 'Pods.xcconfig').read.split("\n").sort.should == [
-      "OTHER_LD_FLAGS = -framework Foundation -lxml2.2.7.3",
+      "OTHER_LDFLAGS = -framework Foundation -lxml2.2.7.3",
       "HEADER_SEARCH_PATHS = /some/path"
     ].sort
   end
@@ -127,7 +127,7 @@ describe "Xcodeproj::Config" do
   end
 
   it "it doesn't duplicates libraries and frameworks" do
-    hash = { 'OTHER_LD_FLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     # merge the original hahs again
     config.merge!(hash)
