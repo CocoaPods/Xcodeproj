@@ -7,8 +7,7 @@ module Xcodeproj
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
     require 'set'
 
-    attr_accessor :libraries
-    attr_accessor :frameworks
+    attr_accessor :attributes, :frameworks ,:libraries
 
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
@@ -60,29 +59,28 @@ module Xcodeproj
     #
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
     def merge!(xcconfig)
-      @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
       if xcconfig.is_a? Config
-        @libraries.merge xcconfig.libraries
-        @frameworks.merge xcconfig.frameworks
+        @attributes.merge! xcconfig.attributes
+        @libraries.merge   xcconfig.libraries
+        @frameworks.merge  xcconfig.frameworks
+      else
+      @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
+      # Parse frameworks and libraries. Then remove the from the linker flags
+      flags = @attributes['OTHER_LD_FLAGS']
+      return unless flags
+
+      frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
+      libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+      @frameworks.merge frameworks
+      @libraries.merge libraries
+
+      new_flags = flags.dup
+      frameworks.each {|f| new_flags.delete! "-framework #{f}"}
+      libraries.each  {|l| new_flags.delete! "-l#{l}"}
+      @attributes['OTHER_LD_FLAGS'] = new_flags
       end
-      parse!
     end
     alias_method :<<, :merge!
-
-    def parse!
-        flags = @attributes['OTHER_LD_FLAGS']
-        return unless flags
-
-        frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
-        libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
-        @frameworks.merge frameworks
-        @libraries.merge libraries
-
-        new_flags = flags.dup
-        frameworks.each {|f| new_flags.delete! "-framework #{f}"}
-        libraries.each  {|l| new_flags.delete! "-l#{l}"}
-        @attributes['OTHER_LD_FLAGS'] = new_flags
-    end
 
     def merge(config)
       self.dup.tap { |x|x.merge!(config) }
