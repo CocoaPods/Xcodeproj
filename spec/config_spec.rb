@@ -131,8 +131,8 @@ describe "Xcodeproj::Config" do
     config = Xcodeproj::Config.new(hash)
     # merge the original hahs again
     config.merge!(hash)
-    config.frameworks.merge('Foundation')
-    config.libraries.merge('xml2.2.7.3')
+    config.frameworks.add 'Foundation'
+    config.libraries.add  'xml2.2.7.3'
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
