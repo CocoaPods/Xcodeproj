@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   ).strip.gsub(/\s+/, ' ')
 
   s.extensions    = "ext/xcodeproj/extconf.rb"
-  s.files         = Dir["lib/**/*.rb"] + Dir["ext/**/*"] + %w{ README.md LICENSE }
+  s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/{extconf.*,xcodeproj_ext.c}"] + %w{ README.md LICENSE }
   s.require_paths = %w{ ext lib }
 
   ## Make sure you can build the gem on older versions of RubyGems too:
