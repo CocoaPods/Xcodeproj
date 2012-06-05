@@ -17,12 +17,26 @@ VALUE Xcodeproj = Qnil;
 
 static VALUE
 cfstr_to_str(const void *cfstr) {
-  long len = (long)CFStringGetLength(cfstr);
+  long len;
+
+  len = (long)CFStringGetLength(cfstr);
   char *buf = (char *)malloc(len+1);
   assert(buf != NULL);
-  CFStringGetCString(cfstr, buf, len+1, kCFStringEncodingUTF8);
+
+  CFDataRef data = CFStringCreateExternalRepresentation(NULL, cfstr, kCFStringEncodingUTF8, 0);
+  assert(data != NULL);
+  len = (long)CFDataGetLength(data);
+  CFDataGetBytes(data, CFRangeMake(0, len), buf);
+
   register VALUE str = rb_str_new(buf, len);
   free(buf);
+
+  // force UTF-8 encoding in Ruby 1.9+
+  ID forceEncodingId = rb_intern("force_encoding");
+  if (rb_respond_to(str, forceEncodingId)) {
+    rb_funcall(str, forceEncodingId, 1, rb_str_new("UTF-8", 5));
+  }
+
   return str;
 }
 

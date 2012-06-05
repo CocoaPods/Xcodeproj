@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require File.expand_path('../spec_helper', __FILE__)
 require 'xcodeproj/xcodeproj_ext'
 
@@ -53,6 +55,12 @@ describe "Xcodeproj C ext" do
   it "coerces values to strings if it is a disallowed type" do
     Xcodeproj.write_plist({ '1' => 1, 'symbol' => :symbol }, @plist)
     Xcodeproj.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
+  end
+
+  it "handles unicode characters in paths and strings" do
+    plist = @plist.to_s + 'øµ'
+    Xcodeproj.write_plist({ 'café' => 'før yoµ' }, plist)
+    Xcodeproj.read_plist(plist).should == { 'café' => 'før yoµ' }
   end
 
   it "raises if a plist contains any other object type as value than string, dictionary, and array" do
