@@ -3,8 +3,10 @@ Makefile
 *.log
 *.bundle
 *.o
+*.rbc
 .rbenv-version
 ext/xcodeproj/extconf.h
+ext/xcodeproj/conftest.dSYM
 *.gem
 .yardoc
 doc
