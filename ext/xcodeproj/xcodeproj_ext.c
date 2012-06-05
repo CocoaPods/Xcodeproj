@@ -17,15 +17,11 @@ VALUE Xcodeproj = Qnil;
 
 static VALUE
 cfstr_to_str(const void *cfstr) {
-  long len;
-
-  len = (long)CFStringGetLength(cfstr);
-  char *buf = (char *)malloc(len+1);
-  assert(buf != NULL);
-
   CFDataRef data = CFStringCreateExternalRepresentation(NULL, cfstr, kCFStringEncodingUTF8, 0);
   assert(data != NULL);
-  len = (long)CFDataGetLength(data);
+  long len = (long)CFDataGetLength(data);
+  char *buf = (char *)malloc(len+1);
+  assert(buf != NULL);
   CFDataGetBytes(data, CFRangeMake(0, len), buf);
 
   register VALUE str = rb_str_new(buf, len);
