@@ -15,7 +15,7 @@ static library from scratch, for both iOS and OSX.
 Xcodeproj itself installs through RubyGems, the Ruby package manager. Install it
 by performing the following command:
 
-    $ sudo gem install xcodeproj
+    $ [sudo] gem install xcodeproj --pre
 
 
 ## Colaborate
@@ -29,13 +29,6 @@ going on in the CocoaPods world.
 
 If you're really oldschool and you want to discuss Xcodeproj development you
 can join #cocoapods on irc.freenode.net.
-
-
-## Authors
-
-* [Nolan Waite](https://github.com/nolanw)
-* [Luke Redpath](https://github.com/lukeredpath)
-* [Eloy Durán](https://github.com/alloy)
 
 
 ## LICENSE
