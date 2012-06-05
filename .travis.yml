@@ -2,8 +2,7 @@ language: ruby
 rvm:
   - 1.8.7
   - 1.9.3
-  # It appears Travis uses 2.0.0dev in 1.8 mode, which does not have the ruby/st.h header.
-  # Need to figure this out once I get 2.0.0dev and rbenv to play together.
-  #- rbx-18mode
+  - rbx-18mode
+  - rbx-19mode
 install: env NOEXEC=skip bundle install --without=documentation && rake travis:setup --trace
 script: bundle exec rake spec --trace
