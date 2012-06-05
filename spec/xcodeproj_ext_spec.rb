@@ -16,7 +16,7 @@ describe "Xcodeproj C ext" do
     Xcodeproj.read_plist(@plist).should == {}
   end
 
-  if RUBY_VERSION >= '1.9'
+  if RUBY_VERSION >= '1.9' && !(defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx')
     it "raises when the given path can't be coerced into a string path" do
       lambda { Xcodeproj.write_plist({}, Object.new) }.should.raise TypeError
     end
