@@ -5,7 +5,7 @@ module Xcodeproj
   class Project
     module Object
       class AbstractPBXObject
-        def to_json
+        def to_json(generator = nil)
           # TODO move to subclasses? e.g. #json_type
           type = case self
           when PBXGroup         then 'group'
@@ -13,17 +13,14 @@ module Xcodeproj
           else
             raise "Oh noes!"
           end
-          { 'type' => type, 'name' => name }
+          { 'id' => uuid, 'type' => type, 'name' => name }.to_json
         end
       end
     end
 
     class PBXObjectList
-      def to_json
-        inject({}) do |hash, object|
-          hash[object.uuid] = object.to_json
-          hash
-        end.to_json
+      def to_json(generator = nil)
+        to_a.to_json
       end
     end
   end
@@ -34,7 +31,11 @@ module Xcodeproj
 
       # TODO currently here for convenience while testing
       def project
-        Xcodeproj::Project.new(project_path)
+        @project ||= Xcodeproj::Project.new(project_path)
+      end
+
+      def reset!
+        @project = nil
       end
     end
 
@@ -50,10 +51,19 @@ module Xcodeproj
       end
     end
 
+    post '/groups/:id/groups' do
+      if group = project.objects[params[:id]]
+        new_group = group.groups.new(JSON.parse(params[:group]))
+        new_group.to_json
+      else
+        raise "Oh noes!"
+      end
+    end
+
     private
 
     def project
-      @project ||= self.class.project
+      self.class.project
     end
   end
 end
