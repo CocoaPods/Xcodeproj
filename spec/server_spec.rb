@@ -30,4 +30,13 @@ describe 'Xcodeproj server' do
       'F8E469611395739C00DB05C8' => { 'type' => 'group', 'name' => 'Products' },
     }
   end
+
+  it "returns the items in a specific group" do
+    get '/groups/F8E469B71395759C00DB05C8'
+    last_response.should.be.ok
+    JSON.parse(last_response.body).should == {
+      'F8FA948F150EF8C100ED4EAD' => { 'type' => 'file', 'name' => 'AFTwitterAPIClient.h' },
+      'F8FA9490150EF8C100ED4EAD' => { 'type' => 'file', 'name' => 'AFTwitterAPIClient.m' },
+    }
+  end
 end

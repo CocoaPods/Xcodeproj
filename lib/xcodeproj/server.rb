@@ -42,6 +42,14 @@ module Xcodeproj
       project.main_group.children.to_json
     end
 
+    get '/groups/:id' do
+      if group = project.objects[params[:id]]
+        group.children.to_json
+      else
+        raise "Oh noes!"
+      end
+    end
+
     private
 
     def project
