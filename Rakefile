@@ -94,7 +94,7 @@ namespace :gem do
   desc "Install a gem version of the current code"
   task :install => :build do
     require File.expand_path('../lib/xcodeproj', __FILE__)
-    sh "sudo gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
+    sh "gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
   end
 end
 
