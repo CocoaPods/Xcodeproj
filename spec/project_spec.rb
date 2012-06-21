@@ -84,7 +84,7 @@ module ProjectSpecs
     it "adds an `m' or `c' file to the `sources build' phase list" do
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")
-        file = @target.add_source_file(path)
+        file = @target.add_source_files([{:path => path}]).first
         # ensure that it was added to all objects
         file = @project.objects[file.uuid]
 
@@ -100,7 +100,7 @@ module ProjectSpecs
       build_file_uuids = []
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")
-        file = @project.targets.first.add_source_file(path, nil, '-fno-obj-arc')
+        file = @project.targets.first.add_source_files([{:path => path, :compiler_flags => '-fno-obj-arc'}]).first
         find_object({
           'isa' => 'PBXBuildFile',
           'fileRef' => file.uuid,
@@ -113,7 +113,7 @@ module ProjectSpecs
     #it "adds a `h' file as a build file and adds it to the `headers build' phase list" do
     it "adds a `h' file as a build file and adds it to the `copy header files' build phase list" do
       path = Pathname.new("path/to/file.h")
-      file = @target.add_source_file(path)
+      file = @target.add_source_files([{:path => path}]).first
       # ensure that it was added to all objects
       file = @project.objects[file.uuid]
 
@@ -135,7 +135,7 @@ module ProjectSpecs
     it "returns all source files" do
       group = @project.groups.new('name' => 'SomeGroup')
       files = [Pathname.new('/some/file.h'), Pathname.new('/some/file.m')]
-      files.each { |file| group << @target.add_source_file(file) }
+      files.each { |file| group << @target.add_source_files([{:path => file}]).first }
       group.source_files.map(&:pathname).sort.should == files.sort
     end
   end

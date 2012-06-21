@@ -102,22 +102,43 @@ module Xcodeproj
           build_phases.list_by_class(PBXShellScriptBuildPhase)
         end
 
+        # Adds source files to the target
+        #
+        # @param source_files_description [Array<Hash{Symbol => Pathname, String}>]
+        #   Array containing an hash for each source file to add. The hash keys are:
+        #
+        #   - :path The required {Pathname} of the files.
+        #   - :copy_header_phase String (optional).
+        #   - :compiler_flags String (optional).
+        #
+        # @return [Array<PBXFileReference>]
+        #
         # Finds an existing file reference or creates a new one.
-        def add_source_file(path, copy_header_phase = nil, compiler_flags = nil)
-          file = @project.files.find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
-          build_file = file.build_files.new
-          if path.extname == '.h'
-            build_file.settings = { 'ATTRIBUTES' => ["Public"] }
-            # Working around a bug in Xcode 4.2 betas, remove this once the Xcode bug is fixed:
-            # https://github.com/alloy/cocoapods/issues/13
-            #phase = copy_header_phase || headers_build_phases.first
-            phase = copy_header_phase || copy_files_build_phases.first
-            phase.build_files << build_file
-          else
-            build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags
-            source_build_phases.first.build_files << build_file
+        def add_source_files(source_files_description)
+          # Cache the files for performance.
+          files = @project.files.to_a
+          file_references = []
+          source_files_description.each do |source_file_description|
+            path              = source_file_description[:path]
+            copy_header_phase = source_file_description[:copy_header_phase]
+            compiler_flags    = source_file_description[:compiler_flags]
+
+            file = files.find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
+            build_file = file.build_files.new
+            if path.extname == '.h'
+              build_file.settings = { 'ATTRIBUTES' => ["Public"] }
+              # Working around a bug in Xcode 4.2 betas, remove this once the Xcode bug is fixed:
+              # https://github.com/alloy/cocoapods/issues/13
+              #phase = copy_header_phase || headers_build_phases.first
+              phase = copy_header_phase || copy_files_build_phases.first
+              phase.build_files << build_file
+            else
+              build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags
+              source_build_phases.first.build_files << build_file
+            end
+            file_references << file
           end
-          file
+          file_references
         end
       end
 
