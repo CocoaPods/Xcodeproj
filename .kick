@@ -32,3 +32,36 @@ ignore(/\..+?\.sw.$/)
 ignore(/.*\/?tags/)
 ignore(/.*\/?\.git/)
 
+# Webserver front end
+
+process do |files|
+  files.each do |file|
+    case file
+    when /.*\.haml$/
+      files.delete(file)
+      execute "haml #{file} #{file.gsub(/\.haml$/,'.html')}"
+      reloadChrome
+    when /.*\.sass$/
+      files.delete(file)
+      execute "sass #{file} #{file.gsub(/\.sass$/,'.css')}"
+      reloadChrome
+    when /.*\.coffee$/
+      files.delete(file)
+      execute 'echo "loading coffee"'
+      reloadChrome
+    when /.*\.(js|css)$/
+      files.delete(file)
+    end
+  end
+end
+
+def reloadChrome
+  script =  <<-__ASCPT__
+    tell application "Google Chrome" to tell the first tab of its first window
+      reload
+    end tell
+  __ASCPT__
+
+  `osascript -e '#{script}'`
+end
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>XcodeProj</title>
+    <meta charset='UTF-8' />
+    <link href='css/bootstrap.css' rel='stylesheet' />
+    <link href='css/app.css' rel='stylesheet' />
+  </head>
+  <body>
+    <div class='container'>
+      <h1>xcodeproj</h1>
+      <script type='text/x-handlebars'>
+        {{view App.BreadcrumbView}}
+      </script>
+      <div class='row'>
+        <div class='span3'>
+          <div id='projectNavigator'></div>
+          <script type='text/x-handlebars'>
+            <div class='project-navigator well' style='padding: 8px 0;'>
+              <ul class='nav nav-list'>
+                <li>
+                  <a href='#'>
+                    <i class='icon-home'></i>
+                    Build Settings
+                  </a>
+                </li>
+                <li class='divider'></li>
+                {{#each App.project.content}}
+                {{#view App.NodeView contentBinding="this"}}
+                <a href='#'>
+                  {{view App.IconView contentBinding="this"}}
+                  {{name}}
+                </a>
+                {{/view}}
+                {{/each}}
+              </ul>
+            </div>
+            <div class='btn-group'>
+              <button class='btn' id='target'>{{App.controller.selectedTarget.name}}</button>
+              <button class='btn dropdown-toggle' data-toggle='dropdown'>
+                <span class='caret'></span>
+              </button>
+              <ul class='dropdown-menu'>
+                {{#each App.targets.content}}
+                <li>
+                  <a>{{name}}</a>
+                </li>
+                {{/each}}
+              </ul>
+            </div>
+            <div class='btn-group' data-toggle='buttons-radio' id='build-action'>
+              <button class='btn'>Build</button>
+              <button class='btn'>Deploy</button>
+            </div>
+          </script>
+        </div>
+        <div class='span9'>
+          <script type='text/x-handlebars'>
+            {{view Ember.ContainerView currentViewBinding="App.controller.editorView"}}
+          </script>
+        </div>
+      </div>
+    </div>
+    <script data-template-name='breadcrumb-view' type='text/x-handlebars'>
+      <ul class='breadcrumb' style='margin-top:30px'>
+        <li>
+          <a href='#'>file_name.xcodeproj</a>
+          <span class='divider'>/</span>
+        </li>
+        {{#each node in App.controller.selectedNode.parents }}
+        {{#view App.NodeView contentBinding="node"}}
+        <a href='#'>{{node.name}}</a>
+        <span class='divider'>/</span>
+        {{/view}}
+        {{/each}}
+        {{#view App.NodeView contentBinding="node"}}
+        <li class='active'>
+          <a href='#'>{{App.controller.selectedNode.name}}</a>
+        </li>
+        {{/view}}
+      </ul>
+    </script>
+    <script data-template-name='group-view' type='text/x-handlebars'>
+      <div id='file_browser'>
+        <table class='table table-bordered table-striped' style='width:700px'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each node in App.controller.editorNode.children}}
+            {{#view App.NodeRowView contentBinding="node"}}
+            <td>{{node.name}}</td>
+            <td>{{node.type}}</td>
+            {{/view}}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </script>
+    <script data-template-name='code-editor' type='text/x-handlebars'>
+      <div id='editor_containter'>
+        <div id='editor'></div>
+      </div>
+    </script>
+    <script data-template-name='build-settings' type='text/x-handlebars'>
+      Build Settings
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        ENV = { CP_DEFAULT_CACHEABLE: true, VIEW_PRESERVES_CONTEXT: true };
+      //]]>
+    </script>
+    <script src='js/libs/jquery-1.7.2.min.js'></script>
+    <script src='js/libs/ember-0.9.8.1.js'></script>
+    <script src='js/libs/ember-rest-0.1.1.js'></script>
+    <script src='js/libs/ace.js'></script>
+    <script src='js/libs/theme-solarized_dark.js'></script>
+    <script src='js/libs/keybinding-vim.js'></script>
+    <script src='js/libs/mode-c_cpp.js'></script>
+    <script src='js/libs/bootstrap.js'></script>
+    <script src='js/app.js'></script>
+  </body>
+</html>
