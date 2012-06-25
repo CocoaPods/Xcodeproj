@@ -102,28 +102,26 @@ module Xcodeproj
           build_phases.list_by_class(PBXShellScriptBuildPhase)
         end
 
-        # Adds source files to the target
+        # Adds source files to the target.
         #
-        # @param source_files_description [Array<Hash{Symbol => Pathname, String}>]
-        #   Array containing an hash for each source file to add. The hash keys are:
+        # @note
+        #   It finds an existing file reference or creates a new one.
         #
-        #   - :path The required {Pathname} of the files.
-        #   - :copy_header_phase String (optional).
-        #   - :compiler_flags String (optional).
+        # @param source_file_descriptions [Array<SourceFileDescription>] The
+        #   description of the source files to add.
         #
         # @return [Array<PBXFileReference>]
         #
-        # Finds an existing file reference or creates a new one.
-        def add_source_files(source_files_description)
+        def add_source_files(source_file_descriptions)
           # Cache the files for performance.
           files = @project.files.to_a
-          file_references = []
-          source_files_description.each do |source_file_description|
-            path              = source_file_description[:path]
-            copy_header_phase = source_file_description[:copy_header_phase]
-            compiler_flags    = source_file_description[:compiler_flags]
+          new_files = []
+          source_file_descriptions.each do |source_file_description|
+            path              = source_file_description.path
+            copy_header_phase = source_file_description.copy_header_phase
+            compiler_flags    = source_file_description.compiler_flags
 
-            file = files.find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
+            file = (files + new_files).find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
             build_file = file.build_files.new
             if path.extname == '.h'
               build_file.settings = { 'ATTRIBUTES' => ["Public"] }
@@ -133,15 +131,28 @@ module Xcodeproj
               phase = copy_header_phase || copy_files_build_phases.first
               phase.build_files << build_file
             else
-              build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags
+              build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags && !compiler_flags.empty?
               source_build_phases.first.build_files << build_file
             end
-            file_references << file
+            new_files << file
           end
-          file_references
+          new_files
         end
-      end
 
+        # Struct represseting the description needed to add a source file to
+        # the target.
+        #
+        # @!attribute path
+        #   @return [Pathname] The path of the file.
+        #
+        # @!attribute compiler_flags
+        #   @return [String] Any compiler flag.
+        #
+        # @!attribute copy_header_phase
+        #   @return [PBXCopyFilesBuildPhase].
+        #
+        SourceFileDescription = Struct.new(:path, :compiler_flags, :copy_header_phase)
+      end
     end
   end
 end

@@ -84,7 +84,8 @@ module ProjectSpecs
     it "adds an `m' or `c' file to the `sources build' phase list" do
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")
-        file = @target.add_source_files([{:path => path}]).first
+        desc = Xcodeproj::Project::PBXNativeTarget::SourceFileDescription.new(path, nil, nil)
+        file = @target.add_source_files([desc]).first
         # ensure that it was added to all objects
         file = @project.objects[file.uuid]
 
@@ -100,7 +101,8 @@ module ProjectSpecs
       build_file_uuids = []
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")
-        file = @project.targets.first.add_source_files([{:path => path, :compiler_flags => '-fno-obj-arc'}]).first
+        desc = Xcodeproj::Project::PBXNativeTarget::SourceFileDescription.new(path, '-fno-obj-arc', nil)
+        file = @project.targets.first.add_source_files([desc]).first
         find_object({
           'isa' => 'PBXBuildFile',
           'fileRef' => file.uuid,
@@ -113,7 +115,8 @@ module ProjectSpecs
     #it "adds a `h' file as a build file and adds it to the `headers build' phase list" do
     it "adds a `h' file as a build file and adds it to the `copy header files' build phase list" do
       path = Pathname.new("path/to/file.h")
-      file = @target.add_source_files([{:path => path}]).first
+      desc = Xcodeproj::Project::PBXNativeTarget::SourceFileDescription.new(path, nil, nil)
+      file = @target.add_source_files([desc]).first
       # ensure that it was added to all objects
       file = @project.objects[file.uuid]
 
@@ -135,7 +138,8 @@ module ProjectSpecs
     it "returns all source files" do
       group = @project.groups.new('name' => 'SomeGroup')
       files = [Pathname.new('/some/file.h'), Pathname.new('/some/file.m')]
-      files.each { |file| group << @target.add_source_files([{:path => file}]).first }
+      descriptions = files.map { |p| Xcodeproj::Project::PBXNativeTarget::SourceFileDescription.new(p, nil, nil) }
+      @target.add_source_files(descriptions).each { |new_file| group << new_file }
       group.source_files.map(&:pathname).sort.should == files.sort
     end
   end
