@@ -139,7 +139,7 @@ module Xcodeproj
           new_files
         end
 
-        # Struct represseting the description needed to add a source file to
+        # Struct representing the description needed to add a source file to
         # the target.
         #
         # @!attribute path
