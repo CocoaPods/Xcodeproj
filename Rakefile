@@ -86,6 +86,15 @@ rescue LoadError
 end
 
 namespace :gem do
+  def gem_version
+    require File.expand_path('../lib/xcodeproj', __FILE__)
+    Xcodeproj::VERSION
+  end
+
+  def gem_filename
+    "xcodeproj-#{gem_version}.gem"
+  end
+
   desc "Build the gem"
   task :build do
     sh "gem build xcodeproj.gemspec"
@@ -93,8 +102,72 @@ namespace :gem do
 
   desc "Install a gem version of the current code"
   task :install => :build do
-    require File.expand_path('../lib/xcodeproj', __FILE__)
-    sh "gem install xcodeproj-#{Xcodeproj::VERSION}.gem"
+    sh "gem install #{gem_filename}"
+  end
+
+  def silent_sh(command)
+    output = `#{command} 2>&1`
+    unless $?.success?
+      puts output
+      exit 1
+    end
+    output
+  end
+
+  desc "Run all specs, build and install gem, commit version change, tag version change, and push everything"
+  task :release do
+
+    unless ENV['SKIP_CHECKS']
+      if `git symbolic-ref HEAD 2>/dev/null`.strip.split('/').last != 'master'
+        $stderr.puts "[!] You need to be on the `master' branch in order to be able to do a release."
+        exit 1
+      end
+
+      if `git tag`.strip.split("\n").include?(gem_version)
+        $stderr.puts "[!] A tag for version `#{gem_version}' already exists. Change the version in lib/xcodeproj.rb"
+        exit 1
+      end
+
+      puts "You are about to release `#{gem_version}', is that correct? [y/n]"
+      exit if $stdin.gets.strip.downcase != 'y'
+
+      diff_lines = `git diff --name-only`.strip.split("\n")
+
+      if diff_lines.size == 0
+        $stderr.puts "[!] Change the version number yourself in lib/xcodeproj.rb"
+        exit 1
+      end
+
+      if diff_lines != ['Gemfile.lock', 'lib/xcodeproj.rb']
+        $stderr.puts "[!] Only change the version number in a release commit!"
+        exit 1
+      end
+    end
+
+    puts "* Running specs"
+    silent_sh('rake spec:all')
+
+    tmp = File.expand_path('../tmp', __FILE__)
+    tmp_gems = File.join(tmp, 'gems')
+
+    Rake::Task['gem:build'].invoke
+
+    puts "* Testing gem installation (tmp/gems)"
+    silent_sh "rm -rf '#{tmp}'"
+    silent_sh "gem install --install-dir='#{tmp_gems}' #{gem_filename}"
+
+    # puts "* Building examples from gem (tmp/gems)"
+    # ENV['GEM_HOME'] = ENV['GEM_PATH'] = tmp_gems
+    # ENV['PATH']     = "#{tmp_gems}/bin:#{ENV['PATH']}"
+    # ENV['FROM_GEM'] = '1'
+    # silent_sh "rake examples:build"
+
+    # Then release
+    sh "git commit Gemfile.lock lib/xcodeproj.rb -m 'Release #{gem_version}'"
+    sh "git tag -a #{gem_version} -m 'Release #{gem_version}'"
+    sh "git push origin master"
+    sh "git push origin --tags"
+    sh "gem push #{gem_filename}"
   end
 end
 
