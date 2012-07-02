@@ -13,9 +13,6 @@ module Xcodeproj
             'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
             'GCC_C_LANGUAGE_STANDARD'           => 'gnu99',
             'INSTALL_PATH'                      => "$(BUILT_PRODUCTS_DIR)",
-            'GCC_WARN_ABOUT_MISSING_PROTOTYPES' => 'YES',
-            'GCC_WARN_ABOUT_RETURN_TYPE'        => 'YES',
-            'GCC_WARN_UNUSED_VARIABLE'          => 'YES',
             'OTHER_LDFLAGS'                     => '',
             'COPY_PHASE_STRIP'                  => 'YES',
           }.freeze,
@@ -35,7 +32,6 @@ module Xcodeproj
           :osx => {
             'ARCHS'                             => "$(ARCHS_STANDARD_64_BIT)",
             'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
-            'GCC_WARN_64_TO_32_BIT_CONVERSION'  => 'YES',
             'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
             'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
             'SDKROOT'                           => 'macosx',
