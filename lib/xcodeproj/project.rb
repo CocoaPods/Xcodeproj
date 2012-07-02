@@ -167,12 +167,17 @@ module Xcodeproj
     #                             directory.
     # @return [PBXFileReference]  The file reference object.
     def add_system_framework(name)
-      group = groups.where('name' => 'Frameworks') || groups.new('name' => 'Frameworks')
-      group.files.new({
-        'name' => "#{name}.framework",
-        'path' => "System/Library/Frameworks/#{name}.framework",
-        'sourceTree' => 'SDKROOT'
-      })
+      path = "System/Library/Frameworks/#{name}.framework"
+      if file = files.where(:path => path)
+        file
+      else
+        group = groups.where('name' => 'Frameworks') || groups.new('name' => 'Frameworks')
+        group.files.new({
+          'name' => "#{name}.framework",
+          'path' => path,
+          'sourceTree' => 'SDKROOT'
+        })
+      end
     end
 
     # @return [PBXObjectList<XCBuildConfiguration]  A list of project wide

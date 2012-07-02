@@ -81,6 +81,29 @@ module ProjectSpecs
       @project.build_settings('Release').should == {}
     end
 
+    it "adds a file reference, for a system framework, to the Frameworks group" do
+      group = @project.groups.where(:name => 'Frameworks')
+      file = @project.add_system_framework('QuartzCore')
+      file.group.should == group
+      file.name.should == 'QuartzCore.framework'
+      file.path.should == 'System/Library/Frameworks/QuartzCore.framework'
+      file.source_tree.should == 'SDKROOT'
+    end
+
+    it "does not add a system framework if it already exists in the project" do
+      before = @project.files.size
+
+      file = @project.add_system_framework('Foundation')
+      file.name.should == 'Foundation.framework'
+      @project.files.size.should == before
+
+      @project.groups.where(:name => 'Frameworks').name = 'Renamed Frameworks Group'
+      file = @project.add_system_framework('Foundation')
+      file.name.should == 'Foundation.framework'
+      @project.files.size.should == before
+    end
+
+    # TODO this should go to the native target spec
     it "adds an `m' or `c' file to the `sources build' phase list" do
       %w{ m mm c cpp }.each do |ext|
         path = Pathname.new("path/to/file.#{ext}")
