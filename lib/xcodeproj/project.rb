@@ -180,8 +180,8 @@ module Xcodeproj
       end
     end
 
-    # @return [PBXObjectList<XCBuildConfiguration]  A list of project wide
-    #                                               build configurations.
+    # @return [PBXObjectList<XCBuildConfiguration>]  A list of project wide
+    #                                                build configurations.
     def build_configurations
       root_object.build_configuration_list.build_configurations
     end
