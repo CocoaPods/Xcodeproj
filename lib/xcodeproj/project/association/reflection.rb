@@ -1,5 +1,3 @@
-require 'xcodeproj/inflector'
-
 module Xcodeproj
   class Project
     module Object

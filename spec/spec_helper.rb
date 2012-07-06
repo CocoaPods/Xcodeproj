@@ -9,9 +9,10 @@ require 'xcodeproj'
 
 $:.unshift((ROOT + 'spec').to_s)
 require 'spec_helper/color_output'
-require 'spec_helper/hash_diff'
 require 'spec_helper/project'
 require 'spec_helper/temporary_directory'
+
+require 'active_support/core_ext/hash/diff'
 
 require 'bacon'
 module Bacon

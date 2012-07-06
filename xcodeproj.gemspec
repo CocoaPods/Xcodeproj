@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/{extconf.rb,xcodeproj_ext.c}"] + %w{ README.md LICENSE }
   s.require_paths = %w{ ext lib }
 
+  s.add_runtime_dependency 'activesupport', '~> 3.2.6'
+
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=

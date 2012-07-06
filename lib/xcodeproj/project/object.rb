@@ -1,4 +1,4 @@
-require 'xcodeproj/inflector'
+require 'active_support/inflector'
 
 module Xcodeproj
   class Project
