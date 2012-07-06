@@ -138,7 +138,7 @@ namespace :gem do
         exit 1
       end
 
-      if diff_lines != ['Gemfile.lock', 'lib/xcodeproj.rb']
+      if !diff_lines.all? { |f| %w{ Gemfile.lock lib/xcodeproj.rb }.include?(f) }
         $stderr.puts "[!] Only change the version number in a release commit!"
         exit 1
       end
