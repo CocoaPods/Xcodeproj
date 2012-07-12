@@ -7,12 +7,12 @@ module Xcodeproj
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
     require 'set'
 
-    attr_accessor :attributes, :frameworks ,:libraries
+    attr_accessor :attributes, :frameworks, :weak_frameworks ,:libraries
 
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
-      @frameworks, @libraries = Set.new, Set.new
+      @frameworks, @weak_frameworks, @libraries = Set.new, Set.new, Set.new
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
@@ -23,6 +23,7 @@ module Xcodeproj
       flags = flags.dup.strip
       flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
       flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
+      flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_frameworks #{f}" }
       hash['OTHER_LDFLAGS'] = flags.strip
       hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
       hash
@@ -63,6 +64,7 @@ module Xcodeproj
         @attributes.merge!(xcconfig.attributes) { |key, v1, v2| "#{v1} #{v2}" }
         @libraries.merge   xcconfig.libraries
         @frameworks.merge  xcconfig.frameworks
+        @weak_frameworks.merge  xcconfig.weak_frameworks
       else
       @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
       # Parse frameworks and libraries. Then remove the from the linker flags
@@ -70,12 +72,15 @@ module Xcodeproj
       return unless flags
 
       frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
+      weak_frameworks = flags.scan(/-weak_framework\s+([^\s]+)/).map { |m| m[0] }
       libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
       @frameworks.merge frameworks
+      @weak_frameworks.merge weak_frameworks
       @libraries.merge libraries
 
       new_flags = flags.dup
       frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
+      weak_frameworks.each {|f| new_flags.gsub!("-weak_framework #{f}", "") }
       libraries.each  {|l| new_flags.gsub!("-l#{l}", ""); new_flags.gsub!("-l #{l}", "") }
       @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
       end

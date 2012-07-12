@@ -32,10 +32,11 @@ describe "Xcodeproj::Config" do
   end
 
   it "parses the frameworks and the libraries" do
-    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
-    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
+    config.libraries.to_a.should.be.equal %w[ xml2.2.7.3 ]
   end
 
   it "can handle libraries specified as a separate argument" do
@@ -127,13 +128,15 @@ describe "Xcodeproj::Config" do
   end
 
   it "doesn't duplicates libraries and frameworks" do
-    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     # merge the original hahs again
     config.merge!(hash)
     config.frameworks.add 'Foundation'
+    config.weak_frameworks.add 'Twitter'
     config.libraries.add  'xml2.2.7.3'
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
 
