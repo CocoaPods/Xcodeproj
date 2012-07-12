@@ -23,7 +23,7 @@ module Xcodeproj
       flags = flags.dup.strip
       flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
       flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
-      flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_frameworks #{f}" }
+      flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_framework #{f}" }
       hash['OTHER_LDFLAGS'] = flags.strip
       hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
       hash
