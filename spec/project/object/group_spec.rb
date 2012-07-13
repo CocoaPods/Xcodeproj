@@ -102,6 +102,23 @@ module ProjectSpecs
       @target.source_build_phases.first << file
       @group.source_files.should == [file]
     end
+
+    it "adds XCVersionGroups" do
+      group = @group.version_groups.new 'versionGroupType' => 'wrapper.xcdatamodel'
+      group.isa.should == 'XCVersionGroup'
+      group.version_group_type.should == 'wrapper.xcdatamodel';
+    end
+  end
+
+  describe "Xcodeproj::Project::Object::XCVersionGroup" do
+    before do
+      @group = @project.groups.new('name' => 'Resources')
+    end
+
+    it "adds xcdatamodel groups" do
+      version_group = @group.version_groups.new_xcdatamodel_group 'Model.xcdatamodeld'
+      version_group.current_version.should == @project.files.last.uuid
+    end
   end
 end
 
