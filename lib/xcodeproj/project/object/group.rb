@@ -92,8 +92,25 @@ module Xcodeproj
           groups.new("name" => name)
         end
 
+        def version_groups
+          children.list_by_class(XCVersionGroup)
+        end
+
         def <<(child)
           children << child
+        end
+      end
+
+      class XCVersionGroup < PBXGroup
+
+        attribute :version_group_type
+        attribute :current_version
+
+        def self.new_xcdatamodel_group(project, xcdatamodel_path)
+          group = new(project, nil, 'versionGroupType' => 'wrapper.xcdatamodel')
+          ref = group.files.new('path' => xcdatamodel_path.gsub(/xcdatamodeld$/, 'xcdatamodel'), 'sourceTree' => '<group>', 'lastKnownFileType' => 'wrapper.xcdatamodel')
+          group.current_version = ref.uuid
+          group
         end
       end
 
