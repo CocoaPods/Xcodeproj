@@ -108,8 +108,11 @@ module Xcodeproj
 
         def self.new_xcdatamodel_group(project, xcdatamodel_path)
           group = new(project, nil, 'versionGroupType' => 'wrapper.xcdatamodel')
-          ref = group.files.new('path' => xcdatamodel_path.gsub(/xcdatamodeld$/, 'xcdatamodel'), 'sourceTree' => '<group>', 'lastKnownFileType' => 'wrapper.xcdatamodel')
-          group.current_version = ref.uuid
+          file = group.files.new(
+            'path' => xcdatamodel_path.sub(/xcdatamodeld$/, 'xcdatamodel'),
+            'lastKnownFileType' => 'wrapper.xcdatamodel'
+          )
+          group.current_version = file.uuid
           group
         end
       end

@@ -106,6 +106,7 @@ module ProjectSpecs
     it "adds XCVersionGroups" do
       group = @group.version_groups.new 'versionGroupType' => 'wrapper.xcdatamodel'
       group.isa.should == 'XCVersionGroup'
+      group.source_tree.should == '<group>'
       group.version_group_type.should == 'wrapper.xcdatamodel';
     end
   end
@@ -116,8 +117,10 @@ module ProjectSpecs
     end
 
     it "adds xcdatamodel groups" do
-      version_group = @group.version_groups.new_xcdatamodel_group 'Model.xcdatamodeld'
-      version_group.current_version.should == @project.files.last.uuid
+      version_group = @group.version_groups.new_xcdatamodel_group 'some/Model.xcdatamodeld'
+      file = @project.files[version_group.current_version]
+      version_group.files.should == [file]
+      file.path.should == 'some/Model.xcdatamodel'
     end
   end
 end
