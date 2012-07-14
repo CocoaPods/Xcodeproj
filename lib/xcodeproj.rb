@@ -1,5 +1,5 @@
 module Xcodeproj
-  VERSION = '0.2.3'
+  VERSION = '0.3.0'
 
   autoload :Config,    'xcodeproj/config'
   autoload :Project,   'xcodeproj/project'

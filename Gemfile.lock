@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcodeproj (0.2.3)
+    xcodeproj (0.3.0)
       activesupport (~> 3.2.6)
 
 GEM
@@ -13,7 +13,7 @@ GEM
     bacon (1.1.0)
     ffi (1.0.11)
     i18n (0.6.0)
-    kicker (2.6.0)
+    kicker (2.6.1)
       listen
     listen (0.4.7)
       rb-fchange (~> 0.0.5)
