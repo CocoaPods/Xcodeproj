@@ -105,9 +105,10 @@ module Xcodeproj
 
         attribute :version_group_type
         attribute :current_version
+        attribute :path
 
         def self.new_xcdatamodel_group(project, xcdatamodel_path)
-          group = new(project, nil, 'versionGroupType' => 'wrapper.xcdatamodel')
+          group = new(project, nil, 'path' => xcdatamodel_path, 'versionGroupType' => 'wrapper.xcdatamodel')
           file = group.files.new(
             'path' => xcdatamodel_path.sub(/xcdatamodeld$/, 'xcdatamodel'),
             'lastKnownFileType' => 'wrapper.xcdatamodel'
