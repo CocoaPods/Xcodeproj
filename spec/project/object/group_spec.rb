@@ -121,6 +121,7 @@ module ProjectSpecs
       file = @project.files[version_group.current_version]
       version_group.files.should == [file]
       file.path.should == 'some/Model.xcdatamodel'
+      version_group.path.should == 'some/Model.xcdatamodeld'
     end
   end
 end
