@@ -6,6 +6,8 @@
 #include "ruby.h"
 #if HAVE_RUBY_ST_H
 #include "ruby/st.h"
+#elif HAVE_ST_H
+#include "st.h"
 #endif
 
 #include "CoreFoundation/CoreFoundation.h"
