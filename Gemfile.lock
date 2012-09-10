@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcodeproj (0.3.2)
+    xcodeproj (0.3.3)
       activesupport (~> 3.2.6)
 
 GEM
@@ -12,7 +12,7 @@ GEM
       multi_json (~> 1.0)
     bacon (1.1.0)
     ffi (1.1.5)
-    i18n (0.6.0)
+    i18n (0.6.1)
     kicker (2.6.1)
       listen
     listen (0.4.7)
