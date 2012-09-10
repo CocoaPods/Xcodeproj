@@ -35,6 +35,7 @@ module Xcodeproj
             'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
             'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
             'SDKROOT'                           => 'macosx',
+            'COMBINE_HIDPI_IMAGES'              => 'YES',
           }.freeze,
           [:osx, :debug] => {
             'ONLY_ACTIVE_ARCH'                  => 'YES',
