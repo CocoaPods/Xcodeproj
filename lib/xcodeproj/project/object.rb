@@ -87,10 +87,10 @@ module Xcodeproj
 
         attr_reader :uuid, :attributes, :project
 
-        # [String] the object's class name
+        # @return [String] the object's class name
         attribute :isa
 
-        # [String] the object's name
+        # @return [String] the object's name
         attribute :name
 
         # It is not recommended that you instantiate objects through this

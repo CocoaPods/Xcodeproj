@@ -27,6 +27,11 @@ module Xcodeproj
           self.run_only_for_deployment_postprocessing ||= "0"
         end
 
+        def destroy
+          build_files.each(&:destroy)
+          super
+        end
+
         def files
           PBXObjectList.new(PBXFileReference, @project) do |list|
             list.let(:uuid_scope) { self.build_files.map(&:file_ref) }
