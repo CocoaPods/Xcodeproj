@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# encoding: utf-8
 
 if $0 == __FILE__
   $:.unshift File.expand_path('../../ext', __FILE__)
@@ -14,7 +15,8 @@ $option_parser = OptionParser.new do |opts|
   opts.separator ""
   opts.separator "Commands:"
   opts.separator ""
-  opts.separator "  targets-diff [target 1] [target 2]\tShows the difference between two targets. (Only build source files atm.)"
+  opts.separator "  show                                  Shows a tree reppresentation."
+  opts.separator "  targets-diff [target 1] [target 2]    Shows the difference between two targets. (Only build source files atm.)"
   opts.separator ""
 
   opts.separator "Options:"
@@ -58,17 +60,17 @@ end
 
 
 class Xcodeproj::Project::Object::PBXGroup
-  attributes :path
+  # attributes :path
 end
 class Xcodeproj::Project::Object::PBXFileReference
   alias_method :_path, :path
   def path
     # TODO somethings not working right, I'm seeing the dir being prepended twice with ZipKit
-    if (sourceTree == '<group>') && dir = group.path
-      File.join(dir, _path)
-    else
-      _path
-    end
+    # if (sourceTree == '<group>') && dir = group.path
+    #   File.join(dir, _path)
+    # else
+    #   _path
+    # end
   end
 end
 def target_source_files(project, target_name)
@@ -95,6 +97,67 @@ when 'targets-diff'
     invalid_command("Needs the names of the two targets to diff.")
   end
 
+when 'show'
+  project = Xcodeproj::Project.new(xcodeproj)
+  def inspec_obj(obj, level = 0)
+    if obj.respond_to?(:children) && !obj.children.empty?
+      display(obj, level) + "\n" + (obj.children.map { |child| inspec_obj(child, level + 1) } * "\n")
+    else
+      display(obj, level)
+    end
+  end
+
+  def display(obj, indentation, show_isa = true, show_uuid = false)
+    name = case obj
+    when Xcodeproj::Project::Object::PBXFileReference
+      obj.name
+    when Xcodeproj::Project::Object::PBXGroup
+      obj.name
+    when Xcodeproj::Project::Object::PBXBuildFile
+      obj.file.name
+    when Xcodeproj::Project::Object::PBXCopyFilesBuildPhase
+      obj.dst_path
+    when Xcodeproj::Project::Object::PBXBuildPhase
+      "[ #{obj.files.count} #{obj.files.count == 1 ? 'file' : 'files'} ]"
+    when Xcodeproj::Project::Object::PBXNativeTarget
+      "#{obj.product_name} - #{obj.product_type.gsub('com.apple.product-type.','')}"
+    when Xcodeproj::Project::Object::PBXProject
+      "[ targets: #{obj.targets.map(&:name) * ", "} ]"
+    when Xcodeproj::Project::Object::XCBuildConfiguration
+      "#{obj.name} - #{obj.build_settings.count} settings"
+    when Xcodeproj::Project::Object::XCConfigurationList
+      obj.build_configurations.map(&:name) * ", "
+    else
+      'no'
+    end
+    indented_name = "  " * indentation + name
+    r =  indented_name
+    r =  r.ljust(40)                 if show_uuid || show_isa
+    r << obj.uuid                    if show_uuid
+    r << "  " << obj.isa             if show_isa
+    r
+  end
+
+  objects_by_isa = {}
+  project.objects.each do |obj|
+    objects_by_isa[obj.isa] = [] unless objects_by_isa[obj.isa]
+    objects_by_isa[obj.isa] << obj
+  end
+
+  s_objects = ''
+  objects_by_isa.sort.each do |isa, objs|
+    s_objects << "\e[1;32m#{isa}:\e[0m\n"
+    s_objects << objs.sort_by(&:name).map {|obj| display(obj, 1, false)} * "\n" + "\n\n"
+  end
+
+  s_root_object = project.main_group.children.map do |child|
+    inspec_obj(child)
+  end * "\n"
+
+  puts "\n\e[1;33mOBJECTS:\e[0m\n\n"
+  puts "#{s_objects}"
+  puts "\n\e[1;33mMAIN GROUP:\e[0m\n\n"
+  puts "#{s_root_object}\n\n"
 else
   invalid_command(cmd.nil? ? nil : "Unknown command: #{cmd}")
 end
