@@ -55,6 +55,7 @@ module Xcodeproj
         end
       end
 
+      class PBXResourcesBuildPhase < PBXBuildPhase;   end
       class PBXSourcesBuildPhase < PBXBuildPhase;     end
       class PBXFrameworksBuildPhase < PBXBuildPhase;  end
 
