@@ -22,7 +22,10 @@ module Xcodeproj
       end
 
       def uuid_scope
-        @callbacks[:uuid_scope].call
+        unless @uuid_scope
+          @uuid_scope = @callbacks[:uuid_scope].call
+        end
+        @uuid_scope
       end
 
       def empty?
@@ -45,6 +48,11 @@ module Xcodeproj
         add(@represented_class, hash)
       end
 
+      def delete(object)
+        uuid_scope.delete(object.uuid)
+        object.referrers.delete(self)
+      end
+      
       # Run Ruby in debug mode to receive warnings about calls to :push when a
       # list does not have a callback registered for :push.
       def push(object)
@@ -55,6 +63,8 @@ module Xcodeproj
             warn "Pushed object onto a PBXObjectList that does not have a :push callback from: #{caller.first}"
           end
         end
+        uuid_scope.push(object.uuid)
+        object.referrers.push(self)
         self
       end
       alias_method :<<, :push

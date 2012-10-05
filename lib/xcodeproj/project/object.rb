@@ -87,6 +87,9 @@ module Xcodeproj
 
         attr_reader :uuid, :attributes, :project
 
+        # [Array<PBXObjectList>] an array of PBXObjectList that refers to this object
+        attr_reader :referrers
+
         # [String] the object's class name
         attribute :isa
 
@@ -110,10 +113,12 @@ module Xcodeproj
             @project.add_object_hash(uuid, @attributes)
           end
           @uuid = uuid
+          @referrers = Array.new
         end
 
         def destroy
           @project.objects_hash.delete(uuid)
+          @referrers.each { |referrer| referrer.delete(self) }
         end
 
         def ==(other)
