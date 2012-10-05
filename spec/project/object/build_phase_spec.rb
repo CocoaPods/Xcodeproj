@@ -86,4 +86,15 @@ module ProjectSpecs
       @phase.shell_script.should == ''
     end
   end
+
+  describe "Xcodeproj::Project::Object::PBXResourcesBuildPhase" do
+    before do
+      @phase = @project.objects.add(PBXResourcesBuildPhase)
+    end
+
+    it "is a PBXBuildPhase" do
+      @phase.should.be.kind_of PBXBuildPhase
+    end
+  end
+
 end
