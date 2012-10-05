@@ -102,6 +102,10 @@ module Xcodeproj
           build_phases.list_by_class(PBXShellScriptBuildPhase)
         end
 
+        def resources_build_phases
+          build_phases.list_by_class(PBXResourcesBuildPhase)
+        end
+
         # Adds source files to the target.
         #
         # @note
