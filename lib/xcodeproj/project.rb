@@ -45,7 +45,7 @@ module Xcodeproj
         }
         main_group = groups.new
         self.root_object = objects.add(PBXProject, {
-          'attributes' => { 'LastUpgradeCheck' => '0420' },
+          'attributes' => { 'LastUpgradeCheck' => '0450' },
           'compatibilityVersion' => 'Xcode 3.2',
           'developmentRegion' => 'English',
           'hasScannedForEncodings' => '0',
