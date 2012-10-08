@@ -127,7 +127,7 @@ module Xcodeproj
 
             file = (files + new_files).find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
             build_file = file.build_files.new
-            if (path.extname == '.h' || path.extname == '.hpp')
+            if (path.extname == '.h' || path.extname == '.hpp' || path.extname == '.hh')
               build_file.settings = { 'ATTRIBUTES' => ["Public"] }
               # Working around a bug in Xcode 4.2 betas, remove this once the Xcode bug is fixed:
               # https://github.com/alloy/cocoapods/issues/13
