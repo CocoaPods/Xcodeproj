@@ -12,3 +12,4 @@ ext/xcodeproj/conftest.dSYM
 doc
 tmp
 .DS_Store
+xcuserdata
