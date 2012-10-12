@@ -115,6 +115,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5DCFBDB16285429002C6803 /* Custom name copy */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			name = "Custom name copy";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -412,6 +422,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5DCFBD916285415002C6803 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -422,6 +439,9 @@
 				E525238816245A900012E2BA /* Sources */,
 				E525238916245A900012E2BA /* Frameworks */,
 				E525238A16245A900012E2BA /* Resources */,
+				E5DCFBD916285415002C6803 /* Headers */,
+				E5DCFBDB16285429002C6803 /* Custom name copy */,
+				E5DCFBDC16285431002C6803 /* Custom name */,
 			);
 			buildRules = (
 				E552E0F916263968003ED1FE /* PBXBuildRule */,
@@ -629,6 +649,20 @@
 			);
 			inputPaths = (
 			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+		E5DCFBDC16285431002C6803 /* Custom name */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Custom name";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
