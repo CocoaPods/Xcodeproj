@@ -8,27 +8,27 @@ module Xcodeproj
     require 'set'
 
     # @return [Hash{String => String}] The attributes of the settings file
-    # excluding frameworks, weak_framework and libraries.
+    #   excluding frameworks, weak_framework and libraries.
     #
     attr_accessor :attributes
 
     # @return [Array<String>] The list of the frameworks required by this
-    # settings file.
+    #   settings file.
     #
     attr_accessor :frameworks
 
     # @return [Array<String>] The list of the *weak* frameworks required by
-    # this settings file.
+    #   this settings file.
     #
     attr_accessor :weak_frameworks
 
     # @return [Array<String>] The list of the libraries required by this
-    # settings file.
+    #   settings file.
     #
     attr_accessor :libraries
 
     # @return [Array] The list of the configuration files included by this
-    # configuration file (`#include "SomeConfig"`).
+    #   configuration file (`#include "SomeConfig"`).
     #
     attr_accessor :includes
 

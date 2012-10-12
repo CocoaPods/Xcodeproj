@@ -2,160 +2,211 @@ module Xcodeproj
   class Project
     module Object
 
-      class PBXNativeTarget < AbstractPBXObject
-        STATIC_LIBRARY = 'com.apple.product-type.library.static'
+      # Represents a target.
+      #
+      class PBXNativeTarget < AbstractObject
 
-        # [String] the name of the build product
-        attribute :product_name
+        # @return [String] The name of the Target.
+        #
+        attribute :name, String
 
-        # [String] the build product type identifier
-        attribute :product_type
+        # @return [XCConfigurationList] the list of the build configurations of
+        #   the target. This list commonly include two configurations `Debug`
+        #   and `Release`.
+        #
+        has_one :build_configuration_list, XCConfigurationList
 
-        has_many :build_phases
-        has_many :dependencies # TODO :class => ?
-        has_many :build_rules # TODO :class => ?
-        has_one :build_configuration_list, :class => XCConfigurationList
-        has_one :product, :uuid => :product_reference
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note Apparently only PBXCopyFilesBuildPhase and
+        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        #
+        has_many :build_phases, AbstractBuildPhase
 
-        def self.new_static_library(project, platform, name)
-          project.add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa')
+        # @return [PBXBuildRule] the build rules of this target.
+        #
+        has_many :build_rules, PBXBuildRule
 
-          target = new(project, nil, 'productType' => STATIC_LIBRARY, 'productName' => name)
-          target.product.path = "lib#{name}.a"
+        # @return [PBXNativeTarget] the targets necessary to build this target.
+        #
+        has_many :dependencies, PBXTargetDependency
 
-          target.build_configurations.each do |config|
-            config.build_settings.merge!(XCBuildConfiguration::COMMON_BUILD_SETTINGS[platform])
+        # @return [String] the name of the build product.
+        #
+        attribute :product_name, String
 
-            # E.g. [:ios, :release]
-            extra_settings_key = [platform, config.name.downcase.to_sym]
-            if extra_settings = XCBuildConfiguration::COMMON_BUILD_SETTINGS[extra_settings_key]
-              config.build_settings.merge!(extra_settings)
-            end
-          end
+        # @return [String] the build product type identifier.
+        #
+        attribute :product_type, String, 'com.apple.product-type.library.static'
 
-          target
-        end
+        # @return [PBXFileReference] the reference to the product file.
+        #
+        has_one :product_reference, PBXFileReference
 
-        # You need to specify a product. For a static library you can use
-        # PBXFileReference.new_static_library.
-        def initialize(project, *)
-          super
-          self.name ||= product_name
-          self.build_rule_references  ||= []
-          self.dependency_references  ||= []
+        ## CONVENIENCE METHODS #################################################
 
-          unless build_phase_references
-            self.build_phase_references = []
+        # @!group Convenience methods
 
-            source_build_phases.new
-            copy_files_build_phases.new
-            #shell_script_build_phases.new
-
-            phase = frameworks_build_phases.new
-            if frameworks_group = @project.groups.where(:name => 'Frameworks')
-              frameworks_group.files.each { |framework| phase << framework }
-            end
-          end
-
-          unless build_configuration_list
-            self.build_configuration_list = project.objects.add(XCConfigurationList, {
-              'defaultConfigurationIsVisible' => '0',
-              'defaultConfigurationName' => 'Release',
-            })
-            # TODO or should this happen in buildConfigurationList?
-            build_configuration_list.build_configurations.new_debug
-            build_configuration_list.build_configurations.new_release
-          end
-
-          unless product
-            self.product = @project.files.new_static_library(product_name)
-          end
-        end
-
-        alias_method :_product=, :product=
-        def product=(product)
-          self._product = product
-          @project.products << product
-        end
-
+        # @return [ObjectList<XCBuildConfiguration>] the build
+        #   configurations of the target.
+        #
         def build_configurations
           build_configuration_list.build_configurations
         end
 
+        # @return [Hash] the build settings of the build configuration with the
+        #   given name.
+        #
+        # @param [String] build_configuration_name
+        #   the name of a build configuration.
+        #
         def build_settings(build_configuration_name)
           build_configuration_list.build_settings(build_configuration_name)
         end
 
-        def source_build_phases
-          build_phases.list_by_class(PBXSourcesBuildPhase)
-        end
-
-        def copy_files_build_phases
-          build_phases.list_by_class(PBXCopyFilesBuildPhase)
-        end
-
-        def frameworks_build_phases
-          build_phases.list_by_class(PBXFrameworksBuildPhase)
-        end
-
-        def shell_script_build_phases
-          build_phases.list_by_class(PBXShellScriptBuildPhase)
-        end
-
-        def resources_build_phases
-          build_phases.list_by_class(PBXResourcesBuildPhase)
-        end
-
         # Adds source files to the target.
         #
-        # @note
-        #   It finds an existing file reference or creates a new one.
+        # @param [Array<PBXFileReference>] file_references
+        #   The files references of the source files that should be added to
+        #   the target.
         #
-        # @param source_file_descriptions [Array<SourceFileDescription>] The
-        #   description of the source files to add.
+        # @param [Hash{String=>String}] compiler_flags
+        #   The compiler flags for the source files.
         #
-        # @return [Array<PBXFileReference>]
+        # @return [void]
         #
-        def add_source_files(source_file_descriptions)
-          # Cache the files for performance.
-          files = @project.files.to_a
-          new_files = []
-          source_file_descriptions.each do |source_file_description|
-            path              = source_file_description.path
-            copy_header_phase = source_file_description.copy_header_phase
-            compiler_flags    = source_file_description.compiler_flags
+        def add_file_references(file_references, compiler_flags = {})
+          file_references.each do |file|
+            build_file = project.new(PBXBuildFile)
+            build_file.file_ref = file
 
-            file = (files + new_files).find { |file| file.path == path.to_s } || @project.files.new('path' => path.to_s)
-            build_file = file.build_files.new
-            if (path.extname == '.h' || path.extname == '.hpp')
+            extension = File.extname(file.path)
+            header_extensions = %w| .h .hpp |
+            if (header_extensions.include?(extension))
               build_file.settings = { 'ATTRIBUTES' => ["Public"] }
-              # Working around a bug in Xcode 4.2 betas, remove this once the Xcode bug is fixed:
-              # https://github.com/alloy/cocoapods/issues/13
-              #phase = copy_header_phase || headers_build_phases.first
-              phase = copy_header_phase || copy_files_build_phases.first
-              phase.build_files << build_file
+              phase = headers_build_phase
+              phase.files << build_file
             else
               build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags && !compiler_flags.empty?
-              source_build_phases.first.build_files << build_file
+              source_build_phase.files << build_file
             end
-            new_files << file
           end
-          new_files
         end
 
-        # Struct representing the description needed to add a source file to
-        # the target.
+
+        # @!group Accessing build phases
+
+        # Finds or creates the headers build phase of the target.
         #
-        # @!attribute path
-        #   @return [Pathname] The path of the file.
+        # @note A target should have only one headers build phase.
         #
-        # @!attribute compiler_flags
-        #   @return [String] Any compiler flag.
+        # @return [PBXHeadersBuildPhase] the headers build phase.
         #
-        # @!attribute copy_header_phase
-        #   @return [PBXCopyFilesBuildPhase].
+        def headers_build_phase
+          unless @headers_build_phase
+            headers_build_phase = build_phases.find { |bp| bp.class == PBXHeadersBuildPhase }
+            unless headers_build_phase
+              # Working around a bug in Xcode 4.2 betas, remove this once the
+              # Xcode bug is fixed:
+              # https://github.com/alloy/cocoapods/issues/13
+              # phase = copy_header_phase || headers_build_phases.first
+              headers_build_phase = project.new(PBXHeadersBuildPhase)
+              build_phases << headers_build_phase
+            end
+            @headers_build_phase = headers_build_phase
+          end
+          @headers_build_phase
+        end
+
+        # Finds or creates the source build phase of the target.
         #
-        SourceFileDescription = Struct.new(:path, :compiler_flags, :copy_header_phase)
+        # @note A target should have only one source build phase.
+        #
+        # @return [PBXSourcesBuildPhase] the source build phase.
+        #
+        def source_build_phase
+          unless @source_build_phase
+            source_build_phase = build_phases.find { |bp| bp.class == PBXSourcesBuildPhase }
+            unless source_build_phase
+              source_build_phase = project.new(PBXSourcesBuildPhase)
+              build_phases << source_build_phase
+            end
+            @source_build_phase = source_build_phase
+          end
+          @source_build_phase
+        end
+
+        # Finds or creates the frameworks build phase of the target.
+        #
+        # @note A target should have only one frameworks build phase.
+        #
+        # @return [PBXFrameworksBuildPhase] the frameworks build phase.
+        #
+        def frameworks_build_phase
+          bp = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
+          unless bp
+            bp = project.new(PBXFrameworksBuildPhase)
+            build_phases << bp
+          end
+          bp
+        end
+
+        # Finds or creates the resources build phase of the target.
+        #
+        # @note A target should have only one resources build phase.
+        #
+        # @return [PBXResourcesBuildPhase] the resources build phase.
+        #
+        def resources_build_phase
+          bp = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
+          unless bp
+            bp = project.new(PBXResourcesBuildPhase)
+            build_phases << bp
+          end
+          bp
+        end
+
+        # @return [Array<PBXCopyFilesBuildPhase>]
+        #   the copy files build phases of the target.
+        #
+        def copy_files_build_phases
+          build_phases.find { |bp| bp.class == PBXCopyFilesBuildPhase }
+        end
+
+        # @return [Array<PBXShellScriptBuildPhase>]
+        #   the copy files build phases of the target.
+        #
+        def shell_script_build_phases
+          build_phases.find { |bp| bp.class == PBXShellScriptBuildPhase }
+        end
+
+
+        # @!group Creating build phases
+
+        # Creates a new copy files build phase.
+        #
+        # @param [String] name
+        #   an optional name for the pahse.
+        #
+        # @return [PBXCopyFilesBuildPhase] the new phase.
+        #
+        def new_copy_files_build_phase(name = nil)
+          phase = project.new(PBXCopyFilesBuildPhase)
+          build_phases << phase
+          phase
+        end
+
+        # Creates a new shell script build phase.
+        #
+        # @param (see #new_copy_files_build_phase)
+        #
+        # @return [PBXShellScriptBuildPhase] the new phase.
+        #
+        def new_shell_script_build_phase(name = nil)
+          phase = project.new(PBXShellScriptBuildPhase)
+          build_phases << phase
+          phase
+        end
       end
     end
   end

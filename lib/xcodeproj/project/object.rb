@@ -1,212 +1,263 @@
-require 'active_support/inflector'
-
 module Xcodeproj
   class Project
+
     # This is the namespace in which all the classes that wrap the objects in
     # a Xcode project reside.
     #
-    # The base class from which all classes inherit is AbstractPBXObject.
+    # The base class from which all classes inherit is AbstractObject.
     #
     # If you need to deal with these classes directly, it's possible to include
     # this namespace into yours, making it unnecessary to prefix them with
     # Xcodeproj::Project::Object.
     #
     # @example
+    #   class SourceFileSorter
+    #     include Xcodeproj::Project::Object
+    #   end
     #
-    #     class SourceFileSorter
-    #       include Xcodeproj::Project::Object
-    #     end
     module Object
 
-      # Missing constants that begin with either `PBX' or `XC' are assumed to
-      # be valid classes in a Xcode project. A new AbstractPBXObject subclass is
-      # created for the constant and returned.
+      # @abstract
       #
-      # @return [Class]  The generated class inhertiting from AbstractPBXObject.
-      def self.const_missing(name)
-        if name.to_s =~ /^(PBX|XC)/
-          klass = Class.new(AbstractPBXObject)
-          const_set(name, klass)
-          klass
-        else
-          super
-        end
-      end
-
       # This is the base class of all object types that can exist in a Xcode
       # project. As such it provides common behavior, but you can only use
-      # instances of subclasses of AbstractPBXObject, because this class does
+      # instances of subclasses of AbstractObject, because this class does
       # not exist in actual Xcode projects.
-      class AbstractPBXObject
+      #
+      # Almost all the methods implemented by this class are not expected to be
+      # used by {Xcodeproj} clients.
+      #
+      # Subclasses should clearly identify which methods reflect the xcodeproj
+      # document model and which methods are offered as convenience. Object
+      # lists always reppresent a relationship to many of the model while
+      # simple arrays reppresent dynamically generated values offered a
+      # convenience for clients.
+      #
+      class AbstractObject
 
-        # This defines accessor methods for a key-value pair which occurs in the
-        # attributes hash that the object wraps.
+        # @return [String] the isa of the class.
         #
-        #
-        # @example
-        #
-        #     # Create getter and setter methods named after the key it corresponds to
-        #     # in the attributes hash:
-        #
-        #     class PBXBuildPhase < AbstractPBXObject
-        #       attribute :settings
-        #     end
-        #
-        #     build_phase.attributes # => { 'settings' => { 'COMPILER_FLAGS' => '-fobjc-arc' }, ... }
-        #     build_phase.settings # => { 'COMPILER_FLAGS' => '-fobjc-arc' }
-        #
-        #     build_phase.settings = { 'COMPILER_FLAGS' => '-fobjc-no-arc' }
-        #     build_phase.attributes # => { 'settings' => { 'COMPILER_FLAGS' => '-fobjc-no-arc' }, ... }
-        #
-        #     # Or with a custom getter and setter methods:
-        #
-        #     class PBXCopyFilesBuildPhase < AbstractPBXObject
-        #       attribute :dst_path, :as => :destination_path
-        #     end
-        #
-        #     build_phase.attributes # => { 'dstPath' => 'some/path', ... }
-        #     build_phase.destination_path # => 'some/path'
-        #
-        #     build_phase.destination_path = 'another/path'
-        #     build_phase.attributes # => { 'dstPath' => 'another/path', ... }
-        #
-        #
-        # @param [Symbol, String] attribute_name  The key in snake case.
-        # @option options [Symbol String] :as     An optional custom name for
-        #                                         the getter and setter methods.
-        def self.attribute(name, options = {})
-          accessor_name  = (options[:as] || name).to_s
-          attribute_name = name.to_s.camelize(:lower) # change `foo_bar' to `fooBar'
-          define_method(accessor_name) { @attributes[attribute_name] }
-          define_method("#{accessor_name}=") { |value| @attributes[attribute_name] = value }
-        end
-
         def self.isa
           @isa ||= name.split('::').last
         end
 
-        attr_reader :uuid, :attributes, :project
+        # @return [String] the object's class name.
+        #
+        attr_reader :isa
 
-        # [Array<PBXObjectList>] an array of PBXObjectList that refers to this object
+        # It is not recommended to instantiate objects through this
+        # constructor. To create objects manually is easier to use
+        # the {Project#new}. Otherwise, it is possible to use the convenience
+        # methods offered by {Xcodeproj} which take care of configuring the
+        # objects for common usage cases.
+        #
+        # @param [Project] project
+        #   the project that will host the object.
+        #
+        # @param [String] uuid
+        #   the UUID of the new object.
+        #
+        def initialize(project, uuid)
+          @project, @uuid = project, uuid
+          @isa = self.class.isa
+          @referrers = []
+          raise "[Xcodeproj] Attempt to initialize an abstract class." unless @isa.match(/^(PBX|XC)/)
+        end
+
+        # Initializes the object with the default values of simple attributes.
+        #
+        # This method is called by the {Project#new} and is not performed on
+        # initialization to prevet adding defaults to objects generated by a
+        # plist.
+        #
+        # @return [void]
+        #
+        def initialize_defaults
+          simple_attributes.each { |a| a.set_default(self) }
+        end
+
+        # @return [String] the object universally unique identifier.
+        #
+        attr_reader :uuid
+
+        # @return [Project] the project that owns the object.
+        #
+        attr_reader :project
+
+        # Removes the object from the project by asking to its referrers to
+        # remove the reference to it.
+        #
+        # @note The root object is owned by the project and should not be
+        #       manipolated with this method.
+        #
+        # @return [void]
+        #
+        def remove_from_project
+          @project.objects_hash.delete(uuid)
+          @referrers.each { |referrer| referrer.remove_reference(self) }
+          raise "[Xcodeproj] BUG: #{self} should have no referrers instead the following objects are still referencing it #{referrers}" unless referrers.count == 0
+        end
+
+        # @!group Reference counting
+
+        # @return [Array<ObjectList>] The list of the objects that have a
+        #   reference to this object.
+        #
         attr_reader :referrers
 
-        # [String] the object's class name
-        attribute :isa
-
-        # [String] the object's name
-        attribute :name
-
-        # It is not recommended that you instantiate objects through this
-        # constructor. It is much easier to use associations to create them.
+        # Informs the object that another object is referencing it. If the
+        # object had no previous references it is added to the project UUIDs
+        # hash.
         #
-        # @example
+        # @return [void]
         #
-        #     file_reference = project.files.new('path' => 'path/to/file')
-        #
-        # @return [AbstractPBXObject]
-        def initialize(project, uuid, attributes)
-          @project, @attributes = project, attributes
-          self.isa ||= self.class.isa
-          unless uuid
-            # Add new objects to the main hash with a unique UUID
-            uuid = generate_uuid
-            @project.add_object_hash(uuid, @attributes)
+        def add_referrer(referrer)
+          @referrers << referrer
+          if @referrers.count >= 1
+            @project.objects_by_uuid[uuid] = self
           end
-          @uuid = uuid
-          @referrers = Array.new
         end
 
-        def destroy
-          @project.objects_hash.delete(uuid)
-          @referrers.each { |referrer| referrer.delete(self) }
+        # Informs the object that another object stopped referencing it. If the
+        # object has no other references it is removed form project UUIDs hash
+        # because it is unreachable.
+        #
+        # @return [void]
+        #
+        def remove_referrer(referrer)
+          @referrers.delete(referrer)
+          if @referrers.count == 0
+            @project.objects_by_uuid.delete(uuid)
+          end
         end
 
-        def ==(other)
-          other.is_a?(AbstractPBXObject) && self.uuid == other.uuid
+        # Removes all the references to a given object.
+        #
+        # @return [void]
+        #
+        def remove_reference(object)
+          to_one_attributes.each do |attrb|
+            value = attFb.get_value(self)
+            attrb.set_value(self, nil) if value.equal?(object)
+          end
+
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            list.delete(self)
+          end
         end
 
-        def <=>(other)
-          self.uuid <=> other.uuid
+        # @!group Plist related methods
+
+        # Configures the object with the objects hash from a plist.
+        #
+        # **Implementation detail**: it is important that the attributes for a
+        # given concrete class are unique because the value is removed from the
+        # array at each iteration and duplicate would result in nil values.
+        #
+        # @return [void]
+        #
+        def configure_with_plist(objects_by_uuid_plist)
+          object_plist = objects_by_uuid_plist[uuid].dup
+
+          raise "[Xcodeproj] BUG" unless object_plist['isa'] == isa
+          object_plist.delete('isa')
+
+          simple_attributes.each do |attrb|
+            attrb.set_value(self, object_plist[attrb.plist_name])
+            object_plist.delete(attrb.plist_name)
+          end
+
+          to_one_attributes.each do |attrb|
+            ref_uuid = object_plist[attrb.plist_name]
+            if ref_uuid
+              ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
+              attrb.set_value(self, ref)
+            end
+            object_plist.delete(attrb.plist_name)
+          end
+
+          to_many_attributes.each do |attrb|
+            ref_uuids = object_plist[attrb.plist_name] || []
+            list = attrb.get_value(self)
+            ref_uuids.each do |ref_uuid|
+              ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
+              list << ref
+            end
+            object_plist.delete(attrb.plist_name)
+          end
+
+          raise "Xcodeproj doesn't know about the following attributes #{object_plist} for the '#{isa}' isa." unless object_plist.empty?
         end
+
+        # @note the key for simple and to_one attributes usually appears only
+        #       if there is a value. To many keys always appear with an empty
+        #       array.
+        #
+        def to_plist
+          plist = {}
+          plist['isa'] = isa
+
+          simple_attributes.each do |attrb|
+            value = attrb.get_value(self)
+            plist[attrb.plist_name] = value if value
+          end
+
+          to_one_attributes.each do |attrb|
+            obj = attrb.get_value(self)
+            plist[attrb.plist_name] = obj.uuid if obj
+          end
+
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            plist[attrb.plist_name] = list.uuids
+          end
+
+          plist
+        end
+
+        # !@group Object methods
+
+        # def ==(other)
+        #   other.is_a?(AbstractObject) && self.uuid == other.uuid
+        # end
+
+        # def <=>(other)
+        #   self.uuid <=> other.uuid
+        # end
 
         def inspect
-          "#<#{isa} UUID: `#{uuid}', name: `#{name}'>"
-        end
-
-        def matches_attributes?(attributes)
-          attributes.all? do |attribute, expected_value|
-            return nil unless respond_to?(attribute)
-
-            if expected_value.is_a?(Hash)
-              send(attribute).matches_attributes?(expected_value)
-            else
-              send(attribute) == expected_value
-            end
-          end
-        end
-
-        # Returns a PBXObjectList instance of objects in the `uuid_list`.
-        #
-        # By default this list will scope the list by objects matching the
-        # specified class and add objects, pushed onto the list, to the given
-        # `uuid_list` array.
-        #
-        # If a block is given the list instance is yielded so that the default
-        # callbacks can be overridden.
-        #
-        # @param  [Array] uuid_list          The UUID array instance which is
-        #                                    part of the internal data. If this
-        #                                    would be an arbitrary array and an
-        #                                    object is added, then it doesn't
-        #                                    actually modify the internal data,
-        #                                    meaning the change is lost.
-        #
-        # @param  [AbstractPBXObject] klass  The AbstractPBXObject subclass to
-        #                                    which the list should be scoped.
-        #
-        # @yield  [PBXObjectList]            The list instance, allowing you to
-        #                                    easily override the callbacks.
-        #
-        # @return [PBXObjectList<klass>]     The list of matching objects.
-        def list_by_class(uuid_list, klass)
-          PBXObjectList.new(klass, @project) do |list|
-            list.let(:uuid_scope) do
-              # TODO why does this not work? should be more efficient.
-              #uuid_list.select do |uuid|
-                #@project.objects_hash[uuid]['isa'] == klass.isa
-              #end
-              uuid_list.map { |uuid| @project.objects[uuid] }.select { |o| o.is_a?(klass) }.map(&:uuid)
-            end
-            list.let(:push) do |new_object|
-              # Add the uuid of a newly created object to the uuids list
-              uuid_list << new_object.uuid
-            end
-            yield list if block_given?
-          end
-        end
-
-        private
-
-        # Generate a truly unique UUID. This is to ensure that cutting up the
-        # UUID in the xcodeproj extension doesn't cause a collision.
-        def generate_uuid
-          begin
-            uuid = Xcodeproj.generate_uuid
-          end while @project.objects_hash.has_key?(uuid)
-          uuid
+          s = "#<UUID: `#{uuid}', isa: `#{isa}'>"
+          s << ", name: `#{name}'" if respond_to?(:name) && name
+          s
         end
       end
-
     end
   end
 end
 
-require 'xcodeproj/project/association'
+require 'xcodeproj/project/object_attributes'
 require 'xcodeproj/project/object_list'
 
-# Now load the rest of the classes which inherit from AbstractPBXObject.
+# Required because some classes have cyclical references to each other.
+Xcodeproj::Constants::KNOWN_ISAS.each do |superclass, isas|
+  superklass = Xcodeproj::Project::Object.const_get(superclass)
+  isas.each do |isa|
+    c = Class.new(superklass)
+    Xcodeproj::Project::Object.const_set(isa, c)
+  end
+end
+
+# Now load the concrete subclasses.
+require 'xcodeproj/project/object/build_configuration'
+require 'xcodeproj/project/object/build_file'
 require 'xcodeproj/project/object/build_phase'
-require 'xcodeproj/project/object/configuration'
+require 'xcodeproj/project/object/build_rule'
+require 'xcodeproj/project/object/configuration_list'
+require 'xcodeproj/project/object/container_item_proxy'
 require 'xcodeproj/project/object/file_reference'
 require 'xcodeproj/project/object/group'
 require 'xcodeproj/project/object/native_target'
+require 'xcodeproj/project/object/root_object'
+require 'xcodeproj/project/object/target_dependency'
+
