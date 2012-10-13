@@ -8,20 +8,18 @@ class Hash
   #
   # @example
   #   h1 = { :common => 'value', :changed => 'v1' }
-  #   h2 = { :common => 'value', :changed => 'v2', :new => 'new_value' }
-  #
-  #   h1.diff(h1) #=> {}
-  #
-  #   h1.diff(h2) #=> results in:
-  #   { :changed => {
-  #       :old => 'v1',
-  #       :new => 'v2'
+  #   h2 = { :common => 'value', :changed => 'v2', :addition => 'new_value' }
+
+  #   h1.recursive_diff(h2) == {
+  #     :changed => {
+  #       :self  => 'v1',
+  #       :other => 'v2'
   #     },
-  #   :new => {
-  #       :old => nil,
-  #       :new => 'new_value'
+  #     :addition => {
+  #       :self  => nil,
+  #       :other => 'new_value'
   #     }
-  #   }
+  #   } #=> true
   #
   # @return [Hash] Returns the recursive difference of a hash.
   #
