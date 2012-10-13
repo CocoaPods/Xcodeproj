@@ -119,5 +119,19 @@ module Xcodeproj
       }.freeze,
     }.freeze
 
+    # The corresponding numeric value of each copy build phase destination.
+    #
+    COPY_FILES_BUILD_PHASE_DESTINATIONS = {
+      :absolute_path      =>  '0',
+      :products_directory => '16',
+      :wrapper            =>  '1',
+      :resources          =>  '7', #default
+      :executables        =>  '6',
+      :java_resources     => '15',
+      :frameworks         => '10',
+      :shared_frameworks  => '11',
+      :shared_support     => '12',
+      :plug_ins           => '13'
+    }.freeze
   end
 end
