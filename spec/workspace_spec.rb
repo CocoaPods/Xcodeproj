@@ -11,7 +11,7 @@ describe "Xcodeproj::Workspace" do
       @workspace.projpaths.should.include 'Framework.xcodeproj'
     end
   end
-    
+
   describe "converted to XML" do
     before do
       @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
@@ -28,24 +28,24 @@ describe "Xcodeproj::Workspace" do
       end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj']
     end
   end
-  
+
   describe "built from a workspace file" do
     before do
       @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("libPusher.xcworkspace"))
     end
-    
+
     it "contains all of the projects in the workspace" do
       @workspace.projpaths.should.include "libPusher.xcodeproj"
       @workspace.projpaths.should.include "libPusher-OSX/libPusher-OSX.xcodeproj"
       @workspace.projpaths.should.include "Pods/Pods.xcodeproj"
     end
   end
-  
+
   describe "built from an empty/invalid workspace file" do
     before do
       @workspace = Xcodeproj::Workspace.new_from_xcworkspace("doesn't exist")
     end
-    
+
     it "contains no projects" do
       @workspace.projpaths.should.be.empty
     end
