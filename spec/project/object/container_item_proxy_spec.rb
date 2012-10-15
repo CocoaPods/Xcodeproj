@@ -8,8 +8,8 @@ module ProjectSpecs
     end
 
     it "returns the container portal" do
-      @proxy.container_portal = @project.root_object
-      @proxy.container_portal.should == @project.root_object
+      @proxy.container_portal = @project.root_object.uuid
+      @proxy.container_portal.should == @project.root_object.uuid
     end
 
     it "returns the type of the proxy" do

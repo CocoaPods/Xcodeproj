@@ -7,7 +7,7 @@ module ProjectSpecs
       @list = @project.new(XCConfigurationList)
     end
 
-    it "by the default the default configutation is not visible" do
+    it "by the default the default configuration is not visible" do
       @list.default_configuration_is_visible.should == '0'
     end
 

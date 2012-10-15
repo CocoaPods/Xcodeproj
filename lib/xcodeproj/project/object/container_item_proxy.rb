@@ -8,16 +8,22 @@ module Xcodeproj
       # This class is referenced by {PBXTargetDependency}; for information
       # about it usage see the specs of that class.
       #
+      # @note This class references the other objects by uuid instead of
+      #       creating proper relationships because the other objects might be
+      #       part of another project. This implies that the references to
+      #       other objects should not increase the retain coutn of the
+      #       targets.
+      #
       # @todo: this class needs some work to support targets accross workspaces,
       #        as the container portal might not be initialized leading
       #        xcodproj to raise because ti can't find the UUID.
       #
       class PBXContainerItemProxy < AbstractObject
 
-        # @return [PBXProject] apparently the root object of the project
-        #   containing the represented object.
+        # @return [String] apparently the UUID of the root object
+        #   {PBXProject} of the project containing the represented object.
         #
-        has_one :container_portal, PBXProject
+        attribute :container_portal, String
 
         # @return [String] the type of the proxy.
         #
@@ -25,7 +31,7 @@ module Xcodeproj
         #
         attribute :proxy_type, String
 
-        # @return [AbstractObject] apparently the UUID of the represented
+        # @return [String] apparently the UUID of the represented
         #   object.
         #
         # @note If the object is in another project this will return nil.
