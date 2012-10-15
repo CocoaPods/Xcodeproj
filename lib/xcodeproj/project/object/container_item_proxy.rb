@@ -5,7 +5,12 @@ module Xcodeproj
       # Apparently a proxy for another object which might belong another
       # project contained in the same workspace of the project document.
       #
-      # This class is referenced by {PBXTargetDependency}.
+      # This class is referenced by {PBXTargetDependency}; for information
+      # about it usage see the specs of that class.
+      #
+      # @todo: this class needs some work to support targets accross workspaces,
+      #        as the container portal might not be initialized leading
+      #        xcodproj to raise because ti can't find the UUID.
       #
       class PBXContainerItemProxy < AbstractObject
 
@@ -25,7 +30,7 @@ module Xcodeproj
         #
         # @note If the object is in another project this will return nil.
         #
-        has_one :remote_global_id_string, AbstractObject
+        attribute :remote_global_id_string, String
 
         # @return [String] apparently the name of the object represented by
         #   the proxy.
