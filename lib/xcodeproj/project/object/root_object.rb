@@ -20,7 +20,7 @@ module Xcodeproj
         #   - `LastUpgradeCheck`
         #   - `ORGANIZATIONNAME`
         #
-        attribute :attributes, Hash, {'LastUpgradeCheck' => '0420'}
+        attribute :attributes, Hash, {'LastUpgradeCheck' => '0450'}
 
         # @return [XCConfigurationList] the configuration list of the project.
         #

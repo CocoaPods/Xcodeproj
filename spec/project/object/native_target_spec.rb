@@ -43,9 +43,10 @@ module ProjectSpecs
       :source_build_phases       => PBXSourcesBuildPhase,
       :copy_files_build_phases   => PBXCopyFilesBuildPhase,
       :frameworks_build_phases   => PBXFrameworksBuildPhase,
-      :shell_script_build_phases => PBXShellScriptBuildPhase
+      :shell_script_build_phases => PBXShellScriptBuildPhase,
+      :resources_build_phases    => PBXResourcesBuildPhase
     }.each do |association_method, klass|
-      unless klass == PBXShellScriptBuildPhase
+      unless klass == PBXShellScriptBuildPhase || klass == PBXResourcesBuildPhase
         it "returns an empty #{klass.isa}" do
           phases = @target.send(association_method)
           phases.size.should == 1
