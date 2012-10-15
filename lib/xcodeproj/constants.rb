@@ -12,7 +12,7 @@ module Xcodeproj
     #
     LAST_KNOWN_OBJECT_VERSION  = 46
 
-    # The list of all the known ISAs.
+    # The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
       'AbstractObject' => %w[
@@ -43,6 +43,10 @@ module Xcodeproj
       PBXVariantGroup
       ]
     }.freeze
+
+    # The list of the super classes for each ISA.
+    #
+    ISAS_SUPER_CLASSES = %w[ AbstractObject AbstractBuildPhase PBXGroup ]
 
     # The known file types corresponding to each extension.
     #

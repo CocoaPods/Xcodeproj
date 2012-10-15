@@ -172,15 +172,16 @@ module ProjectSpecs
 
     describe "Concerning convenience methods" do
       it "returns all the objects referred in the project" do
-        expected = ["Main Group"] + %w[
-          Products
-          ConfigurationList
-          Release
-          Debug
-          Project
-          Frameworks
+        expected = [
+          "ConfigurationList",
+          "Debug",
+          "Frameworks",
+          "Main Group",
+          "Products",
+          "Project",
+          "Release"
         ]
-        @project.objects.map(&:display_name).should == expected
+        @project.objects.map(&:display_name).sort.should == expected
       end
 
       it "returns the UUIDs of all the objects referred in the project" do
@@ -189,8 +190,8 @@ module ProjectSpecs
       end
 
       it "lists the objects with a given class" do
-        expected = ["Main Group", "Products", "Frameworks"]
-        @project.list_by_class(PBXGroup).map(&:display_name).should == expected
+        expected = ["Frameworks", "Main Group", "Products"]
+        @project.list_by_class(PBXGroup).map(&:display_name).sort.should == expected
       end
 
       it "returns the main group" do

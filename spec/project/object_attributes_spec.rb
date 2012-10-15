@@ -48,7 +48,7 @@ module ProjectSpecs
     it "can set its default value for a given object" do
       @attrb.default_value = 'SAMPLE_ROOT'
       file = @project.new(PBXFileReference)
-      file.source_tree.should != 'SAMPLE_ROOT'
+      file.source_tree.should.not == 'SAMPLE_ROOT'
       @attrb.set_default(file)
       file.source_tree.should == 'SAMPLE_ROOT'
     end

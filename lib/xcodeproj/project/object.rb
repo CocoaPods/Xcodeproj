@@ -29,9 +29,9 @@ module Xcodeproj
       #
       # Subclasses should clearly identify which methods reflect the xcodeproj
       # document model and which methods are offered as convenience. Object
-      # lists always reppresent a relationship to many of the model while
-      # simple arrays reppresent dynamically generated values offered a
-      # convenience for clients.
+      # lists always represent a relationship to many of the model while simple
+      # arrays represent dynamically generated values offered a convenience for
+      # clients.
       #
       class AbstractObject
 
@@ -252,8 +252,16 @@ require 'xcodeproj/project/object_attributes'
 require 'xcodeproj/project/object_list'
 
 # Required because some classes have cyclical references to each other.
-Xcodeproj::Constants::KNOWN_ISAS.each do |superclass, isas|
-  superklass = Xcodeproj::Project::Object.const_get(superclass)
+#
+# In ruby 1.8.7 the hash are not sorted so it is necessary to use an array to
+# preserve the proper loading order of the various super classes.
+#
+# @todo I'm sure that there is a method to achieve the same result which
+# doesn't present the risk of some rubist laughing at me :-)
+#
+Xcodeproj::Constants::ISAS_SUPER_CLASSES.each do |superclass_name|
+  isas = Xcodeproj::Constants::KNOWN_ISAS[superclass_name]
+  superklass = Xcodeproj::Project::Object.const_get(superclass_name)
   isas.each do |isa|
     c = Class.new(superklass)
     Xcodeproj::Project::Object.const_set(isa, c)
