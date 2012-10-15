@@ -43,6 +43,10 @@ module Xcodeproj
         #
         has_one :product_reference, PBXFileReference
 
+        # @return [String] the install path of the product.
+        #
+        attribute :product_install_path, String
+
         ## CONVENIENCE METHODS #################################################
 
         # @!group Convenience methods

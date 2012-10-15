@@ -49,14 +49,14 @@ module Xcodeproj
         #
         #   E.g. `xcode.lang.ruby`
         #
-        attribute :xcLanguageSpecificationIdentifier, String
+        attribute :xc_language_specification_identifier, String
 
         # @return [String] a string that specifies the UTI for the structure of
         #   a plist file.
         #
         #   E.g. `com.apple.xcode.plist.structure-definition.iphone.info-plist`
         #
-        attribute :plistStructureDefinitionIdentifier, String
+        attribute :plist_structure_definition_identifier, String
 
 
         ## CONVENIENCE METHODS #################################################
