@@ -76,12 +76,12 @@ module Xcodeproj
         #
         #   Can accept environment variables like `$(PRODUCT_NAME)`.
         #
-        attribute :dst_path, String
+        attribute :dst_path, String, ''
 
         # @return [String] the path (destination) where the files should be
         #   copied to.
         #
-        attribute :dst_subfolder_spec, String, '7'
+        attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
 
       end
 

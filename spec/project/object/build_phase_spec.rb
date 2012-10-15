@@ -1,78 +1,76 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::PBXBuildPhase" do
+  describe AbstractBuildPhase do
+
     before do
-      @phase = @project.objects.add(PBXBuildPhase)
+      # Can't initialize AbstractBuildPhase directly
+      @phase = @project.new(PBXCopyFilesBuildPhase)
     end
 
     it "has an empty list of (build) files" do
-      @phase.build_files.to_a.should == []
-      @phase.files.to_a.should == []
+      @phase.files.should == []
     end
 
-    it "always returns the same buildActionMask (no idea what it is)" do
+    it "is initialized with the default buildActionMask" do
       @phase.build_action_mask.should == "2147483647"
     end
 
-    it "always returns zero for runOnlyForDeploymentPostprocessing (no idea what it is)" do
+    it "is initialized with the default runOnlyForDeploymentPostprocessing" do
       @phase.run_only_for_deployment_postprocessing.should == "0"
     end
 
-    it "adds a build file for a given file to its list of build files" do
-      file = @project.files.new('path' => 'some/file')
-      @phase << file
-      @phase.build_files.map(&:file).should.include file
+    it "can add a file reference to its build files" do
+      file = @project.new_file('some/file')
+      @phase.add_file_reference(file)
+      @phase.files_references.should.include file
     end
 
     it "returns the files it's associated with through its build files" do
-      file = @project.files.new('path' => 'some/file')
-      @phase.files << file
-      @phase.files.should == [file]
+      file = @project.new_file('some/file')
+      @phase.add_file_reference(file)
+      @phase.files_references.should == [file]
+    end
+
+    it "concrete implementations subclass it" do
+      concrete_classes = [
+        PBXHeadersBuildPhase,
+        PBXSourcesBuildPhase,
+        PBXFrameworksBuildPhase,
+        PBXResourcesBuildPhase,
+        PBXCopyFilesBuildPhase,
+        PBXShellScriptBuildPhase
+      ]
+      concrete_classes.each do |klass|
+        (klass < AbstractBuildPhase).should.be.true
+      end
+    end
+
+  end
+
+  describe PBXCopyFilesBuildPhase do
+
+    before do
+      @phase = @project.new(PBXCopyFilesBuildPhase)
+    end
+
+    it "is a AbstractBuildPhase" do
+      @phase.should.be.kind_of AbstractBuildPhase
+    end
+
+    it "returns and empty default dstPath" do
+      @phase.dst_path.should == ''
+    end
+
+    it "defaults the dstSubfolderSpec to the resources folder" do
+      @phase.dst_subfolder_spec.should == "7"
     end
   end
 
-  describe "Xcodeproj::Project::Object::PBXCopyFilesBuildPhase" do
+  describe PBXShellScriptBuildPhase do
+
     before do
-      @phase = @project.objects.add(PBXCopyFilesBuildPhase)
-    end
-
-    it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of PBXBuildPhase
-    end
-
-    it "returns the dstPath" do
-      @phase.dst_path.should == '$(PRODUCT_NAME)'
-    end
-
-    it "returns the dstSubfolderSpec (no idea what it is yet, but it's not always the same)" do
-      @phase.dst_subfolder_spec.should == "16"
-    end
-  end
-
-  describe "Xcodeproj::Project::Object::PBXSourcesBuildPhase" do
-    before do
-      @phase = @project.objects.add(PBXSourcesBuildPhase)
-    end
-
-    it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of PBXBuildPhase
-    end
-  end
-
-  describe "Xcodeproj::Project::Object::PBXFrameworksBuildPhase" do
-    before do
-      @phase = @project.objects.add(PBXFrameworksBuildPhase)
-    end
-
-    it "is a PBXBuildPhase" do
-      @phase.should.be.kind_of PBXBuildPhase
-    end
-  end
-
-  describe "Xcodeproj::Project::Object::PBXShellScriptBuildPhase" do
-    before do
-      @phase = @project.objects.add(PBXShellScriptBuildPhase)
+      @phase = @project.new(PBXShellScriptBuildPhase)
     end
 
     it "uses the shell in /bin/sh as the default interpreter" do
