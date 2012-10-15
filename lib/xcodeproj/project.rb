@@ -80,8 +80,9 @@ module Xcodeproj
     #   Project.new("path/to/Project.xcodeproj")
     #
     def initialize(xcodeproj = nil)
-      @objects_by_uuid =  {}
-      @known_uuids     =  []
+      @objects_by_uuid = {}
+      @generated_uuids = []
+      @available_uuids = []
 
       if xcodeproj
         file = File.join(xcodeproj, 'project.pbxproj')
@@ -128,9 +129,60 @@ module Xcodeproj
       end
     end
 
+    # Compares the project to another one, or to a plist representation.
+    #
+    # @param [#to_hash] other the object to compare.
+    #
+    # @return [Boolean] whether the project is equivalent to the given object.
+    #
+    def ==(other)
+      other.respond_to?(:to_hash) && to_hash == other.to_hash
+    end
+
+    def to_s
+      "Project with root object UUID: #{root_object.uuid}"
+    end
+
+    alias :inspect :to_s
+
 
 
     # @!group Plist serialization
+
+    # Creates a new object from the given UUID and `objects` hash (of a plist).
+    #
+    # The method sets up any relationship of the new object, generating the
+    # destination object(s) if not already present in the project.
+    #
+    # @note This method is used to generate the root object
+    #       from a plist. Subsequent invocation are called by the
+    #       {AbstractObject#configure_with_plist}. Clients of {Xcodeproj} are
+    #       not expected to call this method.
+    #
+    # @visibility private.
+    #
+    # @param [String] uuid
+    #   the UUID of the object that needs to be generated.
+    #
+    # @param [Hash {String => Hash}] objects_by_uuid_plist
+    #   the `objects` hash of the plist representation of the project.
+    #
+    # @param [Boolean] root_object
+    #   whether the requested object is the root object and needs to be
+    #   retained by the project before configuration to add it to the `objects`
+    #   hash and avoid infinite loops.
+    #
+    # @return [AbstractObject] the new object.
+    #
+    def new_from_plist(uuid, objects_by_uuid_plist, root_object = false)
+      attributes = objects_by_uuid_plist[uuid]
+      klass = Object.const_get(attributes['isa'])
+      object = klass.new(self, uuid)
+      object.add_referrer(self) if root_object
+
+      object.configure_with_plist(objects_by_uuid_plist)
+      object
+    end
 
     # @return [Hash] The plist representation of the project.
     #
@@ -186,70 +238,52 @@ module Xcodeproj
       object
     end
 
-    # Creates a new object from a plist.
-    #
-    # This method is intended to be used only TODO
-    #
-    def new_from_plist(uuid, objects_by_uuid_plist, owner = nil)
-      attributes = objects_by_uuid_plist[uuid]
-      klass = Object.const_get(attributes['isa'])
-      object = klass.new(self, uuid)
-      object.add_referrer(owner) if owner
-
-      object.configure_with_plist(objects_by_uuid_plist)
-      object
-    end
-
-    # @return [Array<String>] All the UUIDs known to the project including
-    #   those generated for objects which still are not present in the object
-    #   tree but might be added at a later time.
-    #
-    def known_uuids
-      (@known_uuids + uuids).uniq
-    end
-
     # Generates a UUID unique for the project.
     #
     # @note UUIDs are not guaranteed to be generated unique because we need to
     #       trim the ones generated in the xcodeproj extension.
     #
     # @note Implementation detail: as objects usually are created serially this
-    #       method creates a batch of 10.000 UUID and stores the not colliding
-    #       ones, so the search for collisions known UUIDS is performed
-    #       approximatively once every 10.000 new objects instead that on every
-    #       addition.
+    #       method creates a batch of UUID and stores the not colliding ones,
+    #       so the search for collisions with known UUIDS (a performance
+    #       bottleneck) is performed is performed less often.
     #
     # @return [String] A UUID unique to the project.
     #
     def generate_uuid
-      @available_uuids ||= []
-      unless @available_uuids.empty?
-        return @available_uuids.shift
+      while @available_uuids.empty?
+        generate_available_uuid_list
       end
-
-      new_available_uuids = []
-      10000.times do |a|
-        new_available_uuids << Xcodeproj.generate_uuid
-      end
-      @available_uuids = new_available_uuids.sort - @known_uuids
-      @known_uuids += @available_uuids
       @available_uuids.shift
     end
 
-
-
-    # @!group Object methods
-
-    # Compares the project to another one, or to a plist representation.
+    # @return [Array<String>] the list of all the generated UUIDs.
     #
-    # @param [#to_hash] other the object to compare.
+    #   Used for checking new UUIDs for duplicates with UUIDs already generated
+    #   but used for objects which are not yet part of the `objects` hash but
+    #   which might be added at a later time.
     #
-    # @return [Boolean] whether the project is equivalent to the given object.
+    attr_reader :generated_uuids
+
+    # Pre-generates the given number of UUIDs. Useful for optimizing
+    # performance when the rough number of objects that will be created is
+    # known in advance.
     #
-    def ==(other)
-      other.respond_to?(:to_hash) && to_hash == other.to_hash
+    # @param [Integer] count
+    #   the number of UUIDs that should be generated.
+    #
+    # @note This method might generated a minor number of uniques UUIDs than
+    #       the given count, because some might be duplicated a thus will be
+    #       discarded.
+    #
+    # @return [void]
+    #
+    def generate_available_uuid_list(count = 100)
+      new_uuids = (0..count).map { Xcodeproj.generate_uuid }
+      uniques = (new_uuids - (@generated_uuids + uuids))
+      @generated_uuids += uniques
+      @available_uuids += uniques
     end
-
 
     ## CONVENIENCE METHODS #####################################################
 
@@ -271,7 +305,7 @@ module Xcodeproj
     #   given isa.
     #
     def list_by_class(klass)
-      objects.select { |o| o.isa == klass.isa }
+      objects.select { |o| o.class == klass }
     end
 
     # @return [PBXGroup] the main top-level group.
@@ -306,7 +340,7 @@ module Xcodeproj
     #   project.
     #
     def files
-      objects.select { |obj| obj.isa == PBXFileReference }
+      objects.select { |obj| obj.class == PBXFileReference }
     end
 
     # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
@@ -388,8 +422,6 @@ module Xcodeproj
     #     build_phase = target.frameworks_build_phases.first
     #     build_phase.files << framework.buildFiles.new
     #
-    # @todo Make it possible to do: `build_phase << framework`
-    #
     # @param [String] name        The name of a framework in the SDK System
     #                             directory.
     # @return [PBXFileReference]  The file reference object.
@@ -406,16 +438,30 @@ module Xcodeproj
       end
     end
 
-    # @return [PBXNativeTarget] Creates a new static library target and adds it
-    #   to the project. The library is configured for the given platform.
+    # @return [PBXNativeTarget] Creates a new target and adds it to the
+    #   project.
+    #
+    #   The target is configured for the given platform and its file reference
+    #   it is added to the {products_group}.
+    #
+    #   The target is pre-populated with common build phases, and all the
+    #   Frameworks of the project are added to to its Frameworks phase.
+    #
+    # @todo Adding all the Frameworks is required by CocoaPods and should be
+    #       performed there.
+    #
+    # @param [Symbol] type
+    #   the type of target.
+    #   Can be `:application`, `:dynamic_library` or `:static_library`.
     #
     # @param [String] name
     #   the name of the static library product.
     #
     # @param [Symbol] platform
-    #   the platform of the static library, can be `:ios` or `:osx`.
+    #   the platform of the static library.
+    #   Can be `:ios` or `:osx`.
     #
-    def new_static_library(name, platform)
+    def new_target(type, name, platform)
       add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa')
 
       # Target
@@ -423,7 +469,7 @@ module Xcodeproj
       targets << target
       target.name = name
       target.product_name = name
-      target.product_type = Constants::PRODUCT_TYPE_UTI[:static_library]
+      target.product_type = Constants::PRODUCT_TYPE_UTI[type]
       target.build_configuration_list = configuration_list(platform)
 
       # Product
@@ -435,9 +481,8 @@ module Xcodeproj
       # Build phases
       target.build_phases << new(PBXCopyFilesBuildPhase)
       frameworks_phase = new(PBXFrameworksBuildPhase)
-      if frameworks_group = self['Frameworks']
-        frameworks_group.files.each { |framework| frameworks_phase.add_file_reference(framework) }
-      end
+      frameworks_group.files.each { |framework| frameworks_phase.add_file_reference(framework) }
+      target.build_phases << frameworks_phase
       target.build_phases << new(PBXShellScriptBuildPhase)
 
       target
