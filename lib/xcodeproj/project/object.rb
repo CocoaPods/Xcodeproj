@@ -126,9 +126,7 @@ module Xcodeproj
         #
         def add_referrer(referrer)
           @referrers << referrer
-          if @referrers.count >= 1
-            @project.objects_by_uuid[uuid] = self
-          end
+          @project.objects_by_uuid[uuid] = self
         end
 
         # Informs the object that another object stopped referencing it. If the
