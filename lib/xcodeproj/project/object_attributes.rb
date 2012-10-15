@@ -21,7 +21,7 @@ module Xcodeproj
         #
         attr_reader :type
 
-        # @return [String] the name of the attribute.
+        # @return [Symbol] the name of the attribute.
         #
         attr_reader :name
 
@@ -37,7 +37,7 @@ module Xcodeproj
         # @param [Symbol] type
         # the type of the attribute.
         #
-        # @param [String] name
+        # @param [Symbol] name
         #   the name of the attribute.
         #
         # @param [Class] owner
@@ -141,7 +141,7 @@ module Xcodeproj
         end
 
         def inspect
-          "#<name: '#{name}', type: '#{type}', , classes: '#{classes}', owner class: '#{owner.isa}'>"
+          "#<name: '#{name}', type: '#{type}', classes: '#{classes}', owner class: '#{owner.isa}'>"
         end
       end
 
@@ -242,7 +242,7 @@ module Xcodeproj
           #   @!attribute [rw] $1
           #
           def attribute(name, klass, default_value = nil)
-            attrb = AbstractObjectAttribute.new(:simple, name.to_s, self)
+            attrb = AbstractObjectAttribute.new(:simple, name, self)
             attrb.classes = [klass]
             attrb.default_value = default_value
             add_attribute(attrb)

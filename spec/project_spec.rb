@@ -109,7 +109,7 @@ module ProjectSpecs
         objects_by_uuid_plist = {}
         objects_by_uuid_plist[uuid] = expected
         obj = @project.new_from_plist(uuid, objects_by_uuid_plist)
-        attrb = PBXFileReference.simple_attributes.find { |a| a.name == 'include_in_index' }
+        attrb = PBXFileReference.simple_attributes.find { |a| a.name == :include_in_index }
         attrb.default_value.should == '1'
         obj.to_plist.should == expected
       end

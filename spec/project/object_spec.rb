@@ -139,7 +139,7 @@ module ProjectSpecs
       end
 
       it "doesn't initializes simple attributes with default values" do
-        attrb = PBXFileReference.simple_attributes.find { |a| a.name == 'include_in_index' }
+        attrb = PBXFileReference.simple_attributes.find { |a| a.name == :include_in_index }
         attrb.default_value.should.be.not.nil
         @object.configure_with_plist(@objects_by_uuid_plist)
         @object.include_in_index.should.be.nil
