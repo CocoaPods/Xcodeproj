@@ -88,14 +88,27 @@ module Xcodeproj
         # remove the reference to it.
         #
         # @note The root object is owned by the project and should not be
-        #       manipolated with this method.
+        #       manipulated with this method.
         #
         # @return [void]
         #
         def remove_from_project
-          @project.objects_hash.delete(uuid)
+          @project.objects_by_uuid.delete(uuid)
           @referrers.each { |referrer| referrer.remove_reference(self) }
           raise "[Xcodeproj] BUG: #{self} should have no referrers instead the following objects are still referencing it #{referrers}" unless referrers.count == 0
+        end
+
+        # Returns the value of the name attribute or returns a generic name for
+        # the object.
+        #
+        # @note Not all concrete classes implement the name attribute and this
+        #       method prevents from overriding it in plist.
+        #
+        # @return [String] a name for the object.
+        #
+        def display_name
+          result = name if respond_to?(:name)
+          result || isa.gsub(/^(PBX|XC)/, '')
         end
 
         # @!group Reference counting
@@ -143,7 +156,7 @@ module Xcodeproj
 
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
-            list.delete(self)
+            list.delete(object)
           end
         end
 
@@ -160,7 +173,7 @@ module Xcodeproj
         def configure_with_plist(objects_by_uuid_plist)
           object_plist = objects_by_uuid_plist[uuid].dup
 
-          raise "[Xcodeproj] BUG" unless object_plist['isa'] == isa
+          raise "[Xcodeproj] Attempt to initialize `#{isa}` from plist with different isa `#{object_plist}`" unless object_plist['isa'] == isa
           object_plist.delete('isa')
 
           simple_attributes.each do |attrb|
@@ -215,16 +228,17 @@ module Xcodeproj
 
           plist
         end
+        alias :to_hash :to_plist
 
         # !@group Object methods
 
-        # def ==(other)
-        #   other.is_a?(AbstractObject) && self.uuid == other.uuid
-        # end
+        def ==(other)
+          other.is_a?(AbstractObject) && self.to_plist == other.to_plist
+        end
 
-        # def <=>(other)
-        #   self.uuid <=> other.uuid
-        # end
+        def <=>(other)
+          self.uuid <=> other.uuid
+        end
 
         def inspect
           s = "#<UUID: `#{uuid}', isa: `#{isa}'>"
