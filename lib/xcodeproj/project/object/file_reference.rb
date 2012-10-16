@@ -93,7 +93,7 @@ module Xcodeproj
         # @return [String] the computed file type.
         #
         def update_last_known_file_type
-          last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
+          self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
         end
       end
     end
