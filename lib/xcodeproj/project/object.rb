@@ -148,7 +148,7 @@ module Xcodeproj
         #
         def remove_reference(object)
           to_one_attributes.each do |attrb|
-            value = attFb.get_value(self)
+            value = attrb.get_value(self)
             attrb.set_value(self, nil) if value.equal?(object)
           end
 
