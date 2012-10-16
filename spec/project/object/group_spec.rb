@@ -1,127 +1,67 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::AbstractGroupEntry" do
+  describe "Xcodeproj::Project::Object::PBXGroup" do
     before do
-      @entry = new_instance(AbstractGroupEntry, {})
-    end
-
-    it "is automatically added to the main group" do
-      @entry.group.should == @project.main_group
+      @group = @project.new_group('Parent')
+      @group.new_file('Abracadabra.h')
+      @group.new_file('Banana.h')
+      @group.new_group('ZappMachine')
+      @group.new_file('Abracadabra.m')
+      @group.new_file('Banana.m')
     end
 
     it "is removed from the original group when added to another group" do
-      group = @project.groups.new
-      group.children << @entry
-      group.children.should.include @entry
-      @entry.group.should == group
-      @project.main_group.children.should.not.include @entry
-    end
-
-    it "removes the entry from the objects hash and the group it belongs to" do
-      @entry.destroy
-      @project.objects_hash.should.not.has_key @entry.uuid
-      @project.main_group.child_references.should.not.include @entry.uuid
+      new_group = @project.new_group('New Group')
+      new_group.children << @group
+      new_group.children.should.include @group
+      @group.referrers.should.include new_group
+      @project.main_group.children.should.not.include @group
     end
 
     it "sorts by group vs file first, then name" do
-      group = @project.groups.new('name' => 'Parent')
-      group.files.new('path' => 'Abracadabra.h')
-      group.files.new('path' => 'Banana.h')
-      group.groups.new('name' => 'ZappMachine')
-      group.files.new('path' => 'Abracadabra.m')
-      group.files.new('path' => 'Banana.m')
-      group.groups.new('name' => 'Apemachine')
-      group.children.sort.map(&:name).should == %w{
+      @group.new_group('Apemachine')
+      @group.sort_by_type.map(&:name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h Abracadabra.m Banana.h Banana.m
       }
     end
-  end
 
-  describe "Xcodeproj::Project::Object::PBXGroup" do
-    before do
-      @group = @project.groups.new('name' => 'Parent')
-      @group.files.new('path' => 'Abracadabra.h')
-      @group.files.new('path' => 'Banana.h')
-      @group.groups.new('name' => 'ZappMachine')
-      @group.files.new('path' => 'Abracadabra.m')
-      @group.files.new('path' => 'Banana.m')
+    it "creates nested groups" do
+      @project.new_group('groups', 'some/dir/and/sub/groups')
+      
+      groups = @project.main_group.groups
+      %w{some dir and sub groups}.each do |group_name|
+        group = groups.select { |g| g.name == group_name }.first
+        group.should != nil
+        groups = group.groups
+      end
+      
+    end
+
+    it "returns that the main group has no name" do
+      @project.main_group.name.should == nil
     end
 
     it "returns its name" do
       @group.name.should == 'Parent'
     end
 
-    it "returns the basename of the path as its name" do
-      @project.groups.new('path' => 'some/dir').name.should == 'dir'
-    end
-
-    it "returns whether or not it's the main group" do
-      @project.groups.new.should.not.be.main_group
-      @project.main_group.should.be.main_group
-    end
-
-    it "returns that it's the main group if it is" do
-      @project.groups.new.name.should == nil
-      @project.main_group.name.should == 'Main Group'
-    end
-
     it "adds files for the given paths" do
-      file = @group.create_file('ZOMG.md')
+      file = @group.new_file('ZOMG.md')
       file.path.should == 'ZOMG.md'
       @group.files.should.include file
-
-      files = @group.create_files(['ZOMG.h', 'ZOMG.m'])
-      files.map(&:path).should == %w{ ZOMG.h ZOMG.m }
-      files.each { |file| @group.files.should.include file }
     end
 
     it "returns a list of files and groups" do
       @group.children.map(&:name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
     end
 
-    it "adds the UUID of the added object to the list of child UUIDS" do
-      file = @project.files.new('path' => 'File')
-      @group << file
-      @group.child_references.last.should == file.uuid
-
-      group = @project.groups.new
-      @group << group
-      @group.child_references.last.should == group.uuid
-    end
-
-    it "maintains the order of the assigned children" do
-      @group.children = @group.children.sort_by(&:name)
-      @group.children.map(&:name).should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
-    end
-
-    it "returns files that have at least one associated build file as the source files" do
-      @group.source_files.should.be.empty
-      file = @group.files.first
-      @target.source_build_phases.first << file
-      @group.source_files.should == [file]
-    end
-
     it "adds XCVersionGroups" do
-      group = @group.version_groups.new 'versionGroupType' => 'wrapper.xcdatamodel'
+      group = @group.new_xcdatamodel_group('some/Model.xcdatamodeld')
       group.isa.should == 'XCVersionGroup'
       group.source_tree.should == '<group>'
       group.version_group_type.should == 'wrapper.xcdatamodel';
-    end
-  end
-
-  describe "Xcodeproj::Project::Object::XCVersionGroup" do
-    before do
-      @group = @project.groups.new('name' => 'Resources')
-    end
-
-    it "adds xcdatamodel groups" do
-      version_group = @group.version_groups.new_xcdatamodel_group 'some/Model.xcdatamodeld'
-      file = @project.files[version_group.current_version]
-      version_group.files.should == [file]
-      file.path.should == 'some/Model.xcdatamodel'
-      version_group.path.should == 'some/Model.xcdatamodeld'
     end
   end
 end

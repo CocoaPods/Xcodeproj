@@ -164,9 +164,9 @@ module Xcodeproj
         # @return [XCVersionGroup] The new group.
         #
         def new_xcdatamodel_group(xcdatamodel_path)
-          g = new(XCVersionGroup)
+          g = @project.new(XCVersionGroup)
           g.path = xcdatamodel_path
-          g.versionGroupType = 'wrapper.xcdatamodel'
+          g.version_group_type = 'wrapper.xcdatamodel'
           file = g.new_file(xcdatamodel_path.sub(/xcdatamodeld$/, 'xcdatamodel'))
           g.current_version = file
           g
