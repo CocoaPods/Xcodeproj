@@ -4,9 +4,15 @@ module SpecHelper
       context.before do
         @project = Xcodeproj::Project.new
         # add_disable_raise_feature_to_project!
-        # @target = @project.new_static_library(:ios, 'Pods')
+        # @target = @project.targets.new_static_library(:ios, 'Pods')
       end
     end
+    
+    def settings(*keys)
+      settings = Xcodeproj::Constants::COMMON_BUILD_SETTINGS.values_at(*keys)
+      settings.inject({}) { |hash, h| hash.merge(h) }
+    end
+    
   end
 end
 

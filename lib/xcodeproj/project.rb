@@ -473,9 +473,7 @@ module Xcodeproj
       target.build_configuration_list = configuration_list(platform)
 
       # Product
-      product = products_group.new_file("lib#{name}.a")
-      product.include_in_index = '0'
-      product.source_tree = 'BUILT_PRODUCTS_DIR'
+      product = products_group.new_static_library(name)
       target.product_reference = product
 
       # Build phases

@@ -11,14 +11,6 @@ module ProjectSpecs
       @group.new_file('Banana.m')
     end
 
-    it "is removed from the original group when added to another group" do
-      new_group = @project.new_group('New Group')
-      new_group.children << @group
-      new_group.children.should.include @group
-      @group.referrers.should.include new_group
-      @project.main_group.children.should.not.include @group
-    end
-
     it "sorts by group vs file first, then name" do
       @group.new_group('Apemachine')
       @group.sort_by_type.map(&:name).should == %w{
@@ -63,6 +55,13 @@ module ProjectSpecs
       group.source_tree.should == '<group>'
       group.version_group_type.should == 'wrapper.xcdatamodel';
     end
+    
+    it "creates a new static library" do
+      file = @group.new_static_library('libPods.a')
+      file.include_in_index.should == '0'
+      file.source_tree.should == 'BUILT_PRODUCTS_DIR'
+    end
+    
   end
 end
 
