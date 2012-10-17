@@ -95,6 +95,15 @@ module Xcodeproj
         def update_last_known_file_type
           self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
         end
+        
+        # Removes associated build file from the project and the file itself.
+        #
+        # See AbstractObject#remove_from_project
+        def remove_from_project
+          build_files.each { |build_file| build_file.remove_from_project }
+          super
+        end
+        
       end
     end
   end
