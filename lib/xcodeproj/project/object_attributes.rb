@@ -289,7 +289,7 @@ module Xcodeproj
               previous_value = send(attrb.name)
               previous_value.remove_referrer(self) if previous_value
               instance_variable_set("@#{attrb.name}", value)
-              value.add_referrer(self)
+              value.add_referrer(self) if value
             end
           end
 
