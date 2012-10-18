@@ -85,7 +85,7 @@ module Xcodeproj
             build_file.file_ref = file
 
             extension = File.extname(file.path)
-            header_extensions = Constants.HEADER_FILES_EXTENSIONS
+            header_extensions = Constants::HEADER_FILES_EXTENSIONS
             if (header_extensions.include?(extension))
               build_file.settings = { 'ATTRIBUTES' => ["Public"] }
               phase = headers_build_phase
