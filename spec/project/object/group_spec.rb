@@ -21,14 +21,14 @@ module ProjectSpecs
 
     it "creates nested groups" do
       @project.new_group('groups', 'some/dir/and/sub/groups')
-      
+
       groups = @project.main_group.groups
       %w{some dir and sub groups}.each do |group_name|
         group = groups.select { |g| g.name == group_name }.first
-        group.should != nil
+        group.should.not == nil
         groups = group.groups
       end
-      
+
     end
 
     it "returns that the main group has no name" do
@@ -55,13 +55,13 @@ module ProjectSpecs
       group.source_tree.should == '<group>'
       group.version_group_type.should == 'wrapper.xcdatamodel';
     end
-    
+
     it "creates a new static library" do
       file = @group.new_static_library('libPods.a')
       file.include_in_index.should == '0'
       file.source_tree.should == 'BUILT_PRODUCTS_DIR'
     end
-    
+
   end
 end
 
