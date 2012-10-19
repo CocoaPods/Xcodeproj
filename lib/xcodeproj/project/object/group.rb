@@ -183,7 +183,7 @@ module Xcodeproj
           find_subpath(path)
         end
 
-        # Traverses the children groups and finds the group with the given
+        # Traverses the children groups and finds the children with the given
         # path, optionally, creating any needed group. If the given path is
         # `nil` it returns itself.
         #
@@ -204,9 +204,9 @@ module Xcodeproj
         def find_subpath(path, should_create = false)
           return self unless path
           path = path.split('/') unless path.is_a?(Array)
-          return self if path.empty?
           child_name = path.shift
-          child = children.find{ |g| g.display_name == child_name }
+          child = children.find{ |c| c.display_name == child_name }
+          return child if path.empty?
           unless child
             if should_create
               child = new_group(child_name)
