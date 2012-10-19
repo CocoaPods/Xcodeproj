@@ -196,6 +196,7 @@ module Xcodeproj
         #
         def new_copy_files_build_phase(name = nil)
           phase = project.new(PBXCopyFilesBuildPhase)
+          phase.name = name
           build_phases << phase
           phase
         end
@@ -208,6 +209,7 @@ module Xcodeproj
         #
         def new_shell_script_build_phase(name = nil)
           phase = project.new(PBXShellScriptBuildPhase)
+          phase.name = name
           build_phases << phase
           phase
         end
