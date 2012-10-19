@@ -206,15 +206,12 @@ module Xcodeproj
           path = path.split('/') unless path.is_a?(Array)
           child_name = path.shift
           child = children.find{ |c| c.display_name == child_name }
-          return child if path.empty?
-          unless child
-            if should_create
-              child = new_group(child_name)
-            else
-              return nil
-            end
+          child = new_group(child_name) if child.nil? && should_create
+          if path.empty?
+            child
+          else
+            child.find_subpath(path, should_create)
           end
-          child.find_subpath(path, should_create)
         end
 
         # Adds an object to the group.
