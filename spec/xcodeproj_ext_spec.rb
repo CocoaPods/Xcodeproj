@@ -96,4 +96,10 @@ EOS
     end
     lambda { Xcodeproj.read_plist(@plist) }.should.raise TypeError
   end
+
+  it "it raises if for whatever reason the value could not be converted to a CFTypeRef" do
+    lambda do
+      Xcodeproj.write_plist({ "invalid" => "\xCA" }, @plist)
+    end.should.raise TypeError
+  end
 end

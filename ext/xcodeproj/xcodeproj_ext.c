@@ -103,7 +103,7 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
 
       } else {
         CFStringRef descriptionRef = CFCopyDescription(elementRef);
-        // obviously not optimial, but we're raising here, so it doesn't really matter
+        // obviously not optimal, but we're raising here, so it doesn't really matter
         VALUE description = cfstr_to_str(descriptionRef);
         rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj. In: `%s'", RSTRING_PTR(description));
         CFRelease(descriptionRef);
@@ -151,6 +151,10 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
 
   } else {
     valueRef = str_to_cfstr(value);
+  }
+
+  if (valueRef == NULL) {
+    rb_raise(rb_eTypeError, "Unable to convert value of key `%s'.", RSTRING_PTR(rb_inspect(key)));
   }
 
   CFDictionaryAddValue(dict, keyRef, valueRef);
