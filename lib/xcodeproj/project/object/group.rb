@@ -156,6 +156,8 @@ module Xcodeproj
           file = new_file("lib#{product_name}.a", sub_group_path)
           file.include_in_index = '0'
           file.source_tree = 'BUILT_PRODUCTS_DIR'
+          file.explicit_file_type = file.last_known_file_type
+          file.last_known_file_type = nil
           file
         end
 
