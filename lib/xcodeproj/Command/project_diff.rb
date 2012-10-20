@@ -13,13 +13,21 @@ module Xcodeproj
 }
       end
 
+      def self.options
+        [ ["--ignore KEY", "A key to ignore in the comparison. Can be specified multiple times."] ].concat(super)
+      end
+
       def initialize(argv)
-        @path_project1 = argv.shift_argument
-        @path_project2 = argv.shift_argument
-        # @keys_to_ignore = 'lastKnownFileType', 'explicitFileType'
-        @keys_to_ignore ||= []
+        @path_project1  = argv.shift_argument
+        @path_project2  = argv.shift_argument
+        @keys_to_ignore = []
+        while (idx = argv.index('--ignore'))
+          @keys_to_ignore << argv.delete_at(idx + 1)
+          argv.delete_at(idx)
+        end
         super unless argv.empty?
       end
+
 
       def run
         hash_1 = Project.new(@path_project1).to_tree_hash
