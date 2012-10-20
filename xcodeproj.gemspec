@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
 
   s.extensions    = "ext/xcodeproj/extconf.rb"
   s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/{extconf.rb,xcodeproj_ext.c}"] + %w{ README.md LICENSE }
+  s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ ext lib }
 
   s.add_runtime_dependency 'activesupport', '~> 3.2.6'
