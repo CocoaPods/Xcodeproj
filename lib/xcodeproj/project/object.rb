@@ -244,6 +244,8 @@ module Xcodeproj
         #
         def to_tree_hash
           hash = {}
+          hash['displayName'] = display_name if self.respond_to?(:display_name)
+          hash['isa'] = isa
 
           simple_attributes.each do |attrb|
             value = attrb.get_value(self)
