@@ -5,7 +5,7 @@ module ProjectSpecs
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
     end
-    
+
     it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
       @target.name.should == "Pods"
       @target.product_name.should == "Pods"
@@ -16,7 +16,7 @@ module ProjectSpecs
       @target.product_reference.name.should == "libPods.a"
       @target.product_reference.path.should == "libPods.a"
     end
-    
+
     it "adds the product to the Products group in the main group" do
       @project.products_group.files.should.include @target.product_reference
     end
@@ -34,6 +34,8 @@ module ProjectSpecs
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
+      @target.build_phases << @project.new(PBXCopyFilesBuildPhase)
+      @target.build_phases << @project.new(PBXShellScriptBuildPhase)
     end
 
     {
@@ -50,7 +52,7 @@ module ProjectSpecs
         if phase.is_a? Array
           phase = phase.first
         end
-        
+
         phase.should.be.instance_of klass
         if phase.is_a? PBXFrameworksBuildPhase
           phase.files.count.should == @project.frameworks_group.files.count
@@ -66,7 +68,7 @@ module ProjectSpecs
       @target.new_copy_files_build_phase
       @target.copy_files_build_phases.count.should == before + 1
     end
-    
+
     it "creates a new 'shell script build phase'" do
       before = @target.shell_script_build_phases.count
       @target.new_shell_script_build_phase
@@ -80,7 +82,7 @@ module ProjectSpecs
       target.frameworks_build_phase.files_references.should == framework_files
     end
   end
-  
+
   describe "A new Xcodeproj::Project::Object::PBXNativeTarget" do
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)

@@ -2,8 +2,8 @@ require 'fileutils'
 require 'pathname'
 require 'xcodeproj/xcodeproj_ext'
 
-require 'xcodeproj/project/hash'
 require 'xcodeproj/project/object'
+require 'xcodeproj/project/recursive_diff'
 
 module Xcodeproj
 
@@ -237,7 +237,7 @@ module Xcodeproj
     def save_as(projpath)
       projpath = projpath.to_s
       FileUtils.mkdir_p(projpath)
-      Xcodeproj.write_plist(to_hash, File.join(projpath, 'project.pbxproj'))
+      Xcodeproj.write_plist(to_plist, File.join(projpath, 'project.pbxproj'))
     end
 
 
@@ -500,11 +500,10 @@ module Xcodeproj
       target.product_reference = product
 
       # Build phases
-      target.build_phases << new(PBXCopyFilesBuildPhase)
+      target.build_phases << new(PBXSourcesBuildPhase)
       frameworks_phase = new(PBXFrameworksBuildPhase)
       frameworks_group.files.each { |framework| frameworks_phase.add_file_reference(framework) }
       target.build_phases << frameworks_phase
-      target.build_phases << new(PBXShellScriptBuildPhase)
 
       target
     end

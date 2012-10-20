@@ -95,7 +95,7 @@ module ProjectSpecs
       #
       it "can regenerate the EXACT plist that initialized it" do
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
-        @project.to_plist.recursive_diff(plist).should == {}
+        @project.to_plist.recursive_diff(plist).should.be.nil
       end
 
       it "can compares itself to plist" do
@@ -258,12 +258,10 @@ module ProjectSpecs
         before_tree_hash = @project.to_tree_hash
         @project.new_group('Pods')
         diff = @project.to_tree_hash.recursive_diff(before_tree_hash)
-        diff.should == { "rootObject" => { "mainGroup" => { "children" => {
-          2 => {
-            :self  => { "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[] },
-            :other => nil
-          }
-        }}}}
+        diff.should == {"rootObject"=>{"mainGroup"=>{"children"=>[{"self"=>[{
+          "Pods"=>{
+            "displayName"=>"Pods", "isa"=>"PBXGroup", "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[]}
+        }]}]}}}
       end
     end
 
@@ -317,9 +315,9 @@ module ProjectSpecs
         @project.products.should.include target.product_reference
 
         target.build_phases.map(&:isa).sort.should == [
-          "PBXCopyFilesBuildPhase",
+          "PBXSourcesBuildPhase",
           "PBXFrameworksBuildPhase",
-          "PBXShellScriptBuildPhase"
+          "PBXHeadersBuildPhase",
         ]
       end
     end
