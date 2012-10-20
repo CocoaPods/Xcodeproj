@@ -231,6 +231,38 @@ module Xcodeproj
         end
         alias :to_hash :to_plist
 
+        # Returns a cascade reppresentation of the object without UUIDs.
+        #
+        # This method is designed to work in conjuction with {Hash#recursive_diff}
+        # to provie a complete, yet redable, diff of two projects *not* affected by
+        # isa differences.
+        #
+        # @todo current implementation might cause infinite loops.
+        #
+        # @return [Hash] a hash reppresentation of the project different from the
+        #   plist one.
+        #
+        def to_tree_hash
+          hash = {}
+
+          simple_attributes.each do |attrb|
+            value = attrb.get_value(self)
+            hash[attrb.plist_name] = value if value
+          end
+
+          to_one_attributes.each do |attrb|
+            obj = attrb.get_value(self)
+            hash[attrb.plist_name] = obj.to_tree_hash if obj
+          end
+
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            hash[attrb.plist_name] = list.map { |obj| obj.to_tree_hash }
+          end
+
+          hash
+        end
+
         # !@group Object methods
 
         def ==(other)

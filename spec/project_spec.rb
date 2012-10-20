@@ -253,6 +253,18 @@ module ProjectSpecs
         @project.build_settings('Debug').should == {}
         @project.build_settings('Release').should == {}
       end
+
+      it "returns a succint diff reppresentation of the project" do
+        before_tree_hash = @project.to_tree_hash
+        @project.new_group('Pods')
+        diff = @project.to_tree_hash.recursive_diff(before_tree_hash)
+        diff.should == { "rootObject" => { "mainGroup" => { "children" => {
+          2 => {
+            :self  => { "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[] },
+            :other => nil
+          }
+        }}}}
+      end
     end
 
 

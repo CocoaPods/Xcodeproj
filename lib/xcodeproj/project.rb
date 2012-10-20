@@ -186,7 +186,7 @@ module Xcodeproj
 
     # @return [Hash] The plist representation of the project.
     #
-    def to_plist
+    def to_hash
       plist = {}
       objects_dictionary = {}
       objects.each { |obj| objects_dictionary[obj.uuid] = obj.to_plist }
@@ -198,7 +198,30 @@ module Xcodeproj
       plist
     end
 
-    alias :to_hash :to_plist
+    alias :to_plist :to_hash
+
+    # Converts the objects tree to a hash substituting the hash
+    # of the referenced to their uuid reference. As a consequene the hash of an
+    # object might appear multiple times and the information about their
+    # uniqueness is lost.
+    #
+    # This method is designed to work in conjuction with {Hash#recursive_diff}
+    # to provie a complete, yet redable, diff of two projects *not* affected by
+    # isa differences.
+    #
+    # @return [Hash] a hash reppresentation of the project different from the
+    #   plist one.
+    #
+    def to_tree_hash
+      hash = {}
+      objects_dictionary = {}
+      hash['objects']        =  objects_dictionary
+      hash['archiveVersion'] =  archive_version.to_s
+      hash['objectVersion']  =  object_version.to_s
+      hash['classes']        =  classes
+      hash['rootObject']     =  root_object.to_tree_hash
+      hash
+    end
 
     # Serializes the internal data as a property list and stores it on disk at
     # the given path (`xcodeproj` file).

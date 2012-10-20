@@ -33,8 +33,16 @@ class Hash
       if v1.is_a?(Hash) && v2.is_a?(Hash)
         diff = v1.recursive_diff(v2)
         r[key] = diff unless diff == {}
+      elsif v1.is_a?(Array) && v2.is_a?(Array)
+        # take into account only the members of the array that actually changed
+        different_onbjects = (v1 - v2) + (v2 - v1)
+        v1_hash = {}
+        v1.each_with_index { |value, index| v1_hash[index] = value if different_onbjects.include?(value) }
+        v2_hash = {}
+        v2.each_with_index { |value, index| v2_hash[index] = value if different_onbjects.include?(value) }
+        diff = v1_hash.recursive_diff(v2_hash)
+        r[key] = diff unless diff == {}
       else
-
         # The key might be present only in one hash with nil value
         if v1 != v2
           r[key] = { :self => v1, :other => v2 }
