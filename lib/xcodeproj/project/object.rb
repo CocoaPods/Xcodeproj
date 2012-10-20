@@ -197,8 +197,11 @@ module Xcodeproj
             end
             object_plist.delete(attrb.plist_name)
           end
-
-          raise "Xcodeproj doesn't know about the following attributes #{object_plist} for the '#{isa}' isa." unless object_plist.empty?
+          unless object_plist.empty?
+            raise "[!] Xcodeproj doesn't know about the following attributes " \
+                  "#{object_plist} for the '#{isa}' isa.\n" \
+                  "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+          end
         end
 
         # @note the key for simple and to_one attributes usually appears only
