@@ -1,8 +1,9 @@
 module Xcodeproj
 
   class Command
-    autoload :TargetDiff, 'xcodeproj/command/target_diff'
-    autoload :ProjectDiff,'xcodeproj/command/project_diff'
+    autoload :TargetDiff,  'xcodeproj/command/target_diff'
+    autoload :ProjectDiff, 'xcodeproj/command/project_diff'
+    autoload :Show,        'xcodeproj/command/show'
 
     class Help < StandardError
       def initialize(command_class, argv, unrecognized_command = nil)
@@ -42,7 +43,7 @@ module Xcodeproj
     end
 
     def self.banner
-      commands = ['target-diff', 'project-diff']
+      commands = ['target-diff', 'project-diff', 'show']
       banner   = "To see help for the available commands run:\n\n"
       banner + commands.map { |cmd| "  * $ xcodeproj #{cmd.green} --help" }.join("\n")
     end
@@ -85,6 +86,7 @@ module Xcodeproj
       command_class = case command_argument = argv.shift_argument
       when 'target-diff'  then TargetDiff
       when 'project-diff' then ProjectDiff
+      when 'show'         then Show
       end
 
       if command_class.nil?
