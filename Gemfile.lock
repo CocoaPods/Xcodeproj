@@ -3,6 +3,7 @@ PATH
   specs:
     xcodeproj (0.3.5)
       activesupport (~> 3.2.6)
+      colored (~> 1.2)
 
 GEM
   remote: http://rubygems.org/
@@ -11,7 +12,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     bacon (1.1.0)
+    colored (1.2)
     ffi (1.1.5)
+    github-markup (0.7.4)
     i18n (0.6.1)
     kicker (2.6.1)
       listen
@@ -34,6 +37,7 @@ PLATFORMS
 
 DEPENDENCIES
   bacon
+  github-markup
   kicker
   rake
   redcarpet

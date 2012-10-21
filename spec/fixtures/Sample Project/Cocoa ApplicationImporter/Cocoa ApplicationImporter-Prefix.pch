@@ -1,0 +1,6 @@
+//
+// Prefix header for all source files of the 'Cocoa ApplicationImporter' target in the 'Cocoa ApplicationImporter' project
+//
+
+#ifdef __OBJC__
+#endif
