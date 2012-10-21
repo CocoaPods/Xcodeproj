@@ -315,9 +315,8 @@ module ProjectSpecs
         @project.products.should.include target.product_reference
 
         target.build_phases.map(&:isa).sort.should == [
-          "PBXSourcesBuildPhase",
           "PBXFrameworksBuildPhase",
-          "PBXHeadersBuildPhase",
+          "PBXSourcesBuildPhase",
         ]
       end
     end
