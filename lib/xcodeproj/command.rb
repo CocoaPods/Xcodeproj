@@ -1,5 +1,7 @@
 module Xcodeproj
 
+  require 'colored'
+
   class Command
     autoload :TargetDiff,  'xcodeproj/command/target_diff'
     autoload :ProjectDiff, 'xcodeproj/command/project_diff'
