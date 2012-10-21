@@ -1,8 +1,6 @@
 module Xcodeproj
   VERSION = '0.3.5'
 
-  require 'rubygems'
-  require 'colored'
   class PlainInformative < StandardError
   end
 
