@@ -72,6 +72,11 @@ module Xcodeproj
           super
           self.build_settings ||= {}
         end
+
+        def destroy
+          base_configuration.destroy if base_configuration
+          super
+        end
       end
 
       class XCConfigurationList < AbstractPBXObject
@@ -83,6 +88,11 @@ module Xcodeproj
         def initialize(*)
           super
           self.build_configuration_references ||= []
+        end
+
+        def destroy
+          build_configurations.each(&:destroy)
+          super
         end
 
         def build_settings(build_configuration_name)

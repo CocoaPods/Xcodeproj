@@ -14,9 +14,9 @@ module Xcodeproj
           end
         end
 
-        def destroy
-          group.child_references.delete(uuid)
-          super
+        def destroy(remove_from_group = true)
+          group.child_references.delete(uuid) if remove_from_group
+          super()
         end
 
         # Sorts groups before files and inside those sorts by name.
@@ -48,6 +48,11 @@ module Xcodeproj
           super
           self.source_tree ||= '<group>'
           self.child_references ||= []
+        end
+
+        def destroy(remove_from_group = true)
+          children.each { |child| child.destroy(false) }
+          super
         end
 
         def main_group?

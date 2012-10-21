@@ -72,6 +72,15 @@ module Xcodeproj
           end
         end
 
+        def destroy
+          build_phases.each(&:destroy)
+          dependencies.each(&:destroy)
+          build_rules.each(&:destroy)
+          build_configuration_list.destroy
+          product.destroy
+          super
+        end
+
         alias_method :_product=, :product=
         def product=(product)
           self._product = product
