@@ -1,14 +1,41 @@
 module Xcodeproj
+
   # This class holds the data for a Xcode build settings file (xcconfig) and
   # serializes it.
+  #
   class Config
+
+    require 'set'
+
+    # @return [Hash{String => String}] The attributes of the settings file
+    #   excluding frameworks, weak_framework and libraries.
+    #
+    attr_accessor :attributes
+
+    # @return [Array<String>] The list of the frameworks required by this
+    #   settings file.
+    #
+    attr_accessor :frameworks
+
+    # @return [Array<String>] The list of the *weak* frameworks required by
+    #   this settings file.
+    #
+    attr_accessor :weak_frameworks
+
+    # @return [Array<String>] The list of the libraries required by this
+    #   settings file.
+    #
+    attr_accessor :libraries
+
+    # @return [Array] The list of the configuration files included by this
+    #   configuration file (`#include "SomeConfig"`).
+    #
+    attr_accessor :includes
+
     # Returns a new instance of Config
     #
     # @param [Hash, File, String] xcconfig_hash_or_file  Initial data.
-    require 'set'
-
-    attr_accessor :attributes, :frameworks, :weak_frameworks ,:libraries
-
+    #
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
@@ -16,7 +43,34 @@ module Xcodeproj
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
-    # @return [Hash] The internal data.
+
+    #@! group Serialization
+
+    # Serializes the internal data in the xcconfig format.
+    #
+    # @example
+    #
+    #   config = Config.new('PODS_ROOT' => '"$(SRCROOT)/Pods"', 'OTHER_LDFLAGS' => '-lxml2')
+    #   config.to_s # => "PODS_ROOT = \"$(SRCROOT)/Pods\"\nOTHER_LDFLAGS = -lxml2"
+    #
+    # @return [String]  The serialized internal data.
+    def to_s
+      to_hash.map { |key, value| "#{key} = #{value}" }.join("\n")
+    end
+
+    # @return [void] Writes the serialized representation of the internal data
+    # to the given path.
+    #
+    # @param [Pathname] pathname  The file that the data should be written to.
+    #
+    def save_as(pathname)
+      pathname.open('w') { |file| file << to_s }
+    end
+
+    # @return [Hash] The hash reppresentation of the framework. The hash
+    # includes the frameworks, the weak frameworks and the libraries in the
+    # `Other Linker Flags` (`OTHER_LDFLAGS`).
+    #
     def to_hash
       hash = @attributes.dup
       flags = hash['OTHER_LDFLAGS'] || ''
@@ -29,23 +83,9 @@ module Xcodeproj
       hash
     end
 
-    def ==(other)
-      other.respond_to?(:to_hash) && other.to_hash == self.to_hash
-    end
 
-    # @return [Array] Config's include file list
-    # @example
-    #
-    # Consider following xcconfig file:
-    #
-    #   #include "SomeConfig"
-    #   Key1 = Value1
-    #   Key2 = Value2
-    #
-    #   config.includes # => [ "SomeConfig" ]
-    def includes
-      @includes
-    end
+
+    #@! group Merging
 
     # Merges the given xcconfig hash or Config into the internal data.
     #
@@ -59,6 +99,7 @@ module Xcodeproj
     #   config.to_hash # => { 'PODS_ROOT' => '"$(SRCROOT)/Pods"', 'OTHER_LDFLAGS' => '-lxml2 -lz', 'HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/Headers"' }
     #
     # @param [Hash, Config] xcconfig  The data to merge into the internal data.
+    #
     def merge!(xcconfig)
       if xcconfig.is_a? Config
         @attributes.merge!(xcconfig.attributes) { |key, v1, v2| "#{v1} #{v2}" }
@@ -95,28 +136,15 @@ module Xcodeproj
       Xcodeproj::Config.new(self.to_hash.dup)
     end
 
-    # Serializes the internal data in the xcconfig format.
-    #
-    # @example
-    #
-    #   config = Config.new('PODS_ROOT' => '"$(SRCROOT)/Pods"', 'OTHER_LDFLAGS' => '-lxml2')
-    #   config.to_s # => "PODS_ROOT = \"$(SRCROOT)/Pods\"\nOTHER_LDFLAGS = -lxml2"
-    #
-    # @return [String]  The serialized internal data.
-    def to_s
-      to_hash.map { |key, value| "#{key} = #{value}" }.join("\n")
-    end
+
+    #@! group Object methods
 
     def inspect
       to_hash.inspect
     end
 
-    # Writes the serialized representation of the internal data to the given
-    # path.
-    #
-    # @param [Pathname] pathname  The file that the data should be written to.
-    def save_as(pathname)
-      pathname.open('w') { |file| file << to_s }
+    def ==(other)
+      other.respond_to?(:to_hash) && other.to_hash == self.to_hash
     end
 
     private

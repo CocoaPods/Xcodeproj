@@ -10,5 +10,6 @@ end
 
 group :documentation do
   gem "redcarpet"
+  gem "github-markup"
   gem "yard"
 end

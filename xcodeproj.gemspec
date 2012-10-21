@@ -19,9 +19,11 @@ Gem::Specification.new do |s|
 
   s.extensions    = "ext/xcodeproj/extconf.rb"
   s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/{extconf.rb,xcodeproj_ext.c}"] + %w{ README.md LICENSE }
+  s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ ext lib }
 
   s.add_runtime_dependency 'activesupport', '~> 3.2.6'
+  s.add_runtime_dependency 'colored',       '~> 1.2'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
