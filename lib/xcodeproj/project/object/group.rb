@@ -10,7 +10,7 @@ module Xcodeproj
         # @return [ObjectList<PBXGroup, PBXFileReference>]
         #   the objects contained by the group.
         #
-        has_many :children, [PBXGroup, PBXFileReference]
+        has_many :children, [PBXGroup, PBXFileReference, PBXReferenceProxy]
 
         # @return [String] the source tree to which this group is relative.
         #

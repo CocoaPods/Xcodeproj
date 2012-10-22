@@ -60,6 +60,13 @@ module Xcodeproj
         #
         attribute :project_root, String
 
+        # @return [Array<ObjectDictionary>] any reference to other projects.
+        #
+        has_many_references_by_keys :project_references, {
+          :project_ref   => PBXFileReference,
+          :product_group => PBXGroup
+        }
+
       end
     end
   end

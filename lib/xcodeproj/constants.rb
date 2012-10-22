@@ -27,6 +27,7 @@ module Xcodeproj
       PBXNativeTarget
       PBXProject
       PBXTargetDependency
+      PBXReferenceProxy
       ],
 
       'AbstractBuildPhase' => %w[
