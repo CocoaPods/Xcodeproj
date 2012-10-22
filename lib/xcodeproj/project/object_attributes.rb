@@ -205,6 +205,10 @@ module Xcodeproj
             @to_many_attributes ||= attributes.select { |a| a.type == :to_many }
           end
 
+          def references_by_keys_attributes
+            @references_by_keys_attributes ||= attributes.select { |a| a.type == :references_by_keys }
+          end
+
           private
 
           # Defines a new simple attribute and synthesises the corresponding
@@ -330,6 +334,41 @@ module Xcodeproj
             end
           end
 
+          # Defines a new ordered relationship to many.
+          #
+          # @note This attribute only generates the reader method. Clients are
+          #       not supposed to create {ObjectList} objects which are created
+          #       by the methods synthesised by this attribute on demand.
+          #       Clients, however can mutate the list according to its
+          #       interface. The list is responsible to manage the reference
+          #       counting for its values.
+          #
+          # @param [String] plural_name
+          #   the name of the relationship.
+          #
+          # @param [Class, Array<Class>] isas
+          #   the list of the classes corresponding to the accepted isas for
+          #   this relationship.
+          #
+          # @macro [attach] has_many
+          #   @!attribute [r] $1
+          #
+          def has_many_references_by_keys(plural_name, isas_hash)
+            attrb = AbstractObjectAttribute.new(:references_by_keys, plural_name, self)
+            attrb.classes = isas_hash.values
+            add_attribute(attrb)
+
+            define_method(attrb.name) do
+              # Here we are in the context of the instance
+              list = instance_variable_get("@#{attrb.name}")
+              unless list
+                list = ObjectList.new(attrb, self)
+                instance_variable_set("@#{attrb.name}", list)
+              end
+              list
+            end
+          end
+
           protected
 
           # Adds an attribute to the list of attributes of the class.
@@ -375,6 +414,12 @@ module Xcodeproj
         #
         def to_many_attributes
           self.class.to_many_attributes
+        end
+
+        # @return (see AbstractObject.to_many_attributes)
+        #
+        def references_by_keys_attributes
+          self.class.references_by_keys_attributes
         end
       end # AbstractObject
     end

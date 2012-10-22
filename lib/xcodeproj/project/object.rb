@@ -197,6 +197,21 @@ module Xcodeproj
             end
             object_plist.delete(attrb.plist_name)
           end
+
+          references_by_keys_attributes.each do |attrb|
+            hashes = object_plist[attrb.plist_name] || {}
+            list = attrb.get_value(self)
+            hashes.each do |hash|
+              dictionary = ObjectDictionary.new(attrb, self)
+              hash.each do |key, ref_uuid|
+                ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
+                dictionary[key] = ref
+              end
+              list << dictionary
+            end
+            object_plist.delete(attrb.plist_name)
+          end
+
           unless object_plist.empty?
             raise "[!] Xcodeproj doesn't know about the following attributes " \
                   "#{object_plist} for the '#{isa}' isa.\n" \
@@ -225,6 +240,11 @@ module Xcodeproj
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
             plist[attrb.plist_name] = list.uuids
+          end
+
+          references_by_keys_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            plist[attrb.plist_name] = list.map { |dictionary| dictionary.to_plist }
           end
 
           plist
@@ -262,6 +282,11 @@ module Xcodeproj
             hash[attrb.plist_name] = list.map { |obj| obj.to_tree_hash }
           end
 
+          references_by_keys_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            hash[attrb.plist_name] = list.map { |dictionary| dictionary.to_tree_hash }
+          end
+
           hash
         end
 
@@ -285,8 +310,9 @@ module Xcodeproj
   end
 end
 
-require 'xcodeproj/project/object_attributes'
 require 'xcodeproj/project/object_list'
+require 'xcodeproj/project/object_dictionary'
+require 'xcodeproj/project/object_attributes'
 
 # Required because some classes have cyclical references to each other.
 #
@@ -317,4 +343,5 @@ require 'xcodeproj/project/object/group'
 require 'xcodeproj/project/object/native_target'
 require 'xcodeproj/project/object/root_object'
 require 'xcodeproj/project/object/target_dependency'
+require 'xcodeproj/project/object/reference_proxy'
 

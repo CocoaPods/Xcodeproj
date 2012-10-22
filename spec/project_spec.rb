@@ -97,7 +97,11 @@ module ProjectSpecs
       #
       it "can regenerate the EXACT plist that initialized it" do
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
-        @project.to_plist.recursive_diff(plist).should.be.nil
+        generated = @project.to_plist
+        diff = generated.recursive_diff(plist, "generated", "plist")
+        diff.should.be.nil
+        # The diff is there for readability of errors
+        generated.should == plist
       end
 
       it "can compares itself to plist" do
