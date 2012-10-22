@@ -114,6 +114,27 @@
 			remoteGlobalIDString = E52523F316245AB20012E2BA;
 			remoteInfo = "iOS application";
 		};
+		E5FBB34B1635ED36009E96B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5FBB2E51635ED34009E96B0;
+			remoteInfo = ReferencedProject;
+		};
+		E5FBB34D1635ED36009E96B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5FBB30C1635ED35009E96B0;
+			remoteInfo = ReferencedProjectTests;
+		};
+		E5FBB34F1635ED36009E96B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E5FBB31F1635ED35009E96B0;
+			remoteInfo = ReferencedProjectImporter;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -210,6 +231,7 @@
 		E5FBB2D216357C70009E96B0 /* Cocoa Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Cocoa Application.entitlements"; sourceTree = "<group>"; };
 		E5FBB2D316357C93009E96B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPDocument.xib; sourceTree = "<group>"; };
 		E5FBB2D416357C93009E96B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReferencedProject.xcodeproj; path = ReferencedProject/ReferencedProject.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +291,7 @@
 		E525238116245A900012E2BA = {
 			isa = PBXGroup;
 			children = (
+				E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */,
 				E5FBB2D016357C16009E96B0 /* sample.xcconfig */,
 				E52523AB16245A910012E2BA /* CPDocument.xcdatamodeld */,
 				E5D464AB163578AC006A4730 /* Tools_version.xcdatamodeld */,
@@ -470,6 +493,16 @@
 			path = "/Users/fabio/Documents/GitHub/CP/Xcodeproj/spec/fixtures/Sample Project/Cocoa Application";
 			sourceTree = "<absolute>";
 		};
+		E5FBB3461635ED35009E96B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5FBB34C1635ED36009E96B0 /* ReferencedProject.app */,
+				E5FBB34E1635ED36009E96B0 /* ReferencedProjectTests.octest */,
+				E5FBB3501635ED36009E96B0 /* ReferencedProjectImporter.mdimporter */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -610,6 +643,12 @@
 			mainGroup = E525238116245A900012E2BA;
 			productRefGroup = E525238D16245A900012E2BA /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E5FBB3461635ED35009E96B0 /* Products */;
+					ProjectRef = E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E525238B16245A900012E2BA /* Cocoa Application */,
@@ -620,6 +659,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E5FBB34C1635ED36009E96B0 /* ReferencedProject.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = ReferencedProject.app;
+			remoteRef = E5FBB34B1635ED36009E96B0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E5FBB34E1635ED36009E96B0 /* ReferencedProjectTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReferencedProjectTests.octest;
+			remoteRef = E5FBB34D1635ED36009E96B0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E5FBB3501635ED36009E96B0 /* ReferencedProjectImporter.mdimporter */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReferencedProjectImporter.mdimporter;
+			remoteRef = E5FBB34F1635ED36009E96B0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E525238A16245A900012E2BA /* Resources */ = {

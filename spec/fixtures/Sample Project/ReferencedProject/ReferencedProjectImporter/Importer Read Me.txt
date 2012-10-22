@@ -1,0 +1,63 @@
+
+//==============================================================================
+// Core Data Application Spotlight Importer
+//==============================================================================
+
+Spotlight importers should be provided by all applications that support custom 
+document formats. A Spotlight importer parses your document format for relevant 
+information and assigning that information to the appropriate metadata keys.
+
+The bundle target in this project creates a Spotlight importer bundle installed 
+inside of the wrapper of the application target.  This bundle includes all of 
+the code necessary to import two types of information into Spotlight:
+
+1) The metadata information from Core Data stores.
+
+The only default metadata for a Core Data store is the store ID and store type,
+neither of which is imported.  To have metadata from your stores imported, you
+must first add the information you are interested to the metadata for your 
+store (see the NSPersistentStoreCoordinator setMetadataForPersistentStore: API)
+and then pull the information for import in the GetMetadataForFile function in
+the 'GetMetadataForFile.c' file.
+
+2) Instance Level indexing information
+
+    For each instance of an entity that contains properties indexed by Spotlight 
+(defined in your Core Data Model), the importer will extract the values. This
+extraction is done in MySpotlightImporter.m
+
+Additionally, the importer must contain a list of the Uniform Type Identifiers
+(UTI) for your application in order to import the data.  (The UTI information is
+used by Spotlight to know which importer to invoke for a given file.)  If the
+UTI is not already registered by your application, you will need to register it
+in the importer bundle.  (For more information on registering UTIs for
+applications, consult the documentation at http://developer.apple.com)
+  
+-----------------------------------------------------------------------------
+
+To configure this project
+
+Search for all occurrences of the string YOUR_ and replace with the appropriate
+    values
+    
+When importing store file metadata
+	
+YOUR_STORE_FILE_UTI			- UTI of your store file
+YOUR_INFO					- metadata information you want Spotlight to have for
+								your store file
+
+when importing record level information
+                        
+YOUR_EXTERNAL_RECORD_UTI		- UTI of the Core Data Spotlight external record file
+YOUR_EXTERNAL_RECORD_EXTENSION - extension of the Core Data external record file
+YOUR_STORE_TYPE				- type of your persistent store
+
+Replace occurrences of the above strings in the following files
+
+
+GetMetadataForFile.c
+MySpotlightImporter.m
+ReferencedProjectImporter-Info.plist
+
+  
+-----------------------------------------------------------------------------
