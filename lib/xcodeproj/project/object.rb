@@ -156,6 +156,11 @@ module Xcodeproj
             list = attrb.get_value(self)
             list.delete(object)
           end
+
+          references_by_keys_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            list.each { |dictionary| dictionary.remove_reference(object) }
+          end
         end
 
         # @!group Plist related methods
