@@ -80,6 +80,8 @@ module ProjectSpecs
         @project.root_object.should.not == nil
         @project.main_group.should.not == nil
         @project.groups.map(&:display_name).compact.should == [
+          "Absolute_path",
+          "Text_settings",
           "Cocoa Application",
           "Cocoa ApplicationTests",
           "Cocoa ApplicationImporter",

@@ -58,6 +58,29 @@ module Xcodeproj
         #
         attribute :plist_structure_definition_identifier, String
 
+        # @return [String] Whether Xcode should use tabs for text aligment.
+        #
+        #   E.g. `1`
+        #
+        attribute :uses_tabs, String
+
+        # @return [String] The width of the indent.
+        #
+        #   E.g. `2`
+        #
+        attribute :indent_width, String
+
+        # @return [String] The width of the tabs.
+        #
+        #   E.g. `2`
+        #
+        attribute :tab_width, String
+
+        # @return [String] Whether Xcode should wrap lines.
+        #
+        #   E.g. `1`
+        #
+        attribute :wraps_lines, String
 
         ## CONVENIENCE METHODS #################################################
 
@@ -96,7 +119,7 @@ module Xcodeproj
         def update_last_known_file_type
           self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
         end
-        
+
       end
     end
   end

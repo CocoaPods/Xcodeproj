@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -49,7 +49,18 @@
 		E525242B16245AB20012E2BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E525242916245AB20012E2BA /* InfoPlist.strings */; };
 		E525242E16245AB20012E2BA /* iOS_applicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E525242D16245AB20012E2BA /* iOS_applicationTests.m */; };
 		E525243C16245AE10012E2BA /* Linked Folder in Resources */ = {isa = PBXBuildFile; fileRef = E525243B16245AE10012E2BA /* Linked Folder */; };
-		E59DD7681624FB9C00065629 /* sample.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E59DD7671624FB9C00065629 /* sample.xcconfig */; };
+		E5D46499163577B5006A4730 /* Relative_to_group in Resources */ = {isa = PBXBuildFile; fileRef = E5D46498163577B5006A4730 /* Relative_to_group */; };
+		E5D4649B163577D2006A4730 /* Absolute_path in Resources */ = {isa = PBXBuildFile; fileRef = E5D4649A163577D2006A4730 /* Absolute_path */; };
+		E5D4649D163577E7006A4730 /* Relative_to_project in Resources */ = {isa = PBXBuildFile; fileRef = E5D4649C163577E7006A4730 /* Relative_to_project */; };
+		E5D4649F163577FB006A4730 /* Relative_to_developer_direcotry in Resources */ = {isa = PBXBuildFile; fileRef = E5D4649E163577FB006A4730 /* Relative_to_developer_direcotry */; };
+		E5D464A116357816006A4730 /* Relative_to_build_products in Resources */ = {isa = PBXBuildFile; fileRef = E5D464A016357816006A4730 /* Relative_to_build_products */; };
+		E5D464A316357833006A4730 /* Relative_to_SDK in Resources */ = {isa = PBXBuildFile; fileRef = E5D464A216357833006A4730 /* Relative_to_SDK */; };
+		E5D464A616357841006A4730 /* Localized in Resources */ = {isa = PBXBuildFile; fileRef = E5D464A816357841006A4730 /* Localized */; };
+		E5D464AA16357867006A4730 /* Text_settings in Resources */ = {isa = PBXBuildFile; fileRef = E5D464A916357867006A4730 /* Text_settings */; };
+		E5D464AD163578AC006A4730 /* Tools_version.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5D464AB163578AC006A4730 /* Tools_version.xcdatamodeld */; };
+		E5D464B0163578C7006A4730 /* Deployment_target.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5D464AE163578C7006A4730 /* Deployment_target.xcdatamodeld */; };
+		E5D464B416357954006A4730 /* Version_identifier.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5D464B216357954006A4730 /* Version_identifier.xcdatamodeld */; };
+		E5FBB2D116357C16009E96B0 /* sample.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E5FBB2D016357C16009E96B0 /* sample.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -140,8 +151,6 @@
 		E52523A016245A900012E2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		E52523A216245A900012E2BA /* CPDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPDocument.h; sourceTree = "<group>"; };
 		E52523A316245A900012E2BA /* CPDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPDocument.m; sourceTree = "<group>"; };
-		E52523A616245A900012E2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/CPDocument.xib; sourceTree = "<group>"; };
-		E52523A916245A910012E2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		E52523AC16245A910012E2BA /* CPDocument.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CPDocument.xcdatamodel; sourceTree = "<group>"; };
 		E52523B316245A910012E2BA /* Cocoa ApplicationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Cocoa ApplicationTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52523B416245A910012E2BA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -186,7 +195,21 @@
 		E525242C16245AB20012E2BA /* iOS_applicationTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOS_applicationTests.h; sourceTree = "<group>"; };
 		E525242D16245AB20012E2BA /* iOS_applicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS_applicationTests.m; sourceTree = "<group>"; };
 		E525243B16245AE10012E2BA /* Linked Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Linked Folder"; sourceTree = "<group>"; };
-		E59DD7671624FB9C00065629 /* sample.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = sample.xcconfig; path = ../sample.xcconfig; sourceTree = "<group>"; };
+		E5D46498163577B5006A4730 /* Relative_to_group */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Relative_to_group; path = "Cocoa Application/Relative_to_group"; sourceTree = "<group>"; };
+		E5D4649A163577D2006A4730 /* Absolute_path */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Absolute_path; path = "/Users/fabio/Documents/GitHub/CP/Xcodeproj/spec/fixtures/Sample Project/Cocoa Application/Absolute_path"; sourceTree = "<absolute>"; };
+		E5D4649C163577E7006A4730 /* Relative_to_project */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Relative_to_project; path = "Cocoa Application/Relative_to_project"; sourceTree = SOURCE_ROOT; };
+		E5D4649E163577FB006A4730 /* Relative_to_developer_direcotry */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Relative_to_developer_direcotry; path = "../../../../Users/fabio/Documents/GitHub/CP/Xcodeproj/spec/fixtures/Sample Project/Cocoa Application/Relative_to_developer_direcotry"; sourceTree = DEVELOPER_DIR; };
+		E5D464A016357816006A4730 /* Relative_to_build_products */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Relative_to_build_products; path = "../../../../../../../../Documents/GitHub/CP/Xcodeproj/spec/fixtures/Sample Project/Cocoa Application/Relative_to_build_products"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5D464A216357833006A4730 /* Relative_to_SDK */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Relative_to_SDK; path = "Cocoa Application/Relative_to_SDK"; sourceTree = "<group>"; };
+		E5D464A716357841006A4730 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/Localized; sourceTree = "<group>"; };
+		E5D464A916357867006A4730 /* Text_settings */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = text; name = Text_settings; path = "Cocoa Application/Text_settings"; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
+		E5D464AC163578AC006A4730 /* Tools_version.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tools_version.xcdatamodel; sourceTree = "<group>"; };
+		E5D464AF163578C7006A4730 /* Deployment_target.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Deployment_target.xcdatamodel; sourceTree = "<group>"; };
+		E5D464B316357954006A4730 /* Version_identifier.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Version_identifier.xcdatamodel; sourceTree = "<group>"; };
+		E5FBB2D016357C16009E96B0 /* sample.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = sample.xcconfig; path = ../sample.xcconfig; sourceTree = "<group>"; };
+		E5FBB2D216357C70009E96B0 /* Cocoa Application.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Cocoa Application.entitlements"; sourceTree = "<group>"; };
+		E5FBB2D316357C93009E96B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPDocument.xib; sourceTree = "<group>"; };
+		E5FBB2D416357C93009E96B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,7 +269,21 @@
 		E525238116245A900012E2BA = {
 			isa = PBXGroup;
 			children = (
-				E59DD7671624FB9C00065629 /* sample.xcconfig */,
+				E5FBB2D016357C16009E96B0 /* sample.xcconfig */,
+				E52523AB16245A910012E2BA /* CPDocument.xcdatamodeld */,
+				E5D464AB163578AC006A4730 /* Tools_version.xcdatamodeld */,
+				E5D464AE163578C7006A4730 /* Deployment_target.xcdatamodeld */,
+				E5D464B216357954006A4730 /* Version_identifier.xcdatamodeld */,
+				E5D46498163577B5006A4730 /* Relative_to_group */,
+				E5D4649A163577D2006A4730 /* Absolute_path */,
+				E5D4649C163577E7006A4730 /* Relative_to_project */,
+				E5D4649E163577FB006A4730 /* Relative_to_developer_direcotry */,
+				E5D464A016357816006A4730 /* Relative_to_build_products */,
+				E5D464A216357833006A4730 /* Relative_to_SDK */,
+				E5D464A816357841006A4730 /* Localized */,
+				E5D464A916357867006A4730 /* Text_settings */,
+				E5D464B516357987006A4730 /* Absolute_path */,
+				E5D464B1163578DB006A4730 /* Text_settings */,
 				E525239616245A900012E2BA /* Cocoa Application */,
 				E52523B916245A910012E2BA /* Cocoa ApplicationTests */,
 				E52523D216245A910012E2BA /* Cocoa ApplicationImporter */,
@@ -257,6 +294,7 @@
 				E525243B16245AE10012E2BA /* Linked Folder */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		E525238D16245A900012E2BA /* Products */ = {
 			isa = PBXGroup;
@@ -299,12 +337,12 @@
 		E525239616245A900012E2BA /* Cocoa Application */ = {
 			isa = PBXGroup;
 			children = (
+				E5FBB2D216357C70009E96B0 /* Cocoa Application.entitlements */,
+				E525239716245A900012E2BA /* Supporting Files */,
 				E52523A216245A900012E2BA /* CPDocument.h */,
 				E52523A316245A900012E2BA /* CPDocument.m */,
 				E52523A516245A900012E2BA /* CPDocument.xib */,
 				E52523A816245A910012E2BA /* MainMenu.xib */,
-				E52523AB16245A910012E2BA /* CPDocument.xcdatamodeld */,
-				E525239716245A900012E2BA /* Supporting Files */,
 			);
 			path = "Cocoa Application";
 			sourceTree = "<group>";
@@ -411,6 +449,26 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		E5D464B1163578DB006A4730 /* Text_settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			indentWidth = 4;
+			name = Text_settings;
+			path = "Cocoa Application";
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
+			wrapsLines = 1;
+		};
+		E5D464B516357987006A4730 /* Absolute_path */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Absolute_path;
+			path = "/Users/fabio/Documents/GitHub/CP/Xcodeproj/spec/fixtures/Sample Project/Cocoa Application";
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -542,11 +600,12 @@
 				ORGANIZATIONNAME = CocoaPods;
 			};
 			buildConfigurationList = E525238616245A900012E2BA /* Build configuration list for PBXProject "Cocoa Application" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = E525238116245A900012E2BA;
 			productRefGroup = E525238D16245A900012E2BA /* Products */;
@@ -573,7 +632,15 @@
 				E52523AA16245A910012E2BA /* MainMenu.xib in Resources */,
 				E52523C916245A910012E2BA /* Cocoa ApplicationImporter.mdimporter in Resources */,
 				E525243C16245AE10012E2BA /* Linked Folder in Resources */,
-				E59DD7681624FB9C00065629 /* sample.xcconfig in Resources */,
+				E5D46499163577B5006A4730 /* Relative_to_group in Resources */,
+				E5D4649B163577D2006A4730 /* Absolute_path in Resources */,
+				E5D4649D163577E7006A4730 /* Relative_to_project in Resources */,
+				E5D4649F163577FB006A4730 /* Relative_to_developer_direcotry in Resources */,
+				E5D464A116357816006A4730 /* Relative_to_build_products in Resources */,
+				E5D464A316357833006A4730 /* Relative_to_SDK in Resources */,
+				E5D464A616357841006A4730 /* Localized in Resources */,
+				E5D464AA16357867006A4730 /* Text_settings in Resources */,
+				E5FBB2D116357C16009E96B0 /* sample.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,6 +746,9 @@
 				E525239D16245A900012E2BA /* main.m in Sources */,
 				E52523A416245A900012E2BA /* CPDocument.m in Sources */,
 				E52523AD16245A910012E2BA /* CPDocument.xcdatamodeld in Sources */,
+				E5D464AD163578AC006A4730 /* Tools_version.xcdatamodeld in Sources */,
+				E5D464B0163578C7006A4730 /* Deployment_target.xcdatamodeld in Sources */,
+				E5D464B416357954006A4730 /* Version_identifier.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,7 +830,7 @@
 		E52523A516245A900012E2BA /* CPDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E52523A616245A900012E2BA /* en */,
+				E5FBB2D316357C93009E96B0 /* Base */,
 			);
 			name = CPDocument.xib;
 			sourceTree = "<group>";
@@ -768,7 +838,7 @@
 		E52523A816245A910012E2BA /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E52523A916245A910012E2BA /* en */,
+				E5FBB2D416357C93009E96B0 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -813,6 +883,15 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		E5D464A816357841006A4730 /* Localized */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E5D464A716357841006A4730 /* en */,
+			);
+			name = Localized;
+			path = "Cocoa Application";
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -840,6 +919,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -864,6 +944,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
@@ -903,8 +984,9 @@
 		};
 		E52523E716245A910012E2BA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E59DD7671624FB9C00065629 /* sample.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Cocoa Application/Cocoa Application.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa Application/Cocoa Application-Prefix.pch";
@@ -917,6 +999,8 @@
 		E52523E816245A910012E2BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Cocoa Application/Cocoa Application.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa Application/Cocoa Application-Prefix.pch";
@@ -1099,7 +1183,8 @@
 				E52523AC16245A910012E2BA /* CPDocument.xcdatamodel */,
 			);
 			currentVersion = E52523AC16245A910012E2BA /* CPDocument.xcdatamodel */;
-			path = CPDocument.xcdatamodeld;
+			name = CPDocument.xcdatamodeld;
+			path = "Cocoa Application/CPDocument.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
@@ -1110,6 +1195,38 @@
 			);
 			currentVersion = E525241216245AB20012E2BA /* iOS_application.xcdatamodel */;
 			path = iOS_application.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E5D464AB163578AC006A4730 /* Tools_version.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E5D464AC163578AC006A4730 /* Tools_version.xcdatamodel */,
+			);
+			currentVersion = E5D464AC163578AC006A4730 /* Tools_version.xcdatamodel */;
+			name = Tools_version.xcdatamodeld;
+			path = "Cocoa Application/Tools_version.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E5D464AE163578C7006A4730 /* Deployment_target.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E5D464AF163578C7006A4730 /* Deployment_target.xcdatamodel */,
+			);
+			currentVersion = E5D464AF163578C7006A4730 /* Deployment_target.xcdatamodel */;
+			name = Deployment_target.xcdatamodeld;
+			path = "Cocoa Application/Deployment_target.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E5D464B216357954006A4730 /* Version_identifier.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E5D464B316357954006A4730 /* Version_identifier.xcdatamodel */,
+			);
+			currentVersion = E5D464B316357954006A4730 /* Version_identifier.xcdatamodel */;
+			path = Version_identifier.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
