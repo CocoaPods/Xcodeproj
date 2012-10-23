@@ -65,11 +65,24 @@ module ProjectSpecs
       end
       @phase.files.count.should == number_of_files
 
-      files = @phase.files.dup
-      files.each do |bf|
+      @phase.files.objects.each do |bf|
         @phase.remove_build_file(bf)
       end
       @phase.files.count.should == 0
+    end
+
+    it "removes all the build files from a phase" do
+      files = []
+      3.times do |i|
+        file = @project.new_file("file #{i}")
+        files << file
+        @phase.add_file_reference(file)
+        file.referrers.count.should == 2
+      end
+      @phase.files.count.should == 3
+      @phase.clear_build_files
+      @phase.files.count.should == 0
+      files.each { |f| f.referrers.count.should == 1 }
     end
 
     it "concrete implementations subclass it" do

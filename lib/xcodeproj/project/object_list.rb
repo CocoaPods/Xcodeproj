@@ -26,11 +26,11 @@ module Xcodeproj
         @owner = owner
       end
 
-      # @return [Array<Class>] The attribute that generated the list.
+      # @return [Array<Class>] the attribute that generated the list.
       #
       attr_reader :attribute
 
-      # @return [Array<Class>] The object that owns the list.
+      # @return [Array<Class>] the object that owns the list.
       #
       attr_reader :owner
 
@@ -38,11 +38,18 @@ module Xcodeproj
 
       # @!group Integration with {ObjectList}
 
-      # @return [Array<String>] The UUIDs of all the objects referenced by this
-      #   list.
+      # @return [Array<String>]
+      #   the UUIDs of all the objects referenced by this list.
       #
       def uuids
         map { |obj| obj.uuid }
+      end
+
+      # @return [Array<AbstractObject>]
+      #   a new array generated with the objects contained in the list.
+      #
+      def objects
+        to_a
       end
 
       #------------------------------------------------------------------------#
@@ -87,6 +94,18 @@ module Xcodeproj
         perform_deletion_operations(object)
       end
 
+      # Removes all the objects contained in the list and updates their
+      # reference counts.
+      #
+      # @return [void]
+      #
+      def clear
+        objects.each do |object|
+          perform_deletion_operations(object)
+        end
+        super
+      end
+
       #------------------------------------------------------------------------#
 
       # @!group Notification Methods
@@ -108,7 +127,7 @@ module Xcodeproj
       end
 
       # Informs an object that it was removed from to the list, so it can
-      # remove it from its referrers and take the appropriate actions.
+      # remove its owner from its referrers and take the appropriate actions.
       #
       # @return [void]
       #

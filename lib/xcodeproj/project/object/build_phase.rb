@@ -149,18 +149,40 @@ module Xcodeproj
           build_file
         end
 
-        # Removes a file reference from the build phase
+        # Removes the build file associated with the given file reference from
+        # the phase.
         #
-        # @param [PBXObject] file the file to remove
+        # @param [PBXFileReference] file the file to remove
+        #
+        # @return [void]
+        #
         def remove_file_reference(file)
           build_file = files.find { |bf| bf.file_ref == file }
           build_file.file_ref = nil
           build_file.remove_from_project
         end
 
+        # Removes a build file from the phase and clears its relationship to
+        # the file reference.
+        #
+        # @param [PBXBuildFile] file the file to remove
+        #
+        # @return [void]
+        #
         def remove_build_file(build_file)
           build_file.file_ref = nil
           build_file.remove_from_project
+        end
+
+        # Removes all the build files from the phase and clears their
+        # relationship to the file reference.
+        #
+        # @return [void]
+        #
+        def clear_build_files
+          files.objects.each do |bf|
+            remove_build_file(bf)
+          end
         end
       end
     end

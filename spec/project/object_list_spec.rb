@@ -26,12 +26,29 @@ module ProjectSpecs
     end
 
     it "informs an object that is has been removed from the list" do
+      before_count = @list.count
       f = @project.new(PBXFileReference)
       @list << f
       f.referrers.count.should == 1
       f.referrers.should.include?(@project.main_group)
       @list.delete(f)
       f.referrers.count.should == 0
+      @list.count.should == before_count
+    end
+
+    it "clears itself informing objects that they have been removed from the list" do
+      before_count = @list.count
+      before_ref_counts = {}
+      objects = @list.objects
+      objects.each { |obj| before_ref_counts[obj] = obj.referrers.count }
+
+      f = @project.new(PBXFileReference)
+      @list << f
+      f.referrers.count.should == 1
+      f.referrers.should.include?(@project.main_group)
+      @list.clear
+      objects.each { |obj| obj.referrers.count.should == before_ref_counts[obj] - 1 }
+      @list.count.should == 0
     end
   end
 end
