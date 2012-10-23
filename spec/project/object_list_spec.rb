@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::ObjectList" do
+  describe Xcodeproj::Project::ObjectList do
     before do
       @list = @project.main_group.children
     end

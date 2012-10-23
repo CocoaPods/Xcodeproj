@@ -8,6 +8,31 @@ module Xcodeproj
     # the project is not serialized with unreachable objects by updating the
     # with reference count on modifications.
     #
+    # @note This class is a stub currently only being used by
+    #       {PBXProject#project_references}. It doesn't perform type cheeking
+    #       and the keys of the dictionary are in camel-case. To provide full
+    #       support as the other classes the dictionary should be able to
+    #
+    #       Give the following attribute:
+    #
+    #            has_many_references_by_keys :project_references, {
+    #              :project_ref   => PBXFileReference,
+    #              :product_group => PBXGroup
+    #            }
+    #
+    #       This should be possible:
+    #
+    #            #=> Note the API:
+    #            root_object.project_references.project_ref = file
+    #
+    #            #=> This should raise:
+    #            root_object.project_references.product_group = file
+    #
+    #       generate setters and getters from the specification hash.
+    #
+    #       Also the interface is a dirty hybrid between the
+    #       {AbstractObjectAttribute} and the {ObjectList}.
+    #
     # @note Concerning the mutations methods it is safe to call only those
     #       which are overridden to inform objects reference count. Ideally all
     #       the hash methods should be covered, but this is not done yet.
@@ -55,7 +80,7 @@ module Xcodeproj
         if object
           perform_additions_operations(object)
         else
-          perform_deletion_operations(self[object])
+          perform_deletion_operations(self[key])
         end
         super
       end
