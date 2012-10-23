@@ -32,6 +32,46 @@ module ProjectSpecs
       @phase.files_references.should == [file]
     end
 
+    it "updates build files of a file" do
+      @target = @project.new_target(:static_library, 'Pods', :ios)
+      file = @project.new_file('Ruby.m')
+      @target.source_build_phase.add_file_reference(file)
+      @target.source_build_phase.files.count.should == 1
+      file.build_files.count.should == 1
+      file.build_files.first.file_ref.should == file
+    end
+
+    it "removes a build file from a build phase" do
+      file = @project.new_file('Ruby.m')
+      build_file = @phase.add_file_reference(file)
+      file.build_files.count.should == 1
+      @phase.files.count.should == 1
+
+      @phase.remove_file_reference(file)
+      file.build_files.count.should == 0
+      @phase.files.count.should == 0
+      @project.objects.find { |obj| obj == build_file }.should == nil
+    end
+
+    it "removes several build files from a build phase" do
+      o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
+      number_of_files = 10
+
+      number_of_files.times do |_|
+        random_suffix = (0...10).map{ o[rand(o.length)] }.join
+        filename = "file-#{random_suffix}.png"
+        file = @project.new_file(filename)
+        @phase.add_file_reference(file)
+      end
+      @phase.files.count.should == number_of_files
+
+      files = @phase.files.dup
+      files.each do |bf|
+        @phase.remove_build_file(bf)
+      end
+      @phase.files.count.should == 0
+    end
+
     it "concrete implementations subclass it" do
       concrete_classes = [
         PBXHeadersBuildPhase,
