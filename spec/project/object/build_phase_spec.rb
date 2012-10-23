@@ -55,9 +55,9 @@ module ProjectSpecs
 
     it "removes several build files from a build phase" do
       o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
-      number_of_files = 2
+      number_of_files = 10
 
-      for i in 0...number_of_files
+      number_of_files.times do |_|
         random_suffix = (0...10).map{ o[rand(o.length)] }.join
         filename = "file-#{random_suffix}.png"
         file = @project.new_file(filename)
@@ -65,12 +65,10 @@ module ProjectSpecs
       end
       @phase.files.count.should == number_of_files
 
-      number_of_call = 0
-      @phase.files.each do |bf|
+      files = @phase.files.dup
+      files.each do |bf|
         @phase.remove_build_file(bf)
-        number_of_call += 1
       end
-      number_of_call.should == number_of_files
       @phase.files.count.should == 0
     end
 
