@@ -209,6 +209,13 @@ module Xcodeproj
           find_subpath(path)
         end
 
+        # Removes children files and groups under this group.
+        #
+        def remove_children_recursively
+          groups.each { |g| g.remove_children_recursively }
+          files.each { |f| f.remove_from_project }
+        end
+
         # Traverses the children groups and finds the children with the given
         # path, optionally, creating any needed group. If the given path is
         # `nil` it returns itself.
