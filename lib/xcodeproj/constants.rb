@@ -16,32 +16,37 @@ module Xcodeproj
     #
     KNOWN_ISAS = {
       'AbstractObject' => %w[
-      PBXBuildFile
-      AbstractBuildPhase
-      PBXBuildRule
-      XCBuildConfiguration
-      XCConfigurationList
-      PBXContainerItemProxy
-      PBXFileReference
-      PBXGroup
-      PBXNativeTarget
-      PBXProject
-      PBXTargetDependency
-      PBXReferenceProxy
+        PBXBuildFile
+        AbstractBuildPhase
+        PBXBuildRule
+        XCBuildConfiguration
+        XCConfigurationList
+        PBXContainerItemProxy
+        PBXFileReference
+        PBXGroup
+        PBXProject
+        PBXTargetDependency
+        PBXReferenceProxy
       ],
 
       'AbstractBuildPhase' => %w[
-      PBXCopyFilesBuildPhase
-      PBXResourcesBuildPhase
-      PBXSourcesBuildPhase
-      PBXFrameworksBuildPhase
-      PBXHeadersBuildPhase
-      PBXShellScriptBuildPhase
+        PBXCopyFilesBuildPhase
+        PBXResourcesBuildPhase
+        PBXSourcesBuildPhase
+        PBXFrameworksBuildPhase
+        PBXHeadersBuildPhase
+        PBXShellScriptBuildPhase
+      ],
+
+      'AbstractTarget' => %w[
+        PBXNativeTarget
+        PBXAggregateTarget
+        PBXLegacyTarget
       ],
 
       'PBXGroup' => %w[
-      XCVersionGroup
-      PBXVariantGroup
+        XCVersionGroup
+        PBXVariantGroup
       ]
     }.freeze
 

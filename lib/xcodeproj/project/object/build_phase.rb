@@ -121,6 +121,12 @@ module Xcodeproj
 
       end
 
+      # Apparently a build phase named `Build Carbon Resources` (Observed for
+      # kernel extensions targets).
+      #
+      class PBXRezBuildPhase < AbstractBuildPhase
+      end
+
       class AbstractBuildPhase < AbstractObject
 
         ## CONVENIENCE METHODS #################################################

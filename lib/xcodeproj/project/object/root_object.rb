@@ -9,7 +9,7 @@ module Xcodeproj
         # @return [ObjectList<PBXNativeTarget>] a list of all the targets in
         #   the project.
         #
-        has_many :targets, PBXNativeTarget
+        has_many :targets, AbstractTarget
 
         # @return [Hash{String => String}] attributes the attributes of the
         #   target.

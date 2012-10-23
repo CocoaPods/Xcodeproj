@@ -196,9 +196,8 @@ module Xcodeproj
           to_many_attributes.each do |attrb|
             ref_uuids = object_plist[attrb.plist_name] || []
             list = attrb.get_value(self)
-            ref_uuids.each do |ref_uuid|
-              ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
-              list << ref
+            ref_uuids.each do |uuid|
+              list << object_with_uuid(uuid, objects_by_uuid_plist)
             end
             object_plist.delete(attrb.plist_name)
           end
@@ -208,9 +207,8 @@ module Xcodeproj
             list = attrb.get_value(self)
             hashes.each do |hash|
               dictionary = ObjectDictionary.new(attrb, self)
-              hash.each do |key, ref_uuid|
-                ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
-                dictionary[key] = ref
+              hash.each do |key, uuid|
+                dictionary[key] = object_with_uuid(uuid, objects_by_uuid_plist)
               end
               list << dictionary
             end
@@ -222,6 +220,15 @@ module Xcodeproj
                   "#{object_plist} for the '#{isa}' isa.\n" \
                   "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
           end
+        end
+
+        def object_with_uuid(uuid, objects_by_uuid_plist)
+          project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
+        rescue NameError => exception
+          attributes = objects_by_uuid_plist[uuid]
+          raise "`#{isa}` attempted to initialize an object with unknown ISA "\
+                "`#{attributes['isa']}` from attributes: `#{attributes}`\n"   \
+                "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
         end
 
         # @note the key for simple and to_one attributes usually appears only

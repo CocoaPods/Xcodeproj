@@ -2,13 +2,15 @@ module Xcodeproj
   class Project
     module Object
 
-      # Represents a target.
-      #
-      class PBXNativeTarget < AbstractObject
+      class AbstractTarget < AbstractObject
 
         # @return [String] The name of the Target.
         #
         attribute :name, String
+
+        # @return [String] the name of the build product.
+        #
+        attribute :product_name, String
 
         # @return [XCConfigurationList] the list of the build configurations of
         #   the target. This list commonly include two configurations `Debug`
@@ -16,24 +18,19 @@ module Xcodeproj
         #
         has_one :build_configuration_list, XCConfigurationList
 
-        # @return [PBXBuildRule] the build phases of the target.
-        #
-        # @note Apparently only PBXCopyFilesBuildPhase and
-        #   PBXShellScriptBuildPhase can appear multiple times in a target.
-        #
-        has_many :build_phases, AbstractBuildPhase
-
-        # @return [PBXBuildRule] the build rules of this target.
-        #
-        has_many :build_rules, PBXBuildRule
-
         # @return [PBXNativeTarget] the targets necessary to build this target.
         #
         has_many :dependencies, PBXTargetDependency
 
-        # @return [String] the name of the build product.
+      end
+
+      # Represents a target handled by Xcode.
+      #
+      class PBXNativeTarget < AbstractTarget
+
+        # @return [PBXBuildRule] the build rules of this target.
         #
-        attribute :product_name, String
+        has_many :build_rules, PBXBuildRule
 
         # @return [String] the build product type identifier.
         #
@@ -47,7 +44,65 @@ module Xcodeproj
         #
         attribute :product_install_path, String
 
-        ## CONVENIENCE METHODS #################################################
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note Apparently only PBXCopyFilesBuildPhase and
+        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        #
+        has_many :build_phases, AbstractBuildPhase
+
+      end
+
+      # Represents a target that only consists in a aggregate of targets.
+      #
+      # @todo apparently it can't have build rules.
+      #
+      class PBXAggregateTarget < AbstractTarget
+
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note Apparently only PBXCopyFilesBuildPhase and
+        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        #
+        has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
+
+      end
+
+      # Represents a legacy target which uses an external build tool.
+      #
+      # Apparently it can't have any build phase but the attribute can be
+      # present.
+      #
+      class PBXLegacyTarget < AbstractTarget
+
+        # @return [String] e.g "Dir"
+        #
+        attribute :build_working_directory, String
+
+        # @return [String] e.g "$(ACTION)"
+        #
+        attribute :build_arguments_string, String
+
+        # @return [String] e.g "1"
+        #
+        attribute :pass_build_settings_in_environment, String
+
+        # @return [String] e.g "/usr/bin/make"
+        #
+        attribute :build_tool_path, String
+
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note Apparently only PBXCopyFilesBuildPhase and
+        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        #
+        has_many :build_phases, AbstractBuildPhase
+
+      end
+
+      #----------------------------------------------------------------------#
+
+      class AbstractTarget < AbstractObject
 
         # @!group Convenience methods
 
@@ -67,6 +122,54 @@ module Xcodeproj
         def build_settings(build_configuration_name)
           build_configuration_list.build_settings(build_configuration_name)
         end
+
+
+        # @return [Array<PBXCopyFilesBuildPhase>]
+        #   the copy files build phases of the target.
+        #
+        def copy_files_build_phases
+          build_phases.select { |bp| bp.class == PBXCopyFilesBuildPhase }
+        end
+
+        # @return [Array<PBXShellScriptBuildPhase>]
+        #   the copy files build phases of the target.
+        #
+        def shell_script_build_phases
+          build_phases.select { |bp| bp.class == PBXShellScriptBuildPhase }
+        end
+
+        # Creates a new copy files build phase.
+        #
+        # @param [String] name
+        #   an optional name for the phase.
+        #
+        # @return [PBXCopyFilesBuildPhase] the new phase.
+        #
+        def new_copy_files_build_phase(name = nil)
+          phase = project.new(PBXCopyFilesBuildPhase)
+          phase.name = name
+          build_phases << phase
+          phase
+        end
+
+        # Creates a new shell script build phase.
+        #
+        # @param (see #new_copy_files_build_phase)
+        #
+        # @return [PBXShellScriptBuildPhase] the new phase.
+        #
+        def new_shell_script_build_phase(name = nil)
+          phase = project.new(PBXShellScriptBuildPhase)
+          phase.name = name
+          build_phases << phase
+          phase
+        end
+
+      end
+
+      class PBXNativeTarget < AbstractTarget
+
+        # @!group Convenience methods
 
         # Adds source files to the target.
         #
@@ -88,17 +191,13 @@ module Xcodeproj
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
             if (header_extensions.include?(extension))
               build_file.settings = { 'ATTRIBUTES' => ["Public"] }
-              phase = headers_build_phase
-              phase.files << build_file
+              headers_build_phase.files << build_file
             else
               build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags && !compiler_flags.empty?
               source_build_phase.files << build_file
             end
           end
         end
-
-
-        # @!group Accessing build phases
 
         # Finds or creates the headers build phase of the target.
         #
@@ -168,50 +267,6 @@ module Xcodeproj
             build_phases << bp
           end
           bp
-        end
-
-        # @return [Array<PBXCopyFilesBuildPhase>]
-        #   the copy files build phases of the target.
-        #
-        def copy_files_build_phases
-          build_phases.select { |bp| bp.class == PBXCopyFilesBuildPhase }
-        end
-
-        # @return [Array<PBXShellScriptBuildPhase>]
-        #   the copy files build phases of the target.
-        #
-        def shell_script_build_phases
-          build_phases.select { |bp| bp.class == PBXShellScriptBuildPhase }
-        end
-
-
-        # @!group Creating build phases
-
-        # Creates a new copy files build phase.
-        #
-        # @param [String] name
-        #   an optional name for the pahse.
-        #
-        # @return [PBXCopyFilesBuildPhase] the new phase.
-        #
-        def new_copy_files_build_phase(name = nil)
-          phase = project.new(PBXCopyFilesBuildPhase)
-          phase.name = name
-          build_phases << phase
-          phase
-        end
-
-        # Creates a new shell script build phase.
-        #
-        # @param (see #new_copy_files_build_phase)
-        #
-        # @return [PBXShellScriptBuildPhase] the new phase.
-        #
-        def new_shell_script_build_phase(name = nil)
-          phase = project.new(PBXShellScriptBuildPhase)
-          phase.name = name
-          build_phases << phase
-          phase
         end
       end
     end

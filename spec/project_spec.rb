@@ -79,17 +79,7 @@ module ProjectSpecs
       it "can be loaded from a plist" do
         @project.root_object.should.not == nil
         @project.main_group.should.not == nil
-        @project.groups.map(&:display_name).compact.should == [
-          "Absolute_path",
-          "Text_settings",
-          "Cocoa Application",
-          "Cocoa ApplicationTests",
-          "Cocoa ApplicationImporter",
-          "iOS application",
-          "iOS applicationTests",
-          "Frameworks",
-          "Products"
-        ]
+        @project["Cocoa Application"].should.not.be.nil
       end
 
       # This ensures that there is no loss (or modification) of information by
@@ -102,11 +92,6 @@ module ProjectSpecs
         diff.should.be.nil
         # The diff is there for readability of errors
         generated.should == plist
-      end
-
-      it "can compares itself to plist" do
-        plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
-        @project.to_plist.should == plist
       end
 
       it "doesn't add default attributes to objects generated from a plist" do
