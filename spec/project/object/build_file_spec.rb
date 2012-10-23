@@ -21,28 +21,6 @@ module ProjectSpecs
       lambda { @file.file_ref = @project.new(XCVersionGroup) }.should.not.raise
     end
 
-    it "updates build files of a file" do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
-      file = @project.new_file('Ruby.m')
-      build_file = @target.source_build_phase.add_file_reference(file)
-      @target.source_build_phase.files.count.should == 1
-      file.build_files.count.should == 1
-      file.build_files.first.file_ref.should == file
-    end
-
-    it "removes a build file from a build phase" do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
-      file = @project.new_file('Ruby.m')
-      build_file = @target.source_build_phase.add_file_reference(file)
-      file.build_files.count.should == 1
-      @target.source_build_phase.files.count.should == 1
-
-      @target.source_build_phase.remove_file_reference(file)
-      file.build_files.count.should == 0
-      @target.source_build_phase.files.count.should == 0
-      @project.objects.find { |obj| obj == build_file }.should == nil
-    end
-
   end
 end
 
