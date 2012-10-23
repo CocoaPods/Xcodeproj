@@ -148,10 +148,17 @@ module Xcodeproj
           files << build_file
           build_file
         end
-        
+
+        # Removes a file reference from the build phase
+        #
+        # @param [PBXObject] file the file to remove
         def remove_file_reference(file)
           build_file = files.find { |bf| bf.file_ref == file }
-          files.delete(build_file)
+          build_file.file_ref = nil
+          build_file.remove_from_project
+        end
+
+        def remove_build_file(build_file)
           build_file.file_ref = nil
           build_file.remove_from_project
         end
