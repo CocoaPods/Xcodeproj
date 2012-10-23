@@ -62,6 +62,20 @@ module ProjectSpecs
       file.source_tree.should == 'BUILT_PRODUCTS_DIR'
     end
 
+    it "removes groups and files recursively" do
+      group1 = @group.new_group("Group1")
+      group2 = @group.new_group("Group2")
+      file1 = group2.new_file("file1")
+      file2 = group2.new_file("file2")
+
+      @group.remove_children_recursively
+      @group.children.count.should == 0
+
+      @project.objects_by_uuid[group1.uuid].should == nil
+      @project.objects_by_uuid[group2.uuid].should == nil
+      @project.objects_by_uuid[file1.uuid].should == nil
+      @project.objects_by_uuid[file2.uuid].should == nil
+    end
   end
 end
 
