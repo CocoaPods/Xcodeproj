@@ -82,6 +82,14 @@ module Xcodeproj
         #
         attribute :wraps_lines, String
 
+
+        # @return [String] Apparently whether Xcode should add, if needed, a
+        #   new line feed before saving the file.
+        #
+        #   E.g. `0`
+        #
+        attribute :line_ending, String
+
         ## CONVENIENCE METHODS #################################################
 
         # @!group Convenience methods

@@ -9,7 +9,7 @@ module Xcodeproj
         # @return [PBXNativeTarget] the target that needs to be built to
         #   satisfy the dependency.
         #
-        has_one :target, PBXNativeTarget
+        has_one :target, AbstractTarget
 
         # @return [PBXContainerItemProxy] a proxy for the target that needs to
         #   be built. Apparently to support targets in other projects of the
