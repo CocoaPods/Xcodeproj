@@ -99,6 +99,10 @@ module ProjectSpecs
       end
     end
 
+    it "does not raise an exception when removing a file that is not in the build phase" do
+      file = @project.main_group.new_file("test.png")
+      lambda { @phase.remove_file_reference(file) }.should.not.raise(NoMethodError)
+    end
   end
 
   describe PBXCopyFilesBuildPhase do

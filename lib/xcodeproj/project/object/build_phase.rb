@@ -164,8 +164,10 @@ module Xcodeproj
         #
         def remove_file_reference(file)
           build_file = files.find { |bf| bf.file_ref == file }
-          build_file.file_ref = nil
-          build_file.remove_from_project
+          if build_file
+            build_file.file_ref = nil
+            build_file.remove_from_project
+          end
         end
 
         # Removes a build file from the phase and clears its relationship to
