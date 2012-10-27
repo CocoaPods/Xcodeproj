@@ -18,7 +18,10 @@ module Xcodeproj
 
         # @return [PBXFileReference] the file that to build.
         #
-        has_one :file_ref, [PBXFileReference, PBXVariantGroup, XCVersionGroup]
+        # @todo   I think that is possible to add any kind of groups (for example
+        #         folders linked to a path).
+        #
+        has_one :file_ref, [PBXFileReference, PBXVariantGroup, XCVersionGroup, PBXReferenceProxy]
 
       end
     end
