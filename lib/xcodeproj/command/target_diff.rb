@@ -1,28 +1,24 @@
 module Xcodeproj
   class Command
     class TargetDiff < Command
-      def self.banner
-%{Installing dependencies of a project:
-
-    $ targets-diff [target 1] [target 2]
-
-      Shows the difference between two targets. (Only build source files atm.)
-}
-      end
-
-      def self.options
-        [
-          ["--project PATH", "The Xcode project document to use."],
-        ].concat(super)
-      end
+      self.summary = 'Show diff of two targets in a project'
+      self.description = 'Shows the difference between two targets. (Only build source files atm.)'
+      self.arguments = 'TARGET_1 TARGET_2 [PATH]'
 
       def initialize(argv)
         @target1 = argv.shift_argument
         @target2 = argv.shift_argument
-        if argv.option('--project')
-          @xcodeproj_path = File.expand_path(argv.shift_argument)
+        super
+      end
+
+      def validate!
+        super
+        unless @target1
+          help! "A target to compare FROM is required."
         end
-        super unless argv.empty?
+        unless @target2
+          help! "A target to compare TO is required."
+        end
       end
 
       def run

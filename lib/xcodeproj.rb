@@ -6,7 +6,7 @@ module Xcodeproj
 
   class Informative < PlainInformative
     def message
-      super !~ /\[!\]/ ? "[!] #{super}\n".red : super
+      super !~ /\[!\]/ ? "[!] #{super}".red : super
     end
   end
 

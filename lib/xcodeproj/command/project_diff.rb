@@ -1,33 +1,40 @@
 module Xcodeproj
   class Command
     class ProjectDiff < Command
-      def self.banner
-%{Installing dependencies of a project:
+      self.summary = 'Show diff of two projects'
 
-    $ project-diff PROJECT_1 PROJECT_2
+      self.description = <<-DESC
+        Shows the difference between two projects in an UUID agnostic fashion.
 
-      Shows the difference between two projects in an UUID agnostic fashion.
+        To reduce the noise (and to simplify implementation) differences in the
+        other of arrays are ignored.
+      DESC
 
-      To reduce the noise (and to simplify implementation) differences in the
-      other of arrays are ignored.
-}
-      end
+      self.arguments = 'PROJECT_1 PROJECT_2'
 
       def self.options
-        [ ["--ignore KEY", "A key to ignore in the comparison. Can be specified multiple times."] ].concat(super)
+        [ ["--ignore=KEY,KEY,...", "Key(s) to ignore in the comparison."] ].concat(super)
       end
 
       def initialize(argv)
         @path_project1  = argv.shift_argument
         @path_project2  = argv.shift_argument
         @keys_to_ignore = []
-        while (idx = argv.index('--ignore'))
-          @keys_to_ignore << argv.delete_at(idx + 1)
-          argv.delete_at(idx)
+        if ignore = argv.option('ignore')
+          @keys_to_ignore = ignore.split(',')
         end
-        super unless argv.empty?
+        super
       end
 
+      def validate!
+        super
+        unless @path_project1
+          help! "A path to a project to compare FROM is required."
+        end
+        unless @path_project2
+          help! "A path to a project to compare TO is required."
+        end
+      end
 
       def run
         hash_1 = Project.new(@path_project1).to_tree_hash

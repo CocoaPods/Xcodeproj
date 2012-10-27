@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.require_paths = %w{ ext lib }
 
   s.add_runtime_dependency 'activesupport', '~> 3.2.6'
+  s.add_runtime_dependency 'claide',        '~> 0.1'
   s.add_runtime_dependency 'colored',       '~> 1.2'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
