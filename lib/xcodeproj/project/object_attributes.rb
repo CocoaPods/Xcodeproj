@@ -134,14 +134,18 @@ module Xcodeproj
           return unless object
           acceptable = classes.find { |klass| object.class == klass || object.class < klass }
           if type == :simple
-            raise "[Xcodeproj] Type checking error: '#{owner.isa}' expected '#{classes.inspect}' got '#{object.class}' for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.class}` for attribute: #{inspect}" unless acceptable
           else
-            raise "[Xcodeproj] Type checking error: '#{owner.isa}' expected #{classes.map(&:isa)} got #{object.isa} for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.isa}` for attribute: #{inspect}" unless acceptable
           end
         end
 
         def inspect
-          "#<name: '#{name}', type: '#{type}', classes: '#{classes}', owner class: '#{owner.isa}'>"
+          if type == :simple
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes}`, owner class: `#{owner.isa}`)"
+          else
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes.map(&:isa)}`, owner class: `#{owner.isa}`)"
+          end
         end
       end
 
