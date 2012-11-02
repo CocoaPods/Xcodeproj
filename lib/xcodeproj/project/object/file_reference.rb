@@ -128,6 +128,14 @@ module Xcodeproj
           self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
         end
 
+        # Checks wheter the reference is a proxy.
+        #
+        # @return [Bool] always false for this ISA.
+        #
+        def proxy?
+          false
+        end
+
       end
     end
   end

@@ -28,6 +28,18 @@ module Xcodeproj
         #
         attribute :source_tree, String
 
+        ## CONVENIENCE METHODS #################################################
+
+        # @!group Convenience methods
+
+        # Checks wheter the reference is a proxy.
+        #
+        # @return [Bool] always true for this ISA.
+        #
+        def proxy?
+          true
+        end
+
       end
     end
   end
