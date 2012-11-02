@@ -60,7 +60,9 @@ module Xcodeproj
       # This class is used to gather localized files into one entry.
       #
       class PBXVariantGroup < PBXGroup
-
+        # @return [String] the file type guessed by Xcode.
+        #
+        attribute :last_known_file_type, String
       end
 
       # A group that contains multiple files references to the different
