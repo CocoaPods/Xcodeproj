@@ -234,7 +234,7 @@ module Xcodeproj
           #   the default value for new objects.
           #
           # @example
-          #   attribute project_root
+          #   attribute :project_root
           #   #=> leads to the creation of the following methods
           #
           #   def project_root

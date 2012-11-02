@@ -119,6 +119,12 @@ module Xcodeproj
         #
         attribute :shell_script, String, ''
 
+        # @return [String] wether or not the ENV variables should be shown in
+        #   the build log.
+        #
+        # Defaults to true (`1`).
+        #
+        attribute :show_env_vars_in_log, String, '1'
       end
 
       # Apparently a build phase named `Build Carbon Resources` (Observed for

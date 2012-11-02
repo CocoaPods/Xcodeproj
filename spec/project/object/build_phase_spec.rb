@@ -140,5 +140,11 @@ module ProjectSpecs
       @phase.output_paths.should == []
       @phase.shell_script.should == ''
     end
+
+    it "returns wether or not env vars should be shown in the log" do
+      @phase.show_env_vars_in_log.should == '1'
+      @phase.show_env_vars_in_log = '0'
+      @phase.show_env_vars_in_log.should == '0'
+    end
   end
 end

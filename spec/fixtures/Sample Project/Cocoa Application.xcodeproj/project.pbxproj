@@ -1920,6 +1920,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			showEnvVarsInLog = 0;
 		};
 		E525241D16245AB20012E2BA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3352,6 +3353,7 @@
 				E550D6AD16371AF600A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D6B116371B0600A003E9 /* Build configuration list for PBXLegacyTarget "External" */ = {
 			isa = XCConfigurationList;
@@ -3360,6 +3362,7 @@
 				E550D6B316371B0600A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D6C616371B1A00A003E9 /* Build configuration list for PBXNativeTarget "UnitTestingBundle" */ = {
 			isa = XCConfigurationList;
@@ -3368,6 +3371,7 @@
 				E550D6C816371B1A00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D6CF16371B2800A003E9 /* Build configuration list for PBXNativeTarget "InAppPurchaseContent" */ = {
 			isa = XCConfigurationList;
@@ -3376,6 +3380,7 @@
 				E550D6D116371B2800A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D6E516371B3300A003E9 /* Build configuration list for PBXNativeTarget "PlugIn" */ = {
 			isa = XCConfigurationList;
@@ -3384,6 +3389,7 @@
 				E550D6E716371B3300A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D6F916371B3B00A003E9 /* Build configuration list for PBXNativeTarget "KernelExtension" */ = {
 			isa = XCConfigurationList;
@@ -3392,6 +3398,7 @@
 				E550D6FB16371B3B00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D71F16371B4400A003E9 /* Build configuration list for PBXNativeTarget "ImageUnitPlugIn" */ = {
 			isa = XCConfigurationList;
@@ -3400,6 +3407,7 @@
 				E550D72116371B4400A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D73316371B4E00A003E9 /* Build configuration list for PBXNativeTarget "IOKitDriver" */ = {
 			isa = XCConfigurationList;
@@ -3408,6 +3416,7 @@
 				E550D73516371B4E00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D75516371B5A00A003E9 /* Build configuration list for PBXNativeTarget "MacRubyPrefPanel" */ = {
 			isa = XCConfigurationList;
@@ -3416,6 +3425,7 @@
 				E550D75716371B5A00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D77016371B6300A003E9 /* Build configuration list for PBXNativeTarget "PreferencePanel" */ = {
 			isa = XCConfigurationList;
@@ -3424,6 +3434,7 @@
 				E550D77216371B6300A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D78C16371B6A00A003E9 /* Build configuration list for PBXNativeTarget "QuickLook" */ = {
 			isa = XCConfigurationList;
@@ -3432,6 +3443,7 @@
 				E550D78E16371B6A00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D7A316371B7100A003E9 /* Build configuration list for PBXNativeTarget "ScreenSaver" */ = {
 			isa = XCConfigurationList;
@@ -3440,6 +3452,7 @@
 				E550D7A516371B7100A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D7BE16371B7A00A003E9 /* Build configuration list for PBXNativeTarget "SpotLightImporter" */ = {
 			isa = XCConfigurationList;
@@ -3448,6 +3461,7 @@
 				E550D7C016371B7A00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D7D716371B9000A003E9 /* Build configuration list for PBXNativeTarget "AutomatorAction" */ = {
 			isa = XCConfigurationList;
@@ -3456,6 +3470,7 @@
 				E550D7D916371B9000A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D7EB16371B9800A003E9 /* Build configuration list for PBXNativeTarget "AddressBookPlugIn" */ = {
 			isa = XCConfigurationList;
@@ -3464,6 +3479,7 @@
 				E550D7ED16371B9800A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D80816371BA500A003E9 /* Build configuration list for PBXNativeTarget "InstallerPlugIn" */ = {
 			isa = XCConfigurationList;
@@ -3472,6 +3488,7 @@
 				E550D80A16371BA500A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D82016371BAF00A003E9 /* Build configuration list for PBXNativeTarget "QuartzComposerPlugIn" */ = {
 			isa = XCConfigurationList;
@@ -3480,6 +3497,7 @@
 				E550D82216371BAF00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D83416371BC500A003E9 /* Build configuration list for PBXNativeTarget "CocoaFramework" */ = {
 			isa = XCConfigurationList;
@@ -3488,6 +3506,7 @@
 				E550D83616371BC500A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D84316371BCA00A003E9 /* Build configuration list for PBXNativeTarget "Library" */ = {
 			isa = XCConfigurationList;
@@ -3496,6 +3515,7 @@
 				E550D84516371BCA00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D85316371BD000A003E9 /* Build configuration list for PBXNativeTarget "Bundle" */ = {
 			isa = XCConfigurationList;
@@ -3504,6 +3524,7 @@
 				E550D85516371BD000A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D86516371BD700A003E9 /* Build configuration list for PBXNativeTarget "XPCServic" */ = {
 			isa = XCConfigurationList;
@@ -3512,6 +3533,7 @@
 				E550D86716371BD700A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D86D16371BE100A003E9 /* Build configuration list for PBXNativeTarget "C/C++ Library" */ = {
 			isa = XCConfigurationList;
@@ -3520,6 +3542,7 @@
 				E550D86F16371BE100A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D87E16371BEE00A003E9 /* Build configuration list for PBXNativeTarget "STL C++ Library" */ = {
 			isa = XCConfigurationList;
@@ -3528,6 +3551,7 @@
 				E550D88016371BEE00A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D89E16371C0700A003E9 /* Build configuration list for PBXNativeTarget "CocoaAppleScriptApp" */ = {
 			isa = XCConfigurationList;
@@ -3536,6 +3560,7 @@
 				E550D8A016371C0700A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D8AF16371C1000A003E9 /* Build configuration list for PBXNativeTarget "CommandLineTool" */ = {
 			isa = XCConfigurationList;
@@ -3544,6 +3569,7 @@
 				E550D8B116371C1000A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D8EF16371C1800A003E9 /* Build configuration list for PBXNativeTarget "MacRubyApplicationImporter" */ = {
 			isa = XCConfigurationList;
@@ -3552,6 +3578,7 @@
 				E550D8F116371C1800A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D8F216371C1800A003E9 /* Build configuration list for PBXNativeTarget "MacRubyApplication" */ = {
 			isa = XCConfigurationList;
@@ -3560,6 +3587,7 @@
 				E550D8F416371C1800A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E550D8F516371C1800A003E9 /* Build configuration list for PBXLegacyTarget "Deployment" */ = {
 			isa = XCConfigurationList;
@@ -3568,6 +3596,7 @@
 				E550D8F716371C1800A003E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
