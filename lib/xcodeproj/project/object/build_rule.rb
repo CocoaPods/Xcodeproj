@@ -23,6 +23,13 @@ module Xcodeproj
         #
         attribute :file_type, String
 
+        # @return [String] the pattern of the files that should be processed by
+        #   this rule. This attribute is an alternative to to `file_type`.
+        #
+        #   E.g. `*.css`.
+        #
+        attribute :file_patterns, String
+
         # @return [String] whether the rule is editable.
         #
         #   E.g. `1`.

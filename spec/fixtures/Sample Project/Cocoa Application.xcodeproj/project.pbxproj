@@ -135,6 +135,7 @@
 		E552E0F716263967003ED1FE /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.css";
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
