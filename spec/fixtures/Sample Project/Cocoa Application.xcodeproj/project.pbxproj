@@ -138,6 +138,7 @@
 			fileType = pattern.proxy;
 			isEditable = 1;
 			outputFiles = (
+				"${INPUT_FILE_BASE}.css.c",
 			);
 			script = "test
 ";
@@ -2298,7 +2299,6 @@
 		};
 		E52523A816245A910012E2BA /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
-			lastKnownFileType = file.xib;
 			children = (
 				E5FBB2D416357C93009E96B0 /* Base */,
 			);

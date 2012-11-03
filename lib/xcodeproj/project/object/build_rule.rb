@@ -32,7 +32,7 @@ module Xcodeproj
         # @return [ObjectList<PBXFileReference>] the file references for the
         #   output files.
         #
-        has_many :output_files, PBXFileReference
+        attribute :output_files, Array
 
         # @return [String] the content of the script to use for the build rule.
         #

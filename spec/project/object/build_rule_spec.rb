@@ -29,6 +29,7 @@ module ProjectSpecs
 
     it "returns the output files of the rule" do
       f = @project.new(PBXFileReference)
+      @rule.output_files = []
       @rule.output_files << f
       @rule.output_files.count.should == 1
       @rule.output_files.should.include?(f)
