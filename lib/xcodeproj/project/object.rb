@@ -187,7 +187,7 @@ module Xcodeproj
           to_one_attributes.each do |attrb|
             ref_uuid = object_plist[attrb.plist_name]
             if ref_uuid
-              ref = project.objects_by_uuid[ref_uuid] || project.new_from_plist(ref_uuid, objects_by_uuid_plist)
+              ref = object_with_uuid(ref_uuid, objects_by_uuid_plist, attrb)
               attrb.set_value(self, ref)
             end
             object_plist.delete(attrb.plist_name)
@@ -197,7 +197,7 @@ module Xcodeproj
             ref_uuids = object_plist[attrb.plist_name] || []
             list = attrb.get_value(self)
             ref_uuids.each do |uuid|
-              list << object_with_uuid(uuid, objects_by_uuid_plist)
+              list << object_with_uuid(uuid, objects_by_uuid_plist, attrb)
             end
             object_plist.delete(attrb.plist_name)
           end
@@ -208,7 +208,7 @@ module Xcodeproj
             hashes.each do |hash|
               dictionary = ObjectDictionary.new(attrb, self)
               hash.each do |key, uuid|
-                dictionary[key] = object_with_uuid(uuid, objects_by_uuid_plist)
+                dictionary[key] = object_with_uuid(uuid, objects_by_uuid_plist, attrb)
               end
               list << dictionary
             end
@@ -222,8 +222,32 @@ module Xcodeproj
           end
         end
 
-        def object_with_uuid(uuid, objects_by_uuid_plist)
-          project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
+        # Initializes and returns the object with the given uuid.
+        #
+        # @param  [String] uuid
+        #         The UUID of the object that should be initialized.
+        #
+        # @param  [Hash{String=>String}] objects_by_uuid_plist
+        #         The hash contained by `objects` key of the plist containing
+        #         the information about the object that should be initialized.
+        #
+        # @param  [AbstractObjectAttribute] attribute
+        #         The attribute that requested the object. It is used only for
+        #         exceptions.
+        #
+        # @raise  If the hash for the given UUID contains an unknown ISA.
+        #
+        # @raise  If the UUID can't be found in the objects hash.
+        #
+        # @return [AbstractObject] the initialized object.
+        #
+        def object_with_uuid(uuid, objects_by_uuid_plist, attribute)
+          unless object = project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
+            raise "`#{inspect}` attempted to initialize an object with an unknown UUID: "\
+                  "`#{uuid}` for attribute: `#{attribute.name}`\n"   \
+                  "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+          end
+          object
         rescue NameError => exception
           attributes = objects_by_uuid_plist[uuid]
           raise "`#{isa}` attempted to initialize an object with unknown ISA "\
@@ -250,7 +274,7 @@ module Xcodeproj
           end
 
           to_many_attributes.each do |attrb|
-            list = attrb.get_value(self)
+          list = attrb.get_value(self)
             plist[attrb.plist_name] = list.uuids
           end
 

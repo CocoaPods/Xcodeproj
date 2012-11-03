@@ -176,13 +176,13 @@ module Xcodeproj
     #
     def new_from_plist(uuid, objects_by_uuid_plist, root_object = false)
       attributes = objects_by_uuid_plist[uuid]
-      raise "[Xcodeproj] Unable to find attributes for UUID #{uuid}" unless attributes
-      klass = Object.const_get(attributes['isa'])
-      object = klass.new(self, uuid)
-      object.add_referrer(self) if root_object
-
-      object.configure_with_plist(objects_by_uuid_plist)
-      object
+      if attributes
+        klass = Object.const_get(attributes['isa'])
+        object = klass.new(self, uuid)
+        object.add_referrer(self) if root_object
+        object.configure_with_plist(objects_by_uuid_plist)
+        object
+      end
     end
 
     # @return [Hash] The plist representation of the project.
