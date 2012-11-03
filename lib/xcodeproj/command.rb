@@ -66,11 +66,14 @@ module Xcodeproj
 
     rescue Interrupt
       puts "[!] Cancelled".red
-      Config.instance.verbose? ? raise : exit(1)
+      #Config.instance.verbose? ? raise : exit(1)
+      exit(1)
 
     rescue Exception => e
       puts e.message
-      puts *e.backtrace
+      unless e.is_a?(Informative)
+        puts *e.backtrace
+      end
       exit 1
     end
 

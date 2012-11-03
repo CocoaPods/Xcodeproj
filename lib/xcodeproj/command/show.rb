@@ -2,24 +2,16 @@ module Xcodeproj
   class Command
     class Show < Command
       def self.banner
-%{Installing dependencies of a project:
+%{Shows an overview of a project in a YAML representation.'
 
-    $ project-diff PROJECT_1 PROJECT_2
+    $ show [PROJECT]
 
-      Shows a YAML reppresentation of a project.
-}
-      end
-
-      def self.options
-        [
-          ["--project PATH", "The Xcode project document to use."],
-        ].concat(super)
+      If no `PROJECT' is specified then the current work directory is searched
+      for one.}
       end
 
       def initialize(argv)
-        if argv.option('--project')
-          @xcodeproj_path = File.expand_path(argv.shift_argument)
-        end
+        @xcodeproj_path = File.expand_path(argv.shift_argument)
         super unless argv.empty?
       end
 

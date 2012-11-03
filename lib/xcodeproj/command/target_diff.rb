@@ -2,12 +2,11 @@ module Xcodeproj
   class Command
     class TargetDiff < Command
       def self.banner
-%{Installing dependencies of a project:
+%{Shows the difference between two targets:
 
     $ targets-diff [target 1] [target 2]
 
-      Shows the difference between two targets. (Only build source files atm.)
-}
+      Only supports build source files atm.}
       end
 
       def self.options

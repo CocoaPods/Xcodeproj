@@ -2,15 +2,14 @@ module Xcodeproj
   class Command
     class ProjectDiff < Command
       def self.banner
-%{Installing dependencies of a project:
+%{Shows the difference between two projects:
 
     $ project-diff PROJECT_1 PROJECT_2
 
-      Shows the difference between two projects in an UUID agnostic fashion.
+      It shows the difference in a UUID agnostic fashion.
 
       To reduce the noise (and to simplify implementation) differences in the
-      other of arrays are ignored.
-}
+      order of arrays are ignored.}
       end
 
       def self.options
@@ -20,6 +19,9 @@ module Xcodeproj
       def initialize(argv)
         @path_project1  = argv.shift_argument
         @path_project2  = argv.shift_argument
+        unless @path_project1 && @path_project2
+          raise Informative, "Two project paths are required."
+        end
         @keys_to_ignore = []
         while (idx = argv.index('--ignore'))
           @keys_to_ignore << argv.delete_at(idx + 1)
