@@ -232,7 +232,7 @@ module Xcodeproj
         end
 
         # @note the key for simple and to_one attributes usually appears only
-        #       if there is a value. To many keys always appear with an empty
+        #       if there is a value. To-many keys always appear with an empty
         #       array.
         #
         def to_plist
@@ -263,7 +263,7 @@ module Xcodeproj
         end
         alias :to_hash :to_plist
 
-        # Returns a cascade reppresentation of the object without UUIDs.
+        # Returns a cascade representation of the object without UUIDs.
         #
         # This method is designed to work in conjuction with {Hash#recursive_diff}
         # to provie a complete, yet redable, diff of two projects *not* affected by

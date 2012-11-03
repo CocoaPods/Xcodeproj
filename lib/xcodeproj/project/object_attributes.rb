@@ -52,7 +52,7 @@ module Xcodeproj
         # @return[String] The name of the attribute in camel case.
         #
         # @example
-        #   attribute.new(:simple, project_root)
+        #   attribute.new(:simple, :project_root)
         #   attribute.plist_name #=> projectRoot
         #
         def plist_name
@@ -85,7 +85,7 @@ module Xcodeproj
         #   the value.
         #
         def get_value(object)
-          object.send("#{name}")
+          object.send(name)
         end
 
         # Convenience method that sets the value of this attribute for a
@@ -103,7 +103,7 @@ module Xcodeproj
         # @return [void]
         #
         def set_value(object, new_value)
-          raise "[Xcodeproj] Set value called for to many attribute" if type == :to_many
+          raise "[Xcodeproj] Set value called for a to-many attribute" if type == :to_many
           object.send("#{name}=", new_value)
         end
 
@@ -117,7 +117,7 @@ module Xcodeproj
         # @return [void]
         #
         def set_default(object)
-          raise "[Xcodeproj] Set value called for to many attribute" unless type == :simple
+          raise "[Xcodeproj] Set value called for a #{type} attribute" unless type == :simple
           set_value(object, default_value) if default_value
         end
 
