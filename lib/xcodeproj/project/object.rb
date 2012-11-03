@@ -218,7 +218,7 @@ module Xcodeproj
           unless object_plist.empty?
             raise "[!] Xcodeproj doesn't know about the following attributes " \
                   "#{object_plist} for the '#{isa}' isa.\n" \
-                  "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+                  "Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
           end
         end
 
@@ -228,7 +228,7 @@ module Xcodeproj
           attributes = objects_by_uuid_plist[uuid]
           raise "`#{isa}` attempted to initialize an object with unknown ISA "\
                 "`#{attributes['isa']}` from attributes: `#{attributes}`\n"   \
-                "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+                "Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
         end
 
         # @note the key for simple and to_one attributes usually appears only
