@@ -1,6 +1,7 @@
 language: ruby
 rvm:
   - 1.8.7
+  - 1.9.2
   - 1.9.3
   # Rubinius in 1.8 mode on Travis does not work. It complains about st_data_t etc.
   #- rbx-18mode
