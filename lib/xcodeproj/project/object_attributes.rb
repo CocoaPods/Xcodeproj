@@ -290,6 +290,8 @@ module Xcodeproj
             add_attribute(attrb)
 
             attr_reader(attrb.name)
+            # 1.9.2 fix, see https://github.com/CocoaPods/Xcodeproj/issues/40.
+            public(attrb.name)
 
             define_method("#{attrb.name}=") do |value|
               attrb.validate_value(value)
