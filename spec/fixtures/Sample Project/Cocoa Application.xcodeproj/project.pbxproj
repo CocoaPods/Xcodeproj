@@ -155,6 +155,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		5138059B16499F4C001D82AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E5FBB2E41635ED34009E96B0;
+			remoteInfo = ReferencedProject;
+		};
 		E52523B716245A910012E2BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E525238316245A900012E2BA /* Project object */;
@@ -1059,6 +1066,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5138059C16499F4C001D82AD /* PBXTargetDependency */,
 				E52523B816245A910012E2BA /* PBXTargetDependency */,
 			);
 			name = "Cocoa ApplicationTests";
@@ -2241,6 +2249,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5138059C16499F4C001D82AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ReferencedProject;
+			targetProxy = 5138059B16499F4C001D82AD /* PBXContainerItemProxy */;
+		};
 		E52523B816245A910012E2BA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E525238B16245A900012E2BA /* Cocoa Application */;

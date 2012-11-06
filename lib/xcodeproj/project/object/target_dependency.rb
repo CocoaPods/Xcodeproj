@@ -12,11 +12,19 @@ module Xcodeproj
         has_one :target, AbstractTarget
 
         # @return [PBXContainerItemProxy] a proxy for the target that needs to
-        #   be built. Apparently to support targets in other projects of the
-        #   same workspace.
+        #   be built.
+        #
+        #   Apparently to support targets in other projects of the same
+        #   workspace.
         #
         has_one :targetProxy, PBXContainerItemProxy
 
+        # @return [String] the name of the target.
+        #
+        #   This seems only to be used when the target dependency is a target
+        #   from a nested Xcode project.
+        #
+        attribute :name, String
       end
     end
   end

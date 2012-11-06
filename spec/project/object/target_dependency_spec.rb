@@ -7,6 +7,12 @@ module ProjectSpecs
       @dep = @project.new(PBXTargetDependency)
     end
 
+    it "may have a name" do
+      @dep.name.should == nil
+      @dep.name = "This target's dependency"
+      @dep.name.should == "This target's dependency"
+    end
+
     it "returns the target on which this dependency is based" do
       @dep.target = @project.new_target(:static, "Pods", :ios)
       @dep.target.name.should == "Pods"
@@ -25,9 +31,6 @@ module ProjectSpecs
       @dep.targetProxy.remote_info.should == "Pods"
     end
 
-
   end
 end
-
-
 
