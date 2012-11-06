@@ -275,7 +275,7 @@
 		E525239516245A900012E2BA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E525239816245A900012E2BA /* Cocoa Application-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cocoa Application-Info.plist"; sourceTree = "<group>"; };
 		E525239A16245A900012E2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E525239C16245A900012E2BA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E525239C16245A900012E2BA /* main.m */ = {isa = PBXFileReference; comments = "I must comment a lot!"; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E525239E16245A900012E2BA /* Cocoa Application-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cocoa Application-Prefix.pch"; sourceTree = "<group>"; };
 		E52523A016245A900012E2BA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		E52523A216245A900012E2BA /* CPDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPDocument.h; sourceTree = "<group>"; };

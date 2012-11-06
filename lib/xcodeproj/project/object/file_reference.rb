@@ -90,6 +90,12 @@ module Xcodeproj
         #
         attribute :line_ending, String
 
+        # @return [String] Comments associated with this file.
+        #
+        #   This is apperantly no longer used by Xcode.
+        #
+        attribute :comments, String
+
         ## CONVENIENCE METHODS #################################################
 
         # @!group Convenience methods

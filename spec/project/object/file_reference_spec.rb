@@ -18,5 +18,12 @@ module ProjectSpecs
     it "returns whether it is a proxy" do
       @project.new_file('Test').proxy?.should == false
     end
+
+    it "can have associated comments, but these are no longer used by Xcode" do
+      file = @project.new_file('GeneratedFile')
+      file.comments.should == nil
+      file.comments = 'This file was automatically generated.'
+      file.comments.should == 'This file was automatically generated.'
+    end
   end
 end
