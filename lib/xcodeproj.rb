@@ -1,5 +1,5 @@
 module Xcodeproj
-  VERSION = '0.4.0.rc9'
+  VERSION = '0.4.0'
 
   class PlainInformative < StandardError
   end
