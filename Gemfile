@@ -9,7 +9,8 @@ group :development do
 end
 
 group :documentation do
-  gem "redcarpet"
-  gem "github-markup"
-  gem "yard"
+  gem 'yard'
+  gem 'redcarpet'
+  gem 'github-markup'
+  gem 'pygments.rb'
 end

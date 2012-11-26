@@ -13,3 +13,4 @@ doc
 tmp
 .DS_Store
 xcuserdata
+rakelib/doc
