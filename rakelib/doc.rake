@@ -14,7 +14,7 @@ namespace :doc do
   desc 'Update vendor doc repo'
   task :update do
     Dir.chdir(ROOT + 'rakelib/doc') do
-      sh "git checkout *.html"
+      sh "git checkout **/*.html"
       sh "git pull"
     end
   end
@@ -22,8 +22,8 @@ namespace :doc do
   desc 'Generate docs and push to remote'
   task :release => [:update, :generate] do
     Dir.chdir(ROOT + 'rakelib/doc') do
-      sh "git add *.html"
-      sh "git commit -m 'Update specification.html'"
+      sh "git add **/*.html"
+      sh "git commit -m 'Update documentation [Xcodeproj]'"
       sh "git push"
     end
   end
