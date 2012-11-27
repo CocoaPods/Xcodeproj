@@ -55,28 +55,28 @@ namespace :ext do
   task :cleanbuild => [:clean, :build]
 end
 
-begin
-  require 'rubygems'
-  require 'yard'
-  require 'yard/rake/yardoc_task'
-  require File.expand_path('../yard_extensions', __FILE__)
-
-  namespace :doc do
-    YARD::Rake::YardocTask.new(:generate) do |t|
-      t.options = %w{ --default-return=void --hide-void-return --no-private --markup=markdown }
-      lib_files = FileList['lib/**/*.rb'].exclude(/inflector\.rb/)
-      t.files = lib_files + ['ext/xcodeproj/xcodeproj_ext.c', '-', 'README.md', 'LICENSE']
-    end
-
-    desc "Starts a server which re-generates the docs on reload."
-    task :server do
-      sh "bundle exec yard server --reload --markup=markdown"
-    end
-  end
-
-rescue LoadError
-  puts "[!] Install the required dependencies to generate documentation: $ bundle install"
-end
+# begin
+#   require 'rubygems'
+#   require 'yard'
+#   require 'yard/rake/yardoc_task'
+#   require File.expand_path('../yard_extensions', __FILE__)
+# 
+#   namespace :doc do
+#     YARD::Rake::YardocTask.new(:generate) do |t|
+#       t.options = %w{ --default-return=void --hide-void-return --no-private --markup=markdown }
+#       lib_files = FileList['lib/**/*.rb'].exclude(/inflector\.rb/)
+#       t.files = lib_files + ['ext/xcodeproj/xcodeproj_ext.c', '-', 'README.md', 'LICENSE']
+#     end
+# 
+#     desc "Starts a server which re-generates the docs on reload."
+#     task :server do
+#       sh "bundle exec yard server --reload --markup=markdown"
+#     end
+#   end
+# 
+# rescue LoadError
+#   puts "[!] Install the required dependencies to generate documentation: $ bundle install"
+# end
 
 namespace :gem do
   def gem_version

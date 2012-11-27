@@ -29,7 +29,7 @@ namespace :doc do
   end
 
   task :generate => :load do
-    generator = Pod::Doc::Gem.new(ROOT + 'xcodeproj.gemspec')
+    generator = Pod::Doc::Gem.new(ROOT + 'xcodeproj.gemspec', 'Xcodeproj')
     generator.render
     sh "open '#{generator.output_file}'"
   end

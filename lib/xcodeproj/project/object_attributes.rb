@@ -175,6 +175,8 @@ module Xcodeproj
           #   an attribute of the superclass but for the method implementation
           #   they will duplicate them.
           #
+          # @visibility private
+          #
           def attributes
             unless @full_attributes
               attributes = @attributes || []
@@ -189,6 +191,8 @@ module Xcodeproj
           # @return [Array<AbstractObjectAttribute>] the simple attributes
           #   associated with with the class.
           #
+          # @visibility private
+          #
           def simple_attributes
             @simple_attributes ||= attributes.select { |a| a.type == :simple }
           end
@@ -196,6 +200,8 @@ module Xcodeproj
           # @return [Array<AbstractObjectAttribute>] the attributes
           #   representing a to one relationship associated with with the
           #   class.
+          #
+          # @visibility private
           #
           def to_one_attributes
             @to_one_attributes ||= attributes.select { |a| a.type == :to_one }
@@ -205,10 +211,14 @@ module Xcodeproj
           #   representing a to many relationship associated with with the
           #   class.
           #
+          # @visibility private
+          #
           def to_many_attributes
             @to_many_attributes ||= attributes.select { |a| a.type == :to_many }
           end
 
+          # @visibility private
+          #
           def references_by_keys_attributes
             @references_by_keys_attributes ||= attributes.select { |a| a.type == :references_by_keys }
           end
@@ -352,7 +362,7 @@ module Xcodeproj
           # @param [String] plural_name
           #   the name of the relationship.
           #
-          # @param [Class, Array<Class>] isas
+          # @param [Class, Array<Class>] isas_hash
           #   the list of the classes corresponding to the accepted isas for
           #   this relationship.
           #
@@ -400,11 +410,15 @@ module Xcodeproj
 
         # @return (see AbstractObject.attributes)
         #
+        # @visibility private
+        #
         def attributes
           self.class.attributes
         end
 
         # @return (see AbstractObject.simple_attributes)
+        #
+        # @visibility private
         #
         def simple_attributes
           self.class.simple_attributes
@@ -412,17 +426,23 @@ module Xcodeproj
 
         # @return (see AbstractObject.to_one_attributes)
         #
+        # @visibility private
+        #
         def to_one_attributes
           self.class.to_one_attributes
         end
 
         # @return (see AbstractObject.to_many_attributes)
         #
+        # @visibility private
+        #
         def to_many_attributes
           self.class.to_many_attributes
         end
 
         # @return (see AbstractObject.to_many_attributes)
+        #
+        # @visibility private
         #
         def references_by_keys_attributes
           self.class.references_by_keys_attributes

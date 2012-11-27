@@ -116,6 +116,8 @@ module Xcodeproj
         # @return [Array<ObjectList>] The list of the objects that have a
         #   reference to this object.
         #
+        # @visibility private
+        #
         attr_reader :referrers
 
         # Informs the object that another object is referencing it. If the
@@ -123,6 +125,8 @@ module Xcodeproj
         # hash.
         #
         # @return [void]
+        #
+        # @visibility private
         #
         def add_referrer(referrer)
           @referrers << referrer
@@ -135,6 +139,8 @@ module Xcodeproj
         #
         # @return [void]
         #
+        # @visibility private
+        #
         def remove_referrer(referrer)
           @referrers.delete(referrer)
           if @referrers.count == 0
@@ -145,6 +151,8 @@ module Xcodeproj
         # Removes all the references to a given object.
         #
         # @return [void]
+        #
+        # @visibility private
         #
         def remove_reference(object)
           to_one_attributes.each do |attrb|
@@ -172,6 +180,8 @@ module Xcodeproj
         # array at each iteration and duplicate would result in nil values.
         #
         # @return [void]
+        #
+        # @visibility private
         #
         def configure_with_plist(objects_by_uuid_plist)
           object_plist = objects_by_uuid_plist[uuid].dup
@@ -241,6 +251,8 @@ module Xcodeproj
         #
         # @return [AbstractObject] the initialized object.
         #
+        # @visibility private
+        #
         def object_with_uuid(uuid, objects_by_uuid_plist, attribute)
           unless object = project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
             raise "`#{inspect}` attempted to initialize an object with an unknown UUID: "\
@@ -295,8 +307,10 @@ module Xcodeproj
         #
         # @todo current implementation might cause infinite loops.
         #
+        # @visibility private
+        #
         # @return [Hash] a hash reppresentation of the project different from the
-        #   plist one.
+        #         plist one.
         #
         def to_tree_hash
           hash = {}

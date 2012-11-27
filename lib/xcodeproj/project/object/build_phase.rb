@@ -179,7 +179,7 @@ module Xcodeproj
         # Removes a build file from the phase and clears its relationship to
         # the file reference.
         #
-        # @param [PBXBuildFile] file the file to remove
+        # @param [PBXBuildFile] build_file the file to remove
         #
         # @return [void]
         #

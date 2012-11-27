@@ -60,7 +60,7 @@ module Xcodeproj
 
       # Adds an array of objects to list and updates their references count.
       #
-      # @param [Array<AbstractObject, ObjectDictionary>] object
+      # @param [Array<AbstractObject, ObjectDictionary>] objects
       #   an array of objects to add to the list.
       #
       # @return [void]
