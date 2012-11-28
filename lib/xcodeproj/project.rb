@@ -352,7 +352,7 @@ module Xcodeproj
     #   frameworks.name #=> 'Frameworks'
     #   main_group.children.include? frameworks #=> True
     #
-    # @param [String] group_path
+    # @param [String] group_path @see PBXGroup#[]
     #
     # @return [PBXGroup] the group at the given subpath.
     #
@@ -463,16 +463,16 @@ module Xcodeproj
     end
 
     # @return [PBXNativeTarget] Creates a new target and adds it to the
-    #   project.
+    #         project.
     #
-    #   The target is configured for the given platform and its file reference
-    #   it is added to the {products_group}.
+    #         The target is configured for the given platform and its file
+    #         reference it is added to the {products_group}.
     #
-    #   The target is pre-populated with common build phases, and all the
-    #   Frameworks of the project are added to to its Frameworks phase.
+    #         The target is pre-populated with common build phases, and all the
+    #         Frameworks of the project are added to to its Frameworks phase.
     #
-    # @todo Adding all the Frameworks is required by CocoaPods and should be
-    #       performed there.
+    # @todo   Adding all the Frameworks is required by CocoaPods and should be
+    #         performed there.
     #
     # @param [Symbol] type
     #   the type of target.

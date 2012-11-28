@@ -57,45 +57,7 @@ module Xcodeproj
         #
         attribute :wraps_lines, String
 
-      end
-
-      #-----------------------------------------------------------------------#
-
-      # This class is used to gather localized files into one entry.
-      #
-      class PBXVariantGroup < PBXGroup
-
-        # @!group Attributes
-
-        # @return [String] the file type guessed by Xcode.
-        #
-        attribute :last_known_file_type, String
-      end
-
-      #-----------------------------------------------------------------------#
-
-      # A group that contains multiple files references to the different
-      # versions of a resource.
-      #
-      # Used to contain the different versions of a `xcdatamodel`.
-      #
-      class XCVersionGroup < PBXGroup
-
-        # @!group Attributes
-
-        # @return [PBXFileReference] the reference to the current version.
-        #
-        has_one :current_version, PBXFileReference
-
-        # @return [String] the type of the versioned resource.
-        #
-        attribute :version_group_type, String, 'wrapper.xcdatamodel'
-
-      end
-
-      #-----------------------------------------------------------------------#
-
-      class PBXGroup < AbstractObject
+        #-----------------------------------------------------------------------#
 
         # @!group Helpers
 
@@ -288,7 +250,42 @@ module Xcodeproj
             end
           end
         end
-      end # PBXGroup
+
+      end
+
+      #-----------------------------------------------------------------------#
+
+      # This class is used to gather localized files into one entry.
+      #
+      class PBXVariantGroup < PBXGroup
+
+        # @!group Attributes
+
+        # @return [String] the file type guessed by Xcode.
+        #
+        attribute :last_known_file_type, String
+      end
+
+      #-----------------------------------------------------------------------#
+
+      # A group that contains multiple files references to the different
+      # versions of a resource.
+      #
+      # Used to contain the different versions of a `xcdatamodel`.
+      #
+      class XCVersionGroup < PBXGroup
+
+        # @!group Attributes
+
+        # @return [PBXFileReference] the reference to the current version.
+        #
+        has_one :current_version, PBXFileReference
+
+        # @return [String] the type of the versioned resource.
+        #
+        attribute :version_group_type, String, 'wrapper.xcdatamodel'
+
+      end
     end
   end
 end
