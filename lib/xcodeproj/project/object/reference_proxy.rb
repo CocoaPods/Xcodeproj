@@ -9,6 +9,8 @@ module Xcodeproj
       #
       class PBXReferenceProxy < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] the path of the referenced filed.
         #
         attribute :path, String
@@ -18,21 +20,22 @@ module Xcodeproj
         attribute :file_type, String
 
         # @return [PBXContainerItemProxy] the proxy to the project that
-        #   contains the object.
+        #         contains the object.
         #
         has_one :remote_ref, PBXContainerItemProxy
 
-        # @return [String] the source tree for the path of the reference.
+        # @return   [String] the source tree for the path of the reference.
         #
-        # E.g. "BUILT_PRODUCTS_DIR"
+        # @example  Possible value
+        #           "BUILT_PRODUCTS_DIR"
         #
         attribute :source_tree, String
 
-        ## CONVENIENCE METHODS #################################################
+        #---------------------------------------------------------------------#
 
-        # @!group Convenience methods
+        # @!group Helpers
 
-        # Checks wheter the reference is a proxy.
+        # Checks whether the reference is a proxy.
         #
         # @return [Bool] always true for this ISA.
         #

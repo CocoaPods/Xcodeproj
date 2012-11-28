@@ -20,6 +20,8 @@ module Xcodeproj
       #
       class PBXContainerItemProxy < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] apparently the UUID of the root object
         #   {PBXProject} of the project containing the represented object.
         #

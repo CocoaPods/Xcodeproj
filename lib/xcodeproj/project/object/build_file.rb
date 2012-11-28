@@ -7,6 +7,8 @@ module Xcodeproj
       #
       class PBXBuildFile < AbstractObject
 
+        # @!group Attributes
+
         # @return [Hash] the list of build settings for this file.
         #
         # The contents of this array depend on the phase of the build file.

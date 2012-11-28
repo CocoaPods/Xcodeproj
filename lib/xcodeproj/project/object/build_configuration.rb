@@ -8,6 +8,8 @@ module Xcodeproj
       #
       class XCBuildConfiguration < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] the name of the Target.
         #
         attribute :name, String

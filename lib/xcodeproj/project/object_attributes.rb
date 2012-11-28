@@ -160,10 +160,11 @@ module Xcodeproj
         # - `{AbstractObject.has_one}`
         # - `{AbstractObject.has_many}`
         #
-        # The subclasses should not interfere with the methods synthesised by
-        # the DSL and should only implement convenience methods in top of them.
+        # @note The subclasses should not interfere with the methods
+        #       synthesised by the DSL and should only implement helpers in top
+        #       of them.
         #
-        # Attributes are typed and are validated at runtime.
+        # @note Attributes are typed and are validated at runtime.
         #
         class << self
 
@@ -402,9 +403,13 @@ module Xcodeproj
           end
         end # AbstractObject << self
 
+        private
+
         # @return [Hash] the simple attributes hash.
         #
         attr_reader :simple_attributes_hash
+
+        public
 
         # @!group xcodeproj format attributes
 

@@ -7,6 +7,8 @@ module Xcodeproj
       #
       class PBXGroup < AbstractObject
 
+        # @!group Attributes
+
         # @return [ObjectList<PBXGroup, PBXFileReference>]
         #   the objects contained by the group.
         #
@@ -31,7 +33,7 @@ module Xcodeproj
         #
         attribute :name, String
 
-        # @return [String] Whether Xcode should use tabs for text aligment.
+        # @return [String] Whether Xcode should use tabs for text alignment.
         #
         #   E.g. `1`
         #
@@ -57,13 +59,20 @@ module Xcodeproj
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # This class is used to gather localized files into one entry.
       #
       class PBXVariantGroup < PBXGroup
+
+        # @!group Attributes
+
         # @return [String] the file type guessed by Xcode.
         #
         attribute :last_known_file_type, String
       end
+
+      #-----------------------------------------------------------------------#
 
       # A group that contains multiple files references to the different
       # versions of a resource.
@@ -71,6 +80,8 @@ module Xcodeproj
       # Used to contain the different versions of a `xcdatamodel`.
       #
       class XCVersionGroup < PBXGroup
+
+        # @!group Attributes
 
         # @return [PBXFileReference] the reference to the current version.
         #
@@ -82,11 +93,11 @@ module Xcodeproj
 
       end
 
+      #-----------------------------------------------------------------------#
+
       class PBXGroup < AbstractObject
 
-        ## CONVENIENCE METHODS #################################################
-
-        # @!group Convenience methods
+        # @!group Helpers
 
         # @return [String] the name of the group taking into account the path
         #   or other factors if needed.

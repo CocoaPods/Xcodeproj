@@ -309,7 +309,7 @@ module Xcodeproj
       @available_uuids += uniques
     end
 
-    ## CONVENIENCE METHODS #####################################################
+    #-------------------------------------------------------------------------#
 
     # @!group Convenience accessors
 
@@ -411,7 +411,7 @@ module Xcodeproj
 
 
 
-    # @!group Convenience methods for generating objects
+    # @!group Helpers for generating objects
 
     # Creates a new file reference at the given subpath of the main group.
     #

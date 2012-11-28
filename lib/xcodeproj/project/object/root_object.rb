@@ -6,13 +6,15 @@ module Xcodeproj
       #
       class PBXProject < AbstractObject
 
+        # @!group Attributes
+
         # @return [ObjectList<PBXNativeTarget>] a list of all the targets in
-        #   the project.
+        #         the project.
         #
         has_many :targets, AbstractTarget
 
         # @return [Hash{String => String}] attributes the attributes of the
-        #   target.
+        #         target.
         #
         #   The hash might contain the following keys:
         #
@@ -43,12 +45,12 @@ module Xcodeproj
         attribute :known_regions, Array, ['en']
 
         # @return [PBXGroup] the main group of the project. The one displayed
-        #   by Xcode in the Project Navigator.
+        #         by Xcode in the Project Navigator.
         #
         has_one :main_group, PBXGroup
 
         # @return [PBXGroup] the group containing the references to products of
-        #   the project.
+        #         the project.
         #
         has_one :product_ref_group, PBXGroup
 

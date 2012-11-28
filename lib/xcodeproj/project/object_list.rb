@@ -36,7 +36,7 @@ module Xcodeproj
 
       #------------------------------------------------------------------------#
 
-      # @!group Integration with {ObjectList}
+      # @!group ObjectList
 
       # @return [Array<String>]
       #   the UUIDs of all the objects referenced by this list.

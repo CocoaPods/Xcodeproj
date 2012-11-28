@@ -101,9 +101,9 @@ module Xcodeproj
 
       #------------------------------------------------------------------------#
 
-      # @!group Integration with {AbstractObject}
+      # @!group AbstractObject
 
-      # The plist reppresentation of the dictionary where the objects are
+      # The plist representation of the dictionary where the objects are
       # replaced by their UUIDs.
       #
       # @return [Hash<String => String>]
@@ -114,7 +114,7 @@ module Xcodeproj
         result
       end
 
-      # Returns a cascade reppresentation of the object without UUIDs.
+      # Returns a cascade representation of the object without UUIDs.
       #
       # @return [Hash<String => String>]
       #
@@ -134,7 +134,7 @@ module Xcodeproj
 
       #------------------------------------------------------------------------#
 
-      # @!group Integration with {ObjectList}
+      # @!group ObjectList
 
       # Informs the objects contained in the dictionary that another object is
       # referencing them.

@@ -161,7 +161,7 @@ module ProjectSpecs
       end
     end
 
-    describe "Concerning convenience methods" do
+    describe "Concerning helpers" do
       it "returns all the objects referred in the project" do
         expected = [
           "ConfigurationList",
@@ -257,7 +257,7 @@ module ProjectSpecs
     end
 
 
-    describe "Concerning convenience methods for creating new objects" do
+    describe "Concerning helpers for creating new objects" do
       it "adds a new group" do
         group = @project.new_group('A new group', 'Cocoa Application')
         group.isa.should == 'PBXGroup'

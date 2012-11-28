@@ -7,6 +7,8 @@ module Xcodeproj
       #
       class XCConfigurationList < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] whether the default configuration is visible.
         #
         # Usually `0`.
@@ -24,9 +26,9 @@ module Xcodeproj
         #
         has_many :build_configurations, XCBuildConfiguration
 
-        ## CONVENIENCE METHODS #################################################
+        #---------------------------------------------------------------------#
 
-        # @!group Convenience methods
+        # @!group Helpers
 
         # Returns the build settings of the build configuration with
         # the given name.

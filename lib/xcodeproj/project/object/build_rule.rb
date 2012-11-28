@@ -6,6 +6,8 @@ module Xcodeproj
       #
       class PBXBuildRule < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] the name of the rule.
         #
         attribute :name, String

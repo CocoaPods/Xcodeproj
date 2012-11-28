@@ -4,6 +4,8 @@ module Xcodeproj
 
       class AbstractTarget < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] The name of the Target.
         #
         attribute :name, String
@@ -13,8 +15,8 @@ module Xcodeproj
         attribute :product_name, String
 
         # @return [XCConfigurationList] the list of the build configurations of
-        #   the target. This list commonly include two configurations `Debug`
-        #   and `Release`.
+        #         the target. This list commonly include two configurations
+        #         `Debug` and `Release`.
         #
         has_one :build_configuration_list, XCConfigurationList
 
@@ -24,9 +26,13 @@ module Xcodeproj
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # Represents a target handled by Xcode.
       #
       class PBXNativeTarget < AbstractTarget
+
+        # @!group Attributes
 
         # @return [PBXBuildRule] the build rules of this target.
         #
@@ -46,12 +52,15 @@ module Xcodeproj
 
         # @return [PBXBuildRule] the build phases of the target.
         #
-        # @note Apparently only PBXCopyFilesBuildPhase and
-        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
         #
         has_many :build_phases, AbstractBuildPhase
 
       end
+
+      #-----------------------------------------------------------------------#
 
       # Represents a target that only consists in a aggregate of targets.
       #
@@ -59,14 +68,19 @@ module Xcodeproj
       #
       class PBXAggregateTarget < AbstractTarget
 
+        # @!group Attributes
+
         # @return [PBXBuildRule] the build phases of the target.
         #
-        # @note Apparently only PBXCopyFilesBuildPhase and
-        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
         #
         has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
 
       end
+
+      #-----------------------------------------------------------------------#
 
       # Represents a legacy target which uses an external build tool.
       #
@@ -74,6 +88,8 @@ module Xcodeproj
       # present.
       #
       class PBXLegacyTarget < AbstractTarget
+
+        # @!group Attributes
 
         # @return [String] e.g "Dir"
         #
@@ -93,8 +109,9 @@ module Xcodeproj
 
         # @return [PBXBuildRule] the build phases of the target.
         #
-        # @note Apparently only PBXCopyFilesBuildPhase and
-        #   PBXShellScriptBuildPhase can appear multiple times in a target.
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
         #
         has_many :build_phases, AbstractBuildPhase
 
@@ -104,20 +121,21 @@ module Xcodeproj
 
       class AbstractTarget < AbstractObject
 
-        # @!group Convenience methods
+        # @!group Helpers
 
         # @return [ObjectList<XCBuildConfiguration>] the build
-        #   configurations of the target.
+        #         configurations of the target.
         #
         def build_configurations
           build_configuration_list.build_configurations
         end
 
-        # @return [Hash] the build settings of the build configuration with the
-        #   given name.
+        # @param  [String] build_configuration_name
+        #         the name of a build configuration.
         #
-        # @param [String] build_configuration_name
-        #   the name of a build configuration.
+        # @return [Hash] the build settings of the build configuration with the
+        #         given name.
+        #
         #
         def build_settings(build_configuration_name)
           build_configuration_list.build_settings(build_configuration_name)
@@ -125,14 +143,14 @@ module Xcodeproj
 
 
         # @return [Array<PBXCopyFilesBuildPhase>]
-        #   the copy files build phases of the target.
+        #         the copy files build phases of the target.
         #
         def copy_files_build_phases
           build_phases.select { |bp| bp.class == PBXCopyFilesBuildPhase }
         end
 
         # @return [Array<PBXShellScriptBuildPhase>]
-        #   the copy files build phases of the target.
+        #         the copy files build phases of the target.
         #
         def shell_script_build_phases
           build_phases.select { |bp| bp.class == PBXShellScriptBuildPhase }
@@ -140,8 +158,8 @@ module Xcodeproj
 
         # Creates a new copy files build phase.
         #
-        # @param [String] name
-        #   an optional name for the phase.
+        # @param  [String] name
+        #         an optional name for the phase.
         #
         # @return [PBXCopyFilesBuildPhase] the new phase.
         #
@@ -154,7 +172,7 @@ module Xcodeproj
 
         # Creates a new shell script build phase.
         #
-        # @param (see #new_copy_files_build_phase)
+        # @param  (see #new_copy_files_build_phase)
         #
         # @return [PBXShellScriptBuildPhase] the new phase.
         #
@@ -167,18 +185,20 @@ module Xcodeproj
 
       end
 
+      #-----------------------------------------------------------------------#
+
       class PBXNativeTarget < AbstractTarget
 
-        # @!group Convenience methods
+        # @!group Helpers
 
         # Adds source files to the target.
         #
-        # @param [Array<PBXFileReference>] file_references
-        #   The files references of the source files that should be added to
-        #   the target.
+        # @param  [Array<PBXFileReference>] file_references
+        #         the files references of the source files that should be added
+        #         to the target.
         #
-        # @param [Hash{String=>String}] compiler_flags
-        #   The compiler flags for the source files.
+        # @param  [Hash{String=>String}] compiler_flags
+        #         the compiler flags for the source files.
         #
         # @return [void]
         #
@@ -201,7 +221,7 @@ module Xcodeproj
 
         # Finds or creates the headers build phase of the target.
         #
-        # @note A target should have only one headers build phase.
+        # @note   A target should have only one headers build phase.
         #
         # @return [PBXHeadersBuildPhase] the headers build phase.
         #
@@ -223,7 +243,7 @@ module Xcodeproj
 
         # Finds or creates the source build phase of the target.
         #
-        # @note A target should have only one source build phase.
+        # @note   A target should have only one source build phase.
         #
         # @return [PBXSourcesBuildPhase] the source build phase.
         #
@@ -241,7 +261,7 @@ module Xcodeproj
 
         # Finds or creates the frameworks build phase of the target.
         #
-        # @note A target should have only one frameworks build phase.
+        # @note   A target should have only one frameworks build phase.
         #
         # @return [PBXFrameworksBuildPhase] the frameworks build phase.
         #
@@ -256,7 +276,7 @@ module Xcodeproj
 
         # Finds or creates the resources build phase of the target.
         #
-        # @note A target should have only one resources build phase.
+        # @note   A target should have only one resources build phase.
         #
         # @return [PBXResourcesBuildPhase] the resources build phase.
         #

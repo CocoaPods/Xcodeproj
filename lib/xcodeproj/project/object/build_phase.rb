@@ -8,6 +8,7 @@ module Xcodeproj
       #
       class AbstractBuildPhase < AbstractObject
 
+        # @!group Attributes
 
         # @return [ObjectList<PBXBuildFile>] the files processed by this build
         #   configuration.
@@ -31,41 +32,59 @@ module Xcodeproj
 
       end
 
-      ### Phases that can appear only once in a target. ########################
+      #-----------------------------------------------------------------------#
 
       # The phase responsible of copying headers (aka `Copy Headers`).
+      #
+      # @note This phase can appear only once in a target.
       #
       class PBXHeadersBuildPhase < AbstractBuildPhase
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # The phase responsible of compiling the files (aka `Compile Sources`).
+      #
+      # @note This phase can appear only once in a target.
       #
       class PBXSourcesBuildPhase < AbstractBuildPhase
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # The phase responsible on linking with frameworks (aka `Link Binary With
       # Libraries`).
+      #
+      # @note This phase can appear only once in a target.
       #
       class PBXFrameworksBuildPhase < AbstractBuildPhase
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # The resources build phase apparently is a specialized copy build phase
       # for resources (aka `Copy Bundle Resources`). It is unclear if this is
       # the only one capable of optimize PNG.
+      #
+      # @note This phase can appear only once in a target.
       #
       class PBXResourcesBuildPhase < AbstractBuildPhase
 
       end
 
-      ### Phases that can appear multiple times in a target. ###################
+      #-----------------------------------------------------------------------#
 
       # Phase that copies the files to the bundle of the target (aka `Copy
       # Files`).
       #
+      # @note This phase can appear multiple times in a target.
+      #
       class PBXCopyFilesBuildPhase < AbstractBuildPhase
+
+        # @!group Attributes
 
         # @return [String] the name of the build phase.
         #
@@ -85,9 +104,15 @@ module Xcodeproj
 
       end
 
+      #-----------------------------------------------------------------------#
+
       # A phase responsible of running a shell script (aka `Run Script`).
       #
+      # @note This phase can appear multiple times in a target.
+      #
       class PBXShellScriptBuildPhase < AbstractBuildPhase
+
+        # @!group Attributes
 
         # @return [String] the name of the build phase.
         #
@@ -119,7 +144,7 @@ module Xcodeproj
         #
         attribute :shell_script, String, ''
 
-        # @return [String] wether or not the ENV variables should be shown in
+        # @return [String] whether or not the ENV variables should be shown in
         #   the build log.
         #
         # Defaults to true (`1`).
@@ -127,17 +152,21 @@ module Xcodeproj
         attribute :show_env_vars_in_log, String, '1'
       end
 
+      #-----------------------------------------------------------------------#
+
       # Apparently a build phase named `Build Carbon Resources` (Observed for
       # kernel extensions targets).
+      #
+      # @note This phase can appear multiple times in a target.
       #
       class PBXRezBuildPhase < AbstractBuildPhase
       end
 
+      #-----------------------------------------------------------------------#
+
       class AbstractBuildPhase < AbstractObject
 
-        ## CONVENIENCE METHODS #################################################
-
-        # @!group Convenience methods
+        # @!group Helpers
 
         # @return [Array<PBXFileReference>] the list of all the files
         #   referenced by this build phase.

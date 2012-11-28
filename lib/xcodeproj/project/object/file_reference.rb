@@ -6,6 +6,8 @@ module Xcodeproj
       #
       class PBXFileReference < AbstractObject
 
+        # @!group Attributes
+
         # @return [String] the name of the reference, often not present.
         #
         attribute :name, String
@@ -58,7 +60,7 @@ module Xcodeproj
         #
         attribute :plist_structure_definition_identifier, String
 
-        # @return [String] Whether Xcode should use tabs for text aligment.
+        # @return [String] Whether Xcode should use tabs for text alignment.
         #
         #   E.g. `1`
         #
@@ -92,13 +94,13 @@ module Xcodeproj
 
         # @return [String] Comments associated with this file.
         #
-        #   This is apperantly no longer used by Xcode.
+        #   This is apparently no longer used by Xcode.
         #
         attribute :comments, String
 
-        ## CONVENIENCE METHODS #################################################
+        #---------------------------------------------------------------------#
 
-        # @!group Convenience methods
+        # @!group Helpers
 
         # @return [String] the name of the file taking into account the path if
         #   needed.
@@ -134,7 +136,7 @@ module Xcodeproj
           self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
         end
 
-        # Checks wheter the reference is a proxy.
+        # Checks whether the reference is a proxy.
         #
         # @return [Bool] always false for this ISA.
         #
