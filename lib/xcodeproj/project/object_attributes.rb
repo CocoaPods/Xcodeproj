@@ -34,14 +34,14 @@ module Xcodeproj
         # Attributes are expected to be instantiated only by the
         # {AbstractObject} DSL methods.
         #
-        # @param [Symbol] type
-        # the type of the attribute.
+        # @param  [Symbol] type
+        #         the type of the attribute.
         #
-        # @param [Symbol] name
-        #   the name of the attribute.
+        # @param  [Symbol] name
+        #         the name of the attribute.
         #
-        # @param [Class] owner
-        #   the class that owns the attribute.
+        # @param  [Class] owner
+        #         the class that owns the attribute.
         #
         def initialize(type, name, owner)
           @type  =  type
