@@ -133,7 +133,24 @@ module ProjectSpecs
         group.children.first.equal?(file).should.be.true
       end
 
-      it "it raises if it encounters an unknown attribute in a plist" do
+      # TODO: use UI class
+      it "discards UUIDs which cannot be found in the objects hash" do
+        uuid_file  = 'file_uuid'
+        uuid_group = 'group_uuid'
+        objects_by_uuid_plist = {
+          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup'}
+        }
+        group = PBXGroup.new(@project, uuid_group)
+        group.configure_with_plist(objects_by_uuid_plist)
+        group.files.should.be.empty
+      end
+
+      it "raises if it encounters an unknown attribute in a plist" do
+        @objects_by_uuid_plist[@object.uuid]['unknown_attribute'] = 'might be a reference'
+        lambda { @object.configure_with_plist(@objects_by_uuid_plist) }.should.raise
+      end
+
+      it "raises if it encounters an unknown attribute in a plist" do
         @objects_by_uuid_plist[@object.uuid]['unknown_attribute'] = 'might be a reference'
         lambda { @object.configure_with_plist(@objects_by_uuid_plist) }.should.raise
       end

@@ -206,7 +206,7 @@ module Xcodeproj
             ref_uuid = object_plist[attrb.plist_name]
             if ref_uuid
               ref = object_with_uuid(ref_uuid, objects_by_uuid_plist, attrb)
-              attrb.set_value(self, ref)
+              attrb.set_value(self, ref) if ref
             end
             object_plist.delete(attrb.plist_name)
           end
@@ -215,7 +215,8 @@ module Xcodeproj
             ref_uuids = object_plist[attrb.plist_name] || []
             list = attrb.get_value(self)
             ref_uuids.each do |uuid|
-              list << object_with_uuid(uuid, objects_by_uuid_plist, attrb)
+              ref = object_with_uuid(uuid, objects_by_uuid_plist, attrb)
+              list << ref if ref
             end
             object_plist.delete(attrb.plist_name)
           end
@@ -226,7 +227,8 @@ module Xcodeproj
             hashes.each do |hash|
               dictionary = ObjectDictionary.new(attrb, self)
               hash.each do |key, uuid|
-                dictionary[key] = object_with_uuid(uuid, objects_by_uuid_plist, attrb)
+                ref = object_with_uuid(uuid, objects_by_uuid_plist, attrb)
+                dictionary[key] = ref if ref
               end
               list << dictionary
             end
@@ -240,7 +242,7 @@ module Xcodeproj
           end
         end
 
-        # Initializes and returns the object with the given uuid.
+        # Initializes and returns the object with the given UUID.
         #
         # @param  [String] uuid
         #         The UUID of the object that should be initialized.
@@ -255,17 +257,18 @@ module Xcodeproj
         #
         # @raise  If the hash for the given UUID contains an unknown ISA.
         #
-        # @raise  If the UUID can't be found in the objects hash.
-        #
         # @return [AbstractObject] the initialized object.
+        # @return [Nil] if the UUID could not be found in the objects hash. In
+        #         this case a warning is printed to STDERR.
         #
         # @visibility private
         #
         def object_with_uuid(uuid, objects_by_uuid_plist, attribute)
           unless object = project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
-            raise "`#{inspect}` attempted to initialize an object with an unknown UUID: "\
-                  "`#{uuid}` for attribute: `#{attribute.name}`\n"   \
-                  "Please file and issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+            STDERR.puts "`#{inspect}` attempted to initialize an object with "\
+              "an unknown UUID. `#{uuid}` for attribute: `#{attribute.name}`."\
+              " This can be the result of a merge and the unkonw UUID is "    \
+              "being discarded."
           end
           object
         rescue NameError => exception
