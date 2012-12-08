@@ -130,7 +130,7 @@ describe "Xcodeproj::Config" do
   it "doesn't duplicates libraries and frameworks" do
     hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
-    # merge the original hahs again
+    # merge the original hash again
     config.merge!(hash)
     config.frameworks.add 'Foundation'
     config.weak_frameworks.add 'Twitter'
@@ -145,5 +145,14 @@ describe "Xcodeproj::Config" do
     config2 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => '-framework SystemConfiguration' })
     config1.merge! config2
     config1.to_hash['OTHER_LDFLAGS'].should == '-ObjC -fobjc-arc -framework SystemConfiguration'
+  end
+
+  it "merges frameworks and libraries from another Config instance" do
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
+    config = Xcodeproj::Config.new
+    config.merge!(Xcodeproj::Config.new(hash))
+    config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
+    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
 end

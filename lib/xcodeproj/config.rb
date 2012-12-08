@@ -89,7 +89,7 @@ module Xcodeproj
 
     # Merges the given xcconfig hash or Config into the internal data.
     #
-    # If a key in the given hash already exists, in the internal data, then its
+    # If a key in the given hash already exists in the internal data then its
     # value is appended to the value in the internal data.
     #
     # @example
@@ -103,33 +103,33 @@ module Xcodeproj
     def merge!(xcconfig)
       if xcconfig.is_a? Config
         @attributes.merge!(xcconfig.attributes) { |key, v1, v2| "#{v1} #{v2}" }
-        @libraries.merge   xcconfig.libraries
-        @frameworks.merge  xcconfig.frameworks
-        @weak_frameworks.merge  xcconfig.weak_frameworks
+        @libraries.merge(xcconfig.libraries)
+        @frameworks.merge(xcconfig.frameworks)
+        @weak_frameworks.merge(xcconfig.weak_frameworks)
       else
-      @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
-      # Parse frameworks and libraries. Then remove the from the linker flags
-      flags = @attributes['OTHER_LDFLAGS']
-      return unless flags
+        @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
+        # Parse frameworks and libraries. Then remove the from the linker flags
+        flags = @attributes['OTHER_LDFLAGS']
+        return unless flags
 
-      frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
-      weak_frameworks = flags.scan(/-weak_framework\s+([^\s]+)/).map { |m| m[0] }
-      libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
-      @frameworks.merge frameworks
-      @weak_frameworks.merge weak_frameworks
-      @libraries.merge libraries
+        frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
+        weak_frameworks = flags.scan(/-weak_framework\s+([^\s]+)/).map { |m| m[0] }
+        libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+        @frameworks.merge frameworks
+        @weak_frameworks.merge weak_frameworks
+        @libraries.merge libraries
 
-      new_flags = flags.dup
-      frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
-      weak_frameworks.each {|f| new_flags.gsub!("-weak_framework #{f}", "") }
-      libraries.each  {|l| new_flags.gsub!("-l#{l}", ""); new_flags.gsub!("-l #{l}", "") }
-      @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
+        new_flags = flags.dup
+        frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
+        weak_frameworks.each {|f| new_flags.gsub!("-weak_framework #{f}", "") }
+        libraries.each  {|l| new_flags.gsub!("-l#{l}", ""); new_flags.gsub!("-l #{l}", "") }
+        @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
       end
     end
     alias_method :<<, :merge!
 
     def merge(config)
-      self.dup.tap { |x|x.merge!(config) }
+      self.dup.tap { |x| x.merge!(config) }
     end
 
     def dup
