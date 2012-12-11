@@ -29,6 +29,16 @@ module ProjectSpecs
       @target.dependencies.to_a.should == []
       @target.build_rules.to_a.should == []
     end
+
+    it "returns the platform name" do
+      @project.new_target(:static_library, 'Pods', :ios).platform_name.should == :ios
+      @project.new_target(:static_library, 'Pods', :osx).platform_name.should == :osx
+    end
+
+    it "returns the deployment_target" do
+      @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
+      @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+    end
   end
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
@@ -39,11 +49,11 @@ module ProjectSpecs
     end
 
     {
-      :headers_build_phase => PBXHeadersBuildPhase,
-      :source_build_phase => PBXSourcesBuildPhase,
-      :frameworks_build_phase => PBXFrameworksBuildPhase,
-      :resources_build_phase => PBXResourcesBuildPhase,
-      :copy_files_build_phases => PBXCopyFilesBuildPhase,
+      :headers_build_phase       => PBXHeadersBuildPhase,
+      :source_build_phase        => PBXSourcesBuildPhase,
+      :frameworks_build_phase    => PBXFrameworksBuildPhase,
+      :resources_build_phase     => PBXResourcesBuildPhase,
+      :copy_files_build_phases   => PBXCopyFilesBuildPhase,
       :shell_script_build_phases => PBXShellScriptBuildPhase,
     }.each do |association_method, klass|
 

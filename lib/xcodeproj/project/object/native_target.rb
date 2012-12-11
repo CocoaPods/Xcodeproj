@@ -123,6 +123,26 @@ module Xcodeproj
 
         # @!group Helpers
 
+        # @return [Symbol] the name of the platform of the target.
+        #
+        def platform_name
+          sdk = build_configurations.first.build_settings['SDKROOT']
+          if    sdk == 'iphoneos' then :ios
+          elsif sdk == 'macosx' then :osx
+          end
+        end
+
+        # @return [String] the deployment target of the target according to its
+        #         platform.
+        #
+        def deployment_target
+          if platform_name == :ios
+            build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+          else
+            build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET']
+          end
+        end
+
         # @return [ObjectList<XCBuildConfiguration>] the build
         #         configurations of the target.
         #
