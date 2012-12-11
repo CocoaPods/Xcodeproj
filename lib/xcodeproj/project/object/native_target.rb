@@ -127,6 +127,7 @@ module Xcodeproj
         #
         def platform_name
           sdk = build_configurations.first.build_settings['SDKROOT']
+          sdk ||= project.build_configurations.first.build_settings['SDKROOT']
           if    sdk == 'iphoneos' then :ios
           elsif sdk == 'macosx' then :osx
           end
@@ -137,9 +138,11 @@ module Xcodeproj
         #
         def deployment_target
           if platform_name == :ios
-            build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+            build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] ||
+              project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
           else
-            build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET']
+            build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] ||
+              project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
           end
         end
 
