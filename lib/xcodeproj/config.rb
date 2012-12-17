@@ -12,17 +12,17 @@ module Xcodeproj
     #
     attr_accessor :attributes
 
-    # @return [Array<String>] The list of the frameworks required by this
+    # @return [Set<String>] The list of the frameworks required by this
     #   settings file.
     #
     attr_accessor :frameworks
 
-    # @return [Array<String>] The list of the *weak* frameworks required by
+    # @return [Set<String>] The list of the *weak* frameworks required by
     #   this settings file.
     #
     attr_accessor :weak_frameworks
 
-    # @return [Array<String>] The list of the libraries required by this
+    # @return [Set<String>] The list of the libraries required by this
     #   settings file.
     #
     attr_accessor :libraries
@@ -43,8 +43,9 @@ module Xcodeproj
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
+    #-------------------------------------------------------------------------#
 
-    #@! group Serialization
+    # @!group Serialization
 
     # Serializes the internal data in the xcconfig format.
     #
@@ -83,9 +84,9 @@ module Xcodeproj
       hash
     end
 
+    #-------------------------------------------------------------------------#
 
-
-    #@! group Merging
+    # @!group Merging
 
     # Merges the given xcconfig hash or Config into the internal data.
     #
@@ -136,8 +137,9 @@ module Xcodeproj
       Xcodeproj::Config.new(self.to_hash.dup)
     end
 
+    #-------------------------------------------------------------------------#
 
-    #@! group Object methods
+    # @!group Object methods
 
     def inspect
       to_hash.inspect
@@ -146,6 +148,10 @@ module Xcodeproj
     def ==(other)
       other.respond_to?(:to_hash) && other.to_hash == self.to_hash
     end
+
+    #-------------------------------------------------------------------------#
+
+    # @!group Private Helpers
 
     private
 
