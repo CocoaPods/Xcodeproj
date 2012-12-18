@@ -13,7 +13,8 @@ module ProjectSpecs
 
     it "sorts by group vs file first, then name" do
       @group.new_group('Apemachine')
-      @group.sort_by_type.map(&:name).should == %w{
+      @group.sort_by_type!
+      @group.children.map(&:name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h Abracadabra.m Banana.h Banana.m
       }

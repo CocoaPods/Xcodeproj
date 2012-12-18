@@ -235,10 +235,16 @@ module Xcodeproj
 
         # Sorts the children of the group by type and then by name.
         #
+        # @note   This is safe to call in an object list because it modifies it
+        #         in C in Ruby MRI. In other Ruby implementation it can cause
+        #         issues if there is one call to the notification enabled
+        #         methods not compensated by the corespondent oposite (loss of
+        #         UUIDs and objects from the project).
+        #
         # @return [void]
         #
-        def sort_by_type
-          children.sort do |x, y|
+        def sort_by_type!
+          children.sort! do |x, y|
             if x.is_a?(PBXGroup) && y.is_a?(PBXFileReference)
               -1
             elsif x.is_a?(PBXFileReference) && y.is_a?(PBXGroup)
