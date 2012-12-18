@@ -4,6 +4,14 @@ module Xcodeproj
   #
   module Constants
 
+    # The last known iOS SDK (stable).
+    #
+    LAST_KNOWN_IOS_SDK = '6.0'
+
+    # The last known OS X SDK (stable).
+    #
+    LAST_KNOWN_OSX_SDK  = '10.8'
+
     # The last known archive version to Xcodeproj.
     #
     LAST_KNOWN_ARCHIVE_VERSION = 1

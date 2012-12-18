@@ -86,7 +86,7 @@ module ProjectSpecs
     end
 
     it "adds a framework in a group named 'Frameworks' in the main group to a new target" do
-      framework = @project.add_system_framework('QuartzCore')
+      framework = @project.add_system_framework('QuartzCore', :ios)
       framework_files = @project.frameworks_group.files
       target = @project.new_target(:static_library, 'Pods2', :ios)
       target.frameworks_build_phase.files_references.should == framework_files

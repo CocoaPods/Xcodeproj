@@ -352,7 +352,7 @@ module Xcodeproj
     #   frameworks.name #=> 'Frameworks'
     #   main_group.children.include? frameworks #=> True
     #
-    # @param [String] group_path @see PBXGroup#[]
+    # @param [String] group_path @see MobileCoreServices
     #
     # @return [PBXGroup] the group at the given subpath.
     #
@@ -438,26 +438,40 @@ module Xcodeproj
     # The file reference can then be added to the build files of a
     # {PBXFrameworksBuildPhase}.
     #
-    # @example
+    # @example Adding QuartzCore
     #
-    #     framework = project.add_system_framework('QuartzCore')
+    #     framework = project.add_system_framework('QuartzCore', :ios)
     #
     #     target = project.targets.first
     #     build_phase = target.frameworks_build_phases.first
     #     build_phase.files << framework.buildFiles.new
     #
-    # @param [String] name        The name of a framework in the SDK System
-    #                             directory.
-    # @return [PBXFileReference]  The file reference object.
+    # @param  [String] name
+    #         The name of a framework.
     #
-    def add_system_framework(name)
-      path = "System/Library/Frameworks/#{name}.framework"
-      if file = frameworks_group.files.first { |f| f.path == path }
+    # @param  [Symbol] platform
+    #         The platform reppresenting the SDK.
+    #
+    # @note   This method adds a reference to the highest know SDK for the
+    #         given platform.
+    #
+    # @return [PBXFileReference] The generated file reference.
+    #
+    def add_system_framework(name, platform)
+      if platform == :ios
+        base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{Constants::LAST_KNOWN_IOS_SDK}.sdk/"
+      elsif platform == :osx
+        base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{Constants::LAST_KNOWN_OSX_SDK}.sdk/"
+      end
+      path = base_dir + "System/Library/Frameworks/#{name}.framework"
+
+      if file = frameworks_group.files.find { |f| f.path == path }
         file
       else
         framework_ref = frameworks_group.new_file(path)
         framework_ref.name = "#{name}.framework"
-        framework_ref.source_tree = 'SDKROOT'
+        framework_ref.source_tree = 'DEVELOPER_DIR'
+        framework_ref.last_known_file_type = "wrapper.framework"
         framework_ref
       end
     end
@@ -486,7 +500,7 @@ module Xcodeproj
     #   Can be `:ios` or `:osx`.
     #
     def new_target(type, name, platform)
-      add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa')
+      add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa', platform)
 
       # Target
       target = new(PBXNativeTarget)

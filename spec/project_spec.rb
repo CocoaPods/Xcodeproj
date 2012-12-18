@@ -276,19 +276,19 @@ module ProjectSpecs
 
       it "adds a file reference for a system framework, to the Frameworks group" do
         group = @project['Frameworks']
-        file = @project.add_system_framework('QuartzCore')
+        file = @project.add_system_framework('QuartzCore', :ios)
         file.group.should == group
         file.name.should == 'QuartzCore.framework'
-        file.path.should == 'System/Library/Frameworks/QuartzCore.framework'
-        file.source_tree.should == 'SDKROOT'
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.+.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.source_tree.should == 'DEVELOPER_DIR'
       end
 
       it "does not add a system framework if it already exists in the project" do
-        file = @project.add_system_framework('Foundation')
+        file = @project.add_system_framework('Foundation', :ios)
         file.name.should == 'Foundation.framework'
         before = @project.frameworks_group.files.size
 
-        file = @project.add_system_framework('Foundation')
+        file = @project.add_system_framework('Foundation', :ios)
         file.name.should == 'Foundation.framework'
         @project.frameworks_group.files.size.should == before
       end
