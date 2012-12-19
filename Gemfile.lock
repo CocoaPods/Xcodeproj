@@ -18,6 +18,11 @@ GEM
     kicker (2.6.1)
       listen
     listen (0.6.0)
+    metaclass (0.0.1)
+    mocha (0.11.4)
+      metaclass (~> 0.0.1)
+    mocha-on-bacon (0.2.1)
+      mocha (>= 0.9.8)
     multi_json (1.5.0)
     posix-spawn (0.3.6)
     pygments.rb (0.3.3)
@@ -35,6 +40,8 @@ DEPENDENCIES
   bacon
   github-markup
   kicker
+  mocha (~> 0.11.4)
+  mocha-on-bacon
   pygments.rb
   rake
   redcarpet

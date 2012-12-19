@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'bacon'
-
+require 'mocha-on-bacon'
 require 'pathname'
+
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
 $:.unshift((ROOT + 'ext').to_s)

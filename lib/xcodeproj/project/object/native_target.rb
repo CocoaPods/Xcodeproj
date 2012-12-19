@@ -123,13 +123,16 @@ module Xcodeproj
 
         # @!group Helpers
 
+        def sdk
+          build_configurations.first.build_settings['SDKROOT'] \
+            || project.build_configurations.first.build_settings['SDKROOT']
+        end
+
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
-          sdk = build_configurations.first.build_settings['SDKROOT']
-          sdk ||= project.build_configurations.first.build_settings['SDKROOT']
-          if    sdk == 'iphoneos' then :ios
-          elsif sdk == 'macosx' then :osx
+          if    sdk.include? 'iphoneos' then :ios
+          elsif sdk.include? 'macosx'   then :osx
           end
         end
 

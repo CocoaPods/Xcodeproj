@@ -275,21 +275,31 @@ module ProjectSpecs
       end
 
       it "adds a file reference for a system framework, to the Frameworks group" do
+        target = stub(:sdk => 'iphoneos5.0')
         group = @project['Frameworks']
-        file = @project.add_system_framework('QuartzCore', :ios)
+        file = @project.add_system_framework('QuartzCore', target)
         file.group.should == group
         file.name.should == 'QuartzCore.framework'
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.+.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.source_tree.should == 'DEVELOPER_DIR'
+      end
+
+      it "links system frameworks to the last knwon sdk if needed" do
+        target = stub(:sdk => 'iphoneos')
+        file = @project.add_system_framework('QuartzCore', target)
+        sdk_version = Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk_version}.sdk/System/Library/Frameworks/QuartzCore.framework|
         file.source_tree.should == 'DEVELOPER_DIR'
       end
 
       it "does not add a system framework if it already exists in the project" do
-        file = @project.add_system_framework('Foundation', :ios)
-        file.name.should == 'Foundation.framework'
+        target = stub(:sdk => 'iphoneos6.0')
+        file_1 = @project.add_system_framework('Foundation', target)
+        file_1.name.should == 'Foundation.framework'
         before = @project.frameworks_group.files.size
 
-        file = @project.add_system_framework('Foundation', :ios)
-        file.name.should == 'Foundation.framework'
+        file_2 = @project.add_system_framework('Foundation', target)
+        file_2.should == file_1
         @project.frameworks_group.files.size.should == before
       end
 

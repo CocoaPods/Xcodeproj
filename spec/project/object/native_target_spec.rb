@@ -84,13 +84,6 @@ module ProjectSpecs
       @target.new_shell_script_build_phase
       @target.shell_script_build_phases.count.should == before + 1
     end
-
-    it "adds a framework in a group named 'Frameworks' in the main group to a new target" do
-      framework = @project.add_system_framework('QuartzCore', :ios)
-      framework_files = @project.frameworks_group.files
-      target = @project.new_target(:static_library, 'Pods2', :ios)
-      target.frameworks_build_phase.files_references.should == framework_files
-    end
   end
 
   describe "A new Xcodeproj::Project::Object::PBXNativeTarget" do

@@ -449,19 +449,29 @@ module Xcodeproj
     # @param  [String] name
     #         The name of a framework.
     #
-    # @param  [Symbol] platform
-    #         The platform reppresenting the SDK.
+    # @param  [PBXNativeTarget] target
+    #         The target for which to add the framework.
     #
     # @note   This method adds a reference to the highest know SDK for the
     #         given platform.
     #
     # @return [PBXFileReference] The generated file reference.
     #
-    def add_system_framework(name, platform)
-      if platform == :ios
-        base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{Constants::LAST_KNOWN_IOS_SDK}.sdk/"
-      elsif platform == :osx
-        base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{Constants::LAST_KNOWN_OSX_SDK}.sdk/"
+    def add_system_framework(name, target)
+      sdk = target.sdk
+      raise "Unable to find and SDK for the target `#{target.name}`" unless sdk
+      if sdk.include?('iphoneos')
+        if sdk == 'iphoneos'
+          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{Constants::LAST_KNOWN_IOS_SDK}.sdk/"
+        else
+          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk.gsub('iphoneos', '')}.sdk/"
+        end
+      elsif sdk.include?('macosx')
+        if sdk == 'macosx'
+          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{Constants::LAST_KNOWN_OSX_SDK}.sdk/"
+        else
+          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('iphoneos', '')}.sdk/"
+        end
       end
       path = base_dir + "System/Library/Frameworks/#{name}.framework"
 
@@ -499,8 +509,7 @@ module Xcodeproj
     #   the platform of the static library.
     #   Can be `:ios` or `:osx`.
     #
-    def new_target(type, name, platform)
-      add_system_framework(platform == :ios ? 'Foundation' : 'Cocoa', platform)
+    def new_target(type, name, platform, deployment_target = nil)
 
       # Target
       target = new(PBXNativeTarget)
@@ -514,10 +523,14 @@ module Xcodeproj
       product = products_group.new_static_library(name)
       target.product_reference = product
 
+      # Frameworks
+      framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
+      framework_ref = add_system_framework(framework_name, target)
+
       # Build phases
       target.build_phases << new(PBXSourcesBuildPhase)
       frameworks_phase = new(PBXFrameworksBuildPhase)
-      frameworks_group.files.each { |framework| frameworks_phase.add_file_reference(framework) }
+      frameworks_phase.add_file_reference(framework_ref)
       target.build_phases << frameworks_phase
 
       target
@@ -531,18 +544,18 @@ module Xcodeproj
     #
     # @return [XCConfigurationList] the generated configuration list.
     #
-    def configuration_list(platform)
+    def configuration_list(platform, deployment_target = nil)
       cl = new(XCConfigurationList)
       cl.default_configuration_is_visible = '0'
       cl.default_configuration_name = 'Release'
 
       release_conf = new(XCBuildConfiguration)
       release_conf.name = 'Release'
-      release_conf.build_settings = configuration_list_settings(platform, :release)
+      release_conf.build_settings = common_build_settings(:release, platform, deployment_target)
 
       debug_conf = new(XCBuildConfiguration)
       debug_conf.name = 'Debug'
-      debug_conf.build_settings = configuration_list_settings(platform, :debug)
+      debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target)
 
       cl.build_configurations << release_conf
       cl.build_configurations << debug_conf
@@ -560,13 +573,20 @@ module Xcodeproj
     #
     # @return [Hash] The common build settings
     #
-    def configuration_list_settings(platform, name)
+    def common_build_settings(type, platform, deployment_target = nil)
       common_settings = Constants::COMMON_BUILD_SETTINGS
-      bs = common_settings[:all].dup
-      bs = bs.merge(common_settings[name])
-      bs = bs.merge(common_settings[platform])
-      bs = bs.merge(common_settings[[platform, name]])
-      bs
+      settings = common_settings[:all].dup
+      settings.merge!(common_settings[type])
+      settings.merge!(common_settings[platform])
+      settings.merge!(common_settings[[platform, type]])
+      if deployment_target
+        if platform == :ios
+          settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+        elsif platform == :osx
+          settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+        end
+      end
+      settings
     end
 
   end
