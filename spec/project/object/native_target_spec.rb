@@ -1,7 +1,7 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::PBXNativeTarget" do
+  describe PBXNativeTarget do
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
     end
@@ -71,6 +71,10 @@ module ProjectSpecs
         end
       end
 
+    end
+
+    it "returns the frameworks build phase" do
+      @target.frameworks_build_phases.class.should == PBXFrameworksBuildPhase
     end
 
     it "creates a new 'copy files build phase'" do

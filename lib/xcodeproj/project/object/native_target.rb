@@ -149,6 +149,8 @@ module Xcodeproj
           end
         end
 
+        #--------------------------------------#
+
         # @return [ObjectList<XCBuildConfiguration>] the build
         #         configurations of the target.
         #
@@ -167,6 +169,14 @@ module Xcodeproj
           build_configuration_list.build_settings(build_configuration_name)
         end
 
+        # @!group Build Phases Helpers
+
+        # @return [PBXFrameworksBuildPhase]
+        #         the copy files build phases of the target.
+        #
+        def frameworks_build_phases
+          build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
+        end
 
         # @return [Array<PBXCopyFilesBuildPhase>]
         #         the copy files build phases of the target.
