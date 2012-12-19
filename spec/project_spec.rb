@@ -304,13 +304,16 @@ module ProjectSpecs
       end
 
       it "creates a new target" do
-        target = @project.new_target(:static_library, 'Pods', :ios)
+        target = @project.new_target(:static_library, 'Pods', :ios, '6.0')
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.library.static'
 
         target.build_configuration_list.should.not.be.nil
         configurations = target.build_configuration_list.build_configurations
         configurations.map(&:name).sort.should == %w| Debug Release |
+        build_settings = configurations.first.build_settings
+        build_settings['IPHONEOS_DEPLOYMENT_TARGET'].should == '6.0'
+        build_settings['SDKROOT'].should == 'iphoneos'
 
         @project.targets.should.include target
         @project.products.should.include target.product_reference

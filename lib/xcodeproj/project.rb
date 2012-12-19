@@ -486,28 +486,31 @@ module Xcodeproj
       end
     end
 
-    # @return [PBXNativeTarget] Creates a new target and adds it to the
-    #         project.
+    # Creates a new target and adds it to the project.
     #
-    #         The target is configured for the given platform and its file
-    #         reference it is added to the {products_group}.
+    # The target is configured for the given platform and its file reference it
+    # is added to the {products_group}.
     #
-    #         The target is pre-populated with common build phases, and all the
-    #         Frameworks of the project are added to to its Frameworks phase.
+    # The target is pre-populated with common build phases, and all the
+    # Frameworks of the project are added to to its Frameworks phase.
     #
     # @todo   Adding all the Frameworks is required by CocoaPods and should be
     #         performed there.
     #
-    # @param [Symbol] type
-    #   the type of target.
-    #   Can be `:application`, `:dynamic_library` or `:static_library`.
+    # @param  [Symbol] type
+    #         the type of target. Can be `:application`, `:dynamic_library` or
+    #         `:static_library`.
     #
-    # @param [String] name
-    #   the name of the static library product.
+    # @param  [String] name
+    #         the name of the static library product.
     #
-    # @param [Symbol] platform
-    #   the platform of the static library.
-    #   Can be `:ios` or `:osx`.
+    # @param  [Symbol] platform
+    #         the platform of the static library. Can be `:ios` or `:osx`.
+    #
+    # @param  [String] deployment_target
+    #         the deployment target for the platform.
+    #
+    # @return [PBXNativeTarget] the target.
     #
     def new_target(type, name, platform, deployment_target = nil)
 
@@ -517,7 +520,7 @@ module Xcodeproj
       target.name = name
       target.product_name = name
       target.product_type = Constants::PRODUCT_TYPE_UTI[type]
-      target.build_configuration_list = configuration_list(platform)
+      target.build_configuration_list = configuration_list(platform, deployment_target)
 
       # Product
       product = products_group.new_static_library(name)
@@ -539,8 +542,11 @@ module Xcodeproj
     # Returns a new configuration list, populated with release and debug
     # configurations with common build settings for the given platform.
     #
-    # @param [Symbol] platform
-    #   the platform for the configuration list, can be `:ios` or `:osx`.
+    # @param  [Symbol] platform
+    #         the platform for the configuration list, can be `:ios` or `:osx`.
+    #
+    # @param  [String] deployment_target
+    #         the deployment target for the platform.
     #
     # @return [XCConfigurationList] the generated configuration list.
     #
@@ -565,11 +571,15 @@ module Xcodeproj
     # Returns the common build settings for a given platform and configuration
     # name.
     #
-    # @param [Symbol] platform
-    #   the platform for the build settings, can be `:ios` or `:osx`.
+    # @param  [Symbol] type
+    #         the type of the build configuration, can be `:release` or
+    #         `:debug`.
     #
-    # @param [Symbol] name
-    #   the name of the build configuration, can be `:release` or `:debug`.
+    # @param  [Symbol] platform
+    #         the platform for the build settings, can be `:ios` or `:osx`.
+    #
+    # @param  [String] deployment_target
+    #         the deployment target for the platform.
     #
     # @return [Hash] The common build settings
     #
