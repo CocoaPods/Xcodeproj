@@ -32,6 +32,7 @@ cfstr_to_str(const void *cfstr) {
     rb_funcall(str, forceEncodingId, 1, rb_str_new("UTF-8", 5));
   }
 
+  CFRelease(data);
   return str;
 }
 
