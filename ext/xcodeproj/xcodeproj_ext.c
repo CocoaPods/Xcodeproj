@@ -21,13 +21,10 @@ static VALUE
 cfstr_to_str(const void *cfstr) {
   CFDataRef data = CFStringCreateExternalRepresentation(NULL, cfstr, kCFStringEncodingUTF8, 0);
   assert(data != NULL);
-  long len = (long)CFDataGetLength(data);
-  char *buf = (char *)malloc(len+1);
-  assert(buf != NULL);
-  CFDataGetBytes(data, CFRangeMake(0, len), buf);
+  long  len = (long)CFDataGetLength(data);
+  char *buf = (char *)CFDataGetBytePtr(data);
 
   register VALUE str = rb_str_new(buf, len);
-  free(buf);
 
   // force UTF-8 encoding in Ruby 1.9+
   ID forceEncodingId = rb_intern("force_encoding");
