@@ -47,16 +47,17 @@ module Xcodeproj
 
     # @!group Serialization
 
-    # Serializes the internal data in the xcconfig format.
+    # Sorts the internal data by setting name and serializes it in the xcconfig
+    # format.
     #
     # @example
     #
     #   config = Config.new('PODS_ROOT' => '"$(SRCROOT)/Pods"', 'OTHER_LDFLAGS' => '-lxml2')
-    #   config.to_s # => "PODS_ROOT = \"$(SRCROOT)/Pods\"\nOTHER_LDFLAGS = -lxml2"
+    #   config.to_s # => "OTHER_LDFLAGS = -lxml2\nPODS_ROOT = \"$(SRCROOT)/Pods\""
     #
     # @return [String]  The serialized internal data.
     def to_s
-      to_hash.map { |key, value| "#{key} = #{value}" }.join("\n")
+      to_hash.sort_by(&:first).map { |k, v| "#{k} = #{v}" }.join("\n")
     end
 
     # @return [void] Writes the serialized representation of the internal data

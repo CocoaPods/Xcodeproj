@@ -50,6 +50,11 @@ describe "Xcodeproj::Config" do
     @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework Foundation"
   end
 
+  it "sorts the internal data by setting name when serializing with #to_s" do
+    config = Xcodeproj::Config.new('Y' => '2', 'Z' => '3', 'X' => '1')
+    config.to_s.should == "X = 1\nY = 2\nZ = 3"
+  end
+
   it "can be serialized with #to_hash" do
     @config.to_hash.should.be.equal @hash
   end

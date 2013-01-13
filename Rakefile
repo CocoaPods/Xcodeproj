@@ -209,6 +209,11 @@ task :dump_xcodeproj => 'ext:cleanbuild' do
   puts result.to_yaml
 end
 
+desc 'Install dependencies'
+task :bootstrap do
+  sh 'bundle install'
+end
+
 desc "Run all specs"
 task :spec => 'spec:all'
 
