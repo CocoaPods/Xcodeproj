@@ -11,7 +11,8 @@ module Xcodeproj
       end
 
       def initialize(argv)
-        @xcodeproj_path = File.expand_path(argv.shift_argument)
+        xcodeproj_path = argv.shift_argument
+        @xcodeproj_path = File.expand_path(xcodeproj_path) if xcodeproj_path
         super unless argv.empty?
       end
 
