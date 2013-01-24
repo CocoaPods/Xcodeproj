@@ -246,7 +246,6 @@ module Xcodeproj
             extension = File.extname(file.path)
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
             if (header_extensions.include?(extension))
-              build_file.settings = { 'ATTRIBUTES' => ["Public"] }
               headers_build_phase.files << build_file
             else
               build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags && !compiler_flags.empty?
