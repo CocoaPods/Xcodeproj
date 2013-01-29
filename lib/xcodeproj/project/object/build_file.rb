@@ -23,7 +23,7 @@ module Xcodeproj
         # @todo   I think that is possible to add any kind of groups (for example
         #         folders linked to a path).
         #
-        has_one :file_ref, [PBXFileReference, PBXVariantGroup, XCVersionGroup, PBXReferenceProxy]
+        has_one :file_ref, [PBXFileReference, PBXGroup, PBXVariantGroup, XCVersionGroup, PBXReferenceProxy]
 
       end
     end
