@@ -6,7 +6,7 @@ module Xcodeproj
 
     # The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '6.0'
+    LAST_KNOWN_IOS_SDK = '6.1'
 
     # The last known OS X SDK (stable).
     #
