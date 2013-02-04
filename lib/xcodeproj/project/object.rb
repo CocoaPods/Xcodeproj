@@ -362,9 +362,8 @@ module Xcodeproj
         end
 
         def inspect
-          s = "#<UUID: `#{uuid}', isa: `#{isa}'>"
-          s << ", name: `#{name}'" if respond_to?(:name) && name
-          s
+          name = " name=#{name}" if respond_to?(:name)
+          "<#{self.class}#{name} UUID=#{uuid}>"
         end
       end
     end

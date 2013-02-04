@@ -174,14 +174,14 @@ module Xcodeproj
         end
 
         # Traverses the children groups and finds the group with the given
-        # path, optionally, creating any needed group.
+        # path, if exists.
         #
         # @param path (see #find_subpath)
         #
         # @note (see #find_subpath)
         #
         def [](path)
-          find_subpath(path)
+          find_subpath(path, false)
         end
 
         # Removes children files and groups under this group.
@@ -211,13 +211,20 @@ module Xcodeproj
         #   g.name #=> 'Frameworks'
         #
         # @return [PBXGroup] the group if found.
+        # @return [Nil] if the path could not be found and should create is false.
         #
         def find_subpath(path, should_create = false)
           return self unless path
           path = path.split('/') unless path.is_a?(Array)
           child_name = path.shift
           child = children.find{ |c| c.display_name == child_name }
-          child = new_group(child_name) if child.nil? && should_create
+          if child.nil?
+            if should_create
+              child = new_group(child_name)
+            else
+              return nil
+            end
+          end
           if path.empty?
             child
           else
