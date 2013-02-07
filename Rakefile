@@ -7,32 +7,6 @@ def rvm_ruby_dir
   @rvm_ruby_dir ||= File.expand_path('../..', `which ruby`.strip)
 end
 
-namespace :travis do
-  # Used to create the deb package.
-  #
-  # Known to work with opencflite rev 248.
-  task :prepare_deb do
-    sh "sudo apt-get install subversion libicu-dev"
-    sh "svn co https://opencflite.svn.sourceforge.net/svnroot/opencflite/trunk opencflite"
-    sh "cd opencflite && ./configure --target=linux --with-uuid=/usr --with-tz-includes=./include --prefix=/usr/local && make && sudo make install"
-    sh "sudo /sbin/ldconfig"
-  end
-
-  task :install_opencflite_debs do
-    sh "mkdir -p debs"
-    Dir.chdir("debs") do
-      sh "wget http://archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu44_4.4.2-2ubuntu0.11.04.1_i386.deb" unless File.exist?("libicu44_4.4.2-2ubuntu0.11.04.1_i386.deb")
-      base_url = "https://github.com/downloads/CocoaPods/OpenCFLite"
-      %w{ opencflite1_248-1_i386.deb opencflite-dev_248-1_i386.deb }.each do |deb|
-        sh "wget #{File.join(base_url, deb)}" unless File.exist?(deb)
-      end
-      sh "sudo dpkg -i *.deb"
-    end
-  end
-
-  task :setup => :install_opencflite_debs
-end
-
 namespace :ext do
   desc "Clean the ext files"
   task :clean do
