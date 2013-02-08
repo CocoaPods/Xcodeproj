@@ -57,6 +57,12 @@ module Xcodeproj
         #
         attribute :wraps_lines, String
 
+        # @return [String] Comments associated with this group.
+        #
+        #   This is apparently no longer used by Xcode.
+        #
+        attribute :comments, String
+
         #-----------------------------------------------------------------------#
 
         # @!group Helpers
