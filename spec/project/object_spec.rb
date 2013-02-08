@@ -10,6 +10,10 @@ module ProjectSpecs
         @object.name = 'AnObject'
       end
 
+      it "returns its name when converting to a string" do
+        @object.to_s.should == 'AnObject'
+      end
+
       it "returns its isa" do
         @object.isa.should == 'PBXFileReference'
       end

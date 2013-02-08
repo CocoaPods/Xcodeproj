@@ -117,6 +117,8 @@ module Xcodeproj
           result || isa.gsub(/^(PBX|XC)/, '')
         end
 
+        alias :to_s :display_name
+
         # @!group Reference counting
 
         # @return [Array<ObjectList>] The list of the objects that have a
