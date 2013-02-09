@@ -30,6 +30,12 @@ module Xcodeproj
         #
         attribute :run_only_for_deployment_postprocessing, String, '0'
 
+        # @return [String] Comments associated with this build phase.
+        #
+        #   This is apparently no longer used by Xcode.
+        #
+        attribute :comments, String
+
       end
 
       #-----------------------------------------------------------------------#

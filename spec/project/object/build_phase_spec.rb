@@ -20,6 +20,10 @@ module ProjectSpecs
       @phase.run_only_for_deployment_postprocessing.should == "0"
     end
 
+    it "is initialized with empty comments" do
+      @phase.comments.should.be.nil
+    end
+
     it "can add a file reference to its build files" do
       file = @project.new_file('some/file')
       @phase.add_file_reference(file)

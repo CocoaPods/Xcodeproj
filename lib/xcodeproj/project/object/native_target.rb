@@ -14,6 +14,12 @@ module Xcodeproj
         #
         attribute :product_name, String
 
+        # @return [String] Comments associated with this target.
+        #
+        #   This is apparently no longer used by Xcode.
+        #
+        attribute :comments, String
+
         # @return [XCConfigurationList] the list of the build configurations of
         #         the target. This list commonly include two configurations
         #         `Debug` and `Release`.
