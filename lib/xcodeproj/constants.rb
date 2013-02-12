@@ -4,23 +4,23 @@ module Xcodeproj
   #
   module Constants
 
-    # The last known iOS SDK (stable).
+    # @return [String] The last known iOS SDK (stable).
     #
     LAST_KNOWN_IOS_SDK = '6.1'
 
-    # The last known OS X SDK (stable).
+    # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK  = '10.8'
 
-    # The last known archive version to Xcodeproj.
+    # @return [String] The last known archive version to Xcodeproj.
     #
     LAST_KNOWN_ARCHIVE_VERSION = 1
 
-    # The last known object version to Xcodeproj.
+    # @return [String] The last known object version to Xcodeproj.
     #
     LAST_KNOWN_OBJECT_VERSION  = 46
 
-    # The all the known ISAs grouped by superclass.
+    # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
       'AbstractObject' => %w[
@@ -58,11 +58,11 @@ module Xcodeproj
       ]
     }.freeze
 
-    # The list of the super classes for each ISA.
+    # @return [Array] The list of the super classes for each ISA.
     #
     ISAS_SUPER_CLASSES = %w[ AbstractObject AbstractBuildPhase PBXGroup ]
 
-    # The known file types corresponding to each extension.
+    # @return [Hash] The known file types corresponding to each extension.
     #
     FILE_TYPES_BY_EXTENSION = {
       'a'           => 'archive.ar',
@@ -75,7 +75,7 @@ module Xcodeproj
       'xcdatamodel' => 'wrapper.xcdatamodel',
     }.freeze
 
-    # The uniform type identifier of various product types.
+    # @return [Hash] The uniform type identifier of various product types.
     #
     PRODUCT_TYPE_UTI = {
       :application     => 'com.apple.product-type.application',
@@ -83,8 +83,8 @@ module Xcodeproj
       :static_library  => 'com.apple.product-type.library.static',
     }.freeze
 
-    # The common build settings grouped by platform, and build configuration
-    # name.
+    # @return [Hash] The common build settings grouped by platform, and build
+    #         configuration name.
     #
     COMMON_BUILD_SETTINGS = {
       :all => {
@@ -137,7 +137,8 @@ module Xcodeproj
       }.freeze,
     }.freeze
 
-    # The corresponding numeric value of each copy build phase destination.
+    # @return [Hash] The corresponding numeric value of each copy build phase
+    #         destination.
     #
     COPY_FILES_BUILD_PHASE_DESTINATIONS = {
       :absolute_path      =>  '0',
@@ -152,7 +153,7 @@ module Xcodeproj
       :plug_ins           => '13'
     }.freeze
 
-    # The extensions which are associated with header files
+    # @return [Hash] The extensions which are associated with header files.
     #
     HEADER_FILES_EXTENSIONS = %w| .h .hh .hpp |.freeze
 

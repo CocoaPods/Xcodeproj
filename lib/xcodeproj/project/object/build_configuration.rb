@@ -19,7 +19,7 @@ module Xcodeproj
         attribute :build_settings, Hash, {}
 
         # @return [PBXFileReference] an optional file reference to a
-        #   configuration file (`.xcconfig`).
+        #         configuration file (`.xcconfig`).
         #
         has_one :base_configuration_reference, PBXFileReference
 

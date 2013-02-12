@@ -16,11 +16,11 @@ module Xcodeproj
         # @return [Hash{String => String}] attributes the attributes of the
         #         target.
         #
-        #   The hash might contain the following keys:
+        # @note   The hash might contain the following keys:
         #
-        #   - `CLASSPREFIX`
-        #   - `LastUpgradeCheck`
-        #   - `ORGANIZATIONNAME`
+        #         - `CLASSPREFIX`
+        #         - `LastUpgradeCheck`
+        #         - `ORGANIZATIONNAME`
         #
         attribute :attributes, Hash, {'LastUpgradeCheck' => '0450'}
 

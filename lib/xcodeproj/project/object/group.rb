@@ -10,65 +10,71 @@ module Xcodeproj
         # @!group Attributes
 
         # @return [ObjectList<PBXGroup, PBXFileReference>]
-        #   the objects contained by the group.
+        #         the objects contained by the group.
         #
         has_many :children, [PBXGroup, PBXFileReference, PBXReferenceProxy]
 
         # @return [String] the source tree to which this group is relative.
         #
-        #   Usually is group <group>.
+        # @note   Usually is group <group>.
         #
         attribute :source_tree, String, '<group>'
 
         # @return [String] the path to a folder in the file system.
         #
-        #   This attribute is present for groups that are linked to a folder in
-        #   the file system.
+        # @note   This attribute is present for groups that are linked to a
+        #         folder in the file system.
         #
         attribute :path, String
 
         # @return [String] the name of the group.
         #
-        #   If path is specified this attribute is not present.
+        # @note   If path is specified this attribute is not present.
         #
         attribute :name, String
 
         # @return [String] Whether Xcode should use tabs for text alignment.
         #
-        #   E.g. `1`
+        # @example
+        #   `1`
         #
         attribute :uses_tabs, String
 
         # @return [String] The width of the indent.
         #
-        #   E.g. `2`
+        # @example
+        #   `2`
         #
         attribute :indent_width, String
 
         # @return [String] The width of the tabs.
         #
-        #   E.g. `2`
+        # @example
+        #   `2`
         #
         attribute :tab_width, String
 
         # @return [String] Whether Xcode should wrap lines.
         #
-        #   E.g. `1`
+        # @example
+        #   `1`
         #
         attribute :wraps_lines, String
 
         # @return [String] Comments associated with this group.
         #
-        #   This is apparently no longer used by Xcode.
+        # @note   This is apparently no longer used by Xcode.
         #
         attribute :comments, String
 
-        #-----------------------------------------------------------------------#
+        #---------------------------------------------------------------------#
+
+        public
 
         # @!group Helpers
 
         # @return [String] the name of the group taking into account the path
-        #   or other factors if needed.
+        #         or other factors if needed.
         #
         def display_name
           if name
@@ -81,21 +87,20 @@ module Xcodeproj
         end
 
         # @return [Array<PBXFileReference>] the files references in the group
-        #   children.
+        #         children.
         #
         def files
           children.select { |obj| obj.class == PBXFileReference }
         end
 
-        # @return [Array<PBXGroup>] the groups in the group
-        #   children.
+        # @return [Array<PBXGroup>] the groups in the group children.
         #
         def groups
           children.select { |obj| obj.class == PBXGroup }
         end
 
         # @return [Array<XCVersionGroup>] the version groups in the group
-        #   children.
+        #         children.
         #
         def version_groups
           children.select { |obj| obj.class == XCVersionGroup }
@@ -104,13 +109,15 @@ module Xcodeproj
         # Creates a new file reference with the given path and adds it to the
         # group or to an optional subpath.
         #
-        # @note The subpath is created if needed, similar to the UNIX command `mkdir -p`
+        # @note The subpath is created if needed, similar to the UNIX command
+        #       `mkdir -p`
         #
-        # @param [#to_s] path
-        #   the file system path of the file.
+        # @param  [#to_s] path
+        #         the file system path of the file.
         #
-        # @param [String] sub_group_path
-        #   an optional subgroup path indicating the groups separated by a `/`.
+        # @param  [String] sub_group_path
+        #         an optional subgroup path indicating the groups separated by
+        #         a `/`.
         #
         # @return [PBXFileReference] the new file reference.
         #
@@ -128,12 +135,12 @@ module Xcodeproj
         # Creates a new group with the given name and adds it to the children
         # of the group.
         #
-        # @note (see #new_file)
+        # @note   @see new_file
         #
-        # @param [#to_s] name
-        #   the name of the new group.
+        # @param  [#to_s] name
+        #         the name of the new group.
         #
-        # @param [String] sub_group_path (see #new_file)
+        # @param  [String] sub_group_path @see new_file
         #
         # @return [PBXGroup] the new group.
         #
@@ -149,12 +156,13 @@ module Xcodeproj
         # Creates a file reference to a static library and adds it to the
         # children of the group.
         #
-        # @note (see #new_file)
+        # @note @see new_file
         #
-        # @param [#to_s] product_name
-        #   the name of the new static library.
+        # @param  [#to_s] product_name
+        #         the name of the new static library.
         #
-        # @param [String] sub_group_path (see #new_file)#
+        # @param  [String] sub_group_path @see new_file
+        #
         # @return [PBXFileReference] the new group.
         #
         def new_static_library(product_name, sub_group_path = nil)
@@ -182,9 +190,7 @@ module Xcodeproj
         # Traverses the children groups and finds the group with the given
         # path, if exists.
         #
-        # @param path (see #find_subpath)
-        #
-        # @note (see #find_subpath)
+        # @see find_subpath
         #
         def [](path)
           find_subpath(path, false)
@@ -217,7 +223,8 @@ module Xcodeproj
         #   g.name #=> 'Frameworks'
         #
         # @return [PBXGroup] the group if found.
-        # @return [Nil] if the path could not be found and should create is false.
+        # @return [Nil] if the path could not be found and should create is
+        #         false.
         #
         def find_subpath(path, should_create = false)
           return self unless path
@@ -251,7 +258,7 @@ module Xcodeproj
         # @note   This is safe to call in an object list because it modifies it
         #         in C in Ruby MRI. In other Ruby implementation it can cause
         #         issues if there is one call to the notification enabled
-        #         methods not compensated by the corespondent oposite (loss of
+        #         methods not compensated by the corespondent opposite (loss of
         #         UUIDs and objects from the project).
         #
         # @return [void]
@@ -305,6 +312,9 @@ module Xcodeproj
         attribute :version_group_type, String, 'wrapper.xcdatamodel'
 
       end
+
+      #-----------------------------------------------------------------------#
+
     end
   end
 end

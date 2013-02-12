@@ -30,102 +30,9 @@ module Xcodeproj
         #
         has_many :dependencies, PBXTargetDependency
 
-      end
+        #--------------------------------------#
 
-      #-----------------------------------------------------------------------#
-
-      # Represents a target handled by Xcode.
-      #
-      class PBXNativeTarget < AbstractTarget
-
-        # @!group Attributes
-
-        # @return [PBXBuildRule] the build rules of this target.
-        #
-        has_many :build_rules, PBXBuildRule
-
-        # @return [String] the build product type identifier.
-        #
-        attribute :product_type, String, 'com.apple.product-type.library.static'
-
-        # @return [PBXFileReference] the reference to the product file.
-        #
-        has_one :product_reference, PBXFileReference
-
-        # @return [String] the install path of the product.
-        #
-        attribute :product_install_path, String
-
-        # @return [PBXBuildRule] the build phases of the target.
-        #
-        # @note   Apparently only PBXCopyFilesBuildPhase and
-        #         PBXShellScriptBuildPhase can appear multiple times in a
-        #         target.
-        #
-        has_many :build_phases, AbstractBuildPhase
-
-      end
-
-      #-----------------------------------------------------------------------#
-
-      # Represents a target that only consists in a aggregate of targets.
-      #
-      # @todo apparently it can't have build rules.
-      #
-      class PBXAggregateTarget < AbstractTarget
-
-        # @!group Attributes
-
-        # @return [PBXBuildRule] the build phases of the target.
-        #
-        # @note   Apparently only PBXCopyFilesBuildPhase and
-        #         PBXShellScriptBuildPhase can appear multiple times in a
-        #         target.
-        #
-        has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
-
-      end
-
-      #-----------------------------------------------------------------------#
-
-      # Represents a legacy target which uses an external build tool.
-      #
-      # Apparently it can't have any build phase but the attribute can be
-      # present.
-      #
-      class PBXLegacyTarget < AbstractTarget
-
-        # @!group Attributes
-
-        # @return [String] e.g "Dir"
-        #
-        attribute :build_working_directory, String
-
-        # @return [String] e.g "$(ACTION)"
-        #
-        attribute :build_arguments_string, String
-
-        # @return [String] e.g "1"
-        #
-        attribute :pass_build_settings_in_environment, String
-
-        # @return [String] e.g "/usr/bin/make"
-        #
-        attribute :build_tool_path, String
-
-        # @return [PBXBuildRule] the build phases of the target.
-        #
-        # @note   Apparently only PBXCopyFilesBuildPhase and
-        #         PBXShellScriptBuildPhase can appear multiple times in a
-        #         target.
-        #
-        has_many :build_phases, AbstractBuildPhase
-
-      end
-
-      #----------------------------------------------------------------------#
-
-      class AbstractTarget < AbstractObject
+        public
 
         # @!group Helpers
 
@@ -154,8 +61,6 @@ module Xcodeproj
               project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
           end
         end
-
-        #--------------------------------------#
 
         # @return [ObjectList<XCBuildConfiguration>] the build
         #         configurations of the target.
@@ -229,7 +134,39 @@ module Xcodeproj
 
       #-----------------------------------------------------------------------#
 
+      # Represents a target handled by Xcode.
+      #
       class PBXNativeTarget < AbstractTarget
+
+        # @!group Attributes
+
+        # @return [PBXBuildRule] the build rules of this target.
+        #
+        has_many :build_rules, PBXBuildRule
+
+        # @return [String] the build product type identifier.
+        #
+        attribute :product_type, String, 'com.apple.product-type.library.static'
+
+        # @return [PBXFileReference] the reference to the product file.
+        #
+        has_one :product_reference, PBXFileReference
+
+        # @return [String] the install path of the product.
+        #
+        attribute :product_install_path, String
+
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
+        #
+        has_many :build_phases, AbstractBuildPhase
+
+        #--------------------------------------#
+
+        public
 
         # @!group Helpers
 
@@ -254,7 +191,9 @@ module Xcodeproj
             if (header_extensions.include?(extension))
               headers_build_phase.files << build_file
             else
-              build_file.settings = { 'COMPILER_FLAGS' => compiler_flags } if compiler_flags && !compiler_flags.empty?
+              if compiler_flags && !compiler_flags.empty?
+                build_file.settings = { 'COMPILER_FLAGS' => compiler_flags }
+              end
               source_build_phase.files << build_file
             end
           end
@@ -307,12 +246,12 @@ module Xcodeproj
         # @return [PBXFrameworksBuildPhase] the frameworks build phase.
         #
         def frameworks_build_phase
-          bp = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
-          unless bp
-            bp = project.new(PBXFrameworksBuildPhase)
-            build_phases << bp
+          phase = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
+          unless phase
+            phase= project.new(PBXFrameworksBuildPhase)
+            build_phases << phase
           end
-          bp
+          phase
         end
 
         # Finds or creates the resources build phase of the target.
@@ -322,14 +261,75 @@ module Xcodeproj
         # @return [PBXResourcesBuildPhase] the resources build phase.
         #
         def resources_build_phase
-          bp = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
-          unless bp
-            bp = project.new(PBXResourcesBuildPhase)
-            build_phases << bp
+          phase = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
+          unless phase
+            phase = project.new(PBXResourcesBuildPhase)
+            build_phases << phase
           end
-          bp
+          phase
         end
+
       end
+
+      #-----------------------------------------------------------------------#
+
+      # Represents a target that only consists in a aggregate of targets.
+      #
+      # @todo Apparently it can't have build rules.
+      #
+      class PBXAggregateTarget < AbstractTarget
+
+        # @!group Attributes
+
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
+        #
+        has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
+
+      end
+
+      #-----------------------------------------------------------------------#
+
+      # Represents a legacy target which uses an external build tool.
+      #
+      # Apparently it can't have any build phase but the attribute can be
+      # present.
+      #
+      class PBXLegacyTarget < AbstractTarget
+
+        # @!group Attributes
+
+        # @return [String] e.g "Dir"
+        #
+        attribute :build_working_directory, String
+
+        # @return [String] e.g "$(ACTION)"
+        #
+        attribute :build_arguments_string, String
+
+        # @return [String] e.g "1"
+        #
+        attribute :pass_build_settings_in_environment, String
+
+        # @return [String] e.g "/usr/bin/make"
+        #
+        attribute :build_tool_path, String
+
+        # @return [PBXBuildRule] the build phases of the target.
+        #
+        # @note   Apparently only PBXCopyFilesBuildPhase and
+        #         PBXShellScriptBuildPhase can appear multiple times in a
+        #         target.
+        #
+        has_many :build_phases, AbstractBuildPhase
+
+      end
+
+      #-----------------------------------------------------------------------#
+
     end
   end
 end

@@ -24,14 +24,16 @@ module Xcodeproj
         #
         has_one :remote_ref, PBXContainerItemProxy
 
-        # @return   [String] the source tree for the path of the reference.
+        # @return [String] the source tree for the path of the reference.
         #
-        # @example  Possible value
-        #           "BUILT_PRODUCTS_DIR"
+        # @example
+        #   "BUILT_PRODUCTS_DIR"
         #
         attribute :source_tree, String
 
         #---------------------------------------------------------------------#
+
+        public
 
         # @!group Helpers
 
@@ -42,6 +44,8 @@ module Xcodeproj
         def proxy?
           true
         end
+
+        #---------------------------------------------------------------------#
 
       end
     end

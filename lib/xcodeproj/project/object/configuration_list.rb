@@ -28,6 +28,8 @@ module Xcodeproj
 
         #---------------------------------------------------------------------#
 
+        public
+
         # @!group Helpers
 
         # Returns the build settings of the build configuration with
@@ -39,10 +41,12 @@ module Xcodeproj
         # @return [Hash {String=>String}] the build settings
         #
         def build_settings(build_configuration_name)
-          if config = build_configurations.find { |bc| bc.name == build_configuration_name }
-            config.build_settings
-          end
+          config = build_configurations.find { |bc| bc.name == build_configuration_name }
+          config.build_settings if config
         end
+
+        #---------------------------------------------------------------------#
+
       end
     end
   end

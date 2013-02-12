@@ -11,36 +11,105 @@ module Xcodeproj
         # @!group Attributes
 
         # @return [ObjectList<PBXBuildFile>] the files processed by this build
-        #   configuration.
+        #         configuration.
         #
         has_many :files, PBXBuildFile
 
         # @return [String] some kind of magic number which usually is
-        #   '2147483647' (can be also `8` and `12` in PBXCopyFilesBuildPhase,
-        #   one of the masks is run_only_for_deployment_postprocessing).
+        #         '2147483647' (can be also `8` and `12` in
+        #         PBXCopyFilesBuildPhase, one of the masks is
+        #         run_only_for_deployment_postprocessing).
         #
         attribute :build_action_mask, String, '2147483647'
 
         # @return [String] whether or not this should only be processed before
-        #   deployment. Can be either '0', or '1'.
+        #         deployment. Can be either '0', or '1'.
         #
-        # This option is exposed in Xcode in the UI of PBXCopyFilesBuildPhase as
-        # `Copy only when installing` or in PBXShellScriptBuildPhase as `Run
-        # script only when installing`.
+        # @note   This option is exposed in Xcode in the UI of
+        #         PBXCopyFilesBuildPhase as `Copy only when installing` or in
+        #         PBXShellScriptBuildPhase as `Run script only when
+        #         installing`.
         #
         attribute :run_only_for_deployment_postprocessing, String, '0'
 
         # @return [String] Comments associated with this build phase.
         #
-        #   This is apparently no longer used by Xcode.
+        # @note   This is apparently no longer used by Xcode.
         #
         attribute :comments, String
+
+        #--------------------------------------#
+
+        public
+
+        # @!group Helpers
+
+        # @return [Array<PBXFileReference>] the list of all the files
+        #         referenced by this build phase.
+        #
+        def files_references
+          files.map { |bf| bf.file_ref }.uniq
+        end
+
+        # Adds a new build file, initialized with the given file reference, to
+        # the phase.
+        #
+        # @param  [PBXFileReference] file
+        #         the file reference that should be added to the build phase.
+        #
+        # @return [PBXBuildFile] the build file generated.
+        #
+        def add_file_reference(file)
+          build_file = project.new(PBXBuildFile)
+          build_file.file_ref = file
+          files << build_file
+          build_file
+        end
+
+        # Removes the build file associated with the given file reference from
+        # the phase.
+        #
+        # @param  [PBXFileReference] file the file to remove
+        #
+        # @return [void]
+        #
+        def remove_file_reference(file)
+          build_file = files.find { |bf| bf.file_ref == file }
+          if build_file
+            build_file.file_ref = nil
+            build_file.remove_from_project
+          end
+        end
+
+        # Removes a build file from the phase and clears its relationship to
+        # the file reference.
+        #
+        # @param  [PBXBuildFile] build_file the file to remove
+        #
+        # @return [void]
+        #
+        def remove_build_file(build_file)
+          build_file.file_ref = nil
+          build_file.remove_from_project
+        end
+
+        # Removes all the build files from the phase and clears their
+        # relationship to the file reference.
+        #
+        # @return [void]
+        #
+        def clear_build_files
+          files.objects.each do |bf|
+            remove_build_file(bf)
+          end
+        end
 
       end
 
       #-----------------------------------------------------------------------#
 
-      # The phase responsible of copying headers (aka `Copy Headers`).
+      # The phase responsible of copying headers. Known as `Copy Headers` in
+      # the UI.
       #
       # @note This phase can appear only once in a target.
       #
@@ -50,7 +119,8 @@ module Xcodeproj
 
       #-----------------------------------------------------------------------#
 
-      # The phase responsible of compiling the files (aka `Compile Sources`).
+      # The phase responsible of compiling the files. Known as `Compile
+      # Sources` in the UI.
       #
       # @note This phase can appear only once in a target.
       #
@@ -60,8 +130,8 @@ module Xcodeproj
 
       #-----------------------------------------------------------------------#
 
-      # The phase responsible on linking with frameworks (aka `Link Binary With
-      # Libraries`).
+      # The phase responsible on linking with frameworks. Known as `Link Binary
+      # With Libraries` in the UI.
       #
       # @note This phase can appear only once in a target.
       #
@@ -72,8 +142,8 @@ module Xcodeproj
       #-----------------------------------------------------------------------#
 
       # The resources build phase apparently is a specialized copy build phase
-      # for resources (aka `Copy Bundle Resources`). It is unclear if this is
-      # the only one capable of optimize PNG.
+      # for resources. Known as `Copy Bundle Resources` in the UI. It is
+      # unclear if this is the only one capable of optimizing PNG.
       #
       # @note This phase can appear only once in a target.
       #
@@ -97,14 +167,14 @@ module Xcodeproj
         attribute :name, String
 
         # @return [String] the subpath of `dst_subfolder_spec` where this file
-        #   should be copied to.
+        #         should be copied to.
         #
-        #   Can accept environment variables like `$(PRODUCT_NAME)`.
+        # @note   Can accept environment variables like `$(PRODUCT_NAME)`.
         #
         attribute :dst_path, String, ''
 
         # @return [String] the path (destination) where the files should be
-        #   copied to.
+        #         copied to.
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
 
@@ -140,20 +210,20 @@ module Xcodeproj
 
         # @return [String] the path to the script interpreter.
         #
-        # Defaults to `/bin/sh`.
+        # @note   Defaults to `/bin/sh`.
         #
         attribute :shell_path, String, '/bin/sh'
 
         # @return [String] the actual script to perform.
         #
-        # Defaults to the empty string.
+        # @note   Defaults to the empty string.
         #
         attribute :shell_script, String, ''
 
         # @return [String] whether or not the ENV variables should be shown in
-        #   the build log.
+        #         the build log.
         #
-        # Defaults to true (`1`).
+        # @note   Defaults to true (`1`).
         #
         attribute :show_env_vars_in_log, String, '1'
       end
@@ -170,70 +240,6 @@ module Xcodeproj
 
       #-----------------------------------------------------------------------#
 
-      class AbstractBuildPhase < AbstractObject
-
-        # @!group Helpers
-
-        # @return [Array<PBXFileReference>] the list of all the files
-        #   referenced by this build phase.
-        #
-        def files_references
-          files.map { |bf| bf.file_ref }.uniq
-        end
-
-        # Adds a new build file, initialized with the given file reference, to
-        # the phase.
-        #
-        # @param [PBXFileReference] file
-        #   the file reference that should be added to the build phase.
-        #
-        # @return [PBXBuildFile] the build file generated.
-        #
-        def add_file_reference(file)
-          build_file = project.new(PBXBuildFile)
-          build_file.file_ref = file
-          files << build_file
-          build_file
-        end
-
-        # Removes the build file associated with the given file reference from
-        # the phase.
-        #
-        # @param [PBXFileReference] file the file to remove
-        #
-        # @return [void]
-        #
-        def remove_file_reference(file)
-          build_file = files.find { |bf| bf.file_ref == file }
-          if build_file
-            build_file.file_ref = nil
-            build_file.remove_from_project
-          end
-        end
-
-        # Removes a build file from the phase and clears its relationship to
-        # the file reference.
-        #
-        # @param [PBXBuildFile] build_file the file to remove
-        #
-        # @return [void]
-        #
-        def remove_build_file(build_file)
-          build_file.file_ref = nil
-          build_file.remove_from_project
-        end
-
-        # Removes all the build files from the phase and clears their
-        # relationship to the file reference.
-        #
-        # @return [void]
-        #
-        def clear_build_files
-          files.objects.each do |bf|
-            remove_build_file(bf)
-          end
-        end
-      end
     end
   end
 end
