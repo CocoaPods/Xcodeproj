@@ -23,6 +23,26 @@ module Xcodeproj
         #
         has_one :base_configuration_reference, PBXFileReference
 
+        #---------------------------------------------------------------------#
+
+        public
+
+        # @!group AbstractObject Hooks
+
+        # @return [Hash{String => Hash}] A hash suitable to display the object
+        #         to the user.
+        #
+        def pretty_print
+          data = {}
+          data['#Build Settings#'] = build_settings
+          if base_configuration_reference
+            data['#Base Configuration#'] = base_configuration_reference.pretty_print
+          end
+          { name => data }
+        end
+
+        #---------------------------------------------------------------------#
+
       end
     end
   end
