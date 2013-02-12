@@ -205,13 +205,13 @@ module Xcodeproj
     alias :to_plist :to_hash
 
     # Converts the objects tree to a hash substituting the hash
-    # of the referenced to their uuid reference. As a consequence the hash of
+    # of the referenced to their UUID reference. As a consequence the hash of
     # an object might appear multiple times and the information about their
     # uniqueness is lost.
     #
     # This method is designed to work in conjunction with {Hash#recursive_diff}
     # to provide a complete, yet readable, diff of two projects *not* affected
-    # by ISA differences.
+    # by differences in UUIDs.
     #
     # @return [Hash] a hash representation of the project different from the
     #         plist one.
@@ -233,10 +233,10 @@ module Xcodeproj
     # @example Saving a project
     #   project.save_as("path/to/Project.xcodeproj") #=> true
     #
-    # @param [String, Pathname] projpath  The path where the data should be
-    #                                     stored.
+    # @param  [String, Pathname] projpath
+    #         The path where the data should be stored.
     #
-    # @return [Boolean]                   Whether or not saving was successful.
+    # @return [Boolean] Whether or not saving was successful.
     #
     def save_as(projpath)
       projpath = projpath.to_s
