@@ -107,18 +107,21 @@ module Xcodeproj
           object.send("#{name}=", new_value)
         end
 
-        # Convenience method that sets the value of this attribute for a
-        #   given object to the default (if any).  It makes sense only for
-        #   `:simple` attributes.
+        # Convenience method that sets the value of this attribute for a given
+        # object to the default (if any).  It makes sense only for `:simple`
+        # attributes.
         #
-        # @param [AbstractObject] object
-        #   the object for which to set the default value.
+        # @param  [AbstractObject] object
+        #         the object for which to set the default value.
+        #
+        # @note   It is extremely important to duplicate the default values
+        #         otherwise kittens cry!
         #
         # @return [void]
         #
         def set_default(object)
           raise "[Xcodeproj] Set value called for a #{type} attribute" unless type == :simple
-          set_value(object, default_value) if default_value
+          set_value(object, default_value.dup) if default_value
         end
 
         # Checks that a given value is compatible with the attribute.
