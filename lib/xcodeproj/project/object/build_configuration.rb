@@ -34,9 +34,9 @@ module Xcodeproj
         #
         def pretty_print
           data = {}
-          data['#Build Settings#'] = build_settings
+          data['Build Settings'] = build_settings
           if base_configuration_reference
-            data['#Base Configuration#'] = base_configuration_reference.pretty_print
+            data['Base Configuration'] = base_configuration_reference.pretty_print
           end
           { name => data }
         end
