@@ -138,9 +138,9 @@ module ProjectSpecs
         group = PBXGroup.new(@project, uuid_group)
         group.configure_with_plist(objects_by_uuid_plist)
         group.children.first.equal?(file).should.be.true
+        true.should.be.true
       end
 
-      # TODO: use UI class
       it "discards UUIDs which cannot be found in the objects hash" do
         uuid_file  = 'file_uuid'
         uuid_group = 'group_uuid'
@@ -181,14 +181,53 @@ module ProjectSpecs
       end
     end
 
-    class PBXTestClass < AbstractObject
-      attribute :value,   String
-      has_one   :file,  Xcodeproj::Project::Object::PBXFileReference
-      has_many  :files, Xcodeproj::Project::Object::PBXFileReference
-      attribute :value_with_default, String, 'default'
+    #-------------------------------------------------------------------------#
+
+    describe "Alternative representations" do
+
+      before do
+        @file = @project.new_file('Classes/file.m')
+        @group = @project.main_group
+      end
+
+      it "returns the tree representation" do
+        @file.to_tree_hash.should == {
+          "displayName" => "file.m",
+          "isa" => "PBXFileReference",
+          "name" => "file.m",
+          "path" => "Classes/file.m",
+          "sourceTree" => "SOURCE_ROOT",
+          "lastKnownFileType" => "sourcecode.c.objc",
+          "includeInIndex" => "1"
+        }
+        children = @group.to_tree_hash['children'].map { |child| child['name'] }
+        children.should == ["Products", "Frameworks", "file.m"]
+      end
+
+      it "returns the pretty print representation" do
+        @file.pretty_print.should == "file.m"
+        @group.pretty_print.should == {
+          "Main Group" => [
+            {"Products"=>[]},
+            {"Frameworks"=>[]},
+            "file.m"
+          ]
+        }
+      end
+
     end
 
+
+    #-------------------------------------------------------------------------#
+
     describe "Concerning attributes" do
+
+      class PBXTestClass < AbstractObject
+        attribute :value,   String
+        has_one   :file,  Xcodeproj::Project::Object::PBXFileReference
+        has_many  :files, Xcodeproj::Project::Object::PBXFileReference
+        attribute :value_with_default, String, 'default'
+      end
 
       before do
         @test_instance = PBXTestClass.new(@project, 'uuid')

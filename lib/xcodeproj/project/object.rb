@@ -355,6 +355,22 @@ module Xcodeproj
           hash
         end
 
+        # @return [Hash{String => Hash}] A hash suitable to display the object
+        #         to the user.
+        #
+        def pretty_print
+          if to_many_attributes.count == 1
+            children = to_many_attributes.first.get_value(self)
+            {display_name => children.map(&:pretty_print)}
+          else
+            display_name
+          end
+        end
+
+        #---------------------------------------------------------------------#
+
+        public
+
         # @!group Object methods
 
         def ==(other)
