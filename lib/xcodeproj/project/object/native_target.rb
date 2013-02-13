@@ -130,6 +130,24 @@ module Xcodeproj
           phase
         end
 
+        #--------------------------------------#
+
+        public
+
+        # @!group AbstractObject Hooks
+
+        # @return [Hash{String => Hash}] A hash suitable to display the object
+        #         to the user.
+        #
+        def pretty_print
+          {
+            display_name => {
+              'Build Phases' => build_phases.map(&:pretty_print),
+              'Build Configurations' => build_configurations.map(&:pretty_print)
+            }
+          }
+        end
+
       end
 
       #-----------------------------------------------------------------------#

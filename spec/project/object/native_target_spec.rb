@@ -2,6 +2,7 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXNativeTarget do
+
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
     end
@@ -39,7 +40,27 @@ module ProjectSpecs
       @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
       @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
     end
+
+    #-------------------------------------------------------------------------#
+
+    describe "AbstractObject Hooks" do
+
+      it "returns the pretty print representation" do
+        pretty_print = @target.pretty_print
+        pretty_print['Pods']['Build Phases'].should == [
+          { "SourcesBuildPhase" => [] },
+          { "FrameworksBuildPhase" => ["Foundation.framework"] }
+        ]
+        build_configurations = pretty_print['Pods']['Build Configurations']
+        build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
+
+      end
+
+    end
+
   end
+
+  #---------------------------------------------------------------------------#
 
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
     before do
@@ -90,7 +111,10 @@ module ProjectSpecs
     end
   end
 
+  #---------------------------------------------------------------------------#
+
   describe "A new Xcodeproj::Project::Object::PBXNativeTarget" do
+
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
     end
@@ -99,9 +123,13 @@ module ProjectSpecs
       @target.build_settings('Release').should == settings(:all, :release, :ios, [:ios, :release])
       @target.build_settings('Debug').should == settings(:all, :debug, :ios, [:ios, :debug])
     end
+
   end
 
+  #---------------------------------------------------------------------------#
+
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its iOS specific helpers" do
+
     before do
       @target = @project.new_target(:static_library, 'Pods', :ios)
     end
@@ -120,9 +148,13 @@ module ProjectSpecs
       @target.build_settings('Release').should == settings(:all, :ios, [:ios, :release])
       @target.build_settings('Debug').should == settings(:all, :ios, :debug)
     end
+
   end
 
+  #---------------------------------------------------------------------------#
+
   describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its OS X specific helpers" do
+
     before do
       @target = @project.new_target(:static_library, 'Pods', :osx)
     end
@@ -141,5 +173,11 @@ module ProjectSpecs
       @target.build_settings('Release').should == settings(:all, :osx, [:osx, :release])
       @target.build_settings('Debug').should == settings(:all, :osx, :debug, [:osx, :debug])
     end
+
   end
+
+
+
+  #---------------------------------------------------------------------------#
+
 end
