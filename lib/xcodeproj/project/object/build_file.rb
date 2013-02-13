@@ -50,7 +50,7 @@ module Xcodeproj
         #         object to the user.
         #
         def pretty_print
-          if settings.empty?
+          if settings.nil? || settings.empty?
             display_name
           else
             { display_name => settings }
