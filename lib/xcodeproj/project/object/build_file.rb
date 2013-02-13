@@ -33,6 +33,32 @@ module Xcodeproj
           PBXReferenceProxy
         ]
 
+        #---------------------------------------------------------------------#
+
+        public
+
+        # @!group AbstractObject Hooks
+
+        # @return [String] A name suitable for displaying the object to the
+        #         user.
+        #
+        def display_name
+          file_ref.display_name
+        end
+
+        # @return [Hash{String => Hash}, String] A hash suitable to display the
+        #         object to the user.
+        #
+        def pretty_print
+          if settings.empty?
+            display_name
+          else
+            { display_name => settings }
+          end
+        end
+
+        #---------------------------------------------------------------------#
+
       end
     end
   end
