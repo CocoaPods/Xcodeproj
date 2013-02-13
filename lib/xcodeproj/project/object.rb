@@ -181,6 +181,8 @@ module Xcodeproj
 
         #---------------------------------------------------------------------#
 
+        public
+
         # @!group Plist related methods
 
         # Configures the object with the objects hash from a plist.
@@ -267,13 +269,13 @@ module Xcodeproj
         #
         def object_with_uuid(uuid, objects_by_uuid_plist, attribute)
           unless object = project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
-            STDERR.puts "`#{inspect}` attempted to initialize an object with "\
+            UI.warn "`#{inspect}` attempted to initialize an object with " \
               "an unknown UUID. `#{uuid}` for attribute: `#{attribute.name}`."\
-              " This can be the result of a merge and the unkonw UUID is "    \
+              " This can be the result of a merge and the unknown UUID is "    \
               "being discarded."
           end
           object
-        rescue NameError => exception
+        rescue NameError
           attributes = objects_by_uuid_plist[uuid]
           raise "`#{isa}` attempted to initialize an object with unknown ISA "\
                 "`#{attributes['isa']}` from attributes: `#{attributes}`\n"   \

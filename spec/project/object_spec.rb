@@ -3,6 +3,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 module ProjectSpecs
 
   describe AbstractObject do
+
     describe "In general" do
 
       before do
@@ -93,6 +94,8 @@ module ProjectSpecs
       end
     end
 
+    #-------------------------------------------------------------------------#
+
     describe "Concerning plist serialization" do
 
       before do
@@ -144,6 +147,7 @@ module ProjectSpecs
         objects_by_uuid_plist = {
           uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup'}
         }
+        STDERR.expects(:puts)
         group = PBXGroup.new(@project, uuid_group)
         group.configure_with_plist(objects_by_uuid_plist)
         group.files.should.be.empty
@@ -239,5 +243,8 @@ module ProjectSpecs
         f.referrers.should.include?(@test_instance)
       end
     end
+
+    #-------------------------------------------------------------------------#
+
   end
 end
