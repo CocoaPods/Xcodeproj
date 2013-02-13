@@ -18,8 +18,17 @@ module Xcodeproj
 
       def run
         require 'yaml'
-        yaml = xcodeproj.to_tree_hash.to_yaml
-        puts yaml
+        pretty_print = xcodeproj.pretty_print
+        sections = []
+        pretty_print.each do |key, value|
+        section = key.green
+          yaml = value.to_yaml
+          yaml.gsub!(/^---$/,'')
+          yaml.gsub!(/^-/,"\n-")
+          section << yaml
+          sections << section
+        end
+        puts sections * "\n\n"
       end
     end
   end

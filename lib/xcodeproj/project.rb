@@ -227,6 +227,18 @@ module Xcodeproj
       hash
     end
 
+    # @return [Hash{String => Hash}] A hash suitable to display the project
+    #         to the user.
+    #
+    def pretty_print
+      build_configurations = root_object.build_configuration_list.build_configurations
+      {
+        'File References' => root_object.main_group.pretty_print.values.first,
+        'Targets' => root_object.targets.map(&:pretty_print),
+        'Build Configurations' => build_configurations.map(&:pretty_print)
+      }
+    end
+
     # Serializes the internal data as a property list and stores it on disk at
     # the given path (`xcodeproj` file).
     #

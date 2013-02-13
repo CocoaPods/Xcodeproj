@@ -149,7 +149,7 @@ module ProjectSpecs
         before_count = @project.generated_uuids.count.should
         @project.generate_available_uuid_list(100)
         # Checking against 75 instead of 100 to prevent this test for failing
-        # for bad luck. Not sure what is the statical likelyhood of 25
+        # for bad luck. Not sure what is the statical likelihood of 25
         # collision out of 100.
         @project.generated_uuids.count.should >= (before_count + 75)
       end
@@ -245,7 +245,7 @@ module ProjectSpecs
         @project.build_settings('Release').should == {}
       end
 
-      it "returns a succint diff reppresentation of the project" do
+      it "returns a succinct diff representation of the project" do
         before_tree_hash = @project.to_tree_hash
         @project.new_group('Pods')
         diff = @project.to_tree_hash.recursive_diff(before_tree_hash)
@@ -254,7 +254,24 @@ module ProjectSpecs
             "displayName"=>"Pods", "isa"=>"PBXGroup", "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[]}
         }]}]}}}
       end
+
+      it "returns a pretty print representation" do
+        pretty_print = @project.pretty_print
+        pretty_print.should == {
+          "File References" => [
+            {"Products" => [] },
+            {"Frameworks" => [] }
+          ],
+          "Targets" => [],
+          "Build Configurations" => [
+            { "Release" => {"Build Settings" => {} } },
+            { "Debug" => {"Build Settings" => {} } }
+          ]
+        }
+      end
     end
+
+    #-------------------------------------------------------------------------#
 
 
     describe "Concerning helpers for creating new objects" do
@@ -284,7 +301,7 @@ module ProjectSpecs
         file.source_tree.should == 'DEVELOPER_DIR'
       end
 
-      it "links system frameworks to the last knwon sdk if needed" do
+      it "links system frameworks to the last known SDK if needed" do
         target = stub(:sdk => 'iphoneos')
         file = @project.add_system_framework('QuartzCore', target)
         sdk_version = Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
