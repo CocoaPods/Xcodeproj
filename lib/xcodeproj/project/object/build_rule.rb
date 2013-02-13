@@ -14,38 +14,44 @@ module Xcodeproj
 
         # @return [String] a string representing what compiler to use.
         #
-        #   E.g. `com.apple.compilers.proxy.script`.
+        # @example
+        #   `com.apple.compilers.proxy.script`.
         #
         attribute :compiler_spec, String
 
         # @return [String] the type of the files that should be processed by
-        #   this rule.
+        #         this rule.
         #
-        #   E.g. `pattern.proxy`.
+        # @example
+        #   `pattern.proxy`.
         #
         attribute :file_type, String
 
         # @return [String] the pattern of the files that should be processed by
-        #   this rule. This attribute is an alternative to to `file_type`.
+        #         this rule. This attribute is an alternative to to
+        #         `file_type`.
         #
-        #   E.g. `*.css`.
+        # @example
+        #   `*.css`.
         #
         attribute :file_patterns, String
 
         # @return [String] whether the rule is editable.
         #
-        #   E.g. `1`.
+        # @example
+        #   `1`.
         #
         attribute :is_editable, String, '1'
 
         # @return [ObjectList<PBXFileReference>] the file references for the
-        #   output files.
+        #         output files.
         #
         attribute :output_files, Array
 
         # @return [String] the content of the script to use for the build rule.
         #
-        #   Present if the #{#compiler_spec} is `com.apple.compilers.proxy.script`
+        # @note   This attribute is present if the #{#compiler_spec} is
+        #         `com.apple.compilers.proxy.script`
         #
         attribute :script, String
 

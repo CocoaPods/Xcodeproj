@@ -123,6 +123,9 @@ module Xcodeproj
     # @param  [Hash, Config] config
     #         The xcconfig representation to merge.
     #
+    # @todo   The logic to normalize an hash should be extracted and the
+    #         initializer should not call this method.
+    #
     # @return [void]
     #
     def merge!(xcconfig)
