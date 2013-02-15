@@ -10,11 +10,12 @@ module Xcodeproj
     end
   end
 
-  autoload :Config,         'xcodeproj/config'
   autoload :Command,        'xcodeproj/command'
+  autoload :Config,         'xcodeproj/config'
   autoload :Constants,      'xcodeproj/constants'
+  autoload :Differ,         'xcodeproj/differ'
   autoload :Helper,         'xcodeproj/helper'
   autoload :Project,        'xcodeproj/project'
-  autoload :Workspace,      'xcodeproj/workspace'
   autoload :UI,             'xcodeproj/user_interface'
+  autoload :Workspace,      'xcodeproj/workspace'
 end

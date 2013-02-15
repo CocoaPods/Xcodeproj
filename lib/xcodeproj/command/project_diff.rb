@@ -32,20 +32,20 @@ module Xcodeproj
 
 
       def run
-        hash_1 = Project.new(@path_project1).to_tree_hash
-        hash_2 = Project.new(@path_project2).to_tree_hash
-        (@keys_to_ignore).each do |key|
-          hash_1.recursive_delete(key)
-          hash_2.recursive_delete(key)
+        hash_1 = Project.new(@path_project1).to_tree_hash.dup
+        hash_2 = Project.new(@path_project2).to_tree_hash.dup
+        @keys_to_ignore.each do |key|
+          Differ.clean_hash!(hash_1, key)
+          Differ.clean_hash!(hash_2, key)
         end
 
-        diff = hash_1.recursive_diff(hash_2, @path_project1, @path_project2)
-        diff.recursive_delete('displayName')
+        diff = Differ.project_diff(hash_1, hash_2, @path_project1, @path_project2)
 
         require 'yaml'
         yaml = diff.to_yaml
         yaml = yaml.gsub(@path_project1, @path_project1.cyan)
         yaml = yaml.gsub(@path_project2, @path_project2.magenta)
+        yaml = yaml.gsub(":diff:", "diff:".yellow)
         puts yaml
       end
     end

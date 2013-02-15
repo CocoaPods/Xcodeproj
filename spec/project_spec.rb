@@ -88,10 +88,8 @@ module ProjectSpecs
       it "can regenerate the EXACT plist that initialized it" do
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
         generated = @project.to_plist
-        diff = generated.recursive_diff(plist, "generated", "plist")
+        diff = Xcodeproj::Differ.diff(generated, plist)
         diff.should.be.nil
-        # The diff is there for readability of errors
-        generated.should == plist
       end
 
       it "doesn't add default attributes to objects generated from a plist" do
@@ -246,13 +244,17 @@ module ProjectSpecs
       end
 
       it "returns a succinct diff representation of the project" do
-        before_tree_hash = @project.to_tree_hash
+        before_proj = @project.to_tree_hash
         @project.new_group('Pods')
-        diff = @project.to_tree_hash.recursive_diff(before_tree_hash)
-        diff.should == {"rootObject"=>{"mainGroup"=>{"children"=>[{"self"=>[{
-          "Pods"=>{
-            "displayName"=>"Pods", "isa"=>"PBXGroup", "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[]}
-        }]}]}}}
+        after_proj = @project.to_tree_hash
+        diff = Xcodeproj::Differ.project_diff(before_proj, after_proj)
+
+        diff.should == {
+          "rootObject"=>{"mainGroup"=>{"children"=>{
+            "project_2"=>[
+              {"displayName"=>"Pods", "isa"=>"PBXGroup", "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[]}
+            ]
+          }}}}
       end
 
       it "returns a pretty print representation" do
