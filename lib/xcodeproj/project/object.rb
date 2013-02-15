@@ -113,7 +113,12 @@ module Xcodeproj
         # @return [String] a name for the object.
         #
         def display_name
-          self.respond_to?(:name) ? name : isa.gsub(/^(PBX|XC)/, '')
+          declared_name = name if self.respond_to?(:name)
+          if declared_name && !declared_name.empty?
+            declared_name
+          else
+            isa.gsub(/^(PBX|XC)/, '')
+          end
         end
 
         alias :to_s :display_name
