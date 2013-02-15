@@ -168,7 +168,7 @@ str_to_url(VALUE path) {
 #else
   VALUE p = rb_String(path);
 #endif
-  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, RSTRING_PTR(p), RSTRING_LEN(p), false);
+  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, (const UInt8 *)RSTRING_PTR(p), RSTRING_LEN(p), false);
   if (!fileURL) {
     rb_raise(rb_eArgError, "Unable to create CFURL from `%s'.", RSTRING_PTR(rb_inspect(path)));
   }
