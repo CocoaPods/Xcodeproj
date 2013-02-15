@@ -381,7 +381,7 @@ module Xcodeproj
         end
 
         def inspect
-          name_part = " display_name=#{name}" if respond_to?(:name)
+          name_part = " name=#{self.name}" if respond_to?(:name)
           "<#{self.class}#{name_part} UUID=#{uuid}>"
         end
       end
