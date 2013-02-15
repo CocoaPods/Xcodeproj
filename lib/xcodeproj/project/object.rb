@@ -113,8 +113,7 @@ module Xcodeproj
         # @return [String] a name for the object.
         #
         def display_name
-          result = name if respond_to?(:name)
-          result || isa.gsub(/^(PBX|XC)/, '')
+          self.respond_to?(:name) ? name : isa.gsub(/^(PBX|XC)/, '')
         end
 
         alias :to_s :display_name
@@ -329,7 +328,7 @@ module Xcodeproj
         #
         def to_tree_hash
           hash = {}
-          hash['displayName'] = display_name if self.respond_to?(:display_name)
+          hash['displayName'] = display_name
           hash['isa'] = isa
 
           simple_attributes.each do |attrb|
@@ -382,8 +381,8 @@ module Xcodeproj
         end
 
         def inspect
-          name = " name=#{name}" if respond_to?(:name)
-          "<#{self.class}#{name} UUID=#{uuid}>"
+          name_part = " display_name=#{name}" if respond_to?(:name)
+          "<#{self.class}#{name_part} UUID=#{uuid}>"
         end
       end
     end
