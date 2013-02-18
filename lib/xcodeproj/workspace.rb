@@ -13,10 +13,10 @@ module Xcodeproj
     #
     attr_reader :projpaths
 
-    # @param  [String] projpaths @see projpaths
+    # @param  [Array] projpaths @see projpaths
     #
     def initialize(*projpaths)
-      @projpaths = projpaths
+      @projpaths = projpaths.flatten
     end
 
     #-------------------------------------------------------------------------#
@@ -49,7 +49,7 @@ module Xcodeproj
       projpaths = document.get_elements("/Workspace/FileRef").map do |node|
         node.attribute("location").to_s.sub(/^group:/, '')
       end
-      new(*projpaths)
+      new(projpaths)
     end
 
     #-------------------------------------------------------------------------#
