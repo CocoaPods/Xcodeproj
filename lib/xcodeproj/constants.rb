@@ -107,7 +107,8 @@ module Xcodeproj
         'COPY_PHASE_STRIP'                  => 'NO',
       }.freeze,
       :release => {
-        # Empty?
+        'OTHER_CFLAGS'                      => '-DNS_BLOCK_ASSERTIONS=1',
+        'OTHER_CPLUSPLUSFLAGS'              => '-DNS_BLOCK_ASSERTIONS=1',
       }.freeze,
       :ios => {
         'ARCHS'                             => "$(ARCHS_STANDARD_32_BIT)",
