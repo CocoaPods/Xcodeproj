@@ -145,8 +145,8 @@ module ProjectSpecs
     end
 
     it "includes iOS specific build settings" do
-      @target.build_settings('Release').should == settings(:all, :ios, [:ios, :release])
-      @target.build_settings('Debug').should == settings(:all, :ios, :debug)
+      @target.build_settings('Release').should == settings(:all, :release, :ios, [:ios, :release])
+      @target.build_settings('Debug').should == settings(:all, :debug, :ios, [:ios, :debug])
     end
 
   end
@@ -170,8 +170,8 @@ module ProjectSpecs
     end
 
     it "includes OS X specific build settings" do
-      @target.build_settings('Release').should == settings(:all, :osx, [:osx, :release])
-      @target.build_settings('Debug').should == settings(:all, :osx, :debug, [:osx, :debug])
+      @target.build_settings('Release').should == settings(:all, :release, :osx, [:osx, :release])
+      @target.build_settings('Debug').should == settings(:all, :debug, :osx, [:osx, :debug])
     end
 
   end
