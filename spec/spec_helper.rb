@@ -18,3 +18,25 @@ require 'spec_helper/temporary_directory'
 def fixture_path(path)
   File.join(File.dirname(__FILE__), "fixtures", path)
 end
+
+class Hash
+  def recursive_diff(other, self_key = 'self', other_key = 'other')
+    Xcodeproj::Differ.project_diff(self, other, self_key, other_key)
+  end
+
+  def recursive_delete(key_to_delete)
+    Xcodeproj::Differ.project_diff!(self, key_to_delete)
+  end
+end
+
+class Array
+  def recursive_diff(other, self_key = 'self', other_key = 'other')
+    Xcodeproj::Differ.project_diff(self, other, self_key, other_key)
+  end
+end
+
+class Object
+  def recursive_diff(other, self_key = 'self', other_key = 'other')
+    Xcodeproj::Differ.project_diff(self, other, self_key, other_key)
+  end
+end
