@@ -71,7 +71,7 @@ module Xcodeproj
 
     rescue Exception => e
       puts e.message
-      unless e.is_a?(Informative)
+      unless e.is_a?(Informative) || e.is_a?(Help)
         puts *e.backtrace
       end
       exit 1
