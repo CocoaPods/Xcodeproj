@@ -14,24 +14,24 @@ GEM
     bacon (1.2.0)
     colored (1.2)
     github-markup (0.7.5)
-    i18n (0.6.1)
+    i18n (0.6.3)
     kicker (2.6.1)
       listen
-    listen (0.7.2)
+    listen (0.7.3)
     metaclass (0.0.1)
-    mocha (0.11.4)
+    mocha (0.13.2)
       metaclass (~> 0.0.1)
-    mocha-on-bacon (0.2.1)
-      mocha (>= 0.9.8)
+    mocha-on-bacon (0.2.2)
+      mocha (>= 0.13.0)
     multi_json (1.6.1)
     posix-spawn (0.3.6)
-    pygments.rb (0.3.7)
+    pygments.rb (0.4.2)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
     rake (10.0.3)
     redcarpet (2.2.2)
     yajl-ruby (1.1.0)
-    yard (0.8.4.1)
+    yard (0.8.5.2)
 
 PLATFORMS
   ruby
@@ -40,7 +40,7 @@ DEPENDENCIES
   bacon
   github-markup
   kicker
-  mocha (~> 0.11.4)
+  mocha
   mocha-on-bacon
   pygments.rb
   rake

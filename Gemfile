@@ -4,7 +4,7 @@ gemspec
 
 group :development do
   gem "rake"
-  gem "mocha", "~> 0.11.4"
+  gem "mocha"
   gem "bacon"
   gem "mocha-on-bacon"
   gem "kicker"
