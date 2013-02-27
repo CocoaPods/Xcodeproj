@@ -1,6 +1,6 @@
 # Xcodeproj
 
-[![Master Build Status](https://secure.travis-ci.org/CocoaPods/Xcodeproj.png?branch=master)](https://secure.travis-ci.org/CocoaPods/Xcodeproj)
+[![Build Status](https://travis-ci.org/CocoaPods/Xcodeproj.png?branch=master)](https://travis-ci.org/CocoaPods/Xcodeproj)
 
 Xcodeproj lets you create and modify Xcode projects from [Ruby][ruby].
 Script boring management tasks or build Xcode-friendly libraries. Also includes
@@ -9,6 +9,7 @@ support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
 It is used in [CocoaPods](https://github.com/CocoaPods/CocoaPods) to create a
 static library from scratch, for both iOS and OSX.
 
+The documentation can be found [here](http://docs.cocoapods.org/xcodeproj/index.html).
 
 ## Installing Xcodeproj
 
