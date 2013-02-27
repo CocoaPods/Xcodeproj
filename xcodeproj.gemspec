@@ -4,7 +4,6 @@ require File.expand_path('../lib/xcodeproj', __FILE__)
 Gem::Specification.new do |s|
   s.name     = "xcodeproj"
   s.version  = Xcodeproj::VERSION
-  s.date     = Date.today
   s.license  = "MIT"
   s.email    = "eloy.de.enige@gmail.com"
   s.homepage = "https://github.com/cocoapods/xcodeproj"
