@@ -58,7 +58,7 @@ module Xcodeproj
               project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
           else
             build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] ||
-              project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+              project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET']
           end
         end
 
