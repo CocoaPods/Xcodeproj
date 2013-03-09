@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcodeproj (0.5.1)
+    xcodeproj (0.5.2)
       activesupport (~> 3.2.6)
       colored (~> 1.2)
 
@@ -14,7 +14,7 @@ GEM
     bacon (1.2.0)
     colored (1.2)
     github-markup (0.7.5)
-    i18n (0.6.3)
+    i18n (0.6.4)
     kicker (2.6.1)
       listen
     listen (0.7.3)
