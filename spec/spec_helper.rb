@@ -5,7 +5,7 @@ if ENV['CI'] || ENV['GENERATE_COVERAGE']
   require 'simplecov'
   require 'coveralls'
 
-  if ENV['CI'] || ENV['TRAVIS']
+  if ENV['CI']
     SimpleCov.formatter = Coveralls::SimpleCov::Formatter
   elsif ENV['GENERATE_COVERAGE']
     SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
