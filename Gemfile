@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gemspec
 
 group :development do
+  gem 'coveralls', :require => false
   gem "rake"
   gem "mocha"
   gem "bacon"
