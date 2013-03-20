@@ -245,7 +245,7 @@ module Xcodeproj
 
           unless object_plist.empty?
             raise "[!] Xcodeproj doesn't know about the following attributes " \
-                  "#{object_plist} for the '#{isa}' isa.\n" \
+                  "#{object_plist.inspect} for the '#{isa}' isa.\n" \
                   "Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
           end
         end
