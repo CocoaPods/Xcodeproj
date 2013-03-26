@@ -107,7 +107,7 @@ module ProjectSpecs
       #
       it "can regenerate the EXACT plist that initialized it" do
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
-        generated = @project.to_plist
+        generated = @project.to_hash
         diff = Xcodeproj::Differ.diff(generated, plist)
         diff.should.be.nil
       end
@@ -120,7 +120,7 @@ module ProjectSpecs
         obj = @project.new_from_plist(uuid, objects_by_uuid_plist)
         attrb = PBXFileReference.simple_attributes.find { |a| a.name == :include_in_index }
         attrb.default_value.should == '1'
-        obj.to_plist.should == expected
+        obj.to_hash.should == expected
       end
 
       extend SpecHelper::TemporaryDirectory
@@ -156,7 +156,7 @@ module ProjectSpecs
           "sourceTree"     => "SOURCE_ROOT",
           "includeInIndex" => "1"
         }
-        obj.to_plist.should == expected
+        obj.to_hash.should == expected
       end
 
       it "generates new UUIDs" do

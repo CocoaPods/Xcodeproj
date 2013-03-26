@@ -186,12 +186,12 @@ module Xcodeproj
       end
     end
 
-    # @return [Hash] The plist representation of the project.
+    # @return [Hash] The hash representation of the project.
     #
     def to_hash
       plist = {}
       objects_dictionary = {}
-      objects.each { |obj| objects_dictionary[obj.uuid] = obj.to_plist }
+      objects.each { |obj| objects_dictionary[obj.uuid] = obj.to_hash }
       plist['objects']        =  objects_dictionary
       plist['archiveVersion'] =  archive_version.to_s
       plist['objectVersion']  =  object_version.to_s
@@ -199,8 +199,6 @@ module Xcodeproj
       plist['rootObject']     =  root_object.uuid
       plist
     end
-
-    alias :to_plist :to_hash
 
     # Converts the objects tree to a hash substituting the hash
     # of the referenced to their UUID reference. As a consequence the hash of
@@ -251,7 +249,7 @@ module Xcodeproj
     def save_as(projpath)
       projpath = projpath.to_s
       FileUtils.mkdir_p(projpath)
-      Xcodeproj.write_plist(to_plist, File.join(projpath, 'project.pbxproj'))
+      Xcodeproj.write_plist(to_hash, File.join(projpath, 'project.pbxproj'))
     end
 
     #-------------------------------------------------------------------------#

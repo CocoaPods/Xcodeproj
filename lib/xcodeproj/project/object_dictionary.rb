@@ -108,7 +108,7 @@ module Xcodeproj
       #
       # @return [Hash<String => String>]
       #
-      def to_plist
+      def to_hash
         result = {}
         each { |key, obj| result[key] = obj.uuid }
         result
