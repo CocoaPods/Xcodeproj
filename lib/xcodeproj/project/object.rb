@@ -286,11 +286,17 @@ module Xcodeproj
                 "Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
         end
 
+        # Returns a cascade representation of the object with UUIDs.
+        #
+        # @return [Hash] a hash representation of the project.
+        #
+        # @visibility public
+        #
         # @note the key for simple and to_one attributes usually appears only
         #       if there is a value. To-many keys always appear with an empty
         #       array.
         #
-        def to_plist
+        def to_hash
           plist = {}
           plist['isa'] = isa
 
@@ -311,12 +317,11 @@ module Xcodeproj
 
           references_by_keys_attributes.each do |attrb|
             list = attrb.get_value(self)
-            plist[attrb.plist_name] = list.map { |dictionary| dictionary.to_plist }
+            plist[attrb.plist_name] = list.map { |dictionary| dictionary.to_hash }
           end
 
           plist
         end
-        alias :to_hash :to_plist
 
         # Returns a cascade representation of the object without UUIDs.
         #
@@ -378,7 +383,7 @@ module Xcodeproj
         # @!group Object methods
 
         def ==(other)
-          other.is_a?(AbstractObject) && self.to_plist == other.to_plist
+          other.is_a?(AbstractObject) && self.to_hash == other.to_hash
         end
 
         def <=>(other)
