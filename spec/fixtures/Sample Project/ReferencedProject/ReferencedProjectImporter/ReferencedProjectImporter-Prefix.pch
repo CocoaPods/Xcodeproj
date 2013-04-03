@@ -1,0 +1,6 @@
+//
+// Prefix header for all source files of the 'ReferencedProjectImporter' target in the 'ReferencedProjectImporter' project
+//
+
+#ifdef __OBJC__
+#endif

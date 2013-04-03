@@ -6,6 +6,8 @@
 #include "ruby.h"
 #if HAVE_RUBY_ST_H
 #include "ruby/st.h"
+#elif HAVE_ST_H
+#include "st.h"
 #endif
 
 #include "CoreFoundation/CoreFoundation.h"
@@ -19,13 +21,10 @@ static VALUE
 cfstr_to_str(const void *cfstr) {
   CFDataRef data = CFStringCreateExternalRepresentation(NULL, cfstr, kCFStringEncodingUTF8, 0);
   assert(data != NULL);
-  long len = (long)CFDataGetLength(data);
-  char *buf = (char *)malloc(len+1);
-  assert(buf != NULL);
-  CFDataGetBytes(data, CFRangeMake(0, len), buf);
+  long  len = (long)CFDataGetLength(data);
+  char *buf = (char *)CFDataGetBytePtr(data);
 
   register VALUE str = rb_str_new(buf, len);
-  free(buf);
 
   // force UTF-8 encoding in Ruby 1.9+
   ID forceEncodingId = rb_intern("force_encoding");
@@ -33,6 +32,7 @@ cfstr_to_str(const void *cfstr) {
     rb_funcall(str, forceEncodingId, 1, rb_str_new("UTF-8", 5));
   }
 
+  CFRelease(data);
   return str;
 }
 
@@ -101,7 +101,7 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
 
       } else {
         CFStringRef descriptionRef = CFCopyDescription(elementRef);
-        // obviously not optimial, but we're raising here, so it doesn't really matter
+        // obviously not optimal, but we're raising here, so it doesn't really matter
         VALUE description = cfstr_to_str(descriptionRef);
         rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj. In: `%s'", RSTRING_PTR(description));
         CFRelease(descriptionRef);
@@ -151,6 +151,10 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
     valueRef = str_to_cfstr(value);
   }
 
+  if (valueRef == NULL) {
+    rb_raise(rb_eTypeError, "Unable to convert value of key `%s'.", RSTRING_PTR(rb_inspect(key)));
+  }
+
   CFDictionaryAddValue(dict, keyRef, valueRef);
   CFRelease(keyRef);
   CFRelease(valueRef);
@@ -164,7 +168,7 @@ str_to_url(VALUE path) {
 #else
   VALUE p = rb_String(path);
 #endif
-  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, RSTRING_PTR(p), RSTRING_LEN(p), false);
+  CFURLRef fileURL = CFURLCreateFromFileSystemRepresentation(NULL, (const UInt8 *)RSTRING_PTR(p), RSTRING_LEN(p), false);
   if (!fileURL) {
     rb_raise(rb_eArgError, "Unable to create CFURL from `%s'.", RSTRING_PTR(rb_inspect(path)));
   }

@@ -9,7 +9,8 @@ process do |files|
       execute 'rake ext:cleanbuild'
       'spec/xcodeproj_ext_spec.rb'
     when %r{lib/xcodeproj/(.+?)\.rb$}
-      s = Dir.glob("spec/**/#{$1}_spec.rb")
+      s = Dir.glob("spec/**#{$1}_spec.rb")
+      puts
       s unless s.empty?
     end
   end

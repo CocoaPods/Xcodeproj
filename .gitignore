@@ -12,3 +12,7 @@ ext/xcodeproj/conftest.dSYM
 doc
 tmp
 .DS_Store
+xcuserdata
+rakelib/doccoverage/
+coverage/
+.coveralls.yml

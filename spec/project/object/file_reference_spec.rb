@@ -1,22 +1,29 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project::Object::PBXFileReference" do
+  describe Xcodeproj::Project::Object::PBXFileReference do
     it "sets a default file type" do
-      framework, library, xcconfig = %w[framework a xcconfig].map { |n| @project.files.new('path' => "Rockin.#{n}") }
+      framework, library, xcconfig = %w[framework a xcconfig].map { |n| @project.new_file("Rockin.#{n}") }
+
       framework.last_known_file_type.should == 'wrapper.framework'
       framework.explicit_file_type.should == nil
-      library.last_known_file_type.should == nil
-      library.explicit_file_type.should == 'archive.ar'
+
+      library.last_known_file_type.should == 'archive.ar'
+      library.explicit_file_type.should == nil
+
       xcconfig.last_known_file_type.should == 'text.xcconfig'
       xcconfig.explicit_file_type.should == nil
     end
-    
-    it "doesn't set a file type when overridden" do
-      fakework = @project.files.new('path' => 'Sup.framework', 'lastKnownFileType' => 'fish')
-      fakework.last_known_file_type.should == 'fish'
-      makework = @project.files.new('path' => 'n2m.framework', 'explicitFileType' => 'tree')
-      makework.last_known_file_type.should == nil
+
+    it "returns whether it is a proxy" do
+      @project.new_file('Test').proxy?.should == false
+    end
+
+    it "can have associated comments, but these are no longer used by Xcode" do
+      file = @project.new_file('GeneratedFile')
+      file.comments.should == nil
+      file.comments = 'This file was automatically generated.'
+      file.comments.should == 'This file was automatically generated.'
     end
   end
 end

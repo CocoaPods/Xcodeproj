@@ -1,8 +1,13 @@
 source "http://rubygems.org"
 
+gemspec
+
 group :development do
+  gem 'coveralls', :require => false
   gem "rake"
+  gem "mocha"
   gem "bacon"
+  gem "mocha-on-bacon"
   gem "kicker"
   gem "json"
   gem "rack-test"
@@ -16,6 +21,8 @@ group :server_development do
 end
 
 group :documentation do
-  gem "redcarpet"
-  gem "yard"
+  gem 'yard'
+  gem 'redcarpet'
+  gem 'github-markup'
+  gem 'pygments.rb'
 end

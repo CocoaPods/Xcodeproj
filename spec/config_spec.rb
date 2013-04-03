@@ -25,17 +25,18 @@ describe "Xcodeproj::Config" do
     xcconfig.should.be.equal @hash
   end
 
-  it "does not modifies the hahs used for initialization" do
+  it "does not modifies the hash used for initialization" do
     original = @hash.dup
     config = Xcodeproj::Config.new(@hash)
     @hash.should.be.equal original
   end
 
   it "parses the frameworks and the libraries" do
-    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
-    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
+    config.libraries.to_a.should.be.equal %w[ xml2.2.7.3 ]
   end
 
   it "can handle libraries specified as a separate argument" do
@@ -47,6 +48,11 @@ describe "Xcodeproj::Config" do
 
   it "can be serialized with #to_s" do
     @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework Foundation"
+  end
+
+  it "sorts the internal data by setting name when serializing with #to_s" do
+    config = Xcodeproj::Config.new('Y' => '2', 'Z' => '3', 'X' => '1')
+    config.to_s.should == "X = 1\nY = 2\nZ = 3"
   end
 
   it "can be serialized with #to_hash" do
@@ -127,13 +133,15 @@ describe "Xcodeproj::Config" do
   end
 
   it "doesn't duplicates libraries and frameworks" do
-    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -lxml2.2.7.3' }
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
     config = Xcodeproj::Config.new(hash)
-    # merge the original hahs again
+    # merge the original hash again
     config.merge!(hash)
     config.frameworks.add 'Foundation'
+    config.weak_frameworks.add 'Twitter'
     config.libraries.add  'xml2.2.7.3'
     config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
 
@@ -142,5 +150,14 @@ describe "Xcodeproj::Config" do
     config2 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => '-framework SystemConfiguration' })
     config1.merge! config2
     config1.to_hash['OTHER_LDFLAGS'].should == '-ObjC -fobjc-arc -framework SystemConfiguration'
+  end
+
+  it "merges frameworks and libraries from another Config instance" do
+    hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
+    config = Xcodeproj::Config.new
+    config.merge!(Xcodeproj::Config.new(hash))
+    config.frameworks.to_a.should.be.equal %w[ Foundation ]
+    config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
+    config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
 end

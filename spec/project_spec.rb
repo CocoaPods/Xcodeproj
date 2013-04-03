@@ -1,142 +1,381 @@
+# encoding: UTF-8
+
 require File.expand_path('../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe "Xcodeproj::Project" do
-    it "returns the objects hash" do
-      @project.objects_hash.should == @project.to_hash['objects']
-    end
+  describe Xcodeproj::Project do
 
-    it "compares the objects hash" do
-      @project.should == @project.to_hash
-    end
+    describe "In general" do
+      it "return the objects by UUID hash" do
+        @project.objects_by_uuid.should.not.be.nil
+      end
 
-    it "adds an object hash to the objects hash" do
-      attributes = { 'isa' => 'PBXFileReference', 'path' => 'some/file.m' }
-      @project.add_object_hash('UUID', attributes)
-      @project.objects_hash['UUID'].should == attributes
-    end
-
-    it "raises an argument error if the value of the `isa' attribute is AbstractPBXObject, because it doesn't actually belong in an xcodeproject" do
-      lambda {
-        @project.add_object_hash('UUID', 'isa' => 'AbstractPBXObject')
-      }.should.raise ArgumentError
-    end
-
-    it "returns the objects as AbstractPBXObject instances" do
-      @project.objects.each do |object|
-        @project.objects_hash[object.uuid].should == object.attributes
+      it "returns the root object" do
+        @project.root_object.class.should == PBXProject
       end
     end
 
-    it "adds any type of new AbstractPBXObject to the objects hash" do
-      object = new_instance(AbstractPBXObject, 'name' => 'An Object')
-      object.name.should == 'An Object'
-      @project.objects_hash[object.uuid].should == object.attributes
-    end
+    describe "Concerning initialization from scratch" do
+      it "initializes to the last known archive version" do
+        @project.archive_version.should == Xcodeproj::Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
+      end
 
-    it "adds a new AbstractPBXObject, of the configured type, to the objects hash" do
-      group = @project.groups.new('name' => 'A new group')
-      group.isa.should == 'PBXGroup'
-      group.name.should == 'A new group'
-      @project.objects_hash[group.uuid].should == group.attributes
-    end
+      it "initializes to the classes to the empty hash" do
+        @project.classes.should == {}
+      end
 
-    it "adds a new PBXFileReference to the objects hash" do
-      file = @project.files.new('path' => '/some/file.m')
-      file.isa.should == 'PBXFileReference'
-      file.name.should == 'file.m'
-      file.path.should == '/some/file.m'
-      file.source_tree.should == 'SOURCE_ROOT'
-      @project.objects_hash[file.uuid].should == file.attributes
-    end
+      it "initializes to the last known archive version" do
+        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      end
+      it "sets itself as the owner of the root object" do
+        @project.root_object.referrers.should == [@project]
+      end
 
-    it "adds a new PBXBuildFile to the objects hash when a new PBXFileReference is created" do
-      file = @project.files.new('name' => '/some/source/file.h')
-      build_file = file.build_files.new
-      build_file.file = file
-      build_file.file_ref.should == file.uuid
-      build_file.isa.should == 'PBXBuildFile'
-      @project.objects_hash[build_file.uuid].should == build_file.attributes
-    end
+      it "includes the root object in the objects by UUID hash" do
+        uuid = @project.root_object.uuid
+        @project.objects_by_uuid[uuid].should.not.be.nil
+      end
 
-    it "returns the products group" do
-      @project.products_group.should.be.instance_of PBXGroup
-      @project.main_group.children.should.include @project.products_group
-      @project.root_object.attributes['productRefGroup'].should == @project.products_group.uuid
-      @project.objects_hash[@project.products_group.uuid].should == @project.products_group.attributes
-    end
+      it "initializes the root object main group" do
+        @project.root_object.main_group.class.should == PBXGroup
+      end
 
-    it "returns the product file references" do
-      file = @project.files.new('path' => 'BuildProduct')
-      @project.products_group << file
-      @project.products.last.should == file
-    end
+      it "initializes the root object products group" do
+        product_ref_group = @project.root_object.product_ref_group
+        product_ref_group.class.should == PBXGroup
+        @project.root_object.main_group.children.should.include?(product_ref_group)
+      end
 
-    it "returns the top-level project configurations and build settings" do
-      list = @project.root_object.build_configuration_list
-      list.default_configuration_name.should == 'Release'
-      list.default_configuration_is_visible.should == '0'
+      it "initializes the root object configuration list" do
+        list = @project.root_object.build_configuration_list
+        list.class.should == XCConfigurationList
+        list.default_configuration_name.should == 'Release'
+        list.default_configuration_is_visible.should == '0'
 
-      @project.build_settings('Debug').should == {}
-      @project.build_settings('Release').should == {}
-    end
+        configurations = list.build_configurations
+        configurations.map(&:name).sort.should == %w| Debug Release |
+        list.build_settings('Debug').should == {}
+        list.build_settings('Release').should == {}
+      end
 
-    it "adds an `m' or `c' file to the `sources build' phase list" do
-      %w{ m mm c cpp }.each do |ext|
-        path = Pathname.new("path/to/file.#{ext}")
-        file = @target.add_source_file(path)
-        # ensure that it was added to all objects
-        file = @project.objects[file.uuid]
+      it "adds the frameworks group" do
+        @project['Frameworks'].class.should == PBXGroup
+      end
 
-        phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-        phase.files.should.include file
+      it "it should have DNS_BLOCK_ASSERTIONS=1 flag in Release configuration" do
+        target = @project.new_target(:static_library, 'Pods', :ios)
+        target.build_configuration_list.should.not.be.nil
 
-        phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-        phase.files.should.not.include file
+        # Release
+        build_settings = target.build_configuration_list.build_settings('Release')
+        build_settings['OTHER_CFLAGS'].should.include('-DNS_BLOCK_ASSERTIONS=1')
+        build_settings['OTHER_CPLUSPLUSFLAGS'].should.include('-DNS_BLOCK_ASSERTIONS=1')
+
+        # Debug
+        build_settings = target.build_configuration_list.build_settings('Debug')
+        if !build_settings['OTHER_CFLAGS'].nil?
+          build_settings['OTHER_CFLAGS'].should.not.include('-DNS_BLOCK_ASSERTIONS=1')
+        end
+        if !build_settings['OTHER_CPLUSPLUSFLAGS'].nil?
+          build_settings['OTHER_CPLUSPLUSFLAGS'].should.not.include('-DNS_BLOCK_ASSERTIONS=1')
+        end
+
       end
     end
 
-    it "adds custom compiler flags to the PBXBuildFile object if specified" do
-      build_file_uuids = []
-      %w{ m mm c cpp }.each do |ext|
-        path = Pathname.new("path/to/file.#{ext}")
-        file = @project.targets.first.add_source_file(path, nil, '-fno-obj-arc')
-        find_object({
-          'isa' => 'PBXBuildFile',
-          'fileRef' => file.uuid,
-          'settings' => {'COMPILER_FLAGS' => '-fno-obj-arc' }
-        }).should.not == nil
+    describe "Concerning plist initialization & serialization" do
+      before do
+        @project = Xcodeproj::Project.new(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
+      end
+
+      it "sets itself as the owner of the root object" do
+        # The root object might be referenced by other objects like
+        # the PBXContainerItemProxy
+        @project.root_object.referrers.should.include?(@project)
+      end
+
+      # It implicitly checks that all the attributes for the known isas.
+      # Therefore, If a new isa or attribute is found it should added to the
+      # sample project.
+      #
+      it "can be loaded from a plist" do
+        @project.root_object.should.not == nil
+        @project.main_group.should.not == nil
+        @project["Cocoa Application"].should.not.be.nil
+      end
+
+      # This ensures that there is no loss (or modification) of information by
+      # going to the object tree and serializing it back to a plist.
+      #
+      it "can regenerate the EXACT plist that initialized it" do
+        plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
+        generated = @project.to_hash
+        diff = Xcodeproj::Differ.diff(generated, plist)
+        diff.should.be.nil
+      end
+
+      it "doesn't add default attributes to objects generated from a plist" do
+        uuid = "UUID"
+        expected = { "isa" => "PBXFileReference", "sourceTree" => "SOURCE_ROOT" }
+        objects_by_uuid_plist = {}
+        objects_by_uuid_plist[uuid] = expected
+        obj = @project.new_from_plist(uuid, objects_by_uuid_plist)
+        attrb = PBXFileReference.simple_attributes.find { |a| a.name == :include_in_index }
+        attrb.default_value.should == '1'
+        obj.to_hash.should == expected
+      end
+
+      extend SpecHelper::TemporaryDirectory
+      it "can open a project and save it without altering any information" do
+        plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
+        @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
+        project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
+        Xcodeproj.read_plist(project_file.to_s).should == plist
+      end
+
+      it "escapes non ASCII characters from the project" do
+        @project = Xcodeproj::Project.new
+        file_ref = @project.new_file('Cédric')
+        file_ref.name = 'Cédric'
+        projpath = File.join(temporary_directory, 'Pods.xcodeproj')
+        @project.save_as(projpath)
+        file = File.join(projpath, 'project.pbxproj')
+        contents = File.read(file)
+        contents.should.not.include('é')
+        # contents.should.include('&#232;')
       end
     end
 
-    # TODO add test for the optional copy_header_phase
-    #it "adds a `h' file as a build file and adds it to the `headers build' phase list" do
-    it "adds a `h' file as a build file and adds it to the `copy header files' build phase list" do
-      path = Pathname.new("path/to/file.h")
-      file = @target.add_source_file(path)
-      # ensure that it was added to all objects
-      file = @project.objects[file.uuid]
+    describe "Concerning object creation" do
+      it "creates a new object" do
+        @project.new(PBXFileReference).class.should == PBXFileReference
+      end
 
-      phase = @target.build_phases.find { |phase| phase.is_a?(PBXSourcesBuildPhase) }
-      phase.files.should.not.include file
+      it "doesn't add an object to the objects tree until an object references it" do
+        obj = @project.new(PBXFileReference)
+        obj.path = 'some/file.m'
+        @project.objects_by_uuid[obj.uuid].should == nil
+      end
 
-      phase = @target.build_phases.find { |phase| phase.is_a?(PBXCopyFilesBuildPhase) }
-      phase.files.should.include file
+      it "adds an object to the objects tree once an object references it" do
+        obj = @project.new(PBXFileReference)
+        @project.main_group << obj
+        @project.objects_by_uuid[obj.uuid].should == obj
+      end
+
+      it "initializes new objects (not created form a plist) with the default values" do
+        obj = @project.new(PBXFileReference)
+        expected = {
+          "isa"            => "PBXFileReference",
+          "sourceTree"     => "SOURCE_ROOT",
+          "includeInIndex" => "1"
+        }
+        obj.to_hash.should == expected
+      end
+
+      it "generates new UUIDs" do
+        @project.generate_uuid.length.should == 24
+      end
+
+      it "generates a given number of unique UUIDs" do
+        before_count = @project.generated_uuids.count.should
+        @project.generate_available_uuid_list(100)
+        # Checking against 75 instead of 100 to prevent this test for failing
+        # for bad luck. Not sure what is the statical likelihood of 25
+        # collision out of 100.
+        @project.generated_uuids.count.should >= (before_count + 75)
+      end
+
+      it "keeps track of the known UUIDs even if objects are not in the objects hash" do
+        obj = @project.new(PBXFileReference)
+        @project.uuids.should.not.include?(obj.uuid)
+        @project.generated_uuids.should.include?(obj.uuid)
+      end
     end
 
-    extend SpecHelper::TemporaryDirectory
+    describe "Concerning helpers" do
+      it "returns all the objects referred in the project" do
+        expected = [
+          "ConfigurationList",
+          "Debug",
+          "Frameworks",
+          "Main Group",
+          "Products",
+          "Project",
+          "Release"
+        ]
+        @project.objects.map(&:display_name).sort.should == expected
+      end
 
-    it "saves the template with the adjusted project" do
-      @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
-      project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
-      Xcodeproj.read_plist(project_file.to_s).should == @project.to_hash
+      it "returns the UUIDs of all the objects referred in the project" do
+        @project.uuids.count.should > 1
+        @project.uuids.first.length.should == 24
+      end
+
+      it "lists the objects with a given class" do
+        expected = ["Frameworks", "Main Group", "Products"]
+        @project.list_by_class(PBXGroup).map(&:display_name).sort.should == expected
+      end
+
+      it "returns the main group" do
+        @project.main_group.class.should == PBXGroup
+        @project.main_group.referrers.should.include?(@project.root_object)
+      end
+
+      it "returns the groups of the main group" do
+        expected = ["Products", "Frameworks"]
+        @project.groups.map(&:display_name).should == expected
+      end
+
+      it "returns the group with the given path" do
+        g = @project.new_group('libPusher', 'Pods')
+        @project ['Pods/libPusher'].should == g
+      end
+
+      it "returns all the files of the project" do
+        f = @project.products_group.new_static_library('Pods')
+        @project.files.should.include?(f)
+      end
+
+      it "returns the targets" do
+        target = @project.new_target(:static_library, 'Pods', :ios).product_reference
+        @project.products.should.include?(target)
+      end
+
+      it "returns the products group" do
+        g = @project.products_group
+        g.class.should == PBXGroup
+        g.referrers.should.include?(@project.main_group)
+      end
+
+      it "returns the products" do
+        file = @project.new_target(:static_library, 'Pods', :ios).product_reference
+        @project.products.should.include?(file)
+      end
+
+      it "returns the frameworks group" do
+        g = @project.frameworks_group
+        g.class.should == PBXGroup
+        g.referrers.should.include?(@project.main_group)
+        g.name.should == 'Frameworks'
+      end
+
+      it "returns the build configurations" do
+        @project.build_configurations.map(&:name).sort.should == %w| Debug Release |
+      end
+
+      it "returns the build settings" do
+        @project.build_settings('Debug').class.should == Hash
+      end
+
+      it "returns the top-level project configurations and build settings" do
+        list = @project.root_object.build_configuration_list
+        list.default_configuration_name.should == 'Release'
+        list.default_configuration_is_visible.should == '0'
+
+        @project.build_settings('Debug').should == {}
+        @project.build_settings('Release').should == {}
+      end
+
+      it "returns a succinct diff representation of the project" do
+        before_proj = @project.to_tree_hash
+        @project.new_group('Pods')
+        after_proj = @project.to_tree_hash
+        diff = Xcodeproj::Differ.project_diff(before_proj, after_proj)
+
+        diff.should == {
+          "rootObject"=>{"mainGroup"=>{"children"=>{
+            "project_2"=>[
+              {"displayName"=>"Pods", "isa"=>"PBXGroup", "sourceTree"=>"<group>", "name"=>"Pods", "children"=>[]}
+            ]
+          }}}}
+      end
+
+      it "returns a pretty print representation" do
+        pretty_print = @project.pretty_print
+        pretty_print.should == {
+          "File References" => [
+            {"Products" => [] },
+            {"Frameworks" => [] }
+          ],
+          "Targets" => [],
+          "Build Configurations" => [
+            { "Release" => {"Build Settings" => {} } },
+            { "Debug" => {"Build Settings" => {} } }
+          ]
+        }
+      end
     end
 
-    it "returns all source files" do
-      group = @project.groups.new('name' => 'SomeGroup')
-      files = [Pathname.new('/some/file.h'), Pathname.new('/some/file.m')]
-      files.each { |file| group << @target.add_source_file(file) }
-      group.source_files.map(&:pathname).sort.should == files.sort
+    #-------------------------------------------------------------------------#
+
+
+    describe "Concerning helpers for creating new objects" do
+      it "adds a new group" do
+        group = @project.new_group('A new group', 'Cocoa Application')
+        group.isa.should == 'PBXGroup'
+        group.name.should == 'A new group'
+        @project.objects_by_uuid[group.uuid].should.not.be.nil
+        @project['Cocoa Application'].children.should.include group
+      end
+
+      it "adds a new file" do
+        file = @project.new_file('Classes/Test.h', 'Cocoa Application')
+        file.isa.should == 'PBXFileReference'
+        file.display_name.should == 'Test.h'
+        @project.objects_by_uuid[file.uuid].should.not.be.nil
+        @project['Cocoa Application'].children.should.include file
+      end
+
+      it "adds a file reference for a system framework, to the Frameworks group" do
+        target = stub(:sdk => 'iphoneos5.0')
+        group = @project['Frameworks']
+        file = @project.add_system_framework('QuartzCore', target)
+        file.group.should == group
+        file.name.should == 'QuartzCore.framework'
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.source_tree.should == 'DEVELOPER_DIR'
+      end
+
+      it "links system frameworks to the last known SDK if needed" do
+        target = stub(:sdk => 'iphoneos')
+        file = @project.add_system_framework('QuartzCore', target)
+        sdk_version = Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk_version}.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.source_tree.should == 'DEVELOPER_DIR'
+      end
+
+      it "does not add a system framework if it already exists in the project" do
+        target = stub(:sdk => 'iphoneos6.0')
+        file_1 = @project.add_system_framework('Foundation', target)
+        file_1.name.should == 'Foundation.framework'
+        before = @project.frameworks_group.files.size
+
+        file_2 = @project.add_system_framework('Foundation', target)
+        file_2.should == file_1
+        @project.frameworks_group.files.size.should == before
+      end
+
+      it "creates a new target" do
+        target = @project.new_target(:static_library, 'Pods', :ios, '6.0')
+        target.name.should == 'Pods'
+        target.product_type.should == 'com.apple.product-type.library.static'
+
+        target.build_configuration_list.should.not.be.nil
+        configurations = target.build_configuration_list.build_configurations
+        configurations.map(&:name).sort.should == %w| Debug Release |
+        build_settings = configurations.first.build_settings
+        build_settings['IPHONEOS_DEPLOYMENT_TARGET'].should == '6.0'
+        build_settings['SDKROOT'].should == 'iphoneos'
+
+        @project.targets.should.include target
+        @project.products.should.include target.product_reference
+
+        target.build_phases.map(&:isa).sort.should == [
+          "PBXFrameworksBuildPhase",
+          "PBXSourcesBuildPhase",
+        ]
+      end
     end
   end
 end
