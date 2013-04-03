@@ -133,16 +133,16 @@ module ProjectSpecs
         Xcodeproj.read_plist(project_file.to_s).should == plist
       end
 
-      it "escapes non ASCII characters from the project" do
+      it "escapes non ASCII characters in the project" do
         @project = Xcodeproj::Project.new
-        file_ref = @project.new_file('Cédric')
-        file_ref.name = 'Cédric'
+        file_ref = @project.new_file('わくわく')
+        file_ref.name = 'わくわく'
         projpath = File.join(temporary_directory, 'Pods.xcodeproj')
         @project.save_as(projpath)
         file = File.join(projpath, 'project.pbxproj')
         contents = File.read(file)
-        contents.should.not.include('é')
-        # contents.should.include('&#232;')
+        contents.should.not.include('わくわく')
+        contents.should.include('&#12431;&#12367;&#12431;&#12367;')
       end
     end
 
