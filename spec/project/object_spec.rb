@@ -83,7 +83,7 @@ module ProjectSpecs
 
       it "merges the class name into the plist representation" do
         @object.isa.should == 'PBXFileReference'
-        @object.to_plist['isa'].should == 'PBXFileReference'
+        @object.to_hash['isa'].should == 'PBXFileReference'
       end
 
       it "sorts by UUID" do
@@ -173,7 +173,7 @@ module ProjectSpecs
       it "can serialize itself to a plist" do
         @object.name = 'AnObject'
         @object.source_tree = 'SOURCE_ROOT'
-        @object.to_plist.should == {
+        @object.to_hash.should == {
           "isa"            => "PBXFileReference",
           "name"           => "AnObject",
           "sourceTree"     => "SOURCE_ROOT",

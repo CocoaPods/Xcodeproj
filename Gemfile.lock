@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     xcodeproj (0.5.2)
-      activesupport (~> 3.2.6)
+      activesupport (~> 3.2.13)
       colored (~> 1.2)
 
 GEM

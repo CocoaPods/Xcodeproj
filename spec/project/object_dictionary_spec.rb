@@ -21,7 +21,7 @@ module ProjectSpecs
     it "returns the plist representation of the dictionary" do
       project_ref_uuid = @dict['projectRef'].uuid
       product_group_uuid = @dict['productGroup'].uuid
-      @dict.to_plist.should == {
+      @dict.to_hash.should == {
         'projectRef' => project_ref_uuid,
         'productGroup' => product_group_uuid,
       }
