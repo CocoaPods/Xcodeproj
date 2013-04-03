@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require File.expand_path('../spec_helper', __FILE__)
 
 module ProjectSpecs
@@ -77,7 +79,7 @@ module ProjectSpecs
         if !build_settings['OTHER_CPLUSPLUSFLAGS'].nil?
           build_settings['OTHER_CPLUSPLUSFLAGS'].should.not.include('-DNS_BLOCK_ASSERTIONS=1')
         end
-        
+
       end
     end
 
@@ -129,6 +131,18 @@ module ProjectSpecs
         @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
         Xcodeproj.read_plist(project_file.to_s).should == plist
+      end
+
+      it "escapes non ASCII characters from the project" do
+        @project = Xcodeproj::Project.new
+        file_ref = @project.new_file('Cédric')
+        file_ref.name = 'Cédric'
+        projpath = File.join(temporary_directory, 'Pods.xcodeproj')
+        @project.save_as(projpath)
+        file = File.join(projpath, 'project.pbxproj')
+        contents = File.read(file)
+        contents.should.not.include('é')
+        # contents.should.include('&#232;')
       end
     end
 
