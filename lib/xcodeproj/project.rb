@@ -275,7 +275,7 @@ module Xcodeproj
     def fix_encoding(file)
       result = ''
       File.read(file).unpack('U*').each do |codepoint|
-        if codepoint > 255
+        if codepoint > 127
           result << "&##{codepoint};"
         else
           result << codepoint.chr

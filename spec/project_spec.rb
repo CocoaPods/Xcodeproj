@@ -137,12 +137,16 @@ module ProjectSpecs
         @project = Xcodeproj::Project.new
         file_ref = @project.new_file('わくわく')
         file_ref.name = 'わくわく'
+        file_ref = @project.new_file('Cédric')
+        file_ref.name = 'Cédric'
         projpath = File.join(temporary_directory, 'Pods.xcodeproj')
         @project.save_as(projpath)
         file = File.join(projpath, 'project.pbxproj')
         contents = File.read(file)
         contents.should.not.include('わくわく')
         contents.should.include('&#12431;&#12367;&#12431;&#12367;')
+        contents.should.not.include('Cédric')
+        contents.should.include('C&#233;dric')
       end
     end
 
