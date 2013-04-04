@@ -272,16 +272,17 @@ module Xcodeproj
     #
     # @return [void]
     #
-    def fix_encoding(file)
-      result = ''
-      File.read(file).unpack('U*').each do |codepoint|
+    def fix_encoding(filename)
+      output = ''
+      input = File.open(filename, 'rb') { |file| file.read }
+      input.unpack('U*').each do |codepoint|
         if codepoint > 127
-          result << "&##{codepoint};"
+          output << "&##{codepoint};"
         else
-          result << codepoint.chr
+          output << codepoint.chr
         end
       end
-      File.open(file, 'w') { |write_file| write_file.write(result) }
+      File.open(filename, 'wb') { |file| file.write(output) }
     end
 
     #-------------------------------------------------------------------------#
