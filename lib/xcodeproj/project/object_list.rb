@@ -70,14 +70,26 @@ module Xcodeproj
         perform_additions_operations(objects)
       end
 
-      # Adds an object to list and updates its references count.
+      # Adds an object to list the and updates its references count.
       #
-      # @param [AbstractObject, ObjectDictionary] object
-      #   the object to add to the list.
+      # @param  [AbstractObject, ObjectDictionary] object
+      #         The object to add to the list.
       #
       # @return [void]
       #
       def <<(object)
+        super
+        perform_additions_operations(object)
+      end
+
+      # Prepends an object to the list and updates its references count.
+      #
+      # @param  [AbstractObject, ObjectDictionary] object
+      #         The object to add to the list.
+      #
+      # @return [void]
+      #
+      def unshift(object)
         super
         perform_additions_operations(object)
       end
