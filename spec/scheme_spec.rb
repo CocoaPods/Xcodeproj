@@ -6,6 +6,44 @@ def compare_elements a, b
 end
 
 describe Xcodeproj::XCScheme do
+
+  describe 'Share a User Scheme' do
+
+    before do
+      project_path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj')
+      if (Dir.exists? project_path) then
+        FileUtils.rm_r project_path
+      end
+      FileUtils.cp_r fixture_path('Sample Project/Cocoa Application.xcodeproj'), SpecHelper::TemporaryDirectory::temporary_directory
+      FileUtils.rm_r File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')
+
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')).should.be.false
+    end
+
+    after do
+      FileUtils.rm_r File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj')
+    end
+
+    it 'When not exists a previous xcshareddata folder' do
+      Xcodeproj::XCScheme.share_scheme File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj'), 'Cocoa ApplicationImporter', 'fabio'
+
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
+    end
+
+    it 'When already exists a previous xcshareddata folder' do
+      Xcodeproj::XCScheme.share_scheme File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj'), 'Cocoa ApplicationImporter', 'fabio'
+      Xcodeproj::XCScheme.share_scheme File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj'), 'iOS application', 'fabio'
+
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'iOS application.xcscheme')).should.be.true
+
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
+      File.exists?(File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'iOS application.xcscheme')).should.be.false
+    end
+
+  end
+
   describe 'Creating a Shared Scheme' do
 
     before do
@@ -21,7 +59,7 @@ describe Xcodeproj::XCScheme do
     end
 
     describe 'For iOS Application' do
-      
+
       before do
         @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application, @ios_application_tests
         @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS application.xcscheme')
@@ -182,7 +220,7 @@ describe Xcodeproj::XCScheme do
     end
 
     describe 'For iOS Application Tests' do
-      
+
       before do
         @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application_tests, @ios_application_tests
         @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests.xcscheme')
@@ -261,17 +299,25 @@ describe Xcodeproj::XCScheme do
     end
 
     describe 'For iOS Application Tests (Set Build Target For Running)' do
-      
+
       before do
         @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application_tests, @ios_application_tests
-        
+
         @scheme.build_target_for_running.should.be.false
-        
+
         @scheme.build_target_for_running = true
-        
+
         @scheme.build_target_for_running.should.be.true
-        
+
         @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests Set Build Target For Running.xcscheme')
+      end
+
+      after do
+        path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'xcshareddata')
+        FileUtils.rm_r(path) if Dir.exists? path
+
+        path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'xcuserdata')
+        FileUtils.rm_r(path) if Dir.exists? path
       end
 
       it 'XML Decl' do
@@ -357,6 +403,7 @@ describe Xcodeproj::XCScheme do
       end
 
     end
-    
+
   end
+
 end

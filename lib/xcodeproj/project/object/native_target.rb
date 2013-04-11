@@ -147,20 +147,6 @@ module Xcodeproj
             }
           }
         end
-        
-        def create_shared_scheme(container, test_target)
-          scheme = XCScheme.new container, self, test_target
-          scheme
-        end
-        
-        def share_scheme(project_path)
-          from = File.join project_path, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', "#{name}.xcscheme"
-          to_folder = File.join project_path, 'xcshareddata', 'xcschemes'
-          to = File.join to_folder, "#{name}.xcscheme"
-          require 'ftools'
-          Pathname(to_folder).mkpath
-          File.move from, to
-        end
 
       end
 

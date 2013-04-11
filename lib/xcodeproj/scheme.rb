@@ -23,7 +23,24 @@ module Xcodeproj
     # @return [Xcodeproj::Project::Object::AbstractTarget] the target used by scheme in the test step.
     #
     attr_reader :test_target
-    
+
+    # Share a User Scheme. Basically this method move the xcscheme file from the xcuserdata folder to xcshareddata
+    # folder.
+    #
+    # @param project_path [String] Path of the .xcodeproj folder.
+    #
+    # @param scheme_name [String] The name of scheme that will be shared.
+    #
+    # @param user [String] The user name that have the scheme
+    #
+    def self.share_scheme(project_path, scheme_name, user = ENV['USER'])
+      from = File.join project_path, 'xcuserdata', "#{user}.xcuserdatad", 'xcschemes', "#{scheme_name}.xcscheme"
+      to_folder = File.join project_path, 'xcshareddata', 'xcschemes'
+      Pathname(to_folder).mkpath
+      to = File.join to_folder, "#{scheme_name}.xcscheme"
+      FileUtils.mv from, to
+    end
+
     # Create a new XCScheme instance
     #
     # @param [String] container
@@ -170,7 +187,7 @@ module Xcodeproj
       if @doc.root.elements['BuildAction'].elements['BuildActionEntries'] \
       if @doc.root.elements['BuildAction']
 
-      build_target_for_running == 'YES' ? true : false
+      build_target_for_running == 'YES'
     end
     
     # Set the build target to run or not run during the build step.
