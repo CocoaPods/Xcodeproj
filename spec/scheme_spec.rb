@@ -346,14 +346,14 @@ describe Xcodeproj::XCScheme do
 
       it 'Save as Shared Scheme' do
         result = @scheme.save_as(SpecHelper::TemporaryDirectory::temporary_directory, true)
-        result.should.be.true
-        File.exists? File.join SpecHelper::TemporaryDirectory::temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme'
+        (result > 0).should.be.true
+        File.exists?(File.join SpecHelper::TemporaryDirectory::temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
       end
 
       it 'Save as User Scheme' do
         result = @scheme.save_as(SpecHelper::TemporaryDirectory::temporary_directory, false)
-        result.should.be.true
-        File.exists? File.join SpecHelper::TemporaryDirectory::temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme'
+        (result > 0).should.be.true
+        File.exists?(File.join SpecHelper::TemporaryDirectory::temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
       end
 
     end

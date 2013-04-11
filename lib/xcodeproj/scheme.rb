@@ -11,7 +11,8 @@ module Xcodeproj
     #
     attr_reader :doc
     
-    # @return [String] the name of the container that have the targets used by the scheme.
+    # @return [String] the name of the container (the project name file without the extension) that have the targets
+    # used by the scheme.
     #
     attr_reader :container
 
@@ -26,7 +27,8 @@ module Xcodeproj
     # Create a new XCScheme instance
     #
     # @param [String] container
-    #        The name of the container that have the targets used by the scheme.
+    #        The name of the container (the project name file without the extension) that have the targets used by the
+    #        scheme.
     #
     # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
     #        The target used by scheme in the build step.
@@ -37,7 +39,7 @@ module Xcodeproj
     # @example
     #   Xcodeproj::XCScheme.new 'Cocoa Application', project.targets[0], project.targets[1]
     #
-    def initialize(container, build_target, test_target)
+    def initialize(container, build_target, test_target = nil)
       @container = container
       @build_target = build_target
       @test_target = test_target
@@ -79,26 +81,28 @@ module Xcodeproj
       test_action.attributes['buildConfiguration'] = 'Debug'
       
       testables = test_action.add_element 'Testables'
-      
-      testable_reference = testables.add_element 'TestableReference'
-      testable_reference.attributes['skipped'] = 'NO'
-      
-      buildable_reference = testable_reference.add_element 'BuildableReference'
-      buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      buildable_reference.attributes['BlueprintIdentifier'] = test_target.uuid
-      buildable_reference.attributes['BuildableName'] = "#{test_target.name}.octest"
-      buildable_reference.attributes['BlueprintName'] = test_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
-      
-      if (build_target.product_type == 'com.apple.product-type.application') then
-        macro_expansion = test_action.add_element 'MacroExpansion'
-      
-        buildable_reference = macro_expansion.add_element 'BuildableReference'
+
+      if (test_target != nil) then
+        testable_reference = testables.add_element 'TestableReference'
+        testable_reference.attributes['skipped'] = 'NO'
+
+        buildable_reference = testable_reference.add_element 'BuildableReference'
         buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-        buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-        buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
-        buildable_reference.attributes['BlueprintName'] = build_target.name
+        buildable_reference.attributes['BlueprintIdentifier'] = test_target.uuid
+        buildable_reference.attributes['BuildableName'] = "#{test_target.name}.octest"
+        buildable_reference.attributes['BlueprintName'] = test_target.name
         buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+
+        if (build_target.product_type == 'com.apple.product-type.application') then
+          macro_expansion = test_action.add_element 'MacroExpansion'
+
+          buildable_reference = macro_expansion.add_element 'BuildableReference'
+          buildable_reference.attributes['BuildableIdentifier'] = 'primary'
+          buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
+          buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
+          buildable_reference.attributes['BlueprintName'] = build_target.name
+          buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+        end
       end
       
       launch_action = scheme.add_element 'LaunchAction'
@@ -244,7 +248,6 @@ module Xcodeproj
       File.open(scheme_path, 'w') do |f|
         f.write(self)
       end
-      File.exists? scheme_path
     end
     
   end
