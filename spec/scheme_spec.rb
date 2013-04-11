@@ -11,7 +11,7 @@ describe Xcodeproj::XCScheme do
 
     before do
       project_path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'Cocoa Application.xcodeproj')
-      if (Dir.exists? project_path) then
+      if (File.directory? project_path) then
         FileUtils.rm_r project_path
       end
       FileUtils.cp_r fixture_path('Sample Project/Cocoa Application.xcodeproj'), SpecHelper::TemporaryDirectory::temporary_directory
@@ -314,10 +314,10 @@ describe Xcodeproj::XCScheme do
 
       after do
         path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'xcshareddata')
-        FileUtils.rm_r(path) if Dir.exists? path
+        FileUtils.rm_r(path) if File.directory? path
 
         path = File.join(SpecHelper::TemporaryDirectory::temporary_directory, 'xcuserdata')
-        FileUtils.rm_r(path) if Dir.exists? path
+        FileUtils.rm_r(path) if File.directory? path
       end
 
       it 'XML Decl' do
