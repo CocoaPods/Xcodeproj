@@ -232,7 +232,7 @@ module Xcodeproj
     #        true  => if the scheme must be a shared scheme (default value)
     #        false => if the scheme must be a user scheme
     #
-    # @return [Boolean] Whether or not saving was successful.
+    # @return [Integer] Number of bytes written in the file.
     #
     # @example Saving a scheme
     #   scheme.save_as('path/to/Project.xcodeproj') #=> true
