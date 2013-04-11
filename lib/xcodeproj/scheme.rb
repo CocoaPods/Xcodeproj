@@ -2,14 +2,41 @@ require 'rexml/document'
 
 module Xcodeproj
       
+  # This class represents a Scheme document represented by a ".xcscheme" file usually stored
+  # in a xcuserdata or xcshareddata (for a shared scheme) folder.
+  # 
   class XCScheme
     
+    # @return [REXML::Document] the XML object that will be manipulated to save the scheme file after.
+    #
     attr :doc, REXML::Document
     
+    # @return [String] the name of the container that have the targets used by the scheme.
+    #
     attr :container, String
+
+    # @return [Xcodeproj::Project::Object::AbstractTarget] the target used by scheme in the build step.
+    #
     attr :build_target, Xcodeproj::Project::Object::AbstractTarget
+
+    # @return [Xcodeproj::Project::Object::AbstractTarget] the target used by scheme in the test step.
+    #
     attr :test_target, Xcodeproj::Project::Object::AbstractTarget
     
+    # Create a new XCScheme instance
+    #
+    # @param [String] container
+    #        The name of the container that have the targets used by the scheme.
+    #
+    # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
+    #        The target used by scheme in the build step.
+    #
+    # @param [Xcodeproj::Project::Object::AbstractTarget] test_target
+    #        The target used by scheme in the test step.
+    #
+    # @example
+    #   Xcodeproj::XCScheme.new 'Cocoa Application', project.targets[0], project.targets[1]
+    #
     def initialize(container, build_target, test_target)
       @container = container
       @build_target = build_target
@@ -122,8 +149,34 @@ module Xcodeproj
       archive_action.attributes['buildConfiguration'] = 'Release'
       archive_action.attributes['revealArchiveInOrganizer'] = 'YES'
     end
+
+    # Returns the current value if the build target must be runned during the build step.
+    #
+    # @return [Boolean]
+    #         true  => run during the build step
+    #         false => not run during the build step
+    #
+    def build_target_for_running
+      build_target_for_running = @doc.root.elements['BuildAction'] \
+      .elements['BuildActionEntries'] \
+      .elements['BuildActionEntry'] \
+      .attributes['buildForRunning'] \
+      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'].elements['BuildActionEntry'].attributes['buildForRunning'] \
+      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'].elements['BuildActionEntry'] \
+      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'] \
+      if @doc.root.elements['BuildAction']
+
+      build_target_for_running == 'YES' ? true : false
+    end
     
-    def set_build_target_for_running(value)
+    # Set the build target to run or not run during the build step.
+    # Useful for cases where the build target is a unit test bundle.
+    #
+    # @param [Boolean] build_target_for_running
+    #        true  => run during the build step
+    #        false => not run during the build step
+    #
+    def build_target_for_running=(build_target_for_running)
       build_action = @doc.root.elements['BuildAction']
       
       if (build_action.elements['BuildActionEntries'] == nil) then
@@ -139,10 +192,10 @@ module Xcodeproj
         build_action_entry.attributes['buildForArchiving'] = 'NO'
         build_action_entry.attributes['buildForAnalyzing'] = 'NO'
       else
-        build_action_entry = build_action.children.at('BuildActionEntry').first
+        build_action_entry = build_action_entries.elements['BuildActionEntry']
       end
       
-      build_action_entry.attributes['buildForRunning'] = value
+      build_action_entry.attributes['buildForRunning'] = build_target_for_running ? 'YES' : 'NO'
       
       if (build_action_entry.elements['BuildableReference'] == nil) then
         buildable_reference = build_action_entry.add_element 'BuildableReference'
@@ -154,6 +207,10 @@ module Xcodeproj
       end
     end
     
+    # Serializes the current state of the object to a String
+    #
+    # @return [String] the XML string value of the current state of the object
+    #
     def to_s
       formatter = REXML::Formatters::Pretty.new(2)
       formatter.compact = true
@@ -162,13 +219,32 @@ module Xcodeproj
       out
     end
     
-    def save_as(project_path)
-      scheme_folder_path = File.join(project_path, 'xcshareddata', 'xcschemes')
+    # Serializes the current state of the object to a ".xcscheme" file.
+    #
+    # @param [String, Pathname] project_path
+    #        The path where the ".xcscheme" file should be stored.
+    #
+    # @param [Boolean] shared
+    #        true  => if the scheme must be a shared scheme (default value)
+    #        false => if the scheme must be a user scheme
+    #
+    # @return [Boolean] Whether or not saving was successful.
+    #
+    # @example Saving a scheme
+    #   scheme.save_as('path/to/Project.xcodeproj') #=> true
+    #
+    def save_as(project_path, shared = true)
+      if shared then
+        scheme_folder_path = File.join(project_path, 'xcshareddata', 'xcschemes')
+      else
+        scheme_folder_path = File.join(project_path, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes')
+      end
       Pathname(scheme_folder_path).mkpath
       scheme_path = File.join(scheme_folder_path, "#{build_target.display_name}.xcscheme")
       File.open(scheme_path, 'w') do |f|
         f.write(self)
       end
+      File.exists? scheme_path
     end
     
   end
