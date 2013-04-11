@@ -303,11 +303,11 @@ describe Xcodeproj::XCScheme do
       before do
         @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application_tests, @ios_application_tests
 
-        @scheme.build_target_for_running.should.be.false
+        @scheme.build_target_for_running?.should.be.false
 
         @scheme.build_target_for_running = true
 
-        @scheme.build_target_for_running.should.be.true
+        @scheme.build_target_for_running?.should.be.true
 
         @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests Set Build Target For Running.xcscheme')
       end

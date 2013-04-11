@@ -178,14 +178,17 @@ module Xcodeproj
     #         false => not run during the build step
     #
     def build_target_for_running?
-      build_target_for_running = @doc.root.elements['BuildAction'] \
-      .elements['BuildActionEntries'] \
-      .elements['BuildActionEntry'] \
-      .attributes['buildForRunning'] \
-      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'].elements['BuildActionEntry'].attributes['buildForRunning'] \
-      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'].elements['BuildActionEntry'] \
-      if @doc.root.elements['BuildAction'].elements['BuildActionEntries'] \
-      if @doc.root.elements['BuildAction']
+      build_target_for_running = ''
+
+      if build_action = @doc.root.elements['BuildAction']
+        if build_action_entries = build_action.elements['BuildActionEntries']
+          if build_action_entry = build_action_entries.elements['BuildActionEntry']
+            if build_action_entry
+              build_target_for_running = build_action_entry.attributes['buildForRunning']
+            end
+          end
+        end
+      end
 
       build_target_for_running == 'YES'
     end
@@ -249,7 +252,7 @@ module Xcodeproj
     #        true  => if the scheme must be a shared scheme (default value)
     #        false => if the scheme must be a user scheme
     #
-    # @return [Integer] Number of bytes written in the file.
+    # @return [void]
     #
     # @example Saving a scheme
     #   scheme.save_as('path/to/Project.xcodeproj') #=> true
