@@ -183,9 +183,7 @@ module Xcodeproj
       if build_action = @doc.root.elements['BuildAction']
         if build_action_entries = build_action.elements['BuildActionEntries']
           if build_action_entry = build_action_entries.elements['BuildActionEntry']
-            if build_action_entry
-              build_target_for_running = build_action_entry.attributes['buildForRunning']
-            end
+            build_target_for_running = build_action_entry.attributes['buildForRunning']
           end
         end
       end
