@@ -9,19 +9,19 @@ module Xcodeproj
     
     # @return [REXML::Document] the XML object that will be manipulated to save the scheme file after.
     #
-    attr :doc, REXML::Document
+    attr_reader :doc
     
     # @return [String] the name of the container that have the targets used by the scheme.
     #
-    attr :container, String
+    attr_reader :container
 
     # @return [Xcodeproj::Project::Object::AbstractTarget] the target used by scheme in the build step.
     #
-    attr :build_target, Xcodeproj::Project::Object::AbstractTarget
+    attr_reader :build_target
 
     # @return [Xcodeproj::Project::Object::AbstractTarget] the target used by scheme in the test step.
     #
-    attr :test_target, Xcodeproj::Project::Object::AbstractTarget
+    attr_reader :test_target
     
     # Create a new XCScheme instance
     #
@@ -43,7 +43,7 @@ module Xcodeproj
       @test_target = test_target
       
       @doc = REXML::Document.new
-      @doc << REXML::XMLDecl.new(REXML::XMLDecl::DEFAULT_VERSION, REXML::Encoding::UTF_8)
+      @doc << REXML::XMLDecl.new(REXML::XMLDecl::DEFAULT_VERSION, 'UTF-8')
       @doc.context[:attribute_quote] = :quote
       
       scheme = @doc.add_element 'Scheme'
