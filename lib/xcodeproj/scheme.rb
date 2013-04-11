@@ -177,7 +177,7 @@ module Xcodeproj
     #         true  => run during the build step
     #         false => not run during the build step
     #
-    def build_target_for_running
+    def build_target_for_running?
       build_target_for_running = @doc.root.elements['BuildAction'] \
       .elements['BuildActionEntries'] \
       .elements['BuildActionEntry'] \
