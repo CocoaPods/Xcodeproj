@@ -18,4 +18,5 @@ module Xcodeproj
   autoload :Project,        'xcodeproj/project'
   autoload :UI,             'xcodeproj/user_interface'
   autoload :Workspace,      'xcodeproj/workspace'
+  autoload :XCScheme,       'xcodeproj/scheme'
 end
