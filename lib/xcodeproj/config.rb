@@ -67,7 +67,8 @@ module Xcodeproj
     # @return [String] The serialized internal data.
     #
     def to_s
-      to_hash.sort_by(&:first).map { |k, v| "#{k} = #{v}" }.join("\n")
+      [includes.map { |i| "#include \"#{i}\""} +
+       to_hash.sort_by(&:first).map { |k, v| "#{k} = #{v}" }].join("\n")
     end
 
     # Writes the serialized representation of the internal data to the given
