@@ -101,6 +101,11 @@ describe "Xcodeproj::Config" do
     }
   end
 
+  it "generates the config file with refs to all included xcconfigs" do
+    @config.includes = ['Somefile']
+    @config.to_s.split("\n").first.should == '#include "Somefile"'
+  end
+
   it "creates the config file" do
     @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
     @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
