@@ -58,6 +58,16 @@ describe "Xcodeproj::Config" do
   it "can be serialized with #to_hash" do
     @config.to_hash.should.be.equal @hash
   end
+  
+  it "namespaces the output linker flags" do
+    config = Xcodeproj::Config.new(@hash, 'MY_LDFLAGS')
+    config.should == { 'MY_LDFLAGS' => '-framework Foundation' }
+  end
+  
+  it "does not include OTHER_LDFLAGS in the output hash when there are no linker flags specified" do
+    config = Xcodeproj::Config.new
+    config.to_hash.should.not.include 'OTHER_LDFLAGS'
+  end
 
   it "does not serialize with #to_s when inspecting the object" do
     @config.inspect.should == @config.to_hash.inspect

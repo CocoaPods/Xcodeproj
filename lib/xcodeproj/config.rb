@@ -35,7 +35,11 @@ module Xcodeproj
     # @param  [Hash, File, String] xcconfig_hash_or_file
     #         The initial data.
     #
-    def initialize(xcconfig_hash_or_file = {})
+    # @param [String] ldflags_output_namespace
+    #        The value to use for the output linker flags (defaults to OTHER_LDFLAGS)
+    #
+    def initialize(xcconfig_hash_or_file = {}, ldflags_output_namespace = 'OTHER_LDFLAGS')
+      @ldflags_output_namespace = ldflags_output_namespace
       @attributes = {}
       @includes = []
       @frameworks, @weak_frameworks, @libraries = Set.new, Set.new, Set.new
@@ -87,6 +91,9 @@ module Xcodeproj
     # frameworks, the weak frameworks and the libraries in the `Other Linker
     # Flags` (`OTHER_LDFLAGS`).
     #
+    # The output key OTHER_LDFLAGS can be changed by specifying your own
+    # linker flags namespace when the Config is created.
+    #
     # @note   All the values are sorted to have a consistent output in Ruby
     #         1.8.7.
     #
@@ -99,8 +106,9 @@ module Xcodeproj
       flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
       flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
       flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_framework #{f}" }
-      hash['OTHER_LDFLAGS'] = flags.strip
-      hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
+      
+      hash.delete('OTHER_LDFLAGS')
+      hash[@ldflags_output_namespace] = flags.strip unless flags.strip.empty?
       hash
     end
 
