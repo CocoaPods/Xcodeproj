@@ -109,6 +109,8 @@ module Xcodeproj
       
       hash.delete('OTHER_LDFLAGS')
       hash[@ldflags_output_namespace] = flags.strip unless flags.strip.empty?
+      hash['OTHER_LDFLAGS'] = "${#{@ldflags_output_namespace}}" unless @ldflags_output_namespace == 'OTHER_LDFLAGS'
+      
       hash
     end
 
