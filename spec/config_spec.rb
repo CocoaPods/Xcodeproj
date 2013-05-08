@@ -61,7 +61,7 @@ describe "Xcodeproj::Config" do
   
   it "namespaces the output linker flags" do
     config = Xcodeproj::Config.new(@hash, 'MY_LDFLAGS')
-    config.should == { 'MY_LDFLAGS' => '-framework Foundation' , 'OTHER_LDFLAGS' => '${MY_LDFLAGS}'}
+    config.should == { 'MY_LDFLAGS' => '-framework Foundation' }
   end
   
   it "does not include OTHER_LDFLAGS in the output hash when there are no linker flags specified" do
@@ -107,19 +107,13 @@ describe "Xcodeproj::Config" do
   it "merges two namespaced configs" do
     config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
     config << Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework Security'}, 'MY_LDFLAGS')
-    config.to_hash['MY_LDFLAGS'].should == '-framework CFNetwork -framework Security'
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
   end
   
   it "merges a non-namespaced linker hash into an existing namespaced config" do
     config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
     config << {'OTHER_LDFLAGS' => '-framework Security'}
-    config.to_hash['MY_LDFLAGS'].should == '-framework CFNetwork -framework Security'
-  end
-  
-  it "merges a namespaced linker hash into an existing namespaced config" do
-    config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
-    config << {'MY_LDFLAGS' => '-framework Security'}
-    config.to_hash['MY_LDFLAGS'].should == '-framework CFNetwork -framework Security'
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
   end
 
   it "appends a value for the same key when merging" do
