@@ -109,6 +109,12 @@ describe "Xcodeproj::Config" do
     config << Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework Security'}, 'MY_LDFLAGS')
     config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
   end
+  
+  it "merges a non-namespaced linker hash into an existing namespaced config" do
+    config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
+    config << {'OTHER_LDFLAGS' => '-framework Security'}
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
+  end
 
   it "appends a value for the same key when merging" do
     @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
