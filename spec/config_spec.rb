@@ -103,6 +103,12 @@ describe "Xcodeproj::Config" do
     }
     @config.should == { 'OTHER_LDFLAGS' => '-framework Foundation' }
   end
+  
+  it "merges two namespaced configs" do
+    config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
+    config << Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework Security'}, 'MY_LDFLAGS')
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
+  end
 
   it "appends a value for the same key when merging" do
     @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
