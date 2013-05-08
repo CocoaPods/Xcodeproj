@@ -58,6 +58,16 @@ describe "Xcodeproj::Config" do
   it "can be serialized with #to_hash" do
     @config.to_hash.should.be.equal @hash
   end
+  
+  it "namespaces the output linker flags" do
+    config = Xcodeproj::Config.new(@hash, 'MY_LDFLAGS')
+    config.should == { 'MY_LDFLAGS' => '-framework Foundation' }
+  end
+  
+  it "does not include OTHER_LDFLAGS in the output hash when there are no linker flags specified" do
+    config = Xcodeproj::Config.new
+    config.to_hash.should.not.include 'OTHER_LDFLAGS'
+  end
 
   it "does not serialize with #to_s when inspecting the object" do
     @config.inspect.should == @config.to_hash.inspect
@@ -92,6 +102,18 @@ describe "Xcodeproj::Config" do
       'HEADER_SEARCH_PATHS' => '/some/path'
     }
     @config.should == { 'OTHER_LDFLAGS' => '-framework Foundation' }
+  end
+  
+  it "merges two namespaced configs" do
+    config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
+    config << Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework Security'}, 'MY_LDFLAGS')
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
+  end
+  
+  it "merges a non-namespaced linker hash into an existing namespaced config" do
+    config = Xcodeproj::Config.new({'OTHER_LDFLAGS' => '-framework CFNetwork'}, 'MY_LDFLAGS')
+    config << {'OTHER_LDFLAGS' => '-framework Security'}
+    config.should == {'MY_LDFLAGS' => '-framework CFNetwork -framework Security'}
   end
 
   it "appends a value for the same key when merging" do
