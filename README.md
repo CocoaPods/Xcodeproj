@@ -21,7 +21,7 @@ by performing the following command:
     $ [sudo] gem install xcodeproj
 
 
-## Colaborate
+## Collaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
 is really easy and gratifying. You even get push access when one of your patches
