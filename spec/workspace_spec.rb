@@ -50,4 +50,34 @@ describe "Xcodeproj::Workspace" do
       @workspace.projpaths.should.be.empty
     end
   end
+  
+  describe "load schemes for all projects from workspace file" do
+    def contains_exactly arr
+      proc { |obj| (obj - arr).empty? }
+    end
+    
+    def ge value
+      proc { |test_value| test_value >= value}
+    end
+    
+    def is_a? cla
+      proc { |obj| obj.is_a? cla}
+    end
+    
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("SharedSchemes/SharedSchemes.xcworkspace"))
+    end
+    
+    it "returns data type should be hash" do
+      @workspace.schemes.should is_a? Hash
+    end
+    
+    it "schemes count should be greater or equal to projpaths count" do
+      @workspace.schemes.count.should ge @workspace.projpaths.count
+    end
+    
+    it "contains only test data schemes" do
+      @workspace.schemes.keys.should contains_exactly ['SharedSchemes', 'Pods', 'SharedSchemesForTest']
+    end
+  end
 end

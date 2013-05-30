@@ -381,5 +381,22 @@ module ProjectSpecs
         ]
       end
     end
+    
+    describe "Project schemes" do
+      def contains_exactly arr
+        proc { |obj| (obj - arr).empty? }
+      end
+      
+      it "return project name as scheme if there are no shared schemes" do
+        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/Pods/Pods.xcodeproj')
+        schemes[0].should == "Pods"
+      end
+      
+      it "return all project's shared schemes" do
+        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/SharedSchemes.xcodeproj')
+        schemes.should contains_exactly ['SharedSchemes', 'SharedSchemesForTest']
+      end
+      
+    end
   end
 end
