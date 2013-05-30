@@ -53,7 +53,9 @@ module Xcodeproj
       projpaths = document.get_elements("/Workspace/FileRef").map do |node|
         node.attribute("location").to_s.sub(/^group:/, '')
       end
-      new(projpaths).load_schemes(workspace_path)
+      instance = new(projpaths)
+      instance.load_schemes(workspace_path)
+      instance
     end
 
     #-------------------------------------------------------------------------#
@@ -119,14 +121,13 @@ module Xcodeproj
     # @param [String] workspace_dir_path
     #         path of workspaces dir
     #
-    # @return self
+    # @return [void]
     #
     def load_schemes workspace_dir_path
       @projpaths.each do |projpath|
         project_full_path = File.expand_path(File.join(workspace_dir_path, projpath))
         load_schemes_from_project project_full_path
       end
-      self
     end
 
     #-------------------------------------------------------------------------#
