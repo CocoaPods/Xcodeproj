@@ -12,11 +12,13 @@ module Xcodeproj
     #         workspace.
     #
     attr_reader :projpaths
+    attr_reader :schemes
 
     # @param  [Array] projpaths @see projpaths
     #
     def initialize(*projpaths)
       @projpaths = projpaths.flatten
+      @schemes = {}
     end
 
     #-------------------------------------------------------------------------#
@@ -30,38 +32,9 @@ module Xcodeproj
     #
     def self.new_from_xcworkspace(path)
       begin
-        from_s(File.read(File.join(path, 'contents.xcworkspacedata')))
+        from_s(File.read(File.join(path, 'contents.xcworkspacedata')), File.expand_path(File.dirname(path)))
       rescue Errno::ENOENT
         new
-      end
-    end
-
-
-    #-------------------------------------------------------------------------#
-    # schemes accessor
-    # @return [Hash] {scheme_name => project}
-    #
-    def schemes
-      load_schemes if @schemes.nil?
-      @schemes
-    end
-
-    #-------------------------------------------------------------------------#
-
-    # Load all schemes from all projects in workspace
-    def load_schemes
-      @schemes = {}
-      @projpaths.each do |projpath|
-        shared_data_path = File.expand_path(File.join projpath, 'xcshareddata', 'xcschemes')
-        if File.exists? shared_data_path
-          Dir[File.join(shared_data_path, '*.xcscheme')].each do |scheme|
-            scheme_name = File.basename scheme, '.xcscheme'
-            @schemes[scheme_name] = projpath
-          end
-        else
-          scheme_name = File.basename projpath, '.xcodeproj'
-          @schemes[scheme_name] = projpath
-        end
       end
     end
 
@@ -75,12 +48,12 @@ module Xcodeproj
     #
     # @return [Workspace] the generated workspace.
     #
-    def self.from_s(xml)
+    def self.from_s(xml, workspace_path='')
       document = REXML::Document.new(xml)
       projpaths = document.get_elements("/Workspace/FileRef").map do |node|
         node.attribute("location").to_s.sub(/^group:/, '')
       end
-      new(projpaths)
+      new(projpaths).load_schemes(workspace_path)
     end
 
     #-------------------------------------------------------------------------#
@@ -95,6 +68,7 @@ module Xcodeproj
     #
     def <<(projpath)
       @projpaths << projpath
+      load_schemes_from_project File.expand_path(projpath)
     end
 
     # Checks if the workspace contains the project with the given path.
@@ -135,6 +109,40 @@ module Xcodeproj
       FileUtils.mkdir_p(path)
       File.open(File.join(path, 'contents.xcworkspacedata'), 'w') do |out|
         out << to_s
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    # Load all schemes from all projects in workspace
+    #
+    # @param [String] workspace_dir_path
+    #         path of workspaces dir
+    #
+    # @return self
+    #
+    def load_schemes workspace_dir_path
+      @projpaths.each do |projpath|
+        project_full_path = File.expand_path(File.join(workspace_dir_path, projpath))
+        load_schemes_from_project project_full_path
+      end
+      self
+    end
+
+    #-------------------------------------------------------------------------#
+
+    private
+    # Load all schemes from project
+    #
+    # @param [String] project_full_path
+    #         project full path
+    #
+    # @return [void]
+    #
+    def load_schemes_from_project project_full_path
+      schemes = Xcodeproj::Project.schemes project_full_path
+      schemes.each do |scheme_name|
+        @schemes[scheme_name] = project_full_path
       end
     end
 
