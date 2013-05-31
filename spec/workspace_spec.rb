@@ -50,4 +50,22 @@ describe "Xcodeproj::Workspace" do
       @workspace.projpaths.should.be.empty
     end
   end
+  
+  describe "load schemes for all projects from workspace file" do
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("SharedSchemes/SharedSchemes.xcworkspace"))
+    end
+    
+    it "returns data type should be hash" do
+      @workspace.schemes.should.instance_of Hash
+    end
+    
+    it "schemes count should be greater or equal to projpaths count" do
+      @workspace.schemes.count.should >= @workspace.projpaths.count
+    end
+    
+    it "contains only test data schemes" do
+      @workspace.schemes.keys.sort.should == ['Pods', 'SharedSchemes', 'SharedSchemesForTest']
+    end
+  end
 end
