@@ -653,6 +653,22 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
+    # Get list of shared schemes in project
+    #
+    # @param [String] path
+    #         project path
+    #
+    # @return [Array]
+    #
+    def self.schemes project_path
+      schemes = Dir[File.join(project_path, 'xcshareddata', 'xcschemes', '*.xcscheme')].map do |scheme|
+        File.basename(scheme, '.xcscheme')
+      end
+      schemes << File.basename(project_path, '.xcodeproj') if schemes.empty?
+      schemes
+    end
+
+    #-------------------------------------------------------------------------#
 
   end
 end
