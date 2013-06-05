@@ -381,5 +381,18 @@ module ProjectSpecs
         ]
       end
     end
+    
+    describe "Project schemes" do
+      it "return project name as scheme if there are no shared schemes" do
+        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/Pods/Pods.xcodeproj')
+        schemes[0].should == "Pods"
+      end
+      
+      it "return all project's shared schemes" do
+        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/SharedSchemes.xcodeproj')
+        schemes.sort.should == ['SharedSchemes', 'SharedSchemesForTest']
+      end
+      
+    end
   end
 end
