@@ -20,6 +20,7 @@ end
 
 require 'rubygems'
 require 'bacon'
+require 'pretty_bacon'
 require 'mocha-on-bacon'
 require 'pathname'
 
@@ -30,7 +31,6 @@ $:.unshift((ROOT + 'lib').to_s)
 require 'xcodeproj'
 
 $:.unshift((ROOT + 'spec').to_s)
-require 'spec_helper/bacon'
 require 'spec_helper/project'
 require 'spec_helper/temporary_directory'
 
