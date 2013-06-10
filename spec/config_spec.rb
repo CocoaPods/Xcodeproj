@@ -59,6 +59,11 @@ describe "Xcodeproj::Config" do
     @config.to_hash.should.be.equal @hash
   end
 
+  it "can prefix values during serialization" do
+    @prefix_hash = { 'PODS_PREFIX_OTHER_LDFLAGS' => @hash['OTHER_LDFLAGS'] }
+    @config.to_hash('PODS_PREFIX_').should.be.equal @prefix_hash
+  end
+
   it "does not serialize with #to_s when inspecting the object" do
     @config.inspect.should == @config.to_hash.inspect
   end

@@ -66,9 +66,9 @@ module Xcodeproj
     #
     # @return [String] The serialized internal data.
     #
-    def to_s
+    def to_s(prefix = nil)
       [includes.map { |i| "#include \"#{i}\""} +
-       to_hash.sort_by(&:first).map { |k, v| "#{k} = #{v}" }].join("\n")
+       to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }].join("\n")
     end
 
     # Writes the serialized representation of the internal data to the given
@@ -79,8 +79,8 @@ module Xcodeproj
     #
     # @return [void]
     #
-    def save_as(pathname)
-      pathname.open('w') { |file| file << to_s }
+    def save_as(pathname, prefix = nil)
+      pathname.open('w') { |file| file << to_s(prefix) }
     end
 
     # The hash representation of the xcconfig. The hash includes the
@@ -92,7 +92,7 @@ module Xcodeproj
     #
     # @return [Hash] The hash representation
     #
-    def to_hash
+    def to_hash(prefix = nil)
       hash = @attributes.dup
       flags = hash['OTHER_LDFLAGS'] || ''
       flags = flags.dup.strip
@@ -101,7 +101,11 @@ module Xcodeproj
       flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_framework #{f}" }
       hash['OTHER_LDFLAGS'] = flags.strip
       hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
-      hash
+      if prefix
+        Hash[hash.map {|k, v| [prefix + k, v]}]
+      else
+        hash
+      end
     end
 
     #-------------------------------------------------------------------------#
