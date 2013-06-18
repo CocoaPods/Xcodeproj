@@ -7,6 +7,8 @@ Makefile
 .rbenv-version
 ext/xcodeproj/extconf.h
 ext/xcodeproj/conftest.dSYM
+ext/xcodeproj/.RUBYARCHDIR.time
+ext/xcodeproj/siteconf*.rb
 *.gem
 .yardoc
 doc
