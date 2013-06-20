@@ -79,6 +79,7 @@ module Xcodeproj
     #
     PRODUCT_TYPE_UTI = {
       :application     => 'com.apple.product-type.application',
+      :framework       => 'com.apple.product-type.framework',
       :dynamic_library => 'com.apple.product-type.library.dynamic',
       :static_library  => 'com.apple.product-type.library.static',
     }.freeze
