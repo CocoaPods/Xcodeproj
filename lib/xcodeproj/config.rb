@@ -67,8 +67,9 @@ module Xcodeproj
     # @return [String] The serialized internal data.
     #
     def to_s(prefix = nil)
-      [includes.map { |i| "#include \"#{i}\""} +
-       to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }].join("\n")
+      include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\""}
+      settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }
+      [include_lines + settings].join("\n")
     end
 
     # Writes the serialized representation of the internal data to the given
@@ -263,6 +264,22 @@ module Xcodeproj
         [key.strip, value.strip]
       else
         []
+      end
+    end
+
+    # Normalizes the given path to an xcconfing file to be used in includes,
+    # appending the extension if necessary.
+    #
+    # @param  [String] path
+    #         The path of the file which will be included in the xcconfig.
+    #
+    # @return [String] The normalized path.
+    #
+    def normalized_xcconfig_path(path)
+      if File.extname(path) == '.xcconfig'
+        path
+      else
+        "#{path}.xcconfig"
       end
     end
 

@@ -20,8 +20,9 @@ end
 
 require 'rubygems'
 require 'bacon'
-require 'pretty_bacon'
+require 'bacon'
 require 'mocha-on-bacon'
+require 'pretty_bacon'
 require 'pathname'
 
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
