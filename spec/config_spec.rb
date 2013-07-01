@@ -1,6 +1,9 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-describe "Xcodeproj::Config" do
+describe Xcodeproj::Config do
+
+  describe "In general" do
+
   extend SpecHelper::TemporaryDirectory
 
   before do
@@ -107,8 +110,13 @@ describe "Xcodeproj::Config" do
   end
 
   it "generates the config file with refs to all included xcconfigs" do
+    @config.includes = ['Somefile.xcconfig']
+    @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
+  end
+
+  it "appends the extensiono to the included files if needed" do
     @config.includes = ['Somefile']
-    @config.to_s.split("\n").first.should == '#include "Somefile"'
+    @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
   end
 
   it "creates the config file" do
@@ -170,4 +178,33 @@ describe "Xcodeproj::Config" do
     config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
     config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
   end
+
+  end
+
+  #---------------------------------------------------------------------------#
+
+  describe "Private helpers" do
+
+    before do
+      @config = Xcodeproj::Config.new
+    end
+
+    describe "#normalized_xcconfig_path" do
+
+      it "appends the extension if needed" do
+        normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
+        normalized_path.should == 'path/file.xcconfig'
+      end
+
+      it "doesn't append the extension if not needed" do
+        normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
+        normalized_path.should == 'path/file.xcconfig'
+      end
+
+    end
+
+  end
+
+  #---------------------------------------------------------------------------#
+
 end

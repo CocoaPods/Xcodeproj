@@ -28,12 +28,12 @@ GEM
       rest-client
       simplecov (>= 0.7)
       thor
-    ffi (1.8.1)
+    ffi (1.9.0)
     github-markup (0.7.5)
     i18n (0.6.1)
     kicker (2.6.1)
       listen
-    listen (1.1.6)
+    listen (1.2.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
@@ -43,12 +43,12 @@ GEM
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
-    multi_json (1.7.6)
+    multi_json (1.7.7)
     posix-spawn (0.3.6)
-    pygments.rb (0.5.0)
+    pygments.rb (0.5.1)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
-    rake (10.0.4)
+    rake (10.1.0)
     rb-fsevent (0.9.3)
     rb-inotify (0.9.0)
       ffi (>= 0.5.0)
@@ -63,7 +63,7 @@ GEM
     simplecov-html (0.7.1)
     thor (0.18.1)
     yajl-ruby (1.1.0)
-    yard (0.8.6.1)
+    yard (0.8.6.2)
 
 PLATFORMS
   ruby
