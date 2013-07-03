@@ -9,8 +9,8 @@ module ProjectSpecs
 
     describe "In general" do
 
-      it "defaults the settings to the empty hash" do
-        @file.settings.should == {}
+      it "doesn't provide default file settings" do
+        @file.settings.should.be.nil
       end
 
       it "returns the file reference" do
@@ -35,6 +35,7 @@ module ProjectSpecs
 
       it "returns the pretty print representation" do
         @file.file_ref = @project.new_file('Class.m')
+        @file.settings = {}
         @file.settings['COMPILER_FLAGS'] = '-Wno-format'
         @file.pretty_print.should =={
           "Class.m" => { "COMPILER_FLAGS" => "-Wno-format" }

@@ -268,10 +268,8 @@ module Xcodeproj
               -1
             elsif x.is_a?(PBXFileReference) && y.is_a?(PBXGroup)
               1
-            elsif x.respond_to?(:name) && y.respond_to?(:name)
-              x.name <=> y.name
             else
-              0
+              x.display_name <=> y.display_name
             end
           end
         end

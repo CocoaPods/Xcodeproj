@@ -14,7 +14,6 @@ module ProjectSpecs
 
     it "returns the product" do
       @target.product_reference.should.be.instance_of PBXFileReference
-      @target.product_reference.name.should == "libPods.a"
       @target.product_reference.path.should == "libPods.a"
     end
 

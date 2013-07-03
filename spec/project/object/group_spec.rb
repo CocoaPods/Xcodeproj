@@ -14,7 +14,7 @@ module ProjectSpecs
     it "sorts by group vs file first, then name" do
       @group.new_group('Apemachine')
       @group.sort_by_type!
-      @group.children.map(&:name).should == %w{
+      @group.children.map(&:display_name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h Abracadabra.m Banana.h Banana.m
       }
@@ -29,7 +29,6 @@ module ProjectSpecs
         group.should.not == nil
         groups = group.groups
       end
-
     end
 
     it "returns that the main group has no name" do
@@ -47,7 +46,7 @@ module ProjectSpecs
     end
 
     it "returns a list of files and groups" do
-      @group.children.map(&:name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
+      @group.children.map(&:display_name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
     end
 
     it "adds XCVersionGroups" do
