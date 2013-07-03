@@ -121,10 +121,9 @@ module Xcodeproj
         #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_file(path, sub_group_path = nil)
+        def new_file(path, sub_group_path = nil, set_name = true)
           file = project.new(PBXFileReference)
           file.path = path.to_s
-          file.name = file.pathname.basename.to_s
           file.update_last_known_file_type
 
           target = find_subpath(sub_group_path, true)

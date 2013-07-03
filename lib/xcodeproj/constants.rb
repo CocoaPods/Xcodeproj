@@ -71,8 +71,13 @@ module Xcodeproj
       'framework'   => 'wrapper.framework',
       'h'           => 'sourcecode.c.h',
       'm'           => 'sourcecode.c.objc',
+      'pch'         => 'sourcecode.c.h',
       'xcconfig'    => 'text.xcconfig',
       'xcdatamodel' => 'wrapper.xcdatamodel',
+      'xib'         => 'file.xib',
+      'sh'          => 'text.script.sh',
+      'plist'       => 'text.plist.xml',
+      'markdown'    => 'text',
     }.freeze
 
     # @return [Hash] The uniform type identifier of various product types.

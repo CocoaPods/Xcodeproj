@@ -18,7 +18,7 @@ module Xcodeproj
         #         where `:value` can be `Public`, `Private`, or nil
         #         (Protected).
         #
-        attribute :settings, Hash, {}
+        attribute :settings, Hash
 
         # @return [PBXFileReference] the file that to build.
         #

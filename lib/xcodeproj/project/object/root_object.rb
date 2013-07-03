@@ -56,11 +56,11 @@ module Xcodeproj
 
         # @return [String] the directory of the project.
         #
-        attribute :project_dir_path, String
+        attribute :project_dir_path, String, ''
 
         # @return [String] the root of the project.
         #
-        attribute :project_root, String
+        attribute :project_root, String, ''
 
         # @return [Array<ObjectDictionary>] any reference to other projects.
         #
