@@ -45,6 +45,16 @@ module ProjectSpecs
       @group.files.should.include file
     end
 
+    it "set the name attribute of the file reference if the file is not in the same dir of the group" do
+      ref = @group.new_file('sub_dir/ZOMG.md')
+      ref.name.should == 'ZOMG.md'
+    end
+
+    it "doesn't set the name attribute of the file reference if the file is in the same dir of the group" do
+      ref = @group.new_file('ZOMG.md')
+      ref.name.should.be.nil
+    end
+
     it "returns a list of files and groups" do
       @group.children.map(&:display_name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
     end

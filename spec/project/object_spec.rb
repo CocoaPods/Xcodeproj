@@ -194,13 +194,14 @@ module ProjectSpecs
         @file.to_tree_hash.should == {
           "displayName" => "file.m",
           "isa" => "PBXFileReference",
+          "name" => "file.m",
           "path" => "Classes/file.m",
           "sourceTree" => "SOURCE_ROOT",
           "lastKnownFileType" => "sourcecode.c.objc",
           "includeInIndex" => "1"
         }
         children = @group.to_tree_hash['children'].map { |child| child['name'] || child['path'] }
-        children.should == ["Products", "Frameworks", "Classes/file.m"]
+        children.should == ["Products", "Frameworks", "file.m"]
       end
 
       it "returns the pretty print representation" do

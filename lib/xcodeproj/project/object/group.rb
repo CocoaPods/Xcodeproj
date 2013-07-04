@@ -109,8 +109,12 @@ module Xcodeproj
         # Creates a new file reference with the given path and adds it to the
         # group or to an optional subpath.
         #
-        # @note The subpath is created if needed, similar to the UNIX command
-        #       `mkdir -p`
+        # @note   The subpath is created if needed, similar to the UNIX command
+        #         `mkdir -p`
+        #
+        # @note   To closely match the Xcode behaviour the name attribute of
+        #         the file reference is set only if the path of the file is not
+        #         equal to the path of the group.
         #
         # @param  [#to_s] path
         #         the file system path of the file.
@@ -128,6 +132,12 @@ module Xcodeproj
 
           target = find_subpath(sub_group_path, true)
           target.children << file
+
+          same_path_of_group = target.path == file.pathname.dirname.to_s
+          same_path_project = file.pathname.dirname.to_s == '.' && target.path.nil?
+          unless same_path_of_group || same_path_project
+            file.name = file.pathname.basename.to_s
+          end
           file
         end
 
