@@ -111,19 +111,18 @@ module Xcodeproj
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
         'GCC_OPTIMIZATION_LEVEL'            => '0',
         'COPY_PHASE_STRIP'                  => 'NO',
+        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       :release => {
         'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
         'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
       }.freeze,
       :ios => {
-        'ARCHS'                             => "$(ARCHS_STANDARD_32_BIT)",
         'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
         'PUBLIC_HEADERS_FOLDER_PATH'        => "$(TARGET_NAME)",
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       :osx => {
-        'ARCHS'                             => "$(ARCHS_STANDARD_64_BIT)",
         'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
         'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
         'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
@@ -131,7 +130,6 @@ module Xcodeproj
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:osx, :debug] => {
-        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       [:osx, :release] => {
         'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
@@ -141,6 +139,16 @@ module Xcodeproj
       }.freeze,
       [:ios, :release] => {
         'VALIDATE_PRODUCT'                  => 'YES',
+      }.freeze,
+    }.freeze
+
+    # @return [Hash] The default build settings for a new project.
+    #
+    PROJECT_DEFAULT_BUILD_SETTINGS = {
+      :release => {
+      }.freeze,
+      :debug => {
+        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
     }.freeze
 

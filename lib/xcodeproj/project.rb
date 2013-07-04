@@ -118,7 +118,7 @@ module Xcodeproj
         %w| Release Debug |.each do |name|
           build_configuration = new(XCBuildConfiguration)
           build_configuration.name = name
-          build_configuration.build_settings = {}
+          build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[name.downcase.to_sym].dup
           config_list.build_configurations << build_configuration
         end
 
