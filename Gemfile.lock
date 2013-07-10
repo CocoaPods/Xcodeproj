@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/alloy/kicker.git
+  revision: 885b3d274372af0b9839d1172d1ac3bc5552c604
+  branch: 3.0.0
+  specs:
+    kicker (3.0.0pre2)
+      listen (~> 1.1.0)
+      notify (~> 0.5.2)
+
+GIT
   remote: https://github.com/irrationalfab/PrettyBacon.git
   revision: c42de649708149bbfb5fb5beefa65440855cf876
   branch: master
@@ -31,9 +40,7 @@ GEM
     ffi (1.9.0)
     github-markup (0.7.5)
     i18n (0.6.1)
-    kicker (2.6.1)
-      listen
-    listen (1.2.2)
+    listen (1.1.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
@@ -44,6 +51,7 @@ GEM
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
     multi_json (1.7.7)
+    notify (0.5.2)
     posix-spawn (0.3.6)
     pygments.rb (0.5.1)
       posix-spawn (~> 0.3.6)
@@ -72,7 +80,7 @@ DEPENDENCIES
   bacon
   coveralls
   github-markup
-  kicker
+  kicker!
   mocha
   mocha-on-bacon
   prettybacon!

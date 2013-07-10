@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module Xcodeproj
 
   # This class holds the data for a Xcode build settings file (xcconfig) and
@@ -136,12 +138,13 @@ module Xcodeproj
     #
     def merge!(xcconfig)
       if xcconfig.is_a? Config
-        @attributes.merge!(xcconfig.attributes) { |key, v1, v2| "#{v1} #{v2}" }
+        merge_attributes!(xcconfig.attributes)
         @libraries.merge(xcconfig.libraries)
         @frameworks.merge(xcconfig.frameworks)
         @weak_frameworks.merge(xcconfig.weak_frameworks)
       else
-        @attributes.merge!(xcconfig.to_hash) { |key, v1, v2| "#{v1} #{v2}" }
+        merge_attributes!(xcconfig.to_hash)
+
         # Parse frameworks and libraries. Then remove them from the linker
         # flags
         flags = @attributes['OTHER_LDFLAGS']
@@ -223,6 +226,21 @@ module Xcodeproj
         end
       end
       hash
+    end
+
+    # Merges the given attributes hash while ensuring values are not duplicated.
+    #
+    # @param  [Hash] attributes
+    #         The attributes hash to merge into @attributes.
+    #
+    # @return [void]
+    #
+    def merge_attributes!(attributes)
+      @attributes.merge!(attributes) do |_, v1, v2|
+        v1, v2 = v1.strip, v2.strip
+        existing = v1.strip.shellsplit
+        existing.include?(v2) ? v1 : "#{v1} #{v2}"
+      end
     end
 
     # Strips the comments from a line of an xcconfig string.

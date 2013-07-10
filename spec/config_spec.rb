@@ -150,7 +150,7 @@ describe Xcodeproj::Config do
       config.should == { 'Key' => 'Value' }
     end
 
-    it "doesn't duplicates libraries and frameworks" do
+    it "doesn't duplicate libraries and frameworks" do
       hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
       config = Xcodeproj::Config.new(hash)
       # merge the original hash again
@@ -161,6 +161,15 @@ describe Xcodeproj::Config do
       config.frameworks.to_a.should.be.equal %w[ Foundation ]
       config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
       config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+    end
+
+    it "doesn't duplicate other attribute values" do
+      hash = { 'CLANG_CXX_LIBRARY' => 'libc++' }
+      config = Xcodeproj::Config.new(hash)
+      config.merge!(hash)
+      config.to_hash.should == hash
+      config.merge!(config)
+      config.to_hash.should == hash
     end
 
     it 'it preserves OTHER_LDFLAGS not related to libraries and frameworks' do
