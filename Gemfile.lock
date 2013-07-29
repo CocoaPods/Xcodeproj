@@ -9,7 +9,7 @@ GIT
 
 GIT
   remote: https://github.com/irrationalfab/PrettyBacon.git
-  revision: c42de649708149bbfb5fb5beefa65440855cf876
+  revision: 0da7e231bf597005aaa4efb4c2cd837336a6b42b
   branch: master
   specs:
     prettybacon (0.0.1)
@@ -25,8 +25,8 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.2.13)
-      i18n (= 0.6.1)
+    activesupport (3.2.14)
+      i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     bacon (1.2.0)
     colored (1.2)
@@ -39,7 +39,7 @@ GEM
       thor
     ffi (1.9.0)
     github-markup (0.7.5)
-    i18n (0.6.1)
+    i18n (0.6.4)
     listen (1.1.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -53,7 +53,7 @@ GEM
     multi_json (1.7.7)
     notify (0.5.2)
     posix-spawn (0.3.6)
-    pygments.rb (0.5.1)
+    pygments.rb (0.5.2)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
     rake (10.1.0)
@@ -62,7 +62,7 @@ GEM
       ffi (>= 0.5.0)
     rb-kqueue (0.2.0)
       ffi (>= 0.5.0)
-    redcarpet (2.3.0)
+    redcarpet (3.0.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     simplecov (0.7.1)
@@ -71,7 +71,7 @@ GEM
     simplecov-html (0.7.1)
     thor (0.18.1)
     yajl-ruby (1.1.0)
-    yard (0.8.6.2)
+    yard (0.8.7)
 
 PLATFORMS
   ruby

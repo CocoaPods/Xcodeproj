@@ -172,7 +172,7 @@ module Xcodeproj
         #
         # @param  [String] sub_group_path @see new_file
         #
-        # @return [PBXFileReference] the new group.
+        # @return [PBXFileReference] the new file reference.
         #
         def new_static_library(product_name, sub_group_path = nil)
           file = new_file("lib#{product_name}.a", sub_group_path)
@@ -181,6 +181,30 @@ module Xcodeproj
           file.explicit_file_type = file.last_known_file_type
           file.last_known_file_type = nil
           file
+        end
+
+
+        # Creates a file reference to a framework and adds it to the
+        # children of the group if needed.
+        #
+        # @note @see new_file
+        #
+        # @param  [#to_s] path
+        #         the path to the framework bundle.
+        #
+        # @param  [String] sub_group_path @see new_file
+        #
+        # @return [PBXFileReference] the new file reference.
+        #
+        def new_framework(path, sub_group_path = nil)
+          if file = files.find { |f| f.path == path }
+            file
+          else
+            framework_ref = new_file(path, sub_group_path)
+            framework_ref.name = File.basename(path)
+            framework_ref.include_in_index = nil
+            framework_ref
+          end
         end
 
         # Creates a new group to represent a `xcdatamodel` file.

@@ -331,6 +331,10 @@ module ProjectSpecs
         @project['Cocoa Application'].children.should.include file
       end
 
+      before do
+        Xcodeproj::XcodebuildHelper.any_instance.stubs(:last_ios_sdk).returns(Xcodeproj::Constants::LAST_KNOWN_IOS_SDK)
+      end
+
       it "adds a file reference for a system framework, to the Frameworks group" do
         target = stub(:sdk => 'iphoneos5.0')
         group = @project['Frameworks']
@@ -381,18 +385,18 @@ module ProjectSpecs
         ]
       end
     end
-    
+
     describe "Project schemes" do
       it "return project name as scheme if there are no shared schemes" do
         schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/Pods/Pods.xcodeproj')
         schemes[0].should == "Pods"
       end
-      
+
       it "return all project's shared schemes" do
         schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/SharedSchemes.xcodeproj')
         schemes.sort.should == ['SharedSchemes', 'SharedSchemesForTest']
       end
-      
+
     end
   end
 end

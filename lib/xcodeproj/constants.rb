@@ -69,6 +69,7 @@ module Xcodeproj
       'application' => 'wrapper.application',
       'dylib'       => 'compiled.mach-o.dylib',
       'framework'   => 'wrapper.framework',
+      'bundle'      => 'wrapper.plug-in',
       'h'           => 'sourcecode.c.h',
       'm'           => 'sourcecode.c.objc',
       'pch'         => 'sourcecode.c.h',

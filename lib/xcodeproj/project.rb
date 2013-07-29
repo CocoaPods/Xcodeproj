@@ -515,28 +515,24 @@ module Xcodeproj
       raise "Unable to find and SDK for the target `#{target.name}`" unless sdk
       if sdk.include?('iphoneos')
         if sdk == 'iphoneos'
-          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{Constants::LAST_KNOWN_IOS_SDK}.sdk/"
+          version = shared_xcodebuild_helper.last_ios_sdk || Constants::LAST_KNOWN_IOS_SDK
+          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{version}.sdk/"
         else
           base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk.gsub('iphoneos', '')}.sdk/"
         end
       elsif sdk.include?('macosx')
         if sdk == 'macosx'
-          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{Constants::LAST_KNOWN_OSX_SDK}.sdk/"
+          version = shared_xcodebuild_helper.last_osx_sdk || Constants::LAST_KNOWN_OSX_SDK
+          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{version}.sdk/"
         else
-          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('iphoneos', '')}.sdk/"
+          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('macosx', '')}.sdk/"
         end
       end
       path = base_dir + "System/Library/Frameworks/#{name}.framework"
 
-      if file = frameworks_group.files.find { |f| f.path == path }
-        file
-      else
-        framework_ref = frameworks_group.new_file(path)
-        framework_ref.name = "#{name}.framework"
-        framework_ref.source_tree = 'DEVELOPER_DIR'
-        framework_ref.last_known_file_type = "wrapper.framework"
-        framework_ref
-      end
+      ref = frameworks_group.new_framework(path)
+      ref.source_tree = 'DEVELOPER_DIR'
+      ref
     end
 
     # Creates a new target and adds it to the project.
@@ -666,6 +662,19 @@ module Xcodeproj
       end
       schemes << File.basename(project_path, '.xcodeproj') if schemes.empty?
       schemes
+    end
+
+    private
+
+    # @!group Private Helpers
+
+    #-------------------------------------------------------------------------#
+
+    # @return [XcodebuildHelper] The shared xcodebuild helper instance which
+    #         caches the information.
+    #
+    def shared_xcodebuild_helper
+      @shared_xcodebuild_helper ||= XcodebuildHelper.new
     end
 
     #-------------------------------------------------------------------------#

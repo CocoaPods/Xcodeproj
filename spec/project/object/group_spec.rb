@@ -72,6 +72,14 @@ module ProjectSpecs
       file.source_tree.should == 'BUILT_PRODUCTS_DIR'
     end
 
+    it "creates a new framework" do
+      ref = @group.new_framework('path/to/MyAwesomeFramework.framework')
+      ref.include_in_index.should.be.nil
+      ref.source_tree.should == 'SOURCE_ROOT'
+      ref.name.should == 'MyAwesomeFramework.framework'
+      ref.last_known_file_type.should == 'wrapper.framework'
+    end
+
     it "removes groups and files recursively" do
       group1 = @group.new_group("Group1")
       group2 = @group.new_group("Group2")
