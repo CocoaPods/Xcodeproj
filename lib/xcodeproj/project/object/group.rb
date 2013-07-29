@@ -99,6 +99,18 @@ module Xcodeproj
           children.select { |obj| obj.class == PBXGroup }
         end
 
+        # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
+        #         recursive children of the group.
+        #
+        def recursive_children_groups
+          result = []
+          groups.each do |child|
+            result << child
+            result.concat(child.recursive_children_groups)
+          end
+          result
+        end
+
         # @return [Array<XCVersionGroup>] the version groups in the group
         #         children.
         #
@@ -138,6 +150,8 @@ module Xcodeproj
           unless same_path_of_group || same_path_project
             file.name = file.pathname.basename.to_s
           end
+          configure_framework(file) if File.extname(path) == '.framework'
+
           file
         end
 
@@ -181,30 +195,6 @@ module Xcodeproj
           file.explicit_file_type = file.last_known_file_type
           file.last_known_file_type = nil
           file
-        end
-
-
-        # Creates a file reference to a framework and adds it to the
-        # children of the group if needed.
-        #
-        # @note @see new_file
-        #
-        # @param  [#to_s] path
-        #         the path to the framework bundle.
-        #
-        # @param  [String] sub_group_path @see new_file
-        #
-        # @return [PBXFileReference] the new file reference.
-        #
-        def new_framework(path, sub_group_path = nil)
-          if file = files.find { |f| f.path == path }
-            file
-          else
-            framework_ref = new_file(path, sub_group_path)
-            framework_ref.name = File.basename(path)
-            framework_ref.include_in_index = nil
-            framework_ref
-          end
         end
 
         # Creates a new group to represent a `xcdatamodel` file.
@@ -306,6 +296,23 @@ module Xcodeproj
               x.display_name <=> y.display_name
             end
           end
+        end
+
+        private
+
+        # @!group Private Helpers
+
+        #----------------------------------------#
+
+        # Configures the given framework file reference with default settings.
+        #
+        # @param  [PBXFileReference] file_reference
+        #         the file reference to the framework.
+        #
+        # @return [void]
+        #
+        def configure_framework(file_reference)
+          file_reference.include_in_index = nil
         end
 
       end

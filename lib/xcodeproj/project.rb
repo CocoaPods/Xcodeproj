@@ -528,11 +528,15 @@ module Xcodeproj
           base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('macosx', '')}.sdk/"
         end
       end
-      path = base_dir + "System/Library/Frameworks/#{name}.framework"
 
-      ref = frameworks_group.new_framework(path)
-      ref.source_tree = 'DEVELOPER_DIR'
-      ref
+      path = base_dir + "System/Library/Frameworks/#{name}.framework"
+      if ref = frameworks_group.files.find { |f| f.path == path }
+        ref
+      else
+        ref = frameworks_group.new_file(path)
+        ref.source_tree = 'DEVELOPER_DIR'
+        ref
+      end
     end
 
     # Creates a new target and adds it to the project.

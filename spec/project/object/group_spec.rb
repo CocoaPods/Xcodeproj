@@ -40,9 +40,10 @@ module ProjectSpecs
     end
 
     it "adds files for the given paths" do
-      file = @group.new_file('ZOMG.md')
-      file.path.should == 'ZOMG.md'
-      @group.files.should.include file
+      ref = @group.new_file('ZOMG.md')
+      ref.path.should == 'ZOMG.md'
+      ref.include_in_index.should == '1'
+      @group.files.should.include ref
     end
 
     it "set the name attribute of the file reference if the file is not in the same dir of the group" do
@@ -55,8 +56,21 @@ module ProjectSpecs
       ref.name.should.be.nil
     end
 
+    it "configures frameworks files" do
+      ref = @group.new_file('Frameworks/Parse.framework')
+      ref.name.should == 'Parse.framework'
+      ref.include_in_index.should.be.nil
+    end
+
     it "returns a list of files and groups" do
       @group.children.map(&:display_name).sort.should == %w{ Abracadabra.h Abracadabra.m Banana.h Banana.m ZappMachine }
+    end
+
+    it "returns the recursive list of the children groups" do
+      @group.new_group('1', 'group1')
+      @group.new_group('2', 'group2')
+      groups = @group.recursive_children_groups.map(&:display_name).sort
+      groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
     end
 
     it "adds XCVersionGroups" do
@@ -70,14 +84,6 @@ module ProjectSpecs
       file = @group.new_static_library('libPods.a')
       file.include_in_index.should == '0'
       file.source_tree.should == 'BUILT_PRODUCTS_DIR'
-    end
-
-    it "creates a new framework" do
-      ref = @group.new_framework('path/to/MyAwesomeFramework.framework')
-      ref.include_in_index.should.be.nil
-      ref.source_tree.should == 'SOURCE_ROOT'
-      ref.name.should == 'MyAwesomeFramework.framework'
-      ref.last_known_file_type.should == 'wrapper.framework'
     end
 
     it "removes groups and files recursively" do
