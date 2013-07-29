@@ -22,7 +22,7 @@ module Xcodeproj
         #         - `LastUpgradeCheck`
         #         - `ORGANIZATIONNAME`
         #
-        attribute :attributes, Hash, {'LastUpgradeCheck' => '0450'}
+        attribute :attributes, Hash, {'LastUpgradeCheck' => Constants::LAST_UPGRADE_CHECK }
 
         # @return [XCConfigurationList] the configuration list of the project.
         #

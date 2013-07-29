@@ -20,6 +20,10 @@ module Xcodeproj
     #
     LAST_KNOWN_OBJECT_VERSION  = 46
 
+    # @return [String] The last known object version to Xcodeproj.
+    #
+    LAST_UPGRADE_CHECK  = '0450'
+
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
