@@ -337,75 +337,21 @@ module ProjectSpecs
 
       it "adds a file reference for a system framework, to the Frameworks group" do
         target = stub(:sdk => 'iphoneos5.0')
-        group = @project['Frameworks']
         file = @project.add_system_framework('QuartzCore', target)
-        file.group.should == group
+        file.group.should == @project['Frameworks']
         file.name.should == 'QuartzCore.framework'
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework|
-        file.source_tree.should == 'DEVELOPER_DIR'
-      end
-
-      it "links system frameworks to the last known SDK if needed" do
-        target = stub(:sdk => 'iphoneos')
-        file = @project.add_system_framework('QuartzCore', target)
-        sdk_version = Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk_version}.sdk/System/Library/Frameworks/QuartzCore.framework|
-        file.source_tree.should == 'DEVELOPER_DIR'
-      end
-
-      it "does not add a system framework if it already exists in the project" do
-        target = stub(:sdk => 'iphoneos6.0')
-        file_1 = @project.add_system_framework('Foundation', target)
-        file_1.name.should == 'Foundation.framework'
-        before = @project.frameworks_group.files.size
-
-        file_2 = @project.add_system_framework('Foundation', target)
-        file_2.should == file_1
-        @project.frameworks_group.files.size.should == before
       end
 
       it "creates a new target" do
         target = @project.new_target(:static_library, 'Pods', :ios, '6.0')
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.library.static'
-
-        target.build_configuration_list.should.not.be.nil
-        configurations = target.build_configuration_list.build_configurations
-        configurations.map(&:name).sort.should == %w| Debug Release |
-        build_settings = configurations.first.build_settings
-        build_settings['IPHONEOS_DEPLOYMENT_TARGET'].should == '6.0'
-        build_settings['SDKROOT'].should == 'iphoneos'
-
-        @project.targets.should.include target
-        @project.products.should.include target.product_reference
-
-        target.build_phases.map(&:isa).sort.should == [
-          "PBXFrameworksBuildPhase",
-          "PBXSourcesBuildPhase",
-        ]
       end
 
       it "creates a new resouces bundle" do
         target = @project.new_resources_bundle('Pods', :ios)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
-
-        target.build_configuration_list.should.not.be.nil
-        configurations = target.build_configuration_list.build_configurations
-        configurations.map(&:name).sort.should == %w| Debug Release |
-        build_settings = configurations.first.build_settings
-        build_settings['PRODUCT_NAME'].should == '"$(TARGET_NAME)"'
-        build_settings['WRAPPER_EXTENSION'].should == 'bundle'
-        build_settings['SKIP_INSTALL'].should == 'YES'
-
-        @project.targets.should.include target
-        @project.products.should.include target.product_reference
-
-        target.build_phases.map(&:isa).sort.should == [
-          "PBXFrameworksBuildPhase",
-          "PBXResourcesBuildPhase",
-          "PBXSourcesBuildPhase",
-        ]
       end
     end
 

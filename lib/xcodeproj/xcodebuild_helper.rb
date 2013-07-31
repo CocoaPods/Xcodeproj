@@ -26,7 +26,7 @@ module Xcodeproj
 
     # !@group Private Helpers
 
-    #--------------------------------------------------------------------------------#
+    #-------------------------------------------------------------------------#
 
     # @return [Hash] The versions of the sdks grouped by name (`:ios`, or `:osx`).
     #
@@ -75,7 +75,21 @@ module Xcodeproj
       `xcodebuild -showsdks 2>/dev/null`
     end
 
-    #--------------------------------------------------------------------------------#
+    public
+
+    #-------------------------------------------------------------------------#
+
+    # @!group Singleton
+
+    # @return [XcodebuildHelper] the current xcodebuild instance creating one
+    #         if needed, which caches the information from the xcodebuild
+    #         command line tool.
+    #
+    def self.instance
+      @instance ||= new
+    end
+
+    #-------------------------------------------------------------------------#
 
   end
 

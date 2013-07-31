@@ -512,32 +512,7 @@ module Xcodeproj
     # @return [PBXFileReference] The generated file reference.
     #
     def add_system_framework(name, target)
-      sdk = target.sdk
-      raise "Unable to find and SDK for the target `#{target.name}`" unless sdk
-      if sdk.include?('iphoneos')
-        if sdk == 'iphoneos'
-          version = shared_xcodebuild_helper.last_ios_sdk || Constants::LAST_KNOWN_IOS_SDK
-          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{version}.sdk/"
-        else
-          base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk.gsub('iphoneos', '')}.sdk/"
-        end
-      elsif sdk.include?('macosx')
-        if sdk == 'macosx'
-          version = shared_xcodebuild_helper.last_osx_sdk || Constants::LAST_KNOWN_OSX_SDK
-          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{version}.sdk/"
-        else
-          base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('macosx', '')}.sdk/"
-        end
-      end
-
-      path = base_dir + "System/Library/Frameworks/#{name}.framework"
-      if ref = frameworks_group.files.find { |f| f.path == path }
-        ref
-      else
-        ref = frameworks_group.new_file(path)
-        ref.source_tree = 'DEVELOPER_DIR'
-        ref
-      end
+      ProjectHelper.add_system_framework(self, name, target)
     end
 
     # Creates a new target and adds it to the project.
@@ -565,30 +540,7 @@ module Xcodeproj
     # @return [PBXNativeTarget] the target.
     #
     def new_target(type, name, platform, deployment_target = nil)
-
-      # Target
-      target = new(PBXNativeTarget)
-      targets << target
-      target.name = name
-      target.product_name = name
-      target.product_type = Constants::PRODUCT_TYPE_UTI[type]
-      target.build_configuration_list = configuration_list(platform, deployment_target)
-
-      # Product
-      product = products_group.new_static_library(name)
-      target.product_reference = product
-
-      # Frameworks
-      framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-      framework_ref = add_system_framework(framework_name, target)
-
-      # Build phases
-      target.build_phases << new(PBXSourcesBuildPhase)
-      frameworks_phase = new(PBXFrameworksBuildPhase)
-      frameworks_phase.add_file_reference(framework_ref)
-      target.build_phases << frameworks_phase
-
-      target
+      ProjectHelper.new_target(self, type, name, platform, deployment_target)
     end
 
     # Creates a new resource bundles target and adds it to the project.
@@ -607,113 +559,7 @@ module Xcodeproj
     # @return [PBXNativeTarget] the target.
     #
     def new_resources_bundle(name, platform)
-      # Target
-      target = new(PBXNativeTarget)
-      targets << target
-      target.name = name
-      target.product_name = name
-      target.product_type = Constants::PRODUCT_TYPE_UTI[:bundle]
-
-      # Configuration List
-      build_settings = {
-        'PRODUCT_NAME' => '"$(TARGET_NAME)"',
-        'WRAPPER_EXTENSION' => 'bundle',
-        'SKIP_INSTALL' => 'YES'
-      }
-      if platform == :osx
-        build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
-      end
-      cl = new(XCConfigurationList)
-      cl.default_configuration_is_visible = '0'
-      cl.default_configuration_name = 'Release'
-      release_conf = new(XCBuildConfiguration)
-      release_conf.name = 'Release'
-      release_conf.build_settings = build_settings
-      debug_conf = new(XCBuildConfiguration)
-      debug_conf.name = 'Debug'
-      debug_conf.build_settings = build_settings
-      cl.build_configurations << release_conf
-      cl.build_configurations << debug_conf
-      cl
-      target.build_configuration_list = cl
-
-      # Product
-      product = products_group.new_bundle(name)
-      target.product_reference = product
-
-      # # Frameworks
-      # framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-      # framework_ref = add_system_framework(framework_name, target)
-
-      # Build phases
-      target.build_phases << new(PBXSourcesBuildPhase)
-      target.build_phases << new(PBXFrameworksBuildPhase)
-      target.build_phases << new(PBXResourcesBuildPhase)
-      # frameworks_phase = new(PBXFrameworksBuildPhase)
-      # frameworks_phase.add_file_reference(framework_ref)
-      # target.build_phases << frameworks_phase
-
-      target
-    end
-
-    # Returns a new configuration list, populated with release and debug
-    # configurations with common build settings for the given platform.
-    #
-    # @param  [Symbol] platform
-    #         the platform for the configuration list, can be `:ios` or `:osx`.
-    #
-    # @param  [String] deployment_target
-    #         the deployment target for the platform.
-    #
-    # @return [XCConfigurationList] the generated configuration list.
-    #
-    def configuration_list(platform, deployment_target = nil)
-      cl = new(XCConfigurationList)
-      cl.default_configuration_is_visible = '0'
-      cl.default_configuration_name = 'Release'
-
-      release_conf = new(XCBuildConfiguration)
-      release_conf.name = 'Release'
-      release_conf.build_settings = common_build_settings(:release, platform, deployment_target)
-
-      debug_conf = new(XCBuildConfiguration)
-      debug_conf.name = 'Debug'
-      debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target)
-
-      cl.build_configurations << release_conf
-      cl.build_configurations << debug_conf
-      cl
-    end
-
-    # Returns the common build settings for a given platform and configuration
-    # name.
-    #
-    # @param  [Symbol] type
-    #         the type of the build configuration, can be `:release` or
-    #         `:debug`.
-    #
-    # @param  [Symbol] platform
-    #         the platform for the build settings, can be `:ios` or `:osx`.
-    #
-    # @param  [String] deployment_target
-    #         the deployment target for the platform.
-    #
-    # @return [Hash] The common build settings
-    #
-    def common_build_settings(type, platform, deployment_target = nil)
-      common_settings = Constants::COMMON_BUILD_SETTINGS
-      settings = common_settings[:all].dup
-      settings.merge!(common_settings[type])
-      settings.merge!(common_settings[platform])
-      settings.merge!(common_settings[[platform, type]])
-      if deployment_target
-        if platform == :ios
-          settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-        elsif platform == :osx
-          settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
-        end
-      end
-      settings
+      ProjectHelper.new_resources_bundle(self, name, platform)
     end
 
     #-------------------------------------------------------------------------#
@@ -730,19 +576,6 @@ module Xcodeproj
       end
       schemes << File.basename(project_path, '.xcodeproj') if schemes.empty?
       schemes
-    end
-
-    private
-
-    # @!group Private Helpers
-
-    #-------------------------------------------------------------------------#
-
-    # @return [XcodebuildHelper] The shared xcodebuild helper instance which
-    #         caches the information.
-    #
-    def shared_xcodebuild_helper
-      @shared_xcodebuild_helper ||= XcodebuildHelper.new
     end
 
     #-------------------------------------------------------------------------#
