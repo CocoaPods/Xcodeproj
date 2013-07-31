@@ -39,27 +39,46 @@ module ProjectSpecs
       @group.name.should == 'Parent'
     end
 
-    it "adds files for the given paths" do
-      ref = @group.new_file('ZOMG.md')
-      ref.path.should == 'ZOMG.md'
-      ref.include_in_index.should == '1'
-      @group.files.should.include ref
-    end
+    describe "#new_file" do
+      it "adds files for the given paths" do
+        ref = @group.new_file('ZOMG.md')
+        ref.path.should == 'ZOMG.md'
+        ref.include_in_index.should == '1'
+        @group.children.should.include(ref)
+      end
 
-    it "set the name attribute of the file reference if the file is not in the same dir of the group" do
-      ref = @group.new_file('sub_dir/ZOMG.md')
-      ref.name.should == 'ZOMG.md'
-    end
+      it "set the name attribute of the file reference if the file is not in the same dir of the group" do
+        ref = @group.new_file('sub_dir/ZOMG.md')
+        ref.name.should == 'ZOMG.md'
+      end
 
-    it "doesn't set the name attribute of the file reference if the file is in the same dir of the group" do
-      ref = @group.new_file('ZOMG.md')
-      ref.name.should.be.nil
-    end
+      it "doesn't set the name attribute of the file reference if the file is in the same dir of the group" do
+        ref = @group.new_file('ZOMG.md')
+        ref.name.should.be.nil
+      end
 
-    it "configures frameworks files" do
-      ref = @group.new_file('Frameworks/Parse.framework')
-      ref.name.should == 'Parse.framework'
-      ref.include_in_index.should.be.nil
+      it "handles frameworks files" do
+        ref = @group.new_file('Frameworks/Parse.framework')
+        ref.name.should == 'Parse.framework'
+        ref.include_in_index.should.be.nil
+        @group.children.should.include(ref)
+      end
+
+      it "handles xcdatamodeld wrappers" do
+        Pathname.any_instance.stubs(:exist?).returns(true)
+        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),])
+        ref = @group.new_file('Model.xcdatamodeld')
+        ref.isa.should == 'XCVersionGroup'
+        ref.path.should == 'Model.xcdatamodeld'
+        ref.source_tree.should == '<group>'
+        ref.version_group_type.should == 'wrapper.xcdatamodel'
+        ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
+        ref.current_version.isa.should == 'PBXFileReference'
+        ref.current_version.path.should == 'Model 2.xcdatamodel'
+        ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
+        ref.current_version.source_tree.should == '<group>'
+        @group.children.should.include(ref)
+      end
     end
 
     it "returns a list of files and groups" do

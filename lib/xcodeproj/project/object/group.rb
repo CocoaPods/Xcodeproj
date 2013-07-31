@@ -137,22 +137,99 @@ module Xcodeproj
         #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_file(path, sub_group_path = nil, set_name = true)
-          file = project.new(PBXFileReference)
-          file.path = path.to_s
-          file.update_last_known_file_type
-
-          target = find_subpath(sub_group_path, true)
-          target.children << file
-
-          same_path_of_group = target.path == file.pathname.dirname.to_s
-          same_path_project = file.pathname.dirname.to_s == '.' && target.path.nil?
-          unless same_path_of_group || same_path_project
-            file.name = file.pathname.basename.to_s
+        def new_file(path, sub_group_path = nil)
+          extname = File.extname(path)
+          case
+          when extname == '.framework' then new_framework(path, sub_group_path)
+          when extname == '.xcdatamodeld' then new_xcdatamodeld(path, sub_group_path)
+          else new_file_reference(path, sub_group_path)
           end
-          configure_framework(file) if File.extname(path) == '.framework'
+        end
 
-          file
+        # Creates a new file reference with the given path and adds it to the
+        # group or to an optional subpath.
+        #
+        # @note   @see #new_file
+        #
+        # @param  @see #new_file
+        #
+        # @return [PBXFileReference] the new file reference.
+        #
+        def new_file_reference(path, sub_group_path = nil)
+          ref = project.new(PBXFileReference)
+          ref.path = path.to_s
+          ref.update_last_known_file_type
+
+          parent_group = find_subpath(sub_group_path, true)
+          parent_group.children << ref
+          set_file_refenrece_name_if_needed(ref, parent_group)
+          ref
+        end
+
+        # Sets the name of a reference if needed, to match Xcode behaviour.
+        #
+        # @param  [PBXFileReference, XCVersionGroup] ref
+        #         the reference which needs the name optionally set.
+        #
+        # @return [void]
+        #
+        def set_file_refenrece_name_if_needed(ref, parent_group)
+          same_path_of_group = (parent_group.path == Pathname(ref.path).dirname.to_s)
+          same_path_project = (Pathname(ref.path).dirname.to_s == '.' && parent_group.path.nil?)
+          unless same_path_of_group || same_path_project
+            ref.name = Pathname(ref.path).basename.to_s
+          end
+        end
+
+        # Creates a new file reference to a framework bundle.
+        #
+        # @note   @see #new_file
+        #
+        # @param  @see #new_file
+        #
+        # @return [PBXFileReference] the new file reference.
+        #
+        def new_framework(path, sub_group_path = nil)
+          ref = new_file_reference(path, sub_group_path = nil)
+          ref.include_in_index = nil
+          ref
+        end
+
+        # Creates a new version group reference to an xcdatamodeled adding the
+        # xcdatamodel files included in the wrapper as chidren file references.
+        #
+        # @note  To match Xcode behaviour the last xcdatamodel according to its
+        #        path is set as the current version.
+        #
+        # @note   @see #new_file
+        #
+        # @param  @see #new_file
+        #
+        # @return [XCVersionGroup] the new reference.
+        #
+        def new_xcdatamodeld(path, sub_group_path = nil)
+          path = Pathname.new(path)
+          ref = project.new(XCVersionGroup)
+          ref.path = path.to_s
+          ref.source_tree = '<group>'
+          ref.version_group_type = 'wrapper.xcdatamodel'
+
+          last_child_ref = nil
+          if path.exist?
+            path.children.each do |child_path|
+              if File.extname(child_path) == '.xcdatamodel'
+                child_ref = ref.new_file_reference(child_path)
+                child_ref.source_tree = '<group>'
+                last_child_ref = child_ref
+              end
+            end
+            ref.current_version = last_child_ref
+          end
+
+          parent_group = find_subpath(sub_group_path, true)
+          parent_group.children << ref
+          set_file_refenrece_name_if_needed(ref, parent_group)
+          ref
         end
 
         # Creates a new group with the given name and adds it to the children
@@ -313,24 +390,6 @@ module Xcodeproj
             end
           end
         end
-
-        private
-
-        # @!group Private Helpers
-
-        #----------------------------------------#
-
-        # Configures the given framework file reference with default settings.
-        #
-        # @param  [PBXFileReference] file_reference
-        #         the file reference to the framework.
-        #
-        # @return [void]
-        #
-        def configure_framework(file_reference)
-          file_reference.include_in_index = nil
-        end
-
       end
 
       #-----------------------------------------------------------------------#
