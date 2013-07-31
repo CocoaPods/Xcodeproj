@@ -2,6 +2,7 @@ require 'fileutils'
 require 'pathname'
 require 'xcodeproj/xcodeproj_ext'
 require 'xcodeproj/project/object'
+require 'xcodeproj/project/project_helper'
 
 module Xcodeproj
 
@@ -544,11 +545,9 @@ module Xcodeproj
     # The target is configured for the given platform and its file reference it
     # is added to the {products_group}.
     #
-    # The target is pre-populated with common build phases, and all the
-    # Frameworks of the project are added to to its Frameworks phase.
-    #
-    # @todo   Adding all the Frameworks is required by CocoaPods and should be
-    #         performed there.
+    # The target is pre-populated with common build settings, and the
+    # appropriate Framework according to the platform is added to to its
+    # Frameworks phase.
     #
     # @param  [Symbol] type
     #         the type of target. Can be `:application`, `:dynamic_library` or
@@ -588,6 +587,71 @@ module Xcodeproj
       frameworks_phase = new(PBXFrameworksBuildPhase)
       frameworks_phase.add_file_reference(framework_ref)
       target.build_phases << frameworks_phase
+
+      target
+    end
+
+    # Creates a new resource bundles target and adds it to the project.
+    #
+    # The target is configured for the given platform and its file reference it
+    # is added to the {products_group}.
+    #
+    # The target is pre-populated with common build settings
+    #
+    # @param  [String] name
+    #         the name of the resources bundle.
+    #
+    # @param  [Symbol] platform
+    #         the platform of the resources bundle. Can be `:ios` or `:osx`.
+    #
+    # @return [PBXNativeTarget] the target.
+    #
+    def new_resources_bundle(name, platform)
+      # Target
+      target = new(PBXNativeTarget)
+      targets << target
+      target.name = name
+      target.product_name = name
+      target.product_type = Constants::PRODUCT_TYPE_UTI[:bundle]
+
+      # Configuration List
+      build_settings = {
+        'PRODUCT_NAME' => '"$(TARGET_NAME)"',
+        'WRAPPER_EXTENSION' => 'bundle',
+        'SKIP_INSTALL' => 'YES'
+      }
+      if platform == :osx
+        build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
+      end
+      cl = new(XCConfigurationList)
+      cl.default_configuration_is_visible = '0'
+      cl.default_configuration_name = 'Release'
+      release_conf = new(XCBuildConfiguration)
+      release_conf.name = 'Release'
+      release_conf.build_settings = build_settings
+      debug_conf = new(XCBuildConfiguration)
+      debug_conf.name = 'Debug'
+      debug_conf.build_settings = build_settings
+      cl.build_configurations << release_conf
+      cl.build_configurations << debug_conf
+      cl
+      target.build_configuration_list = cl
+
+      # Product
+      product = products_group.new_bundle(name)
+      target.product_reference = product
+
+      # # Frameworks
+      # framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
+      # framework_ref = add_system_framework(framework_name, target)
+
+      # Build phases
+      target.build_phases << new(PBXSourcesBuildPhase)
+      target.build_phases << new(PBXFrameworksBuildPhase)
+      target.build_phases << new(PBXResourcesBuildPhase)
+      # frameworks_phase = new(PBXFrameworksBuildPhase)
+      # frameworks_phase.add_file_reference(framework_ref)
+      # target.build_phases << frameworks_phase
 
       target
     end

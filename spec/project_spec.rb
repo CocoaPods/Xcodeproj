@@ -384,6 +384,29 @@ module ProjectSpecs
           "PBXSourcesBuildPhase",
         ]
       end
+
+      it "creates a new resouces bundle" do
+        target = @project.new_resources_bundle('Pods', :ios)
+        target.name.should == 'Pods'
+        target.product_type.should == 'com.apple.product-type.bundle'
+
+        target.build_configuration_list.should.not.be.nil
+        configurations = target.build_configuration_list.build_configurations
+        configurations.map(&:name).sort.should == %w| Debug Release |
+        build_settings = configurations.first.build_settings
+        build_settings['PRODUCT_NAME'].should == '"$(TARGET_NAME)"'
+        build_settings['WRAPPER_EXTENSION'].should == 'bundle'
+        build_settings['SKIP_INSTALL'].should == 'YES'
+
+        @project.targets.should.include target
+        @project.products.should.include target.product_reference
+
+        target.build_phases.map(&:isa).sort.should == [
+          "PBXFrameworksBuildPhase",
+          "PBXResourcesBuildPhase",
+          "PBXSourcesBuildPhase",
+        ]
+      end
     end
 
     describe "Project schemes" do

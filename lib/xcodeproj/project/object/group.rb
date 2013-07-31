@@ -197,6 +197,22 @@ module Xcodeproj
           file
         end
 
+        # Creates a file reference to a new bundle.
+        #
+        # @param  [#to_s] product_name
+        #         the name of the bundle.
+        #
+        # @return [PBXFileReference] the new file reference.
+        #
+        def new_bundle(product_name)
+          file = new_file("#{product_name}.bundle")
+          file.explicit_file_type = 'wrapper.cfbundle'
+          file.include_in_index = '0'
+          file.source_tree = 'BUILT_PRODUCTS_DIR'
+          file.last_known_file_type = nil
+          file
+        end
+
         # Creates a new group to represent a `xcdatamodel` file.
         #
         # @return [XCVersionGroup] The new group.

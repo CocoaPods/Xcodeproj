@@ -88,10 +88,11 @@ module Xcodeproj
     # @return [Hash] The uniform type identifier of various product types.
     #
     PRODUCT_TYPE_UTI = {
-      :application     => 'com.apple.product-type.application',
-      :framework       => 'com.apple.product-type.framework',
-      :dynamic_library => 'com.apple.product-type.library.dynamic',
-      :static_library  => 'com.apple.product-type.library.static',
+      :application      => 'com.apple.product-type.application',
+      :framework        => 'com.apple.product-type.framework',
+      :dynamic_library  => 'com.apple.product-type.library.dynamic',
+      :static_library   => 'com.apple.product-type.library.static',
+      :bundle           => 'com.apple.product-type.bundle',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build

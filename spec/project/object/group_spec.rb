@@ -81,9 +81,21 @@ module ProjectSpecs
     end
 
     it "creates a new static library" do
-      file = @group.new_static_library('libPods.a')
+      file = @group.new_static_library('Pods')
+      file.name.should.be.nil
+      file.path.should == 'libPods.a'
       file.include_in_index.should == '0'
       file.source_tree.should == 'BUILT_PRODUCTS_DIR'
+    end
+
+    it "creates a new resources bundle" do
+      file = @group.new_bundle('Resources')
+      file.name.should.be.nil
+      file.path.should == 'Resources.bundle'
+      file.explicit_file_type.should == 'wrapper.cfbundle'
+      file.include_in_index.should == '0'
+      file.source_tree.should == 'BUILT_PRODUCTS_DIR'
+      file.last_known_file_type.should.be.nil
     end
 
     it "removes groups and files recursively" do
