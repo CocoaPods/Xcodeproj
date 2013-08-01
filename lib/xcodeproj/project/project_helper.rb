@@ -90,7 +90,7 @@ module Xcodeproj
 
         # Configuration List
         build_settings = {
-          'PRODUCT_NAME' => '"$(TARGET_NAME)"',
+          'PRODUCT_NAME' => '$(TARGET_NAME)',
           'WRAPPER_EXTENSION' => 'bundle',
           'SKIP_INSTALL' => 'YES'
         }

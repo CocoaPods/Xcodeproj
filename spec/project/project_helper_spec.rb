@@ -35,7 +35,7 @@ module ProjectSpecs
         configurations = target.build_configuration_list.build_configurations
         configurations.map(&:name).sort.should == %w| Debug Release |
         build_settings = configurations.first.build_settings
-        build_settings['PRODUCT_NAME'].should == '"$(TARGET_NAME)"'
+        build_settings['PRODUCT_NAME'].should == '$(TARGET_NAME)'
         build_settings['WRAPPER_EXTENSION'].should == 'bundle'
         build_settings['SKIP_INSTALL'].should == 'YES'
 
