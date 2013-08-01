@@ -80,6 +80,7 @@ namespace :gem do
       exit if $stdin.gets.strip.downcase != 'y'
 
       diff_lines = `git diff --name-only`.strip.split("\n")
+      diff_lines.delete('CHANGELOG.md')
 
       if diff_lines.size == 0
         $stderr.puts "[!] Change the version number yourself in lib/xcodeproj.rb"
@@ -111,7 +112,7 @@ namespace :gem do
     # silent_sh "rake examples:build"
 
     # Then release
-    sh "git commit Gemfile.lock lib/xcodeproj.rb -m 'Release #{gem_version}'"
+    sh "git commit -am 'Release #{gem_version}'"
     sh "git tag -a #{gem_version} -m 'Release #{gem_version}'"
     sh "git push origin master"
     sh "git push origin --tags"
