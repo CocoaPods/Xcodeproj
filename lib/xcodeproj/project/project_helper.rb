@@ -94,9 +94,14 @@ module Xcodeproj
           'WRAPPER_EXTENSION' => 'bundle',
           'SKIP_INSTALL' => 'YES'
         }
+
         if platform == :osx
           build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
+          build_settings['SDKROOT'] = 'macosx'
+        else
+          build_settings['SDKROOT'] = 'iphoneos'
         end
+
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
