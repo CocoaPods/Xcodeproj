@@ -65,9 +65,7 @@ module ProjectSpecs
       it "links system frameworks to the last known SDK if needed" do
         target = stub(:sdk => 'iphoneos')
         file = Xcodeproj::Project::ProjectHelper.add_system_framework(@project, 'QuartzCore', target)
-
-        sdk_version = Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk_version}.sdk/System/Library/Frameworks/QuartzCore.framework|
+        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.*.sdk/System/Library/Frameworks/QuartzCore.framework|
         file.source_tree.should == 'DEVELOPER_DIR'
       end
 
