@@ -35,7 +35,7 @@ module Xcodeproj
       #
       # @return [PBXNativeTarget] the target.
       #
-      def self.new_target(project, type, name, platform, deployment_target)
+      def self.new_target(project, type, name, platform, deployment_target, product_group)
 
         # Target
         target = project.new(PBXNativeTarget)
@@ -46,7 +46,7 @@ module Xcodeproj
         target.build_configuration_list = configuration_list(project, platform, deployment_target)
 
         # Product
-        product = project.products_group.new_static_library(name)
+        product = product_group.new_static_library(name)
         target.product_reference = product
 
         # Frameworks
@@ -80,7 +80,7 @@ module Xcodeproj
       #
       # @return [PBXNativeTarget] the target.
       #
-      def self.new_resources_bundle(project, name, platform)
+      def self.new_resources_bundle(project, name, platform, product_group)
         # Target
         target = project.new(PBXNativeTarget)
         project.targets << target
@@ -112,20 +112,13 @@ module Xcodeproj
         target.build_configuration_list = cl
 
         # Product
-        product = project.products_group.new_bundle(name)
+        product = product_group.new_bundle(name)
         target.product_reference = product
-
-        # # Frameworks
-        # framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-        # framework_ref = add_system_framework(framework_name, target)
 
         # Build phases
         target.build_phases << project.new(PBXSourcesBuildPhase)
         target.build_phases << project.new(PBXFrameworksBuildPhase)
         target.build_phases << project.new(PBXResourcesBuildPhase)
-        # frameworks_phase = project.new(PBXFrameworksBuildPhase)
-        # frameworks_phase.add_file_reference(framework_ref)
-        # target.build_phases << frameworks_phase
 
         target
       end

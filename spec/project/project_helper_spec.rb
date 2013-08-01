@@ -6,7 +6,7 @@ module ProjectSpecs
     describe "Targets" do
 
       it "creates a new target" do
-        target = Xcodeproj::Project::ProjectHelper.new_target(@project, :static_library, 'Pods', :ios, '6.0')
+        target = Xcodeproj::Project::ProjectHelper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.library.static'
 
@@ -27,7 +27,7 @@ module ProjectSpecs
       end
 
       it "creates a new resources bundle" do
-        target = Xcodeproj::Project::ProjectHelper.new_resources_bundle(@project, 'Pods', :ios)
+        target = Xcodeproj::Project::ProjectHelper.new_resources_bundle(@project, 'Pods', :ios, @project.products_group)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
 
