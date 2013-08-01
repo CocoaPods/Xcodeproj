@@ -10,6 +10,10 @@
 
 * Improvements to the schemes logic.
 
+* Added support for resources bundle targets.
+
+* Project::Group#new_file will now create XCVersionGroup for xcdatamodeld file.
+
 ###### Bug Fixes
 
 * The file type of the frameworks file references has be corrected.
