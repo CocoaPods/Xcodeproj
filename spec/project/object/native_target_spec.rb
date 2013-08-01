@@ -1,181 +1,199 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe PBXNativeTarget do
 
-    before do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
+  describe AbstractTarget do
+    describe "In general" do
+
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+      end
+
+      it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
+        @sut.name.should == "Pods"
+        @sut.product_name.should == "Pods"
+      end
     end
 
-    it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
-      @target.name.should == "Pods"
-      @target.product_name.should == "Pods"
-    end
-
-    it "returns the product" do
-      @target.product_reference.should.be.instance_of PBXFileReference
-      @target.product_reference.path.should == "libPods.a"
-    end
-
-    it "adds the product to the Products group in the main group" do
-      @project.products_group.files.should.include @target.product_reference
-    end
-
-    it "returns that product type is a static library" do
-      @target.product_type.should == "com.apple.product-type.library.static"
-    end
-
-    it "returns an empty list of dependencies and buildRules (not sure yet which classes those are yet)" do
-      @target.dependencies.to_a.should == []
-      @target.build_rules.to_a.should == []
-    end
-
-    it "returns the platform name" do
-      @project.new_target(:static_library, 'Pods', :ios).platform_name.should == :ios
-      @project.new_target(:static_library, 'Pods', :osx).platform_name.should == :osx
-    end
-
-    it "returns the deployment_target" do
-      @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
-      @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
-    end
-
-    #-------------------------------------------------------------------------#
+    #----------------------------------------#
 
     describe "AbstractObject Hooks" do
 
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+      end
+
       it "returns the pretty print representation" do
-        pretty_print = @target.pretty_print
+        pretty_print = @sut.pretty_print
         pretty_print['Pods']['Build Phases'].should == [
           { "SourcesBuildPhase" => [] },
           { "FrameworksBuildPhase" => ["Foundation.framework"] }
         ]
         build_configurations = pretty_print['Pods']['Build Configurations']
         build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
+      end
+    end
 
+    #----------------------------------------#
+
+    describe "Helpers" do
+
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
       end
 
+      it "returns the SDK specified in its build configuration" do
+        @project.build_configurations.first.build_settings['SDKROOT'] = nil
+        @sut.sdk.should == 'iphoneos'
+      end
+
+      it "returns the SDK of the project if one is not specified in the build configurations" do
+        @project.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos'
+        @sut.build_configurations.first.build_settings['SDKROOT'] = nil
+        @sut.sdk.should == 'iphoneos'
+      end
+
+      it "returns the platform name" do
+        @project.new_target(:static_library, 'Pods', :ios).platform_name.should == :ios
+        @project.new_target(:static_library, 'Pods', :osx).platform_name.should == :osx
+      end
+
+      it "returns the deployment target specified in its build configuration" do
+        @project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
+        @project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil
+        @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
+        @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+      end
+
+      it "returns the deployment target" do
+        @project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '4.3'
+        @project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.7'
+        mac_target = @project.new_target(:static_library, 'Pods', :ios)
+        mac_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
+        mac_target.deployment_target.should == '4.3'
+      end
+
+      it "returns the build configuration" do
+        build_configurations = @sut.build_configurations
+        build_configurations.map(&:isa).uniq.should == ['XCBuildConfiguration']
+        build_configurations.map(&:name).sort.should == ["Debug", "Release"]
+      end
+
+      it "returns the build settings of the configuration with the given name" do
+        @sut.build_settings('Debug')['PRODUCT_NAME'].should == "$(TARGET_NAME)"
+      end
     end
 
-  end
+    #----------------------------------------#
 
-  #---------------------------------------------------------------------------#
+    describe "Build phases" do
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @sut.build_phases << @project.new(PBXCopyFilesBuildPhase)
+        @sut.build_phases << @project.new(PBXShellScriptBuildPhase)
+      end
 
-  describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its build phases" do
-    before do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
-      @target.build_phases << @project.new(PBXCopyFilesBuildPhase)
-      @target.build_phases << @project.new(PBXShellScriptBuildPhase)
-    end
+      {
+        :headers_build_phase       => PBXHeadersBuildPhase,
+        :source_build_phase        => PBXSourcesBuildPhase,
+        :frameworks_build_phase    => PBXFrameworksBuildPhase,
+        :resources_build_phase     => PBXResourcesBuildPhase,
+        :copy_files_build_phases   => PBXCopyFilesBuildPhase,
+        :shell_script_build_phases => PBXShellScriptBuildPhase,
+      }.each do |association_method, klass|
 
-    {
-      :headers_build_phase       => PBXHeadersBuildPhase,
-      :source_build_phase        => PBXSourcesBuildPhase,
-      :frameworks_build_phase    => PBXFrameworksBuildPhase,
-      :resources_build_phase     => PBXResourcesBuildPhase,
-      :copy_files_build_phases   => PBXCopyFilesBuildPhase,
-      :shell_script_build_phases => PBXShellScriptBuildPhase,
-    }.each do |association_method, klass|
+        it "returns an empty #{klass.isa}" do
+          phase = @sut.send(association_method)
+          if phase.is_a? Array
+            phase = phase.first
+          end
 
-      it "returns an empty #{klass.isa}" do
-        phase = @target.send(association_method)
-        if phase.is_a? Array
-          phase = phase.first
-        end
-
-        phase.should.be.instance_of klass
-        if phase.is_a? PBXFrameworksBuildPhase
-          phase.files.count.should == @project.frameworks_group.files.count
-        else
-          phase.files.to_a.should == []
+          phase.should.be.instance_of klass
+          if phase.is_a? PBXFrameworksBuildPhase
+            phase.files.count.should == @project.frameworks_group.files.count
+          else
+            phase.files.to_a.should == []
+          end
         end
       end
 
-    end
+      it "returns the frameworks build phase" do
+        @sut.frameworks_build_phases.class.should == PBXFrameworksBuildPhase
+      end
 
-    it "returns the frameworks build phase" do
-      @target.frameworks_build_phases.class.should == PBXFrameworksBuildPhase
-    end
+      it "creates a new 'copy files build phase'" do
+        before = @sut.copy_files_build_phases.count
+        @sut.new_copy_files_build_phase
+        @sut.copy_files_build_phases.count.should == before + 1
+      end
 
-    it "creates a new 'copy files build phase'" do
-      before = @target.copy_files_build_phases.count
-      @target.new_copy_files_build_phase
-      @target.copy_files_build_phases.count.should == before + 1
-    end
-
-    it "creates a new 'shell script build phase'" do
-      before = @target.shell_script_build_phases.count
-      @target.new_shell_script_build_phase
-      @target.shell_script_build_phases.count.should == before + 1
+      it "creates a new 'shell script build phase'" do
+        before = @sut.shell_script_build_phases.count
+        @sut.new_shell_script_build_phase
+        @sut.shell_script_build_phases.count.should == before + 1
+      end
     end
   end
 
   #---------------------------------------------------------------------------#
 
-  describe "A new Xcodeproj::Project::Object::PBXNativeTarget" do
 
-    before do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
+  describe PBXNativeTarget do
+
+    describe "In general" do
+
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+      end
+
+      it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
+        @sut.name.should == "Pods"
+        @sut.product_name.should == "Pods"
+      end
+
+      it "returns the product" do
+        @sut.product_reference.should.be.instance_of PBXFileReference
+        @sut.product_reference.path.should == "libPods.a"
+      end
+
+      it "returns that product type is a static library" do
+        @sut.product_type.should == "com.apple.product-type.library.static"
+      end
+
+      it "returns an empty list of dependencies and build rules" do
+        @sut.dependencies.to_a.should == []
+        @sut.build_rules.to_a.should == []
+      end
     end
 
-    it "has a default set of build settings (regardless of platform)" do
-      @target.build_settings('Release').should == settings(:all, :release, :ios, [:ios, :release])
-      @target.build_settings('Debug').should == settings(:all, :debug, :ios, [:ios, :debug])
-    end
+    #----------------------------------------#
 
-  end
+    describe "Helpers" do
 
-  #---------------------------------------------------------------------------#
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+      end
 
-  describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its iOS specific helpers" do
+      it "add a source file to the target to the source build phase" do
+        ref = @project.main_group.new_file('Class.m')
+        @sut.add_file_references([ref], '-fobjc-arc')
+        build_files = @sut.source_build_phase.files
+        build_files.count.should == 1
+        build_files.first.file_ref.path.should == 'Class.m'
+        build_files.first.settings.should == {"COMPILER_FLAGS"=>"-fobjc-arc"}
+      end
 
-    before do
-      @target = @project.new_target(:static_library, 'Pods', :ios)
-    end
-
-    it "returns its name and path" do
-      @target.product_name.should == 'Pods'
-      @target.product_reference.path.should == 'libPods.a'
-    end
-
-    it "links against the Foundation framework" do
-      frameworks = @target.frameworks_build_phase.files_references
-      frameworks.map(&:name).should == ['Foundation.framework']
-    end
-
-    it "includes iOS specific build settings" do
-      @target.build_settings('Release').should == settings(:all, :release, :ios, [:ios, :release])
-      @target.build_settings('Debug').should == settings(:all, :debug, :ios, [:ios, :debug])
-    end
-
-  end
-
-  #---------------------------------------------------------------------------#
-
-  describe "Xcodeproj::Project::Object::PBXNativeTarget, concerning its OS X specific helpers" do
-
-    before do
-      @target = @project.new_target(:static_library, 'Pods', :osx)
-    end
-
-    it "returns its name and path" do
-      @target.product_name.should == 'Pods'
-      @target.product_reference.path.should == 'libPods.a'
-    end
-
-    it "links against the Cocoa framework" do
-      frameworks = @target.frameworks_build_phase.files_references
-      frameworks.map(&:name).should == ['Cocoa.framework']
-    end
-
-    it "includes OS X specific build settings" do
-      @target.build_settings('Release').should == settings(:all, :release, :osx, [:osx, :release])
-      @target.build_settings('Debug').should == settings(:all, :debug, :osx, [:osx, :debug])
+      it "add a header file to the target header build phases" do
+        ref = @project.main_group.new_file('Class.h')
+        @sut.add_file_references([ref], '-fobjc-arc')
+        build_files = @sut.headers_build_phase.files
+        build_files.count.should == 1
+        build_files.first.file_ref.path.should == 'Class.h'
+        build_files.first.settings.should.be.nil
+      end
     end
 
   end
-
-
 
   #---------------------------------------------------------------------------#
 
