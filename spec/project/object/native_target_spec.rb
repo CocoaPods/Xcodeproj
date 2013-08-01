@@ -174,7 +174,7 @@ module ProjectSpecs
         @sut = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "add a source file to the target to the source build phase" do
+      it "adds a list of sources file to the target to the source build phase" do
         ref = @project.main_group.new_file('Class.m')
         @sut.add_file_references([ref], '-fobjc-arc')
         build_files = @sut.source_build_phase.files
@@ -183,7 +183,7 @@ module ProjectSpecs
         build_files.first.settings.should == {"COMPILER_FLAGS"=>"-fobjc-arc"}
       end
 
-      it "add a header file to the target header build phases" do
+      it "adds a list of headers file to the target header build phases" do
         ref = @project.main_group.new_file('Class.h')
         @sut.add_file_references([ref], '-fobjc-arc')
         build_files = @sut.headers_build_phase.files
@@ -191,6 +191,16 @@ module ProjectSpecs
         build_files.first.file_ref.path.should == 'Class.h'
         build_files.first.settings.should.be.nil
       end
+
+      it "adds a list of resources to the resources build phase" do
+        ref = @project.main_group.new_file('Image.png')
+        @sut.add_resources([ref])
+        build_files = @sut.resources_build_phase.files
+        build_files.count.should == 1
+        build_files.first.file_ref.path.should == 'Image.png'
+        build_files.first.settings.should.be.nil
+      end
+
     end
 
   end

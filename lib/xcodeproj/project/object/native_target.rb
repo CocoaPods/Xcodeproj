@@ -36,6 +36,8 @@ module Xcodeproj
 
         # @!group Helpers
 
+        # @return [String] the SDK that the target should use.
+        #
         def sdk
           build_configurations.first.build_settings['SDKROOT'] \
             || project.build_configurations.first.build_settings['SDKROOT']
@@ -214,6 +216,21 @@ module Xcodeproj
               end
               source_build_phase.files << build_file
             end
+          end
+        end
+
+        # Adds resource files to the resources build phase of the target.
+        #
+        # @param  [Array<PBXFileReference>] resource_file_references
+        #         the files references of the resources to the target.
+        #
+        # @return [void]
+        #
+        def add_resources(resource_file_references)
+          resource_file_references.each do |file|
+            build_file = project.new(PBXBuildFile)
+            build_file.file_ref = file
+            resources_build_phase.files << build_file
           end
         end
 
