@@ -19,7 +19,7 @@ module Xcodeproj
         # @note   Apparently to support targets in other projects of the same
         #         workspace.
         #
-        has_one :targetProxy, PBXContainerItemProxy
+        has_one :target_proxy, PBXContainerItemProxy
 
         # @return [String] the name of the target.
         #

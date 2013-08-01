@@ -27,8 +27,8 @@ module ProjectSpecs
       proxy.proxy_type = "1"
       proxy.remote_global_id_string = target.uuid
 
-      @dep.targetProxy = proxy
-      @dep.targetProxy.remote_info.should == "Pods"
+      @dep.target_proxy = proxy
+      @dep.target_proxy.remote_info.should == "Pods"
     end
 
   end
