@@ -1,6 +1,8 @@
 
 ## Master
 
+## 0.9.0
+
 ###### Enhancements
 
 * Frameworks are added using the last sdks version reported by the xcodebuild if

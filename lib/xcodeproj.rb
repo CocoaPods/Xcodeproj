@@ -1,5 +1,5 @@
 module Xcodeproj
-  VERSION = '0.8.1' unless defined? Xcodeproj::VERSION
+  VERSION = '0.9.0' unless defined? Xcodeproj::VERSION
 
   class PlainInformative < StandardError
   end
