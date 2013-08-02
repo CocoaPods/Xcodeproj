@@ -298,12 +298,16 @@ module Xcodeproj
     # attributes, for this reason it is better to use the convenience methods
     # offered by the {AbstractObject} subclasses or by this class.
     #
-    # @param  [Class] klass
-    #         The concrete subclass of AbstractObject for new object.
+    # @param  [Class, String] klass
+    #         The concrete subclass of AbstractObject for new object or its
+    #         ISA.
     #
     # @return [AbstractObject] the new object.
     #
     def new(klass)
+      if klass.is_a?(String)
+        klass = Object.const_get(klass)
+      end
       object = klass.new(self, generate_uuid)
       object.initialize_defaults
       object
