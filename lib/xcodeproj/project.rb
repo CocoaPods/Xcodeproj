@@ -253,6 +253,10 @@ module Xcodeproj
       file = File.join(projpath, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
       fix_encoding(file)
+      `which xcproj`
+      if $?.exitstatus.zero?
+        `xcproj --project #{Pathname.new(projpath)} touch`
+      end
     end
 
     # Simple workaround to escape characters which are outside of ASCII
