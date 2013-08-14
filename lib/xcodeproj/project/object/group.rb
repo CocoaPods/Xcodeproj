@@ -223,11 +223,10 @@ module Xcodeproj
                 child_ref.source_tree = '<group>'
                 last_child_ref = child_ref
               elsif File.basename(child_path) == '.xccurrentversion'
-                xccurrentversion = Xcodeproj.read_plist(child_path)
+                xccurrentversion = Xcodeproj.read_plist(child_path)['_XCCurrentVersionName']
               end
             end
-            ref.current_version = last_child_ref unless xccurrentversion?
-            ref.current_version = xccurrentversion['_XCCurrentVersionName'] if xccurrentversion?
+            ref.current_version = xccurrentversion || last_child_ref
           end
 
           parent_group = find_subpath(sub_group_path, true)
