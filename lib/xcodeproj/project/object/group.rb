@@ -215,15 +215,19 @@ module Xcodeproj
           ref.version_group_type = 'wrapper.xcdatamodel'
 
           last_child_ref = nil
+          xccurrentversion = nil
           if path.exist?
             path.children.each do |child_path|
               if File.extname(child_path) == '.xcdatamodel'
                 child_ref = ref.new_file_reference(child_path)
                 child_ref.source_tree = '<group>'
                 last_child_ref = child_ref
+              elsif File.basename(child_path) == '.xccurrentversion'
+                xccurrentversion = Xcodeproj.read_plist(child_path)
               end
             end
-            ref.current_version = last_child_ref
+            ref.current_version = last_child_ref unless xccurrentversion?
+            ref.current_version = xccurrentversion['_XCCurrentVersionName'] if xccurrentversion?
           end
 
           parent_group = find_subpath(sub_group_path, true)
