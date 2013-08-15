@@ -233,7 +233,7 @@ module Xcodeproj
       {
         'File References' => root_object.main_group.pretty_print.values.first,
         'Targets' => root_object.targets.map(&:pretty_print),
-        'Build Configurations' => build_configurations.map(&:pretty_print)
+        'Build Configurations' => build_configurations.sort_by(&:name).map(&:pretty_print)
       }
     end
 

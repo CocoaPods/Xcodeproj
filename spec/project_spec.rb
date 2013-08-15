@@ -309,8 +309,8 @@ module ProjectSpecs
           ],
           "Targets" => [],
           "Build Configurations" => [
-            { "Release" => {"Build Settings" => {} } },
-            { "Debug" => {"Build Settings" => {} } }
+            { "Debug" => {"Build Settings" => {} } },
+            { "Release" => {"Build Settings" => {} } }
           ]
         }
       end
