@@ -79,7 +79,7 @@ module Xcodeproj
     # @example Opening a project
     #   Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(xcodeproj = nil)
+    def initialize(xcodeproj = nil, build_configuration_names = ['Debug', 'Release'])
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
@@ -116,7 +116,7 @@ module Xcodeproj
         config_list.default_configuration_is_visible = '0'
         root_object.build_configuration_list = config_list
 
-        %w| Release Debug |.each do |name|
+        build_configuration_names.each do |name|
           build_configuration = new(XCBuildConfiguration)
           build_configuration.name = name
           build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[name.downcase.to_sym].dup
