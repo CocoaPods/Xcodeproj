@@ -79,7 +79,8 @@ module Xcodeproj
     # @example Opening a project
     #   Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(xcodeproj = nil, build_configurations = { 'Debug' => :debug, 'Release' => :release })
+    def initialize(xcodeproj = nil, build_configurations = nil)
+      build_configurations = { 'Debug' => :debug, 'Release' => :release }.merge(build_configurations)
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
