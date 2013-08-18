@@ -133,6 +133,11 @@ namespace :spec do
   task :kick do
     exec "bundle exec kicker -c"
   end
+
+  desc "Run single spec"
+  task :single, :spec_file do |t, args|
+    sh "bundle exec bacon #{args.spec_file}"
+  end
 end
 
 #-----------------------------------------------------------------------------#
