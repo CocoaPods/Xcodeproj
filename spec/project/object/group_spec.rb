@@ -82,7 +82,7 @@ module ProjectSpecs
 
       it "handles xccurrentversion file" do
         Pathname.any_instance.stubs(:exist?).returns(true)
-        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),])
+        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),Pathname.new('.xccurrentversion'),])
         Xcodeproj.stubs(:read_plist).with(Pathname.new('.xccurrentversion')).returns({ '_XCCurrentVersionName' => 'Model 2.xcdatamodel' })
         ref = @group.new_file('Model.xcdatamodeld')
         ref.isa.should == 'XCVersionGroup'
@@ -90,6 +90,7 @@ module ProjectSpecs
         ref.source_tree.should == '<group>'
         ref.version_group_type.should == 'wrapper.xcdatamodel'
         ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
+        ref.current_version.should != nil
         ref.current_version.isa.should == 'PBXFileReference'
         ref.current_version.path.should == 'Model 2.xcdatamodel'
         ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
