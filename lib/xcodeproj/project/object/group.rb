@@ -220,14 +220,15 @@ module Xcodeproj
           if path.exist?
             path.children.each do |child_path|
               if File.extname(child_path) == '.xcdatamodel'
-                child_ref = ref.new_file_reference(child_path)
+                child_ref = ref.new_file_reference(File.basename(child_path))
                 child_ref.source_tree = '<group>'
                 last_child_ref = child_ref
               elsif File.basename(child_path) == '.xccurrentversion'
-                xccurrentversion = ref.files.select { |obj| obj.path == Xcodeproj.read_plist(child_path)['_XCCurrentVersionName'] }.first
+                xccurrentversion = Xcodeproj.read_plist(child_path)['_XCCurrentVersionName']
               end
             end
-            ref.current_version = xccurrentversion || last_child_ref
+            ref.current_version = ref.children.select { |obj| obj.path == xccurrentversion }.first if xccurrentversion
+            ref.current_version = last_child_ref unless xccurrentversion
           end
 
           parent_group = find_subpath(sub_group_path, true)
@@ -299,7 +300,7 @@ module Xcodeproj
         # @return [XCVersionGroup] The new group.
         #
         def new_xcdatamodel_group(xcdatamodel_path)
-          g = @project.new(XCVersionGroup)
+          g = project.new(XCVersionGroup)
           g.path = xcdatamodel_path
           g.version_group_type = 'wrapper.xcdatamodel'
           file = g.new_file(xcdatamodel_path.sub(/xcdatamodeld$/, 'xcdatamodel'))

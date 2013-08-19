@@ -72,7 +72,7 @@ module ProjectSpecs
         ref.path.should == 'Model.xcdatamodeld'
         ref.source_tree.should == '<group>'
         ref.version_group_type.should == 'wrapper.xcdatamodel'
-        ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
+        ref.children.map{ |x| File.basename(x.path) }.should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
         ref.current_version.isa.should == 'PBXFileReference'
         ref.current_version.path.should == 'Model 2.xcdatamodel'
         ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
@@ -94,10 +94,6 @@ module ProjectSpecs
         ref.current_version.path.should.include 'VersionedModel 2.xcdatamodel'
         ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
         ref.current_version.source_tree.should == '<group>'
-        puts "DEBUG: #{ref.debug_children}"
-        puts "DEBUG: #{ref.debug_plist}"
-        puts ref.children.to_s
-        puts ref.current_version.path.to_s
         @group.children.should.include(ref)
       end
     end
