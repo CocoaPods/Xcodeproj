@@ -259,7 +259,7 @@ module Xcodeproj
       fix_encoding(file)
       `which xcproj`
       if $?.exitstatus.zero?
-        command = "xcproj --project #{projpath} touch"
+        command = "xcproj --project #{projpath} touch 2>&1"
         output = `#{command}`
         unless $?.exitstatus.zero?
           message = "xcproj failed to touch the project. Check wether you installation of xcproj is functional.\n\n"
