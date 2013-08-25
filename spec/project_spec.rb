@@ -58,6 +58,11 @@ module ProjectSpecs
         list.build_settings('Release').should == {}
       end
 
+      it "initializes the default Debug and Release configurations plus the extra App Store and Test configurations" do
+        @project = Xcodeproj::Project.new(nil, { 'App Store' => :release, 'Test' => :debug })
+        @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release', 'Test' ]
+      end
+
       it "adds the frameworks group" do
         @project['Frameworks'].class.should == PBXGroup
       end
@@ -304,8 +309,8 @@ module ProjectSpecs
           ],
           "Targets" => [],
           "Build Configurations" => [
-            { "Release" => {"Build Settings" => {} } },
-            { "Debug" => {"Build Settings" => {} } }
+            { "Debug" => {"Build Settings" => {} } },
+            { "Release" => {"Build Settings" => {} } }
           ]
         }
       end
