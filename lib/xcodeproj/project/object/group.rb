@@ -198,8 +198,9 @@ module Xcodeproj
         # Creates a new version group reference to an xcdatamodeled adding the
         # xcdatamodel files included in the wrapper as chidren file references.
         #
-        # @note  To match Xcode behaviour the last xcdatamodel according to its
-        #        path is set as the current version.
+        # @note  To match Xcode behaviour the current version is read from the 
+        #        .xccurrentversion file, if it doesn't exist the last xcdatamodel 
+        #        according to its path is set as the current version.
         #
         # @note   @see #new_file
         #
@@ -215,15 +216,19 @@ module Xcodeproj
           ref.version_group_type = 'wrapper.xcdatamodel'
 
           last_child_ref = nil
+          xccurrentversion = nil
           if path.exist?
             path.children.each do |child_path|
               if File.extname(child_path) == '.xcdatamodel'
-                child_ref = ref.new_file_reference(child_path)
+                child_ref = ref.new_file_reference(File.basename(child_path))
                 child_ref.source_tree = '<group>'
                 last_child_ref = child_ref
+              elsif File.basename(child_path) == '.xccurrentversion'
+                xccurrentversion = Xcodeproj.read_plist(child_path)['_XCCurrentVersionName']
               end
             end
-            ref.current_version = last_child_ref
+            ref.current_version = ref.children.select { |obj| obj.path == xccurrentversion }.first if xccurrentversion
+            ref.current_version = last_child_ref unless xccurrentversion
           end
 
           parent_group = find_subpath(sub_group_path, true)
@@ -295,7 +300,7 @@ module Xcodeproj
         # @return [XCVersionGroup] The new group.
         #
         def new_xcdatamodel_group(xcdatamodel_path)
-          g = @project.new(XCVersionGroup)
+          g = project.new(XCVersionGroup)
           g.path = xcdatamodel_path
           g.version_group_type = 'wrapper.xcdatamodel'
           file = g.new_file(xcdatamodel_path.sub(/xcdatamodeld$/, 'xcdatamodel'))

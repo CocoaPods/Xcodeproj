@@ -72,9 +72,26 @@ module ProjectSpecs
         ref.path.should == 'Model.xcdatamodeld'
         ref.source_tree.should == '<group>'
         ref.version_group_type.should == 'wrapper.xcdatamodel'
-        ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
+        ref.children.map{ |x| File.basename(x.path) }.should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
         ref.current_version.isa.should == 'PBXFileReference'
         ref.current_version.path.should == 'Model 2.xcdatamodel'
+        ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
+        ref.current_version.source_tree.should == '<group>'
+        @group.children.should.include(ref)
+      end
+    end
+
+    describe '#new_xcdatamodeld' do
+
+      it "handles xccurrentversion file" do
+        ref = @group.new_file(fixture_path("CoreData/VersionedModel.xcdatamodeld"))
+        ref.isa.should == 'XCVersionGroup'
+        ref.path.should.include 'VersionedModel.xcdatamodeld'
+        ref.source_tree.should == '<group>'
+        ref.version_group_type.should == 'wrapper.xcdatamodel'
+        ref.children.map(&:path).to_set.should == ['VersionedModel.xcdatamodel', 'VersionedModel 2.xcdatamodel'].to_set
+        ref.current_version.isa.should == 'PBXFileReference'
+        ref.current_version.path.should.include 'VersionedModel 2.xcdatamodel'
         ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
         ref.current_version.source_tree.should == '<group>'
         @group.children.should.include(ref)
@@ -93,7 +110,7 @@ module ProjectSpecs
     end
 
     it "adds XCVersionGroups" do
-      group = @group.new_xcdatamodel_group('some/Model.xcdatamodeld')
+      group = @group.new_file('some/Model.xcdatamodeld')
       group.isa.should == 'XCVersionGroup'
       group.source_tree.should == '<group>'
       group.version_group_type.should == 'wrapper.xcdatamodel';
