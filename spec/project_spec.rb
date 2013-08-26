@@ -59,7 +59,7 @@ module ProjectSpecs
       end
 
       it "initializes the default Debug and Release configurations plus the extra App Store and Test configurations" do
-        @project = Xcodeproj::Project.new(nil, { 'App Store' => :release, 'Test' => :debug })
+        @project = Xcodeproj::Project.new('Project.xcodeproj', { 'App Store' => :release, 'Test' => :debug })
         @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release', 'Test' ]
       end
 
@@ -90,7 +90,7 @@ module ProjectSpecs
 
     describe "Concerning plist initialization & serialization" do
       before do
-        @project = Xcodeproj::Project.new(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
+        @project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
       end
 
       it "sets itself as the owner of the root object" do
@@ -139,7 +139,7 @@ module ProjectSpecs
       end
 
       it "escapes non ASCII characters in the project" do
-        @project = Xcodeproj::Project.new
+        @project = Xcodeproj::Project.new('Project.xcodeproj')
         file_ref = @project.new_file('わくわく')
         file_ref.name = 'わくわく'
         file_ref = @project.new_file('Cédric')

@@ -1,6 +1,14 @@
 
 ## Master
 
+###### Breaking
+
+* To initialize a project a path is required even is the project is being
+  initialized from scratch.
+
+* To open an existing project `Xcodeproj::Project.open` should be used in place
+  of `Xcodeproj::Project.new`, which now is deprecated for that purpose.
+
 ###### Enhancements
 
 * Xcodeproj will automatically utilize the

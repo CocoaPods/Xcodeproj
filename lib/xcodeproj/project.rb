@@ -41,14 +41,21 @@ module Xcodeproj
 
     include Object
 
+    # @return [Pathname] the path of the project.
+    #
+    attr_reader :path
+
     # Creates a new Project instance or initializes one with the data of an
     # existing Xcode document.
     #
-    # @param  [Pathname, String] xcodeproj
+    # @param  [Pathname, String] path
     #         The path to the Xcode project document (xcodeproj).
     #
     # @param  [Hash {String => Symbol}] build_configurations
-    #         Extra build configurations. The symbol must be :debug or :release
+    #         Extra build configurations. The symbol must be :debug or :release.
+    #
+    # @param  [Bool] skip_initialization
+    #         Wether the project should be initialized from scratch.
     #
     # @raise  If the project versions are more recent than the ones know to
     #         Xcodeproj to prevent it from corrupting existing projects.
@@ -58,58 +65,34 @@ module Xcodeproj
     # @raise  If it can't find the root object. This means that the project is
     #         malformed.
     #
-    # @example Opening a project
-    #   Project.new("path/to/Project.xcodeproj")
+    # @example Creating a project
+    #         Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(xcodeproj = nil, build_configurations = nil)
-      build_configurations = { 'Debug' => :debug, 'Release' => :release }.merge(build_configurations || {})
+    def initialize(path, build_configurations = nil, skip_initialization = false)
+      @path = Pathname.new(path)
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
-
-      if xcodeproj
-        file = File.join(xcodeproj, 'project.pbxproj')
-        plist = Xcodeproj.read_plist(file.to_s)
-
-        @archive_version =  plist['archiveVersion']
-        @object_version  =  plist['objectVersion']
-        @classes         =  plist['classes']
-
-        root_object_uuid = plist['rootObject']
-        @root_object = new_from_plist(root_object_uuid, plist['objects'], self)
-
-        if (@archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION || @object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION)
-          raise '[Xcodeproj] Unknown archive or object version.'
-        end
-
-        unless @root_object
-          raise "[Xcodeproj] Unable to find a root object in #{file}."
-        end
-      else
-        @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
-        @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
-        @classes         =  {}
-
-        root_object = new(PBXProject)
-        root_object.main_group = new(PBXGroup)
-        root_object.product_ref_group = root_object.main_group.new_group('Products')
-
-        config_list = new(XCConfigurationList)
-        config_list.default_configuration_name = 'Release'
-        config_list.default_configuration_is_visible = '0'
-        root_object.build_configuration_list = config_list
-
-        build_configurations.each do |name, name_sym|
-          build_configuration = new(XCBuildConfiguration)
-          build_configuration.name = name
-          build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[name_sym].dup
-          config_list.build_configurations << build_configuration
-        end
-
-        @root_object = root_object
-        root_object.add_referrer(self)
-        new_group('Frameworks')
+      unless skip_initialization
+        initialize_from_scratch(build_configurations)
       end
+    end
+
+    # Opens the project at the given path.
+    #
+    # @param  [Pathname, String] path
+    #         The path to the Xcode project document (xcodeproj).
+    #
+    # @example Opening a project
+    #         Project.open("path/to/Project.xcodeproj")
+    #
+    def self.open(path)
+      unless Pathname.new(path).exist?
+        raise "[Xcodeproj] Unable to open `#{path}` because it doesn't exist."
+      end
+      project = new(path, nil, true)
+      project.send(:initialize_from_file)
+      project
     end
 
     # @return [String] the archive version.
@@ -149,11 +132,72 @@ module Xcodeproj
 
     alias :inspect :to_s
 
+
+    public
+
+    # @!group Initialization
     #-------------------------------------------------------------------------#
+
+    # Initializes the instance from scratch.
+    #
+    def initialize_from_scratch(build_configurations)
+      @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
+      @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      @classes         =  {}
+
+      root_object.remove_referrer(self) if root_object
+      @root_object = new(PBXProject)
+      root_object.add_referrer(self)
+
+      root_object.main_group = new(PBXGroup)
+      root_object.product_ref_group = root_object.main_group.new_group('Products')
+
+      config_list = new(XCConfigurationList)
+      config_list.default_configuration_name = 'Release'
+      config_list.default_configuration_is_visible = '0'
+      root_object.build_configuration_list = config_list
+
+      build_configurations = { 'Debug' => :debug, 'Release' => :release }.merge(build_configurations || {})
+      build_configurations.each do |name, name_sym|
+        build_configuration = new(XCBuildConfiguration)
+        build_configuration.name = name
+        build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[name_sym].dup
+        config_list.build_configurations << build_configuration
+      end
+
+      new_group('Frameworks')
+    end
+
+    # Initializes the instance with the project stored in the `path` attribute.
+    #
+    def initialize_from_file
+      pbxproj_path = path + 'project.pbxproj'
+      plist = Xcodeproj.read_plist(pbxproj_path.to_s)
+      root_object_uuid = plist['rootObject']
+      root_object.remove_referrer(self) if root_object
+      @root_object = new_from_plist(root_object_uuid, plist['objects'], self)
+      @archive_version =  plist['archiveVersion']
+      @object_version  =  plist['objectVersion']
+      @classes         =  plist['classes']
+
+      unless root_object
+        raise "[Xcodeproj] Unable to find a root object in #{pbxproj_path}."
+      end
+
+      if (archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION)
+        raise '[Xcodeproj] Unknown archive version.'
+      end
+
+      if (object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION)
+        raise '[Xcodeproj] Unknown object version.'
+      end
+    end
+
 
     public
 
     # @!group Plist serialization
+    #-------------------------------------------------------------------------#
 
     # Creates a new object from the given UUID and `objects` hash (of a plist).
     #
