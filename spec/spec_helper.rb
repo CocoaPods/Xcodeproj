@@ -20,7 +20,6 @@ end
 
 require 'rubygems'
 require 'bacon'
-require 'bacon'
 require 'mocha-on-bacon'
 require 'pretty_bacon'
 require 'pathname'

@@ -9,6 +9,9 @@
 * To open an existing project `Xcodeproj::Project.open` should be used in place
   of `Xcodeproj::Project.new`, which now is deprecated for that purpose.
 
+* `Project#save_as` has been renamed to `Project#save` which uses the path
+  provided during initialization by default.
+
 ###### Enhancements
 
 * Xcodeproj will automatically utilize the

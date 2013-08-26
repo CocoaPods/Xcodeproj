@@ -284,29 +284,33 @@ module Xcodeproj
       }
     end
 
-    # Serializes the internal data as a property list and stores it on disk at
-    # the given path (`xcodeproj` file).
+    # Serializes the project in the xcodeproj format using the path provided
+    # during initialization or the given path (`xcodeproj` file). If a path is
+    # provided file references depending on the root of the project are not
+    # updated automatically, thus clients are responsible to perform any needed
+    # modification before saving.
+    #
+    # @param  [String, Pathname] path
+    #         The optional path where the project should be saved.
     #
     # @example Saving a project
-    #   project.save_as("path/to/Project.xcodeproj") #=> true
+    #   project.save #=> true
+    #   project.save("path/to/Project.xcodeproj") #=> true
     #
-    # @param  [String, Pathname] projpath
-    #         The path where the data should be stored.
+    # @return [void]
     #
-    # @return [Boolean] Whether or not saving was successful.
-    #
-    def save_as(projpath)
-      projpath = projpath.to_s
-      FileUtils.mkdir_p(projpath)
-      file = File.join(projpath, 'project.pbxproj')
+    def save(save_path = nil)
+      save_path ||= path.to_s
+      FileUtils.mkdir_p(save_path)
+      file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
       fix_encoding(file)
       `which xcproj`
       if $?.exitstatus.zero?
-        command = "xcproj --project #{projpath} touch 2>&1"
+        command = "xcproj --project #{save_path} touch 2>&1"
         output = `#{command}`
         unless $?.exitstatus.zero?
-          message = "xcproj failed to touch the project. Check wether you installation of xcproj is functional.\n\n"
+          message = "xcproj failed to touch the project. Check whether you installation of xcproj is functional.\n\n"
           message << command << "\n"
           message << output
           UI.warn(message)

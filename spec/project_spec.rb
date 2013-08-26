@@ -131,9 +131,27 @@ module ProjectSpecs
       end
 
       extend SpecHelper::TemporaryDirectory
+
+      it "saves the project to the default path" do
+        path = temporary_directory + 'Project.xcodeproj'
+        @project = Xcodeproj::Project.new(path)
+        @project.save
+        new_instance = Xcodeproj::Project.open(path)
+        new_instance.should == @project
+      end
+
+      it "saves the project to the given path" do
+        path = temporary_directory + 'Project.xcodeproj'
+        @project = Xcodeproj::Project.new(path)
+        save_path = temporary_directory + 'Project_2.xcodeproj'
+        @project.save(save_path)
+        new_instance = Xcodeproj::Project.open(save_path)
+        new_instance.should == @project
+      end
+
       it "can open a project and save it without altering any information" do
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
-        @project.save_as(File.join(temporary_directory, 'Pods.xcodeproj'))
+        @project.save(File.join(temporary_directory, 'Pods.xcodeproj'))
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
         Xcodeproj.read_plist(project_file.to_s).should == plist
       end
@@ -145,7 +163,7 @@ module ProjectSpecs
         file_ref = @project.new_file('Cédric')
         file_ref.name = 'Cédric'
         projpath = File.join(temporary_directory, 'Pods.xcodeproj')
-        @project.save_as(projpath)
+        @project.save(projpath)
         file = File.join(projpath, 'project.pbxproj')
         contents = File.read(file)
         contents.should.not.include('わくわく')
