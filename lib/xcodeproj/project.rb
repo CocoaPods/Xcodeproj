@@ -41,27 +41,6 @@ module Xcodeproj
 
     include Object
 
-    # @return [String] the archive version.
-    #
-    attr_reader :archive_version
-
-    # @return [Hash] an dictionary whose purpose is unknown.
-    #
-    attr_reader :classes
-
-    # @return [String] the objects version.
-    #
-    attr_reader :object_version
-
-    # @return [Hash{String => AbstractObject}] A hash containing all the
-    #         objects of the project by UUID.
-    #
-    attr_reader :objects_by_uuid
-
-    # @return [PBXProject] the root object of the project.
-    #
-    attr_reader :root_object
-
     # Creates a new Project instance or initializes one with the data of an
     # existing Xcode document.
     #
@@ -132,6 +111,27 @@ module Xcodeproj
         new_group('Frameworks')
       end
     end
+
+    # @return [String] the archive version.
+    #
+    attr_reader :archive_version
+
+    # @return [Hash] an dictionary whose purpose is unknown.
+    #
+    attr_reader :classes
+
+    # @return [String] the objects version.
+    #
+    attr_reader :object_version
+
+    # @return [Hash{String => AbstractObject}] A hash containing all the
+    #         objects of the project by UUID.
+    #
+    attr_reader :objects_by_uuid
+
+    # @return [PBXProject] the root object of the project.
+    #
+    attr_reader :root_object
 
     # Compares the project to another one, or to a plist representation.
     #
