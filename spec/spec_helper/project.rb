@@ -2,7 +2,7 @@ module SpecHelper
   module Project
     def self.extended(context)
       context.before do
-        @project = Xcodeproj::Project.new('Project.xcodeproj')
+        @project = Xcodeproj::Project.new('project_dir/Project.xcodeproj')
       end
     end
 

@@ -7,6 +7,13 @@ module ProjectSpecs
       @sut = @project.new_file('File.m')
     end
 
+    it "returns the parent" do
+      @sut.parent.should == @project.main_group
+    end
+
+    it "returns the real path" do
+      @sut.real_path.should == Pathname.new('project_dir/File.m')
+    end
 
     it "can update its file type according to the extension of the path" do
       @sut.last_known_file_type = nil

@@ -1,3 +1,5 @@
+require 'xcodeproj/project/object/groupable_helper'
+
 module Xcodeproj
   class Project
     module Object
@@ -14,9 +16,17 @@ module Xcodeproj
         #
         has_many :children, [PBXGroup, PBXFileReference, PBXReferenceProxy]
 
-        # @return [String] the source tree to which this group is relative.
+        # @return [String] the directory to which the path is relative.
         #
-        # @note   Usually is group <group>.
+        # @note   The accepted values are:
+        #         - `<absolute>` for absolute paths
+        #         - `<group>` for paths relative to the group
+        #         - `SOURCE_ROOT` for paths relative to the project
+        #         - `DEVELOPER_DIR` for paths relative to the developer
+        #           directory.
+        #         - `BUILT_PRODUCTS_DIR` for paths relative to the build
+        #           products directory.
+        #         - `SDKROOT` for paths relative to the SDK directory.
         #
         attribute :source_tree, String, '<group>'
 
@@ -84,6 +94,19 @@ module Xcodeproj
           elsif self.equal?(project.main_group)
             'Main Group'
           end
+        end
+
+        # @return [PBXGroup, PBXProject] the parent of the group.
+        #
+        def parent
+          GroupableHelper.parent(self)
+        end
+
+        # @return [Pathname] the absolute path of the group resolving the
+        # source tree.
+        #
+        def real_path
+          GroupableHelper.real_path(self)
         end
 
         # @return [Array<PBXFileReference>] the files references in the group

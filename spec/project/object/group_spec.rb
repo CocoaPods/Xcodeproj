@@ -20,6 +20,17 @@ module ProjectSpecs
       }
     end
 
+    it "returns the parent" do
+      @sut = @project.new_group('Parent')
+      @sut.parent.should == @project.main_group
+    end
+
+    it "returns the real path" do
+      @sut = @project.new_group('Parent')
+      @sut.path = 'Classes'
+      @sut.real_path.should == Pathname.new('project_dir/Classes')
+    end
+
     it "creates nested groups" do
       @project.new_group('groups', 'some/dir/and/sub/groups')
 

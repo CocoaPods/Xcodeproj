@@ -1,3 +1,5 @@
+require 'xcodeproj/project/object/groupable_helper'
+
 module Xcodeproj
   class Project
     module Object
@@ -127,16 +129,17 @@ module Xcodeproj
           name || File.basename(path)
         end
 
-        # @return [Pathname] the path of the file.
+        # @return [PBXGroup, PBXProject] the parent of the file.
         #
-        def pathname
-          Pathname.new(path)
+        def parent
+          GroupableHelper.parent(self)
         end
 
-        # @return [PBXGroup] the group that contains the current file reference.
+        # @return [Pathname] the absolute path of the file resolving the
+        # source tree.
         #
-        def group
-          referrers.select { |r| r.class == PBXGroup }.first
+        def real_path
+          GroupableHelper.real_path(self)
         end
 
         # @return [Array<PBXBuildFile>] the build files associated with the

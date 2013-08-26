@@ -14,6 +14,9 @@
 
 ###### Enhancements
 
+* Added `PBXGroup#parent`, `PBXGroup#real_path`, `PBXFileReference#parent`
+  (replaces `#group`), and `PBXFileReference#real_path`.
+
 * Xcodeproj will automatically utilize the
   [xcproj](https://github.com/0xced/xcproj) command line tool if available in
   the path of the user to touch saved projects. This will result in projects

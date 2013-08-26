@@ -57,7 +57,7 @@ module ProjectSpecs
       it "adds a file reference for a system framework, to the Frameworks group" do
         target = stub(:sdk => 'iphoneos5.0')
         file = Xcodeproj::Project::ProjectHelper.add_system_framework(@project, 'QuartzCore', target)
-        file.group.should == @project['Frameworks']
+        file.parent.should == @project['Frameworks']
         file.name.should == 'QuartzCore.framework'
         file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework|
         file.source_tree.should == 'DEVELOPER_DIR'

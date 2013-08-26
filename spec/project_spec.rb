@@ -361,7 +361,7 @@ module ProjectSpecs
       it "adds a file reference for a system framework, to the Frameworks group" do
         target = stub(:sdk => 'iphoneos5.0')
         file = @project.add_system_framework('QuartzCore', target)
-        file.group.should == @project['Frameworks']
+        file.parent.should == @project['Frameworks']
         file.name.should == 'QuartzCore.framework'
       end
 
