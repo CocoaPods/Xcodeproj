@@ -16,10 +16,17 @@ module Xcodeproj
         #
         attribute :path, String
 
-        # @return [String] the source tree to which the file is relative.
+        # @return [String] the directory to which the path is relative.
         #
-        # @note   Common values are `SOURCE_ROOT`, `SDKROOT` and
-        #         `BUILT_PRODUCTS_DIR`
+        # @note   The accepted values are:
+        #         - `<absolute>` for absolute paths
+        #         - `<group>` for paths relative to the group
+        #         - `SOURCE_ROOT` for paths relative to the project
+        #         - `DEVELOPER_DIR` for paths relative to the developer
+        #           directory.
+        #         - `BUILT_PRODUCTS_DIR` for paths relative to the build
+        #           products directory.
+        #         - `SDKROOT` for paths relative to the SDK directory.
         #
         attribute :source_tree, String, 'SOURCE_ROOT'
 
@@ -144,7 +151,10 @@ module Xcodeproj
         # @return [String] the computed file type.
         #
         def update_last_known_file_type
-          self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[pathname.extname[1..-1]]
+          if path
+            extension = Pathname(path).extname[1..-1]
+            self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
+          end
         end
 
         # Checks whether the reference is a proxy.
