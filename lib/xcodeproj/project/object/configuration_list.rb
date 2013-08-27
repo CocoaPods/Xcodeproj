@@ -32,6 +32,18 @@ module Xcodeproj
 
         # @!group Helpers
 
+        # Returns the build configuration with the given name.
+        #
+        # @param  [String] name
+        #         The name of the build configuration.
+        #
+        # @return [XCBuildConfiguration] The build configuration.
+        # @return [Nil] If not build configuration with the given name is found.
+        #
+        def [](name)
+          build_configurations.find { |bc| bc.name == name }
+        end
+
         # Returns the build settings of the build configuration with
         # the given name.
         #
@@ -41,8 +53,9 @@ module Xcodeproj
         # @return [Hash {String=>String}] the build settings
         #
         def build_settings(build_configuration_name)
-          config = build_configurations.find { |bc| bc.name == build_configuration_name }
-          config.build_settings if config
+          if config = self[build_configuration_name]
+            config.build_settings
+          end
         end
 
         #---------------------------------------------------------------------#
