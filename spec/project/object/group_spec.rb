@@ -55,6 +55,30 @@ module ProjectSpecs
       file.parent.should == @group
     end
 
+    #-------------------------------------------------------------------------#
+
+    describe "#new_group" do
+
+      it "creates a new group" do
+        group = @group.new_group('Classes')
+        group.parent.should == @group
+      end
+
+      it "sets the source tree to group if not path is provided" do
+        group = @group.new_group('Classes')
+        group.source_tree.should == '<group>'
+      end
+
+      it "sets the path according to the source tree if provided" do
+        group = @group.new_group('Classes', '/project_dir/classes')
+        group.source_tree.should == '<group>'
+        group.path.should == 'classes'
+      end
+
+    end
+
+    #-------------------------------------------------------------------------#
+
     it "returns a list of files and groups" do
       @group.children.map(&:display_name).sort.should == %w{
         Abracadabra.h Abracadabra.m

@@ -192,10 +192,15 @@ module Xcodeproj
         #
         # @return [PBXGroup] the new group.
         #
-        def new_group(name)
+        def new_group(name, path = nil, source_tree = :group)
           group = project.new(PBXGroup)
-          group.name = name
           children << group
+          group.name = name
+          if path
+            GroupableHelper.set_path_with_source_tree(group, path, source_tree)
+          else
+            group.source_tree = '<group>'
+          end
           group
         end
 
