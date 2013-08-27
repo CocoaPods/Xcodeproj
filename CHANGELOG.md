@@ -34,6 +34,8 @@
   the path of the user to touch saved projects. This will result in projects
   serialized in the exact format used by Xcode.
 
+* [PBXGroup] Improved deletion.
+
 
 ## 0.9.0
 

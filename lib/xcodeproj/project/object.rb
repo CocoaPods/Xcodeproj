@@ -99,8 +99,19 @@ module Xcodeproj
         # @return [void]
         #
         def remove_from_project
-          @project.objects_by_uuid.delete(uuid)
-          @referrers.each { |referrer| referrer.remove_reference(self) }
+          project.objects_by_uuid.delete(uuid)
+          referrers.each { |referrer| referrer.remove_reference(self) }
+
+          to_one_attributes.each do |attrb|
+            object = attrb.get_value(self)
+            object.remove_referrer(self) if object
+          end
+
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            list.clear
+          end
+
           raise "[Xcodeproj] BUG: #{self} should have no referrers instead the following objects are still referencing it #{referrers}" unless referrers.count == 0
         end
 
@@ -391,8 +402,10 @@ module Xcodeproj
         end
 
         def inspect
-          name_part = " name=#{self.name}" if respond_to?(:name)
-          "<#{self.class}#{name_part} UUID=#{uuid}>"
+          optional = ''
+          optional << " name=`#{self.name}`" if respond_to?(:name) && self.name
+          optional << " path=`#{self.path}`" if respond_to?(:path) && self.path
+          "<#{self.class}#{optional} UUID=`#{uuid}`>"
         end
       end
     end

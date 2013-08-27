@@ -211,11 +211,7 @@ module Xcodeproj
         # Removes children files and groups under this group.
         #
         def remove_children_recursively
-          groups.each do |g|
-            g.remove_children_recursively
-            g.remove_from_project
-          end
-          files.each { |f| f.remove_from_project }
+          children.objects.each(&:remove_from_project)
         end
 
         # Traverses the children groups and finds the children with the given

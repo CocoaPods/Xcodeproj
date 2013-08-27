@@ -38,6 +38,15 @@ module ProjectSpecs
         @project.objects_by_uuid[@object.uuid].should.be.nil
       end
 
+      it "removes the itself from referred objects" do
+        group = @project.new_group('Classes')
+        file = group.new_reference('File.m')
+
+        group.remove_from_project
+        file.referrers.count.should == 0
+        @project.objects_by_uuid[file.uuid].should.be.nil
+      end
+
       it "maintains the list of referrers" do
         @object.referrers.count.should == 1
         @object.referrers.first.isa.should == 'PBXGroup'
