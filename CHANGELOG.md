@@ -22,6 +22,12 @@
 
 ###### Enhancements
 
+* CoreData versioned models are now properly handled respecting the contents of
+  the `.xccurrentversion` file.  
+  [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1288),
+  [#83](https://github.com/CocoaPods/Xcodeproj/pull/83)  
+  [Ashton-W](https://github.com/Ashton-W)
+
 * [PBXGroup, PBXFileReference] Improved source tree handling in creation
   helpers. Now it is possible to specify the source tree which will be used to
   adjust the provided path as needed.

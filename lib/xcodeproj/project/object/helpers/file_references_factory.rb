@@ -103,9 +103,6 @@ module Xcodeproj
           # the xcdatamodel files included in the wrapper as children file
           # references.
           #
-          # @note  To match Xcode behaviour the last xcdatamodel according to
-          #        its path is set as the current version.
-          #
           # @param  [PBXGroup] group
           #         The group to which to add the reference.
           #
@@ -116,6 +113,11 @@ module Xcodeproj
           #         The source tree key to use to configure the path (@see
           #         GroupableHelper::SOURCE_TREES_BY_KEY).
           #
+          # @note  To match Xcode behaviour the current version is read from
+          #         the .xccurrentversion file, if it doesn't exist the last
+          #         xcdatamodel according to its path is set as the current
+          #         version.
+          #
           # @return [XCVersionGroup] The new reference.
           #
           def new_xcdatamodeld(group, path, source_tree)
@@ -125,15 +127,24 @@ module Xcodeproj
             GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
             ref.version_group_type = 'wrapper.xcdatamodel'
 
-            last_child_ref = nil
+            current_version_name = nil
             if path.exist?
               path.children.each do |child_path|
                 if File.extname(child_path) == '.xcdatamodel'
                   child_ref = new_file_reference(ref, child_path, :group)
                   last_child_ref = child_ref
+                elsif File.basename(child_path) == '.xccurrentversion'
+                  full_path = path + child_path
+                  xccurrentversion = Xcodeproj.read_plist(full_path)
+                  current_version_name = xccurrentversion['_XCCurrentVersionName']
                 end
               end
-              ref.current_version = last_child_ref
+
+              if current_version_name
+                ref.current_version = ref.children.find do |obj|
+                    obj.path.split('/').last == current_version_name
+                end
+              end
             end
 
             ref

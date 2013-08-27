@@ -171,11 +171,15 @@ module ProjectSpecs
         ref.children.map(&:path).should == ["Model.xcdatamodel", "Model 2.xcdatamodel"]
       end
 
-      xit "sets the current version to the last children in alphabetical order" do
-        Pathname.any_instance.stubs(:exist?).returns(true)
-        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),])
-        ref = @sut.send(:new_xcdatamodeld, @group, 'Model.xcdatamodeld', :group)
-        ref.current_version.path.should == 'Model 2.xcdatamodel'
+      it "sets the current version according to the xccurrentversion file" do
+        path = fixture_path("CoreData/VersionedModel.xcdatamodeld")
+        ref = @sut.send(:new_xcdatamodeld, @group, path, :group)
+
+        ref.current_version.isa.should == 'PBXFileReference'
+        ref.current_version.path.should.include 'VersionedModel 2.xcdatamodel'
+        ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
+        ref.current_version.source_tree.should == '<group>'
+        @group.children.should.include(ref)
       end
 
     end
