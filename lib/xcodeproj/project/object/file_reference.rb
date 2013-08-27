@@ -126,7 +126,7 @@ module Xcodeproj
         #         needed.
         #
         def display_name
-          name || File.basename(path)
+          name || (File.basename(path) if path)
         end
 
         # @return [PBXGroup, PBXProject] the parent of the file.
