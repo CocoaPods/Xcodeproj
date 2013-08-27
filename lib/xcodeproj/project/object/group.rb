@@ -1,4 +1,5 @@
 require 'xcodeproj/project/object/helpers/groupable_helper'
+require 'xcodeproj/project/object/helpers/file_references_factory'
 
 module Xcodeproj
   class Project
@@ -141,119 +142,50 @@ module Xcodeproj
           children.select { |obj| obj.class == XCVersionGroup }
         end
 
-        # Creates a new file reference with the given path and adds it to the
-        # group or to an optional subpath.
-        #
-        # @note   The subpath is created if needed, similar to the UNIX command
-        #         `mkdir -p`
-        #
-        # @note   To closely match the Xcode behaviour the name attribute of
-        #         the file reference is set only if the path of the file is not
-        #         equal to the path of the group.
+        # Creates a new reference with the given path and adds it to the
+        # group. The reference is configured according to the extension
+        # of the path.
         #
         # @param  [#to_s] path
-        #         the file system path of the file.
+        #         The, preferably absolute, path of the reference.
         #
-        # @return [PBXFileReference] the new file reference.
+        # @param  [Symbol] source_tree
+        #         The source tree key to use to configure the path (@see
+        #         GroupableHelper::SOURCE_TREES_BY_KEY).
         #
-        def new_file(path)
-          extname = File.extname(path)
-          case
-          when extname == '.framework' then new_framework(path)
-          when extname == '.xcdatamodeld' then new_xcdatamodeld(path)
-          else new_file_reference(path)
-          end
+        # @return [PBXFileReference, XCVersionGroup] The new reference.
+        #
+        def new_reference(path, source_tree = :group)
+          FileReferencesFactory.new_reference(self, path, source_tree)
+        end
+        alias :new_file :new_reference
+
+        # Creates a file reference to a static library and adds it to the
+        # group.
+        #
+        # @param  [#to_s] product_name
+        #         The name of the static library.
+        #
+        # @return [PBXFileReference] The new file reference.
+        #
+        def new_static_library(product_name)
+          FileReferencesFactory.new_static_library(self, product_name)
         end
 
-        # Creates a new file reference with the given path and adds it to the
-        # group or to an optional subpath.
+        # Creates a file reference to a new bundle.
         #
-        # @note   @see #new_file
+        # @param  [#to_s] product_name
+        #         The name of the bundle.
         #
-        # @param  @see #new_file
+        # @return [PBXFileReference] The new file reference.
         #
-        # @return [PBXFileReference] the new file reference.
-        #
-        def new_file_reference(path, source_tree = :group)
-          path = Pathname.new(path)
-          ref = project.new(PBXFileReference)
-          children << ref
-          GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
-
-          ref.update_last_known_file_type
-          set_file_refenrece_name_if_needed(ref, self)
-          ref
+        def new_bundle(product_name)
+          FileReferencesFactory.new_bundle(self, product_name)
         end
 
-        # Sets the name of a reference if needed, to match Xcode behaviour.
+        # Creates a file reference to a new bundle and adds it to the group.
         #
-        # @param  [PBXFileReference, XCVersionGroup] ref
-        #         the reference which needs the name optionally set.
-        #
-        # @return [void]
-        #
-        def set_file_refenrece_name_if_needed(ref, parent_group)
-          same_path_of_group = (parent_group.path == Pathname(ref.path).dirname.to_s)
-          same_path_project = (Pathname(ref.path).dirname.to_s == '.' && parent_group.path.nil?)
-          unless same_path_of_group || same_path_project
-            ref.name = Pathname(ref.path).basename.to_s
-          end
-        end
-
-        # Creates a new file reference to a framework bundle.
-        #
-        # @note   @see #new_file
-        #
-        # @param  @see #new_file
-        #
-        # @return [PBXFileReference] the new file reference.
-        #
-        def new_framework(path)
-          ref = new_file_reference(path)
-          ref.include_in_index = nil
-          ref
-        end
-
-        # Creates a new version group reference to an xcdatamodeled adding the
-        # xcdatamodel files included in the wrapper as children file references.
-        #
-        # @note  To match Xcode behaviour the last xcdatamodel according to its
-        #        path is set as the current version.
-        #
-        # @note   @see #new_file
-        #
-        # @param  @see #new_file
-        #
-        # @return [XCVersionGroup] the new reference.
-        #
-        def new_xcdatamodeld(path)
-          path = Pathname.new(path)
-          ref = project.new(XCVersionGroup)
-          children << ref
-          ref.path = path.to_s
-          ref.source_tree = '<group>'
-          ref.version_group_type = 'wrapper.xcdatamodel'
-
-          last_child_ref = nil
-          if path.exist?
-            path.children.each do |child_path|
-              if File.extname(child_path) == '.xcdatamodel'
-                child_ref = ref.new_file_reference(child_path)
-                child_ref.source_tree = '<group>'
-                last_child_ref = child_ref
-              end
-            end
-            ref.current_version = last_child_ref
-          end
-
-          set_file_refenrece_name_if_needed(ref, self)
-          ref
-        end
-
-        # Creates a new group with the given name and adds it to the children
-        # of the group.
-        #
-        # @note   @see new_file
+        # @note   @see new_reference
         #
         # @param  [#to_s] name
         #         the name of the new group.
@@ -265,41 +197,6 @@ module Xcodeproj
           group.name = name
           children << group
           group
-        end
-
-        # Creates a file reference to a static library and adds it to the
-        # children of the group.
-        #
-        # @note @see new_file
-        #
-        # @param  [#to_s] product_name
-        #         the name of the new static library.
-        #
-        # @return [PBXFileReference] the new file reference.
-        #
-        def new_static_library(product_name)
-          file = new_file("lib#{product_name}.a")
-          file.include_in_index = '0'
-          file.source_tree = 'BUILT_PRODUCTS_DIR'
-          file.explicit_file_type = file.last_known_file_type
-          file.last_known_file_type = nil
-          file
-        end
-
-        # Creates a file reference to a new bundle.
-        #
-        # @param  [#to_s] product_name
-        #         the name of the bundle.
-        #
-        # @return [PBXFileReference] the new file reference.
-        #
-        def new_bundle(product_name)
-          file = new_file("#{product_name}.bundle")
-          file.explicit_file_type = 'wrapper.cfbundle'
-          file.include_in_index = '0'
-          file.source_tree = 'BUILT_PRODUCTS_DIR'
-          file.last_known_file_type = nil
-          file
         end
 
         # Traverses the children groups and finds the group with the given
@@ -402,6 +299,7 @@ module Xcodeproj
         # @return [String] the file type guessed by Xcode.
         #
         attribute :last_known_file_type, String
+
       end
 
       #-----------------------------------------------------------------------#
