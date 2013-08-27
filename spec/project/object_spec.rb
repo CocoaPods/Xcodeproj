@@ -29,7 +29,6 @@ module ProjectSpecs
       end
 
       it "initializes the simple attributes with the default values" do
-        @object.source_tree.should == 'SOURCE_ROOT'
         @object.include_in_index.should == '1'
       end
 
@@ -196,7 +195,7 @@ module ProjectSpecs
           "isa" => "PBXFileReference",
           "name" => "file.m",
           "path" => "Classes/file.m",
-          "sourceTree" => "SOURCE_ROOT",
+          "sourceTree" => "<group>",
           "lastKnownFileType" => "sourcecode.c.objc",
           "includeInIndex" => "1"
         }

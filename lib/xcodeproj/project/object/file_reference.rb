@@ -1,4 +1,4 @@
-require 'xcodeproj/project/object/groupable_helper'
+require 'xcodeproj/project/object/helpers/groupable_helper'
 
 module Xcodeproj
   class Project

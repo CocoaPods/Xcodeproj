@@ -1,4 +1,4 @@
-require 'xcodeproj/project/object/groupable_helper'
+require 'xcodeproj/project/object/helpers/groupable_helper'
 
 module Xcodeproj
   class Project
@@ -174,11 +174,13 @@ module Xcodeproj
         #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_file_reference(path)
+        def new_file_reference(path, source_tree = :group)
+          path = Pathname.new(path)
           ref = project.new(PBXFileReference)
-          ref.path = path.to_s
-          ref.update_last_known_file_type
           children << ref
+          GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
+
+          ref.update_last_known_file_type
           set_file_refenrece_name_if_needed(ref, self)
           ref
         end
@@ -227,6 +229,7 @@ module Xcodeproj
         def new_xcdatamodeld(path)
           path = Pathname.new(path)
           ref = project.new(XCVersionGroup)
+          children << ref
           ref.path = path.to_s
           ref.source_tree = '<group>'
           ref.version_group_type = 'wrapper.xcdatamodel'
@@ -243,7 +246,6 @@ module Xcodeproj
             ref.current_version = last_child_ref
           end
 
-          children << ref
           set_file_refenrece_name_if_needed(ref, self)
           ref
         end

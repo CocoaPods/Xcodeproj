@@ -41,7 +41,7 @@ module ProjectSpecs
 
     describe "#new_file" do
       it "adds files for the given paths" do
-        ref = @group.new_file('ZOMG.md')
+        ref = @group.new_file('project_dir/ZOMG.md')
         ref.path.should == 'ZOMG.md'
         ref.include_in_index.should == '1'
         @group.children.should.include(ref)

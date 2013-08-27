@@ -19,6 +19,10 @@
 
 ###### Enhancements
 
+* [PBXGroup, PBXFileReference] Improved source tree handling in creation
+  helpers. Now it is possible to specify the source tree which will be used to
+  adjust the provided path as needed.
+
 * Added `PBXGroup#parent`, `PBXGroup#real_path`, `PBXFileReference#parent`
   (replaces `#group`), and `PBXFileReference#real_path`.
 
