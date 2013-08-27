@@ -30,7 +30,7 @@ module ProjectSpecs
       it "returns the real path of an object" do
         @group.source_tree = '<group>'
         @group.path = 'Classes'
-        @sut.real_path(@group).should == Pathname.new('project_dir/Classes')
+        @sut.real_path(@group).should == Pathname.new('/project_dir/Classes')
       end
     end
 
@@ -49,7 +49,7 @@ module ProjectSpecs
 
       it "returns the source tree of a path relative to main group" do
         @group.source_tree = '<group>'
-        @sut.source_tree_real_path(@group).should == Pathname.new('project_dir')
+        @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
       it "returns the source tree of a path relative to a group" do
@@ -63,13 +63,13 @@ module ProjectSpecs
 
       it "returns the source tree of a path relative to the project root" do
         @group.source_tree = 'SOURCE_ROOT'
-        @sut.source_tree_real_path(@group).should == Pathname.new('project_dir')
+        @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
       it "raises if unable to resolve the source tree" do
         should.raise do
           @group.source_tree = '<unknown>'
-          @sut.source_tree_real_path(@group).should == Pathname.new('project_dir')
+          @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
         end.message.should.match /Unable to compute the source tree/
       end
     end
@@ -98,7 +98,7 @@ module ProjectSpecs
         new_group = @group.new_group('Classes')
         @group.source_tree = '<group>'
         @group.path = 'Parent'
-        @sut.set_path_with_source_tree(new_group, 'project_dir/Parent/Classes', :group)
+        @sut.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :group)
         new_group.source_tree.should == '<group>'
         new_group.path.should == 'Classes'
       end
@@ -107,9 +107,36 @@ module ProjectSpecs
         new_group = @group.new_group('Classes')
         @group.source_tree = '<group>'
         @group.path = 'Parent'
-        @sut.set_path_with_source_tree(new_group, 'project_dir/Parent/Classes', :project)
+        @sut.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :project)
         new_group.source_tree.should == 'SOURCE_ROOT'
         new_group.path.should == 'Parent/Classes'
+      end
+
+      it "sets a path relative to the products dir" do
+        @sut.set_path_with_source_tree(@group, 'Class.m', :built_products)
+        @group.source_tree.should == 'BUILT_PRODUCTS_DIR'
+        @group.path.should == 'Class.m'
+      end
+
+      it "sets a path relative to the developer dir" do
+        @sut.set_path_with_source_tree(@group, 'Class.m', :developer_dir)
+        @group.source_tree.should == 'DEVELOPER_DIR'
+        @group.path.should == 'Class.m'
+      end
+
+      it "sets a path relative to the sdk root" do
+        @sut.set_path_with_source_tree(@group, 'Class.m', :sdk_root)
+        @group.source_tree.should == 'SDKROOT'
+        @group.path.should == 'Class.m'
+      end
+
+      it "doesn't convert to relative a path if the both the path and the source tree are not absolute or relative" do
+        new_group = @group.new_group('Classes')
+        @group.source_tree = '<group>'
+        @group.path = 'Parent'
+        @sut.set_path_with_source_tree(new_group, 'project_dir/Parent/Classes', :group)
+        new_group.source_tree.should == '<group>'
+        new_group.path.should == 'project_dir/Parent/Classes'
       end
 
       it "raises if an unsupported source key is provided" do

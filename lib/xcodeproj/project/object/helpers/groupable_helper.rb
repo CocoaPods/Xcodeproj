@@ -67,9 +67,20 @@ module Xcodeproj
           }
 
           # Sets the path of the given object according to the provided source
-          # tree key. The path is adjusted according to the real path of the
-          # source tree. Relative paths, when acceptable, not including the
-          # path of the source tree are added unmodified.
+          # tree key. The path is converted to relative according to the real
+          # path of the source tree for group and project source trees, if both
+          # paths are relative or absolute. Otherwise the path is set as
+          # provided.
+          #
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object whose path needs to be set.
+          #
+          # @param  [#to_s] path
+          #         The path.
+          #
+          # @param  [Symbol] source_tree_key
+          #         The source tree type, see {SOURCE_TREES_BY_KEY} for
+          #         acceptable values.
           #
           # @return [void]
           #
@@ -88,16 +99,16 @@ module Xcodeproj
                   "absolute source tree: `#{path}`"
               end
               object.path = path.to_s
-            elsif source_tree_key == :built_products
-              object.path = path.to_s
-            else
+            elsif source_tree_key == :group || source_tree_key == :project
               source_tree_real_path = GroupableHelper.source_tree_real_path(object)
-              if source_tree_real_path
+              if source_tree_real_path && source_tree_real_path.absolute? == path.absolute?
                 relative_path = path.relative_path_from(source_tree_real_path)
                 object.path = relative_path.to_s
               else
                 object.path = path.to_s
               end
+            else
+              object.path = path.to_s
             end
           end
 

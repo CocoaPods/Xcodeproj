@@ -29,7 +29,7 @@ module ProjectSpecs
     it "returns the real path" do
       @sut = @project.new_group('Parent')
       @sut.path = 'Classes'
-      @sut.real_path.should == Pathname.new('project_dir/Classes')
+      @sut.real_path.should == Pathname.new('/project_dir/Classes')
     end
 
     it "returns that the main group has no name" do

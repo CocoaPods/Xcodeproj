@@ -12,7 +12,7 @@ module ProjectSpecs
     end
 
     it "returns the real path" do
-      @sut.real_path.should == Pathname.new('project_dir/File.m')
+      @sut.real_path.should == Pathname.new('/project_dir/File.m')
     end
 
     it "sets its last known file type" do

@@ -112,13 +112,13 @@ module ProjectSpecs
 
       it "configures the path according to the source tree" do
         @group.path = 'Classes'
-        ref = @sut.send(:new_file_reference, @group, 'project_dir/Classes/File.m', :group)
+        ref = @sut.send(:new_file_reference, @group, '/project_dir/Classes/File.m', :group)
         ref.source_tree.should == '<group>'
         ref.path.should == 'File.m'
       end
 
       it "sets the last know file type" do
-        ref = @sut.send(:new_file_reference, @group, 'project_dir/File.m', :group)
+        ref = @sut.send(:new_file_reference, @group, '/project_dir/File.m', :group)
         ref.last_known_file_type.should == 'sourcecode.c.objc'
       end
 
