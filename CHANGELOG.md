@@ -15,6 +15,8 @@
 * The parameter to specify a subgroup of the helper methods to create file
   references and new groups (e.g. `#new_file`, `#group`)  has been deprecated.
 
+* Removed `PBXGroup#new_xcdatamodel_group`.
+
 ###### Enhancements
 
 * Added `PBXGroup#parent`, `PBXGroup#real_path`, `PBXFileReference#parent`

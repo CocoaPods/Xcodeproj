@@ -92,13 +92,6 @@ module ProjectSpecs
       groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
     end
 
-    it "adds XCVersionGroups" do
-      group = @group.new_xcdatamodel_group('some/Model.xcdatamodeld')
-      group.isa.should == 'XCVersionGroup'
-      group.source_tree.should == '<group>'
-      group.version_group_type.should == 'wrapper.xcdatamodel';
-    end
-
     it "creates a new static library" do
       file = @group.new_static_library('Pods')
       file.name.should.be.nil
