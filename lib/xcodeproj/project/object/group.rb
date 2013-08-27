@@ -219,7 +219,7 @@ module Xcodeproj
         end
 
         # Creates a new version group reference to an xcdatamodeled adding the
-        # xcdatamodel files included in the wrapper as chidren file references.
+        # xcdatamodel files included in the wrapper as children file references.
         #
         # @note  To match Xcode behaviour the last xcdatamodel according to its
         #        path is set as the current version.

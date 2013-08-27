@@ -5,7 +5,10 @@ require File.expand_path('../spec_helper', __FILE__)
 module ProjectSpecs
   describe Xcodeproj::Project do
 
+    #-------------------------------------------------------------------------#
+
     describe "In general" do
+
       it "return the objects by UUID hash" do
         @project.objects_by_uuid.should.not.be.nil
       end
@@ -15,7 +18,10 @@ module ProjectSpecs
       end
     end
 
-    describe "Concerning initialization from scratch" do
+    #-------------------------------------------------------------------------#
+
+    describe "Initialization from scratch" do
+
       it "initializes to the last known archive version" do
         @project.archive_version.should == Xcodeproj::Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
       end
@@ -88,7 +94,10 @@ module ProjectSpecs
       end
     end
 
-    describe "Concerning plist initialization & serialization" do
+    #-------------------------------------------------------------------------#
+
+    describe "Initialization from a file" do
+
       before do
         @project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
       end
@@ -99,7 +108,7 @@ module ProjectSpecs
         @project.root_object.referrers.should.include?(@project)
       end
 
-      # It implicitly checks that all the attributes for the known isas.
+      # It implicitly checks that all the attributes for the known ISAs.
       # Therefore, If a new isa or attribute is found it should added to the
       # sample project.
       #
@@ -129,6 +138,11 @@ module ProjectSpecs
         attrb.default_value.should == '1'
         obj.to_hash.should == expected
       end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe "Serialization" do
 
       extend SpecHelper::TemporaryDirectory
 
@@ -150,6 +164,7 @@ module ProjectSpecs
       end
 
       it "can open a project and save it without altering any information" do
+        @project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
         plist = Xcodeproj.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
         @project.save(File.join(temporary_directory, 'Pods.xcodeproj'))
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
@@ -173,7 +188,10 @@ module ProjectSpecs
       end
     end
 
-    describe "Concerning object creation" do
+    #-------------------------------------------------------------------------#
+
+    describe "Object creation" do
+
       it "creates a new object" do
         @project.new(PBXFileReference).class.should == PBXFileReference
       end
@@ -220,7 +238,9 @@ module ProjectSpecs
       end
     end
 
-    describe "Concerning helpers" do
+    #-------------------------------------------------------------------------#
+
+    describe "Helpers" do
       it "returns all the objects referred in the project" do
         expected = [
           "ConfigurationList",
@@ -336,8 +356,8 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe "Helpers for creating new objects" do
 
-    describe "Concerning helpers for creating new objects" do
       it "adds a new group" do
         group = @project.new_group('A new group', 'Cocoa Application')
         group.isa.should == 'PBXGroup'
@@ -371,12 +391,14 @@ module ProjectSpecs
         target.product_type.should == 'com.apple.product-type.library.static'
       end
 
-      it "creates a new resouces bundle" do
+      it "creates a new resources bundle" do
         target = @project.new_resources_bundle('Pods', :ios)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
       end
     end
+
+    #-------------------------------------------------------------------------#
 
     describe "Project schemes" do
       it "return project name as scheme if there are no shared schemes" do
