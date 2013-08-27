@@ -275,7 +275,7 @@ module ProjectSpecs
       end
 
       it "returns the group with the given path" do
-        g = @project.new_group('libPusher', 'Pods')
+        g = @project.new_group('Pods').new_group('libPusher')
         @project ['Pods/libPusher'].should == g
       end
 
@@ -359,19 +359,19 @@ module ProjectSpecs
     describe "Helpers for creating new objects" do
 
       it "adds a new group" do
-        group = @project.new_group('A new group', 'Cocoa Application')
+        group = @project.new_group('NewGroup')
         group.isa.should == 'PBXGroup'
-        group.name.should == 'A new group'
+        group.name.should == 'NewGroup'
         @project.objects_by_uuid[group.uuid].should.not.be.nil
-        @project['Cocoa Application'].children.should.include group
+        @project.main_group.children.should.include group
       end
 
       it "adds a new file" do
-        file = @project.new_file('Classes/Test.h', 'Cocoa Application')
+        file = @project.new_file('Classes/Test.h')
         file.isa.should == 'PBXFileReference'
         file.display_name.should == 'Test.h'
         @project.objects_by_uuid[file.uuid].should.not.be.nil
-        @project['Cocoa Application'].children.should.include file
+        @project.main_group.children.should.include file
       end
 
       before do

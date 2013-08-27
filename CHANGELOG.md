@@ -12,6 +12,9 @@
 * `Project#save_as` has been renamed to `Project#save` which uses the path
   provided during initialization by default.
 
+* The parameter to specify a subgroup of the helper methods to create file
+  references and new groups (e.g. `#new_file`, `#group`)  has been deprecated.
+
 ###### Enhancements
 
 * Added `PBXGroup#parent`, `PBXGroup#real_path`, `PBXFileReference#parent`

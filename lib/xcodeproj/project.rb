@@ -540,8 +540,8 @@ module Xcodeproj
     #
     # @return [PBXFileReference] the new file.
     #
-    def new_file(path, sub_group_path = nil)
-      main_group.new_file(path, sub_group_path)
+    def new_file(path)
+      main_group.new_file(path)
     end
 
     # Creates a new group at the given subpath of the main group.
@@ -550,8 +550,8 @@ module Xcodeproj
     #
     # @return [PBXGroup] the new group.
     #
-    def new_group(name, path = nil)
-      main_group.new_group(name, path)
+    def new_group(name)
+      main_group.new_group(name)
     end
 
     # Adds a file reference for a system framework to the project.

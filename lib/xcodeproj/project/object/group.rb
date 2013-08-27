@@ -154,18 +154,14 @@ module Xcodeproj
         # @param  [#to_s] path
         #         the file system path of the file.
         #
-        # @param  [String] sub_group_path
-        #         an optional subgroup path indicating the groups separated by
-        #         a `/`.
-        #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_file(path, sub_group_path = nil)
+        def new_file(path)
           extname = File.extname(path)
           case
-          when extname == '.framework' then new_framework(path, sub_group_path)
-          when extname == '.xcdatamodeld' then new_xcdatamodeld(path, sub_group_path)
-          else new_file_reference(path, sub_group_path)
+          when extname == '.framework' then new_framework(path)
+          when extname == '.xcdatamodeld' then new_xcdatamodeld(path)
+          else new_file_reference(path)
           end
         end
 
@@ -178,14 +174,12 @@ module Xcodeproj
         #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_file_reference(path, sub_group_path = nil)
+        def new_file_reference(path)
           ref = project.new(PBXFileReference)
           ref.path = path.to_s
           ref.update_last_known_file_type
-
-          parent_group = find_subpath(sub_group_path, true)
-          parent_group.children << ref
-          set_file_refenrece_name_if_needed(ref, parent_group)
+          children << ref
+          set_file_refenrece_name_if_needed(ref, self)
           ref
         end
 
@@ -212,8 +206,8 @@ module Xcodeproj
         #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_framework(path, sub_group_path = nil)
-          ref = new_file_reference(path, sub_group_path = nil)
+        def new_framework(path)
+          ref = new_file_reference(path)
           ref.include_in_index = nil
           ref
         end
@@ -230,7 +224,7 @@ module Xcodeproj
         #
         # @return [XCVersionGroup] the new reference.
         #
-        def new_xcdatamodeld(path, sub_group_path = nil)
+        def new_xcdatamodeld(path)
           path = Pathname.new(path)
           ref = project.new(XCVersionGroup)
           ref.path = path.to_s
@@ -249,9 +243,8 @@ module Xcodeproj
             ref.current_version = last_child_ref
           end
 
-          parent_group = find_subpath(sub_group_path, true)
-          parent_group.children << ref
-          set_file_refenrece_name_if_needed(ref, parent_group)
+          children << ref
+          set_file_refenrece_name_if_needed(ref, self)
           ref
         end
 
@@ -263,16 +256,12 @@ module Xcodeproj
         # @param  [#to_s] name
         #         the name of the new group.
         #
-        # @param  [String] sub_group_path @see new_file
-        #
         # @return [PBXGroup] the new group.
         #
-        def new_group(name, sub_group_path = nil)
+        def new_group(name)
           group = project.new(PBXGroup)
           group.name = name
-
-          target = find_subpath(sub_group_path, true)
-          target.children << group
+          children << group
           group
         end
 
@@ -284,12 +273,10 @@ module Xcodeproj
         # @param  [#to_s] product_name
         #         the name of the new static library.
         #
-        # @param  [String] sub_group_path @see new_file
-        #
         # @return [PBXFileReference] the new file reference.
         #
-        def new_static_library(product_name, sub_group_path = nil)
-          file = new_file("lib#{product_name}.a", sub_group_path)
+        def new_static_library(product_name)
+          file = new_file("lib#{product_name}.a")
           file.include_in_index = '0'
           file.source_tree = 'BUILT_PRODUCTS_DIR'
           file.explicit_file_type = file.last_known_file_type

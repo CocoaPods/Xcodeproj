@@ -31,17 +31,6 @@ module ProjectSpecs
       @sut.real_path.should == Pathname.new('project_dir/Classes')
     end
 
-    it "creates nested groups" do
-      @project.new_group('groups', 'some/dir/and/sub/groups')
-
-      groups = @project.main_group.groups
-      %w{some dir and sub groups}.each do |group_name|
-        group = groups.select { |g| g.name == group_name }.first
-        group.should.not == nil
-        groups = group.groups
-      end
-    end
-
     it "returns that the main group has no name" do
       @project.main_group.name.should == nil
     end
@@ -97,8 +86,8 @@ module ProjectSpecs
     end
 
     it "returns the recursive list of the children groups" do
-      @group.new_group('1', 'group1')
-      @group.new_group('2', 'group2')
+      @group.new_group('group1').new_group('1')
+      @group.new_group('group2').new_group('2')
       groups = @group.recursive_children_groups.map(&:display_name).sort
       groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
     end
