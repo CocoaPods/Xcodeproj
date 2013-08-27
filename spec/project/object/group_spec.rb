@@ -12,15 +12,6 @@ module ProjectSpecs
       @sut.new_reference('Banana.m')
     end
 
-    it "sorts by group vs file first, then name" do
-      @sut.new_group('Apemachine')
-      @sut.sort_by_type!
-      @sut.children.map(&:display_name).should == %w{
-        Apemachine ZappMachine
-        Abracadabra.h Abracadabra.m Banana.h Banana.m
-      }
-    end
-
     it "returns the parent" do
       @sut = @project.new_group('Parent')
       @sut.parent.should == @project.main_group
@@ -32,12 +23,27 @@ module ProjectSpecs
       @sut.real_path.should == Pathname.new('/project_dir/Classes')
     end
 
-    it "returns that the main group has no name" do
-      @project.main_group.name.should == nil
+    it "returns a list of files" do
+      @sut.files.map(&:display_name).sort.should == %w{
+        Abracadabra.h Abracadabra.m
+        Banana.h Banana.m
+      }
     end
 
-    it "returns its name" do
-      @sut.name.should == 'Parent'
+    it "returns a list of groups" do
+      @sut.groups.map(&:display_name).sort.should == %w{ ZappMachine }
+    end
+
+    it "returns the recursive list of the children groups" do
+      @sut.new_group('group1').new_group('1')
+      @sut.new_group('group2').new_group('2')
+      groups = @sut.recursive_children_groups.map(&:display_name).sort
+      groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
+    end
+
+    it "returns whether it is empty" do
+      @sut.should.not.be.empty
+      @project.new_group('Another').should.be.empty
     end
 
     it "creates a new reference to the file with the given path" do
@@ -79,20 +85,6 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
-    it "returns a list of files and groups" do
-      @sut.children.map(&:display_name).sort.should == %w{
-        Abracadabra.h Abracadabra.m
-        Banana.h Banana.m ZappMachine
-      }
-    end
-
-    it "returns the recursive list of the children groups" do
-      @sut.new_group('group1').new_group('1')
-      @sut.new_group('group2').new_group('2')
-      groups = @sut.recursive_children_groups.map(&:display_name).sort
-      groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
-    end
-
     it "removes groups and files recursively" do
       group1 = @sut.new_group("Group1")
       group2 = @sut.new_group("Group2")
@@ -106,6 +98,15 @@ module ProjectSpecs
       @project.objects_by_uuid[group2.uuid].should == nil
       @project.objects_by_uuid[file1.uuid].should == nil
       @project.objects_by_uuid[file2.uuid].should == nil
+    end
+
+    it "sorts by group vs file first, then name" do
+      @sut.new_group('Apemachine')
+      @sut.sort_by_type!
+      @sut.children.map(&:display_name).should == %w{
+        Apemachine ZappMachine
+        Abracadabra.h Abracadabra.m Banana.h Banana.m
+      }
     end
 
     #-------------------------------------------------------------------------#

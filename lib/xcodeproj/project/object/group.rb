@@ -123,6 +123,13 @@ module Xcodeproj
           children.select { |obj| obj.class == PBXGroup }
         end
 
+        # @return [Array<XCVersionGroup>] the version groups in the group
+        #         children.
+        #
+        def version_groups
+          children.select { |obj| obj.class == XCVersionGroup }
+        end
+
         # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
         #         recursive children of the group.
         #
@@ -135,11 +142,10 @@ module Xcodeproj
           result
         end
 
-        # @return [Array<XCVersionGroup>] the version groups in the group
-        #         children.
+        # @return [Bool] Whether the group is empty.
         #
-        def version_groups
-          children.select { |obj| obj.class == XCVersionGroup }
+        def empty?
+          children.count.zero?
         end
 
         # Creates a new reference with the given path and adds it to the
