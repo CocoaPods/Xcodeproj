@@ -7,23 +7,32 @@ module ProjectSpecs
       @sut = GroupableHelper
     end
 
-    before do
-      @group = @project.new_group('Parent')
+    #-------------------------------------------------------------------------#
+
+    describe 'In general' do
+
+      before do
+        @group = @project.new_group('Parent')
+      end
+
+      it "returns the parent" do
+        @sut.parent(@group).should == @project.main_group
+      end
+
+      it "returns the real path of an object" do
+        @group.source_tree = '<group>'
+        @group.path = 'Classes'
+        @sut.real_path(@group).should == Pathname.new('project_dir/Classes')
+      end
     end
 
-    it "returns the parent" do
-      @sut.parent(@group).should == @project.main_group
-    end
-
-    it "returns the real path of an object" do
-      @group.source_tree = '<group>'
-      @group.path = 'Classes'
-      @sut.real_path(@group).should == Pathname.new('project_dir/Classes')
-    end
-
-    #----------------------------------------#
+    #-------------------------------------------------------------------------#
 
     describe '::source_tree_real_path' do
+
+      before do
+        @group = @project.new_group('Parent')
+      end
 
       it "returns the source tree of an absolute path" do
         @group.source_tree = '<absolute>'
@@ -55,10 +64,9 @@ module ProjectSpecs
           @sut.source_tree_real_path(@group).should == Pathname.new('project_dir')
         end.message.should.match /Unable to compute the source tree/
       end
-
     end
 
-    #---------------------------------------------------------------------#
+    #-------------------------------------------------------------------------#
 
   end
 end
