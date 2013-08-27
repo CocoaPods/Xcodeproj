@@ -17,6 +17,9 @@
 
 * Removed `PBXGroup#new_xcdatamodel_group`.
 
+* [PBXFileReference] `#update_last_known_file_type` has been renamed to
+  `#set_last_known_file_type`. Added `#set_explicit_file_type`.
+
 ###### Enhancements
 
 * [PBXGroup, PBXFileReference] Improved source tree handling in creation

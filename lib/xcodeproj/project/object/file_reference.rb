@@ -101,7 +101,6 @@ module Xcodeproj
         #
         attribute :wraps_lines, String
 
-
         # @return [String] Apparently whether Xcode should add, if needed, a
         #         new line feed before saving the file.
         #
@@ -151,12 +150,29 @@ module Xcodeproj
 
         # Sets the last known file type according to the extension of the path.
         #
-        # @return [String] the computed file type.
+        # @return [void]
         #
-        def update_last_known_file_type
-          if path
+        def set_last_known_file_type(type = nil)
+          if type
+            self.last_known_file_type = type
+          elsif path
             extension = Pathname(path).extname[1..-1]
             self.last_known_file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
+          end
+        end
+
+        # Sets the explicit file type according to the extension of the path,
+        # and clears the last known file type.
+        #
+        # @return [void]
+        #
+        def set_explicit_file_type(type = nil)
+          self.last_known_file_type = nil
+          if type
+            self.explicit_file_type = type
+          elsif path
+            extension = Pathname(path).extname[1..-1]
+            self.explicit_file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
           end
         end
 

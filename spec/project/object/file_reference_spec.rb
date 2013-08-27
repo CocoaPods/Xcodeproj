@@ -15,10 +15,30 @@ module ProjectSpecs
       @sut.real_path.should == Pathname.new('project_dir/File.m')
     end
 
-    it "can update its file type according to the extension of the path" do
+    it "sets its last known file type" do
       @sut.last_known_file_type = nil
-      @sut.update_last_known_file_type
+      @sut.set_last_known_file_type('custom')
+      @sut.last_known_file_type.should == 'custom'
+    end
+
+    it "sets its last known file type according to the extension of the path" do
+      @sut.last_known_file_type = nil
+      @sut.set_last_known_file_type
       @sut.last_known_file_type.should == 'sourcecode.c.objc'
+    end
+
+    it "sets its explicit file type" do
+      @sut.explicit_file_type = nil
+      @sut.set_explicit_file_type('custom')
+      @sut.explicit_file_type.should == 'custom'
+      @sut.last_known_file_type.should.be.nil
+    end
+
+    it "sets its explicit file type according to the extension of the path" do
+      @sut.explicit_file_type = nil
+      @sut.set_explicit_file_type
+      @sut.explicit_file_type.should == 'sourcecode.c.objc'
+      @sut.last_known_file_type.should.be.nil
     end
 
     it "returns whether it is a proxy" do
