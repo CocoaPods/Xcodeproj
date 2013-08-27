@@ -68,13 +68,17 @@ module Xcodeproj
     # @example Creating a project
     #         Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(path, build_configurations = nil, skip_initialization = false)
+    def initialize(path, skip_initialization = false)
       @path = Pathname.new(path)
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
       unless skip_initialization
-        initialize_from_scratch(build_configurations)
+        initialize_from_scratch
+      end
+      unless skip_initialization.is_a?(TrueClass) || skip_initialization.is_a?(FalseClass)
+        raise ArgumentError, "[Xcodeproj] Initialization parameter expected to " \
+          "be a boolean #{skip_initialization}"
       end
     end
 
@@ -90,7 +94,7 @@ module Xcodeproj
       unless Pathname.new(path).exist?
         raise "[Xcodeproj] Unable to open `#{path}` because it doesn't exist."
       end
-      project = new(path, nil, true)
+      project = new(path, true)
       project.send(:initialize_from_file)
       project
     end
@@ -140,7 +144,7 @@ module Xcodeproj
 
     # Initializes the instance from scratch.
     #
-    def initialize_from_scratch(build_configurations)
+    def initialize_from_scratch
       @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
       @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       @classes         =  {}
@@ -153,17 +157,11 @@ module Xcodeproj
       root_object.product_ref_group = root_object.main_group.new_group('Products')
 
       config_list = new(XCConfigurationList)
+      root_object.build_configuration_list = config_list
       config_list.default_configuration_name = 'Release'
       config_list.default_configuration_is_visible = '0'
-      root_object.build_configuration_list = config_list
-
-      build_configurations = { 'Debug' => :debug, 'Release' => :release }.merge(build_configurations || {})
-      build_configurations.each do |name, name_sym|
-        build_configuration = new(XCBuildConfiguration)
-        build_configuration.name = name
-        build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[name_sym].dup
-        config_list.build_configurations << build_configuration
-      end
+      add_build_configuration('Debug', :debug)
+      add_build_configuration('Release', :release)
 
       new_group('Frameworks')
     end
@@ -629,6 +627,31 @@ module Xcodeproj
     def new_resources_bundle(name, platform, product_group = nil)
       product_group ||= products_group
       ProjectHelper.new_resources_bundle(self, name, platform, product_group)
+    end
+
+    # Adds a new build configuration to the project and populates its with
+    # default settings according to the provided type.
+    #
+    # @param  [String] name
+    #         The name of the build configuration.
+    #
+    # @param  [Symbol] type
+    #         The type of the build configuration used to populate the build
+    #         settings, must be :debug or :release.
+    #
+    # @return [XCBuildConfiguration] The new build configuration.
+    #
+    def add_build_configuration(name, type)
+      configuration_list = root_object.build_configuration_list
+      if configuration_list[name]
+        UI.warn('Adding a build configuration with the name of an existing one')
+      end
+
+      build_configuration = new(XCBuildConfiguration)
+      build_configuration.name = name
+      build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type].dup
+      root_object.build_configuration_list.build_configurations << build_configuration
+      build_configuration
     end
 
     #-------------------------------------------------------------------------#

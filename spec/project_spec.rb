@@ -64,11 +64,6 @@ module ProjectSpecs
         list.build_settings('Release').should == {}
       end
 
-      it "initializes the default Debug and Release configurations plus the extra App Store and Test configurations" do
-        @project = Xcodeproj::Project.new('Project.xcodeproj', { 'App Store' => :release, 'Test' => :debug })
-        @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release', 'Test' ]
-      end
-
       it "adds the frameworks group" do
         @project['Frameworks'].class.should == PBXGroup
       end
@@ -395,6 +390,11 @@ module ProjectSpecs
         target = @project.new_resources_bundle('Pods', :ios)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
+      end
+
+      it "adds a new build configuration" do
+        @project.add_build_configuration('App Store', :release)
+        @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release' ]
       end
     end
 
