@@ -174,8 +174,7 @@ module Xcodeproj
         if ref = project.frameworks_group.files.find { |f| f.path == path }
           ref
         else
-          ref = project.frameworks_group.new_file(path)
-          ref.source_tree = 'DEVELOPER_DIR'
+          ref = project.frameworks_group.new_file(path, :developer_dir)
           ref
         end
       end

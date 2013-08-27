@@ -68,7 +68,7 @@ module ProjectSpecs
 
       it "raises if unable to resolve the source tree" do
         should.raise do
-          @group.source_tree = 'DEVELOPER_DIR'
+          @group.source_tree = '<unknown>'
           @sut.source_tree_real_path(@group).should == Pathname.new('project_dir')
         end.message.should.match /Unable to compute the source tree/
       end
