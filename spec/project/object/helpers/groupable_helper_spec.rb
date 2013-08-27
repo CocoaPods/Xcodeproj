@@ -42,9 +42,9 @@ module ProjectSpecs
         @group = @project.new_group('Parent')
       end
 
-      it "returns the source tree of an absolute path" do
+      it "returns a nil source tree for absolute paths" do
         @group.source_tree = '<absolute>'
-        @sut.source_tree_real_path(@group).should == Pathname.new('/')
+        @sut.source_tree_real_path(@group).should.be.nil
       end
 
       it "returns the source tree of a path relative to main group" do
@@ -54,7 +54,7 @@ module ProjectSpecs
 
       it "returns the source tree of a path relative to a group" do
         @group.source_tree = '<absolute>'
-        @group.path = 'parent_group_path'
+        @group.path = '/parent_group_path'
         children = @group.new_group('child')
         children.source_tree = '<group>'
         children.path = 'dir'

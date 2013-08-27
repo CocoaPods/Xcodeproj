@@ -23,7 +23,11 @@ module Xcodeproj
           def real_path(object)
             source_tree = source_tree_real_path(object)
             path = object.path || ''
-            source_tree + path
+            if source_tree
+              source_tree + path
+            else
+              Pathname(path)
+            end
           end
 
           # @param  [PBXGroup, PBXFileReference] object
@@ -35,7 +39,7 @@ module Xcodeproj
           def source_tree_real_path(object)
             case object.source_tree
             when '<absolute>'
-              Pathname.new('/')
+              nil
             when '<group>'
               if parent(object).isa == 'PBXProject'
                 object.project.path.dirname
@@ -44,6 +48,8 @@ module Xcodeproj
               end
             when 'SOURCE_ROOT'
               object.project.path.dirname
+            when 'BUILT_PRODUCTS_DIR'
+              nil
             else
               raise "[Xcodeproj] Unable to compute the source tree for " \
                 " `#{object.display_name}`: `#{object.source_tree}`"
@@ -54,9 +60,10 @@ module Xcodeproj
           #         symbol representation.
           #
           SOURCE_TREES_BY_KEY = {
-            :absolute => '<absolute>',
-            :group    => '<group>',
-            :project  => 'SOURCE_ROOT',
+            :absolute        => '<absolute>',
+            :group           => '<group>',
+            :project         => 'SOURCE_ROOT',
+            :built_products  => 'BUILT_PRODUCTS_DIR',
           }
 
           # Sets the path of the given object according to the provided source
@@ -80,6 +87,8 @@ module Xcodeproj
                 raise "[Xcodeproj] Attempt to set a relative path with an " \
                   "absolute source tree: `#{path}`"
               end
+              object.path = path.to_s
+            elsif source_tree_key == :built_products
               object.path = path.to_s
             else
               source_tree_real_path = GroupableHelper.source_tree_real_path(object)
