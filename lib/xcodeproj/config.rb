@@ -150,9 +150,9 @@ module Xcodeproj
         flags = @attributes['OTHER_LDFLAGS']
         return unless flags
 
-        frameworks = flags.scan(/-framework\s+([^\s]+)/).map { |m| m[0] }
-        weak_frameworks = flags.scan(/-weak_framework\s+([^\s]+)/).map { |m| m[0] }
-        libraries  = flags.scan(/-l ?([^\s]+)/).map { |m| m[0] }
+        frameworks = flags.scan(/(?:\A|\s)-framework\s+([^\s]+)/).map { |m| m[0] }
+        weak_frameworks = flags.scan(/(?:\A|\s)-weak_framework\s+([^\s]+)/).map { |m| m[0] }
+        libraries  = flags.scan(/(?:\A|\s)-l ?([^\s]+)/).map { |m| m[0] }
         @frameworks.merge frameworks
         @weak_frameworks.merge weak_frameworks
         @libraries.merge libraries
