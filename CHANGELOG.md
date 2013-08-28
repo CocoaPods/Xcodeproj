@@ -46,6 +46,8 @@
 
 * [PBXGroup] Added `#recursively_sort_by_type`.
 
+* [PBXGroup, PBXFileReference] Added `#move`.
+
 
 ## 0.9.0
 

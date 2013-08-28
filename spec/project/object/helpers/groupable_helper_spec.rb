@@ -19,6 +19,11 @@ module ProjectSpecs
         @sut.parent(@group).should == @project.main_group
       end
 
+      it "returns the parents of the object" do
+        child = @group.new_group('Child')
+        @sut.parents(child).should == [@project.main_group, @group]
+      end
+
       it "raises if there is not a single identifiable parent" do
         new_group = @project.new_group('Child')
         new_group.add_referrer(@project.main_group)
@@ -32,11 +37,78 @@ module ProjectSpecs
         @sut.hierarchy_path(child).should == "/Parent/Child"
       end
 
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe "::main_group" do
+
+      it "returns that an object is the main group" do
+        @sut.main_group?(@project.main_group).should.be.true
+      end
+
+      it "returns that an object is not the main group" do
+        @sut.main_group?(@project.new_group('Classes')).should.be.false
+      end
+
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe "::move" do
+
+      before do
+        @group = @project.new_group('Parent')
+      end
+
+      it "can move an object from a group to another" do
+        new_parent = @project.new_group('New Parent')
+        @sut.move(@group, new_parent)
+        @group.parent.should == new_parent
+        @group.referrers.count.should == 1
+      end
+
+      it "raise if there there is an attempt to move a nil object" do
+        should.raise do
+          @sut.move(nil, @group)
+        end.message.should.match /Attempt to move nil object/
+      end
+
+      it "raise if there there is an attempt to move to a nil parent" do
+        should.raise do
+          @sut.move(@group, nil)
+        end.message.should.match /Attempt to move .* to nil parent/
+      end
+
+      it "raise if there there is an attempt to move an object to one of its children" do
+        child = @group.new_group('Child')
+        should.raise do
+          @sut.move(@group, child)
+        end.message.should.match /Attempt to move .* to a child object/
+      end
+
+      it "raise if there there is an attempt to move an object to itself" do
+        should.raise do
+          @sut.move(@group, @group)
+        end.message.should.match /Attempt to move .* to itself/
+      end
+
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe "::real_path" do
+
+      before do
+        @group = @project.new_group('Parent')
+      end
+
       it "returns the real path of an object" do
         @group.source_tree = '<group>'
         @group.path = 'Classes'
         @sut.real_path(@group).should == Pathname.new('/project_dir/Classes')
       end
+
     end
 
     #-------------------------------------------------------------------------#

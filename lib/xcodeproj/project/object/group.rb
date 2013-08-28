@@ -97,7 +97,7 @@ module Xcodeproj
           end
         end
 
-        # @return [PBXGroup, PBXProject] the parent of the group.
+        # @return [PBXGroup, PBXProject] The parent of the group.
         #
         def parent
           GroupableHelper.parent(self)
@@ -107,6 +107,17 @@ module Xcodeproj
         #
         def hierarchy_path
           GroupableHelper.hierarchy_path(self)
+        end
+
+        # Moves the group to a new parent.
+        #
+        # @param  [PBXGroup] new_parent
+        #         The new parent.
+        #
+        # @return [void]
+        #
+        def move(new_parent)
+          GroupableHelper.move(self, new_parent)
         end
 
         # @return [Pathname] the absolute path of the group resolving the
@@ -226,6 +237,8 @@ module Xcodeproj
         end
 
         # Removes children files and groups under this group.
+        #
+        # @TODO: remove from project should suffice.
         #
         def remove_children_recursively
           children.objects.each(&:remove_from_project)

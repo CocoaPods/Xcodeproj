@@ -405,7 +405,7 @@ module Xcodeproj
           optional = ''
           optional << " name=`#{self.name}`" if respond_to?(:name) && self.name
           optional << " path=`#{self.path}`" if respond_to?(:path) && self.path
-          "<#{self.class}#{optional} UUID=`#{uuid}`>"
+          "<#{self.isa}#{optional} UUID=`#{uuid}`>"
         end
       end
     end

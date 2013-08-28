@@ -21,6 +21,13 @@ module ProjectSpecs
       group.hierarchy_path.should == "/Parent/Child"
     end
 
+    it "can be moved to a new parent" do
+      new_parent = @project.new_group('New Parent')
+      group = @sut.new_group('Child')
+      group.move(new_parent)
+      group.parent.should == new_parent
+    end
+
     it "returns the real path" do
       @sut.path = 'Classes'
       @sut.real_path.should == Pathname.new('/project_dir/Classes')

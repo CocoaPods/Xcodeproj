@@ -17,12 +17,63 @@ module Xcodeproj
           # @param  [PBXGroup, PBXFileReference] object
           #         The object to analyze.
           #
+          # @return [Array<PBXGroup, PBXProject>] The parents of the object.
+          #
+          def parents(object)
+            if main_group?(object)
+              []
+            else
+              parent = parent(object)
+              [*parents(parent), parent]
+            end
+          end
+
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object to analyze.
+          #
           # @return [String] A representation of the group hierarchy.
           #
           def hierarchy_path(object)
-            unless object.equal?(object.project.main_group)
+            unless main_group?(object)
               "#{parent(object).hierarchy_path}/#{object.display_name}"
             end
+          end
+
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object to analyze.
+          #
+          # @return [Bool] Wether the object is the main group of the project.
+          #
+          def main_group?(object)
+            object.equal?(object.project.main_group)
+          end
+
+          # Moves the object to a new parent.
+          #
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object to move.
+          #
+          # @param  [PBXGroup] new_parent
+          #         The new parent.
+          #
+          # @return [void]
+          #
+          def move(object, new_parent)
+            unless object
+              raise "[Xcodeproj] Attempt to move nil object to `#{new_parent}`."
+            end
+            unless new_parent
+              raise "[Xcodeproj] Attempt to move object `#{object}` to nil parent."
+            end
+            if new_parent.equal?(object)
+              raise "[Xcodeproj] Attempt to move object `#{object}` to itself."
+            end
+            if parents(new_parent).include?(object)
+              raise "[Xcodeproj] Attempt to move object `#{object}` to a child object `#{new_parent}`."
+            end
+
+            object.parent.children.delete(object)
+            new_parent << object
           end
 
           # @param  [PBXGroup, PBXFileReference] object

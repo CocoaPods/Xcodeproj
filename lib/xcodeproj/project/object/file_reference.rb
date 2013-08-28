@@ -140,6 +140,17 @@ module Xcodeproj
           GroupableHelper.hierarchy_path(self)
         end
 
+        # Moves the reference to a new parent.
+        #
+        # @param  [PBXGroup] new_parent
+        #         The new parent.
+        #
+        # @return [void]
+        #
+        def move(new_parent)
+          GroupableHelper.move(self, new_parent)
+        end
+
         # @return [Pathname] the absolute path of the file resolving the
         # source tree.
         #

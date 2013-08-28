@@ -15,6 +15,12 @@ module ProjectSpecs
       @sut.hierarchy_path.should == "/File.m"
     end
 
+    it "can be moved to a new parent" do
+      new_parent = @project.new_group('New Parent')
+      @sut.move(new_parent)
+      @sut.parent.should == new_parent
+    end
+
     it "returns the real path" do
       @sut.real_path.should == Pathname.new('/project_dir/File.m')
     end
