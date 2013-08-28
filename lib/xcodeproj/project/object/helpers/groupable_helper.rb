@@ -24,7 +24,7 @@ module Xcodeproj
               []
             else
               parent = parent(object)
-              [*parents(parent), parent]
+              parents(parent).push(parent)
             end
           end
 
@@ -126,7 +126,7 @@ module Xcodeproj
             :built_products  => 'BUILT_PRODUCTS_DIR',
             :developer_dir   => 'DEVELOPER_DIR',
             :sdk_root        => 'SDKROOT',
-          }
+          }.freeze
 
           # Sets the path of the given object according to the provided source
           # tree key. The path is converted to relative according to the real

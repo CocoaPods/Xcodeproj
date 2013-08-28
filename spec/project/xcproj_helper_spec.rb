@@ -26,6 +26,10 @@ module ProjectSpecs
 
     describe "::touch" do
 
+      before do
+        @sut.stubs(:available?).returns(true)
+      end
+
       it "touches the project with the given path" do
         @sut.expects(:execute).with("xcproj --project /project_path touch").returns(true, '')
         @sut.touch('/project_path')
