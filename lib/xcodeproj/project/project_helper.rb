@@ -86,20 +86,9 @@ module Xcodeproj
         target.product_name = name
         target.product_type = Constants::PRODUCT_TYPE_UTI[:bundle]
 
+        build_settings = common_build_settings(nil, platform, nil, target.product_type)
+
         # Configuration List
-        build_settings = {
-          'PRODUCT_NAME' => '$(TARGET_NAME)',
-          'WRAPPER_EXTENSION' => 'bundle',
-          'SKIP_INSTALL' => 'YES'
-        }
-
-        if platform == :osx
-          build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
-          build_settings['SDKROOT'] = 'macosx'
-        else
-          build_settings['SDKROOT'] = 'iphoneos'
-        end
-
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
@@ -227,20 +216,36 @@ module Xcodeproj
       #
       # @return [Hash] The common build settings
       #
-      def self.common_build_settings(type, platform, deployment_target = nil)
-        common_settings = Constants::COMMON_BUILD_SETTINGS
-        settings = common_settings[:all].dup
-        settings.merge!(common_settings[type])
-        settings.merge!(common_settings[platform])
-        settings.merge!(common_settings[[platform, type]])
-        if deployment_target
-          if platform == :ios
-            settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-          elsif platform == :osx
-            settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil)
+        if target_product_type == Constants::PRODUCT_TYPE_UTI[:bundle]
+          build_settings = {
+            'PRODUCT_NAME' => '$(TARGET_NAME)',
+            'WRAPPER_EXTENSION' => 'bundle',
+            'SKIP_INSTALL' => 'YES'
+          }
+
+          if platform == :osx
+            build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
+            build_settings['SDKROOT'] = 'macosx'
+          else
+            build_settings['SDKROOT'] = 'iphoneos'
           end
+          build_settings
+        else
+          common_settings = Constants::COMMON_BUILD_SETTINGS
+          settings = common_settings[:all].dup
+          settings.merge!(common_settings[type])
+          settings.merge!(common_settings[platform])
+          settings.merge!(common_settings[[platform, type]])
+          if deployment_target
+            if platform == :ios
+              settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+            elsif platform == :osx
+              settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+            end
+          end
+          settings
         end
-        settings
       end
 
       #-----------------------------------------------------------------------#

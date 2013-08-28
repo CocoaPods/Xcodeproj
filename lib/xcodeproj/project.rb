@@ -627,16 +627,14 @@ module Xcodeproj
     # @return [XCBuildConfiguration] The new build configuration.
     #
     def add_build_configuration(name, type)
-      configuration_list = root_object.build_configuration_list
-      if configuration_list[name]
-        UI.warn('Adding a build configuration with the name of an existing one')
+      build_configuration_list = root_object.build_configuration_list
+      unless build_configuration_list[name]
+        build_configuration = new(XCBuildConfiguration)
+        build_configuration.name = name
+        build_configuration.build_settings = Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type].dup
+        build_configuration_list.build_configurations << build_configuration
+        build_configuration
       end
-
-      build_configuration = new(XCBuildConfiguration)
-      build_configuration.name = name
-      build_configuration.build_settings =  Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type].dup
-      root_object.build_configuration_list.build_configurations << build_configuration
-      build_configuration
     end
 
     #-------------------------------------------------------------------------#

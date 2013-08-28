@@ -99,5 +99,27 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe "::common_build_settings" do
+
+      it "returns the build settings for an application by default" do
+        settings = @sut.common_build_settings(:release, :ios, nil, nil)
+        settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
+      end
+
+      it "returns the build settings for an application" do
+        settings = @sut.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
+        settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
+      end
+
+
+      it "returns the build settings for an application" do
+        settings = @sut.common_build_settings(:release, :osx, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings['COMBINE_HIDPI_IMAGES'].should == 'YES'
+      end
+
+    end
+
+    #-------------------------------------------------------------------------#
+
   end
 end

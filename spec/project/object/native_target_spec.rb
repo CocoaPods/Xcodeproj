@@ -79,6 +79,30 @@ module ProjectSpecs
         build_configurations.map(&:name).sort.should == ["Debug", "Release"]
       end
 
+      #----------------------------------------#
+
+      describe "#add_build_configuration" do
+
+        it "adds a new build configuration" do
+          @sut.add_build_configuration('App Store', :release)
+          @sut.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release' ]
+        end
+
+        it "configures new build configurations according to the given type" do
+          @sut.add_build_configuration('App Store', :release)
+          @sut.build_settings('App Store')['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
+        end
+
+        it "doesn't duplicate build configurations with existing names" do
+          @sut.add_build_configuration('App Store', :release)
+          @sut.add_build_configuration('App Store', :release)
+          @sut.build_configurations.map(&:name).grep('App Store').size.should == 1
+        end
+
+      end
+
+      #----------------------------------------#
+
       it "returns the build settings of the configuration with the given name" do
         @sut.build_settings('Debug')['PRODUCT_NAME'].should == "$(TARGET_NAME)"
       end

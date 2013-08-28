@@ -159,7 +159,7 @@ module Xcodeproj
       }.freeze,
       :debug => {
         # TODO: enable after Xcode 4
-        # 'ONLY_ACTIVE_ARCH'                  => 'YES',
+        # 'ONLY_ACTIVE_ARCH' => 'YES',
       }.freeze,
     }.freeze
 

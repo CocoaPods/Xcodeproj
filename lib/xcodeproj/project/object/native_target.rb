@@ -71,6 +71,29 @@ module Xcodeproj
           build_configuration_list.build_configurations
         end
 
+        # Adds a new build configuration to the target and populates its with
+        # default settings according to the provided type.
+        #
+        # @note   If a build configuration with the given name is already
+        #         present no new build configuration is added.
+        #
+        # @param  [String] name
+        #         The name of the build configuration.
+        #
+        # @param  [Symbol] type
+        #         The type of the build configuration used to populate the build
+        #         settings, must be :debug or :release.
+        #
+        def add_build_configuration(name, type, skip_existing_names = true)
+          unless build_configuration_list[name]
+            build_configuration = project.new(XCBuildConfiguration)
+            build_configuration.name = name
+            build_configuration.build_settings = ProjectHelper.common_build_settings(type, platform_name, deployment_target, product_type)
+            build_configuration_list.build_configurations << build_configuration
+            build_configuration
+          end
+        end
+
         # @param  [String] build_configuration_name
         #         the name of a build configuration.
         #

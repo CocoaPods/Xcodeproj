@@ -404,10 +404,23 @@ module ProjectSpecs
         target.product_type.should == 'com.apple.product-type.bundle'
       end
 
-      it "adds a new build configuration" do
-        @project.add_build_configuration('App Store', :release)
-        @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release' ]
+      #----------------------------------------#
+
+      describe "#add_build_configuration" do
+
+        it "adds a new build configuration" do
+          @project.add_build_configuration('App Store', :release)
+          @project.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release' ]
+        end
+
+        it "doesn't duplicate build configurations with existing names" do
+          @project.add_build_configuration('App Store', :release)
+          @project.add_build_configuration('App Store', :release)
+          @project.build_configurations.map(&:name).grep('App Store').size.should == 1
+        end
+
       end
+
     end
 
     #-------------------------------------------------------------------------#

@@ -51,6 +51,8 @@
 
 * [PBXGroup, PBXFileReference] Added `#move`.
 
+* [AbstractTarget] Added `#add_build_configuration`.
+
 
 ## 0.9.0
 
