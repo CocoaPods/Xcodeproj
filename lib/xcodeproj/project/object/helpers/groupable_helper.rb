@@ -187,7 +187,7 @@ module Xcodeproj
           def check_parents_integrity(object)
             referrers_count = object.referrers.count
             if referrers_count > 1
-              referrers_count = object.referrers.reject{ |obj| obj.isa == 'PBXProject' }.count
+              referrers_count = object.referrers.select{ |obj| obj.isa == 'PBXGroup' }.count
             end
 
             if referrers_count == 0
