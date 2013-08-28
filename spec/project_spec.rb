@@ -5,6 +5,10 @@ require File.expand_path('../spec_helper', __FILE__)
 module ProjectSpecs
   describe Xcodeproj::Project do
 
+    before do
+      Xcodeproj::XcodebuildHelper.any_instance.stubs(:last_ios_sdk).returns(Xcodeproj::Constants::LAST_KNOWN_IOS_SDK)
+    end
+
     #-------------------------------------------------------------------------#
 
     describe "In general" do
@@ -367,10 +371,6 @@ module ProjectSpecs
         file.display_name.should == 'Test.h'
         @project.objects_by_uuid[file.uuid].should.not.be.nil
         @project.main_group.children.should.include file
-      end
-
-      before do
-        Xcodeproj::XcodebuildHelper.any_instance.stubs(:last_ios_sdk).returns(Xcodeproj::Constants::LAST_KNOWN_IOS_SDK)
       end
 
       it "adds a file reference for a system framework, to the Frameworks group" do
