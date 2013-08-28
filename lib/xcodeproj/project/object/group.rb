@@ -103,6 +103,14 @@ module Xcodeproj
           GroupableHelper.parent(self)
         end
 
+        # @return [String] A representation of the group hierarchy.
+        #
+        def hierarchy_path
+          unless self.equal?(project.main_group)
+            "#{parent.hierarchy_path}/#{self.name}"
+          end
+        end
+
         # @return [Pathname] the absolute path of the group resolving the
         # source tree.
         #

@@ -13,12 +13,15 @@ module ProjectSpecs
     end
 
     it "returns the parent" do
-      @sut = @project.new_group('Parent')
       @sut.parent.should == @project.main_group
     end
 
+    it "returns the representation of the group hierarchy" do
+      group = @sut.new_group('Children')
+      group.hierarchy_path.should == "/Parent/Children"
+    end
+
     it "returns the real path" do
-      @sut = @project.new_group('Parent')
       @sut.path = 'Classes'
       @sut.real_path.should == Pathname.new('/project_dir/Classes')
     end
