@@ -17,6 +17,17 @@ module Xcodeproj
           # @param  [PBXGroup, PBXFileReference] object
           #         The object to analyze.
           #
+          # @return [String] A representation of the group hierarchy.
+          #
+          def hierarchy_path(object)
+            unless object.equal?(object.project.main_group)
+              "#{parent(object).hierarchy_path}/#{object.display_name}"
+            end
+          end
+
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object to analyze.
+          #
           # @return [Pathname] The absolute path of the object resolving the
           #         source tree.
           #

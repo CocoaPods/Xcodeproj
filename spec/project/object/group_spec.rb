@@ -17,8 +17,8 @@ module ProjectSpecs
     end
 
     it "returns the representation of the group hierarchy" do
-      group = @sut.new_group('Children')
-      group.hierarchy_path.should == "/Parent/Children"
+      group = @sut.new_group('Child')
+      group.hierarchy_path.should == "/Parent/Child"
     end
 
     it "returns the real path" do

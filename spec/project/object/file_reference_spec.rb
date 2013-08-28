@@ -11,6 +11,10 @@ module ProjectSpecs
       @sut.parent.should == @project.main_group
     end
 
+    it "returns the representation of the group hierarchy" do
+      @sut.hierarchy_path.should == "/File.m"
+    end
+
     it "returns the real path" do
       @sut.real_path.should == Pathname.new('/project_dir/File.m')
     end

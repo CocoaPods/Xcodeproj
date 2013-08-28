@@ -27,6 +27,11 @@ module ProjectSpecs
         end.message.should.match /multiple parents/
       end
 
+      it "returns the representation of the group hierarchy" do
+        child = @group.new_group('Child')
+        @sut.hierarchy_path(child).should == "/Parent/Child"
+      end
+
       it "returns the real path of an object" do
         @group.source_tree = '<group>'
         @group.path = 'Classes'

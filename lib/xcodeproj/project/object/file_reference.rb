@@ -134,6 +134,12 @@ module Xcodeproj
           GroupableHelper.parent(self)
         end
 
+        # @return [String] A representation of the reference hierarchy.
+        #
+        def hierarchy_path
+          GroupableHelper.hierarchy_path(self)
+        end
+
         # @return [Pathname] the absolute path of the file resolving the
         # source tree.
         #
