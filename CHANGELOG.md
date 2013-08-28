@@ -22,6 +22,9 @@
 
 * [PBXGroup] Renamed `#sort_by_type!` to `#sort_by_type`.
 
+* [Project] `#add_system_framework` now adds the reference to the frameworks
+  build phase of the target as well.
+
 ###### Enhancements
 
 * CoreData versioned models are now properly handled respecting the contents of

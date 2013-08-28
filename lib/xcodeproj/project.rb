@@ -544,10 +544,8 @@ module Xcodeproj
       main_group.new_group(name, path, source_tree)
     end
 
-    # Adds a file reference for a system framework to the project.
-    #
-    # The file reference can then be added to the build files of a
-    # {PBXFrameworksBuildPhase}.
+    # Adds a file reference for a system framework to the project if needed and
+    # adds it to the {PBXFrameworksBuildPhase} of the given target.
     #
     # @example Adding QuartzCore
     #
@@ -561,12 +559,12 @@ module Xcodeproj
     #         The name of a framework.
     #
     # @param  [PBXNativeTarget] target
-    #         The target for which to add the framework.
+    #         The target to which to add the framework.
     #
     # @note   This method adds a reference to the highest know SDK for the
     #         given platform.
     #
-    # @return [PBXFileReference] The generated file reference.
+    # @return [PBXFileReference] The file reference of the framework.
     #
     def add_system_framework(name, target)
       ProjectHelper.add_system_framework(self, name, target)

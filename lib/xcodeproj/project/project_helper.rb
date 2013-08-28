@@ -49,15 +49,13 @@ module Xcodeproj
         product = product_group.new_static_library(name)
         target.product_reference = product
 
+        # Build phases
+        target.build_phases << project.new(PBXSourcesBuildPhase)
+        target.build_phases << project.new(PBXFrameworksBuildPhase)
+
         # Frameworks
         framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
         framework_ref = project.add_system_framework(framework_name, target)
-
-        # Build phases
-        target.build_phases << project.new(PBXSourcesBuildPhase)
-        frameworks_phase = project.new(PBXFrameworksBuildPhase)
-        frameworks_phase.add_file_reference(framework_ref)
-        target.build_phases << frameworks_phase
 
         target
       end
@@ -132,10 +130,8 @@ module Xcodeproj
 
       #-----------------------------------------------------------------------#
 
-      # Adds a file reference for a system framework to the project.
-      #
-      # The file reference can then be added to the build files of a
-      # {PBXFrameworksBuildPhase}.
+      # Adds a file reference for a system framework to the project if needed
+      # and adds it to the {PBXFrameworksBuildPhase} of the given target.
       #
       # @param  [Project] project
       #         the project to which the configuration list should be added.
@@ -144,12 +140,12 @@ module Xcodeproj
       #         The name of a framework.
       #
       # @param  [PBXNativeTarget] target
-      #         The target for which to add the framework.
+      #         The target to which to add the framework.
       #
       # @note   This method adds a reference to the highest know SDK for the
       #         given platform.
       #
-      # @return [PBXFileReference] The generated file reference.
+      # @return [PBXFileReference] The file reference of the framework.
       #
       def self.add_system_framework(project, name, target)
         sdk = target.sdk
@@ -171,12 +167,13 @@ module Xcodeproj
         end
 
         path = base_dir + "System/Library/Frameworks/#{name}.framework"
-        if ref = project.frameworks_group.files.find { |f| f.path == path }
-          ref
-        else
+        ref = project.frameworks_group.files.find { |f| f.path == path }
+        unless ref
           ref = project.frameworks_group.new_file(path, :developer_dir)
-          ref
         end
+
+        target.frameworks_build_phase.add_file_reference(ref)
+        ref
       end
 
       # @!group Private Helpers
