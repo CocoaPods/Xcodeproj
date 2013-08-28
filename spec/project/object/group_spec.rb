@@ -105,10 +105,24 @@ module ProjectSpecs
 
     it "sorts by group vs file first, then name" do
       @sut.new_group('Apemachine')
-      @sut.sort_by_type!
+      @sut.sort_by_type
       @sut.children.map(&:display_name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h Abracadabra.m Banana.h Banana.m
+      }
+    end
+
+    it "recursively sorts by type" do
+      subgroup = @sut.new_group('Apemachine')
+      subgroup.new_file('Orange.m')
+      subgroup.new_group('Orangemachine')
+      @sut.recursively_sort_by_type
+      @sut.children.map(&:display_name).should == %w{
+        Apemachine ZappMachine
+        Abracadabra.h Abracadabra.m Banana.h Banana.m
+      }
+      subgroup.children.map(&:display_name).should == %w{
+        Orangemachine Orange.m
       }
     end
 

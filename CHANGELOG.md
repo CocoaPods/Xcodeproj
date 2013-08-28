@@ -20,6 +20,8 @@
 * [PBXFileReference] `#update_last_known_file_type` has been renamed to
   `#set_last_known_file_type`. Added `#set_explicit_file_type`.
 
+* [PBXGroup] Renamed `#sort_by_type!` to `#sort_by_type`.
+
 ###### Enhancements
 
 * CoreData versioned models are now properly handled respecting the contents of
@@ -41,6 +43,8 @@
   serialized in the exact format used by Xcode.
 
 * [PBXGroup] Improved deletion.
+
+* [PBXGroup] Added `#recursively_sort_by_type`.
 
 
 ## 0.9.0

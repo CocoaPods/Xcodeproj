@@ -288,7 +288,7 @@ module Xcodeproj
         #
         # @return [void]
         #
-        def sort_by_type!
+        def sort_by_type
           children.sort! do |x, y|
             if x.is_a?(PBXGroup) && y.is_a?(PBXFileReference)
               -1
@@ -298,6 +298,15 @@ module Xcodeproj
               x.display_name <=> y.display_name
             end
           end
+        end
+
+        # Sorts the group by type recursively.
+        #
+        # @return [void]
+        #
+        def recursively_sort_by_type
+          groups.each { |group| group.recursively_sort_by_type }
+          sort_by_type
         end
       end
 
