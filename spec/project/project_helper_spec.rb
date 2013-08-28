@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe @sut do
+  describe Xcodeproj::Project::ProjectHelper do
 
     before do
       @sut = Xcodeproj::Project::ProjectHelper

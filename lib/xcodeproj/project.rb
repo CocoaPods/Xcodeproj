@@ -3,6 +3,7 @@ require 'pathname'
 require 'xcodeproj/xcodeproj_ext'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
+require 'xcodeproj/project/xcproj_helper'
 
 module Xcodeproj
 
@@ -127,6 +128,10 @@ module Xcodeproj
     end
 
     alias :inspect :to_s
+
+    # @return [Bool] Whether the xcproj conversion should be disabled.
+    #
+    attr_accessor :disable_xcproj
 
 
     public
@@ -284,28 +289,18 @@ module Xcodeproj
     #         The optional path where the project should be saved.
     #
     # @example Saving a project
-    #   project.save #=> true
-    #   project.save("path/to/Project.xcodeproj") #=> true
+    #   project.save
+    #   project.save
     #
     # @return [void]
     #
     def save(save_path = nil)
-      save_path ||= path.to_s
+      save_path ||= path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
       fix_encoding(file)
-      `which xcproj`
-      if $?.exitstatus.zero?
-        command = "xcproj --project #{save_path} touch 2>&1"
-        output = `#{command}`
-        unless $?.exitstatus.zero?
-          message = "xcproj failed to touch the project. Check whether you installation of xcproj is functional.\n\n"
-          message << command << "\n"
-          message << output
-          UI.warn(message)
-        end
-      end
+      XCProjHelper.touch(save_path) unless disable_xcproj
     end
 
     # Simple workaround to escape characters which are outside of ASCII
