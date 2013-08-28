@@ -524,14 +524,14 @@ module Xcodeproj
 
     # @!group Helpers for generating objects
 
-    # Creates a new file reference at the given subpath of the main group.
+    # Creates a new file reference in the main group.
     #
     # @param  @see PBXGroup#new_file
     #
     # @return [PBXFileReference] the new file.
     #
-    def new_file(path)
-      main_group.new_file(path)
+    def new_file(path, source_tree = :group)
+      main_group.new_file(path, source_tree)
     end
 
     # Creates a new group at the given subpath of the main group.
@@ -540,8 +540,8 @@ module Xcodeproj
     #
     # @return [PBXGroup] the new group.
     #
-    def new_group(name)
-      main_group.new_group(name)
+    def new_group(name, path = nil, source_tree = :group)
+      main_group.new_group(name, path, source_tree)
     end
 
     # Adds a file reference for a system framework to the project.
