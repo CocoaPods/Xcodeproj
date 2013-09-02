@@ -24,6 +24,8 @@ checking_for "-std=c99 option to compiler" do
   $CFLAGS += " -std=c99" if try_compile '', '-std=c99'
 end
 
+$LDFLAGS.gsub!(/\s-Z\s/,' ')
+
 unless have_framework('CoreFoundation')
   if have_library('CoreFoundation')
     # this is needed for opencflite, assume it's on linux
