@@ -24,6 +24,14 @@ checking_for "-std=c99 option to compiler" do
   $CFLAGS += " -std=c99" if try_compile '', '-std=c99'
 end
 
+# From `man ld`:
+#
+#     -Z          Do not search the standard directories when searching for libraries and frameworks.
+#
+# This is typically used when you want compilation against Xcode SDK as opposed to the frameworks installed
+# in the running system, which is our use case.
+$LDFLAGS.gsub!(/\s-Z\s/,' ')
+
 unless have_framework('CoreFoundation')
   if have_library('CoreFoundation')
     # this is needed for opencflite, assume it's on linux
