@@ -1,6 +1,8 @@
 
 ## Master
 
+## 0.10.0
+
 ###### Breaking
 
 * To initialize a project a path is required even is the project is being
