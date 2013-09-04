@@ -1,6 +1,13 @@
 
 ## Master
 
+## 0.10.1
+
+###### Enhancements
+
+* Build configurations are now deeply copied.
+  [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1322),
+
 ## 0.10.0
 
 ###### Breaking
