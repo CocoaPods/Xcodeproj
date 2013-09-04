@@ -117,6 +117,43 @@ module ProjectSpecs
         settings['COMBINE_HIDPI_IMAGES'].should == 'YES'
       end
 
+      it "returns a deep copy of the common build settings" do
+        settings_1 = @sut.common_build_settings(:release, :ios, nil, nil)
+        settings_2 = @sut.common_build_settings(:release, :ios, nil, nil)
+
+        settings_1.object_id.should.not == settings_2.object_id
+        settings_1['OTHER_CFLAGS'].object_id.should.not == settings_2['OTHER_CFLAGS'].object_id
+        settings_1['OTHER_CFLAGS'][1].object_id.should.not == settings_2['OTHER_CFLAGS'][1].object_id
+      end
+    end
+
+    #----------------------------------------#
+
+    describe "::deep_dup" do
+
+      it "creates a copy of a given object" do
+        object = 'String'
+        copy = @sut.deep_dup(object)
+        object.should == copy
+        object.object_id.should.not == copy.object_id
+      end
+
+      it "creates a deep copy of an array" do
+        object = ['String']
+        copy = @sut.deep_dup(object)
+        object.should == copy
+        object.object_id.should.not == copy.object_id
+        object[1].object_id.should.not == copy.object_id[1]
+      end
+
+      it "creates a deep copy of an array" do
+        object = { :value => 'String' }
+        copy = @sut.deep_dup(object)
+        object.should == copy
+        object.object_id.should.not == copy.object_id
+        object.values[1].object_id.should.not == copy.values.object_id[1]
+      end
+
     end
 
     #-------------------------------------------------------------------------#

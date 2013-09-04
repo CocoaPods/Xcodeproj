@@ -233,10 +233,10 @@ module Xcodeproj
           build_settings
         else
           common_settings = Constants::COMMON_BUILD_SETTINGS
-          settings = common_settings[:all].dup
-          settings.merge!(common_settings[type])
-          settings.merge!(common_settings[platform])
-          settings.merge!(common_settings[[platform, type]])
+          settings = deep_dup(common_settings[:all])
+          settings.merge!(deep_dup(common_settings[type]))
+          settings.merge!(deep_dup(common_settings[platform]))
+          settings.merge!(deep_dup(common_settings[[platform, type]]))
           if deployment_target
             if platform == :ios
               settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
@@ -245,6 +245,28 @@ module Xcodeproj
             end
           end
           settings
+        end
+      end
+
+      # Creates a deep copy of the given object
+      #
+      # @param  [Object] object
+      #         the object to copy.
+      #
+      # @return [Object] The deeply copy of the obejct object.
+      #
+      def self.deep_dup(object)
+        case object
+        when Hash
+          new_hash = {}
+          object.each do |key, value|
+            new_hash[key] = deep_dup(value)
+          end
+          new_hash
+        when Array
+          object.map { |value| deep_dup(value) }
+        else
+          object.dup
         end
       end
 
