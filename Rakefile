@@ -35,7 +35,7 @@ end
 
 namespace :gem do
   def gem_version
-    require File.expand_path('../lib/xcodeproj', __FILE__)
+    require File.expand_path('../lib/xcodeproj/gem_version', __FILE__)
     Xcodeproj::VERSION
   end
 
@@ -87,8 +87,9 @@ namespace :gem do
         exit 1
       end
 
-      if !diff_lines.all? { |f| %w{ Gemfile.lock lib/xcodeproj.rb }.include?(f) }
-        $stderr.puts "[!] Only change the version number in a release commit!"
+      not_allowed_files = diff_lines - ['CHANGELOG.md', 'lib/xcodeproj/gem_version.rb', 'Gemfile.lock']
+      unless not_allowed_files.empty?
+        $stderr.puts "[!] Only change the version number in a release commit! `#{not_allowed_files}`"
         exit 1
       end
     end
