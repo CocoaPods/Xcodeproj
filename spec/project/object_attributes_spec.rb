@@ -23,6 +23,14 @@ module ProjectSpecs
       @attrb.plist_name.should == 'sourceTree'
     end
 
+    it "caches the plist names" do
+      AbstractObjectAttribute.stubs(:plist_name_store).returns({})
+      String.any_instance.expects(:camelize).returns('sourceTree')
+      @attrb.plist_name
+      String.any_instance.expects(:camelize).never
+      @attrb.plist_name.should == 'sourceTree'
+    end
+
     it "can store the accepted classes for the value type checking" do
       @attrb.classes = [String]
       @attrb.classes.should == [String]

@@ -61,8 +61,15 @@ module Xcodeproj
             # `_id_` would become `Id`
             'remoteGlobalIDString'
           else
-            name.to_s.camelize(:lower)
+            self.class.plist_name_store[name] ||= name.to_s.camelize(:lower)
           end
+        end
+
+        # @return [Hash] a shared store which cahces the plist name of the
+        #         attributes.
+        #
+        def self.plist_name_store
+          @plist_name_store ||= {}
         end
 
         # @return [Array<Class>] the list of the classes accepted by the
