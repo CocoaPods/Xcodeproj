@@ -27,6 +27,10 @@
 
 ###### Enhancements
 
+* Don't XML encode entities in the project paths when reading Xcode workspace files.
+  Xcode does not expect the paths to be XML encoded, so doing so breaks paths which 
+  include XML entities such as apostrophes ('). [amolloy](https://github.com/amolloy)
+
 * CoreData versioned models are now properly handled respecting the contents of
   the `.xccurrentversion` file.  
   [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1288),
