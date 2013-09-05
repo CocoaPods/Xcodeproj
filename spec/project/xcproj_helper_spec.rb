@@ -31,18 +31,18 @@ module ProjectSpecs
       end
 
       it "touches the project with the given path" do
-        @sut.expects(:execute).with("xcproj --project /project_path touch").returns(true, '')
+        @sut.expects(:execute).with("xcproj --project \"/project_path\" touch").returns(true, '')
         @sut.touch('/project_path')
       end
 
       it "prints a warning if the execution was not successful" do
-        @sut.expects(:execute).with("xcproj --project /project_path touch").returns([true, ''])
+        @sut.expects(:execute).with("xcproj --project \"/project_path\" touch").returns([true, ''])
         Xcodeproj::UI.expects(:warn).never
         @sut.touch('/project_path')
       end
 
       it "prints a warning if the execution was not successful" do
-        @sut.expects(:execute).with("xcproj --project /project_path touch").returns([false, ''])
+        @sut.expects(:execute).with("xcproj --project \"/project_path\" touch").returns([false, ''])
         Xcodeproj::UI.expects(:warn).once
         @sut.touch('/project_path')
       end

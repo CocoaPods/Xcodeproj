@@ -18,7 +18,7 @@ module Xcodeproj
         #
         def touch(path)
           if available?
-            command = "xcproj --project #{path} touch"
+            command = "xcproj --project \"#{path}\" touch"
             success, output = execute(command)
             unless success
               message = "xcproj failed to touch the project. Check whether you installation of xcproj is functional.\n\n"
