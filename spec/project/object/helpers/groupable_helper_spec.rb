@@ -25,7 +25,7 @@ module ProjectSpecs
       end
 
       it "raises if there is not a single identifiable parent" do
-        new_group = @project.new_group('Child')
+        new_group = @group.new_group('Child')
         new_group.add_referrer(@project.main_group)
         should.raise do
           @sut.parent(new_group)
@@ -252,7 +252,7 @@ module ProjectSpecs
       end
 
       it "raises if there are multiple parents" do
-        new_group = @project.new_group('Child')
+        new_group = @group.new_group('Child')
         new_group.add_referrer(@project.main_group)
         should.raise do
           @sut.send(:check_parents_integrity, new_group)

@@ -194,7 +194,7 @@ module Xcodeproj
           # @return [void]
           #
           def check_parents_integrity(object)
-            referrers_count = object.referrers.count
+            referrers_count = object.referrers.uniq.count
             if referrers_count > 1
               referrers_count = object.referrers.select{ |obj| obj.isa == 'PBXGroup' }.count
             end
@@ -202,7 +202,7 @@ module Xcodeproj
             if referrers_count == 0
               raise "[Xcodeproj] Consistency issue: no parent " \
                 "for object `#{object.display_name}`: "\
-                "#{object.referrers}"
+                "`#{object.referrers.join('`, `')}`"
             elsif referrers_count > 1
               raise "[Xcodeproj] Consistency issue: unexpected multiple parents " \
                 "for object `#{object.display_name}`: "\
