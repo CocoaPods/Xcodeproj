@@ -158,6 +158,31 @@ module Xcodeproj
           GroupableHelper.real_path(self)
         end
 
+        # Sets the source tree of the reference.
+        #
+        # @param  [Symbol, String] source_tree
+        #         The source tree, either a string or a symbol.
+        #
+        # @return [void]
+        #
+        def set_source_tree(source_tree)
+          GroupableHelper.set_source_tree(self, source_tree)
+        end
+
+        # Allows to set the path according to the source tree of the reference.
+        #
+        # @param  [#to_s] the path for the reference.
+        #
+        # @return [void]
+        #
+        def set_path(path)
+          if path
+            GroupableHelper.set_path_with_source_tree(self, path, source_tree)
+          else
+            self.path = nil
+          end
+        end
+
         # @return [Array<PBXBuildFile>] the build files associated with the
         #         current file reference.
         #

@@ -33,6 +33,34 @@ module ProjectSpecs
       @sut.real_path.should == Pathname.new('/project_dir/Classes')
     end
 
+    it "sets the source tree" do
+      @sut.source_tree = '<group>'
+      @sut.set_source_tree(:absolute)
+      @sut.source_tree.should == '<absolute>'
+    end
+
+    #----------------------------------------#
+
+    describe "#set_path" do
+
+      it "sets the path according to the source tree" do
+        @sut.source_tree = '<group>'
+        @sut.set_path('/project_dir/Classes')
+        @sut.path.should == 'Classes'
+      end
+
+      it "sets the source tree to group if the given path is nil" do
+        @sut.source_tree = '<absolute>'
+        @sut.path = '/project_dir/Classes'
+        @sut.set_path(nil)
+        @sut.path.should.be.nil
+        @sut.source_tree.should == '<group>'
+      end
+
+    end
+
+    #----------------------------------------#
+
     it "returns a list of files" do
       @sut.files.map(&:display_name).sort.should == %w{
         Abracadabra.h Abracadabra.m

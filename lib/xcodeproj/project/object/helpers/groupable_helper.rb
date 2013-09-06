@@ -128,6 +128,19 @@ module Xcodeproj
             :sdk_root        => 'SDKROOT',
           }.freeze
 
+          # Sets the source tree of the given object.
+          #
+          # @param  [Symbol, String] source_tree
+          #         The source tree, either a string or a key for
+          #         {SOURCE_TREES_BY_KEY}.
+          #
+          # @return [void]
+          #
+          def set_source_tree(object, source_tree)
+            source_tree = normalize_source_tree(source_tree)
+            object.source_tree = source_tree
+          end
+
           # Sets the path of the given object according to the provided source
           # tree key. The path is converted to relative according to the real
           # path of the source tree for group and project source trees, if both
@@ -140,28 +153,24 @@ module Xcodeproj
           # @param  [#to_s] path
           #         The path.
           #
-          # @param  [Symbol] source_tree_key
-          #         The source tree type, see {SOURCE_TREES_BY_KEY} for
-          #         acceptable values.
+          # @param  [Symbol, String] source_tree
+          #         The source tree, either a string or a key for
+          #         {SOURCE_TREES_BY_KEY}.
           #
           # @return [void]
           #
-          def set_path_with_source_tree(object, path, source_tree_key)
+          def set_path_with_source_tree(object, path, source_tree)
             path = Pathname.new(path)
-            source_tree = SOURCE_TREES_BY_KEY[source_tree_key]
+            source_tree = normalize_source_tree(source_tree)
             object.source_tree = source_tree
 
-            unless source_tree
-              raise "[Xcodeproj] Unrecognized source tree option `#{source_tree_key}` for path `#{path}`"
-            end
-
-            if source_tree_key == :absolute
+            if source_tree == SOURCE_TREES_BY_KEY[:absolute]
               unless path.absolute?
                 raise "[Xcodeproj] Attempt to set a relative path with an " \
                   "absolute source tree: `#{path}`"
               end
               object.path = path.to_s
-            elsif source_tree_key == :group || source_tree_key == :project
+            elsif source_tree == SOURCE_TREES_BY_KEY[:group] || source_tree == SOURCE_TREES_BY_KEY[:project]
               source_tree_real_path = GroupableHelper.source_tree_real_path(object)
               if source_tree_real_path && source_tree_real_path.absolute? == path.absolute?
                 relative_path = path.relative_path_from(source_tree_real_path)
@@ -199,6 +208,25 @@ module Xcodeproj
                 "for object `#{object.display_name}`: "\
                 "#{object.referrers}"
             end
+          end
+
+          # Converts the given source tree to its string value.
+          #
+          # @param  [Symbol, String] source_tree
+          #         The source tree, either a string or a key for
+          #         {SOURCE_TREES_BY_KEY}.
+          #
+          # @return [String] the string value of the source tree.
+          #
+          def normalize_source_tree(source_tree)
+            if source_tree.is_a?(Symbol)
+              source_tree = SOURCE_TREES_BY_KEY[source_tree]
+            end
+
+            unless SOURCE_TREES_BY_KEY.values.include?(source_tree)
+              raise "[Xcodeproj] Unrecognized source tree option `#{source_tree}`"
+            end
+            source_tree
           end
 
           #-------------------------------------------------------------------#

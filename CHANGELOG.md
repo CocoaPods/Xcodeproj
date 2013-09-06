@@ -1,6 +1,11 @@
 
 ## Master
 
+###### Enhancements
+
+* [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.
+
+
 ## 0.10.1
 
 ###### Enhancements

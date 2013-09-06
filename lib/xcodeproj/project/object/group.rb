@@ -127,6 +127,33 @@ module Xcodeproj
           GroupableHelper.real_path(self)
         end
 
+        # Sets the source tree of the group.
+        #
+        # @param  [Symbol, String] source_tree
+        #         The source tree, either a string or a symbol.
+        #
+        # @return [void]
+        #
+        def set_source_tree(source_tree)
+          GroupableHelper.set_source_tree(self, source_tree)
+        end
+
+        # Allows to set the path according to the source tree of the group.
+        #
+        # @param  [#to_s] the path for the group.
+        #
+        # @return [void]
+        #
+        def set_path(path)
+          if path
+            source_tree
+            GroupableHelper.set_path_with_source_tree(self, path, source_tree)
+          else
+            self.path = nil
+            self.source_tree = '<group>'
+          end
+        end
+
         # @return [Array<PBXFileReference>] the files references in the group
         #         children.
         #
@@ -219,11 +246,8 @@ module Xcodeproj
           group = project.new(PBXGroup)
           children << group
           group.name = name
-          if path
-            GroupableHelper.set_path_with_source_tree(group, path, source_tree)
-          else
-            group.source_tree = '<group>'
-          end
+          group.set_source_tree(source_tree)
+          group.set_path(path)
           group
         end
 

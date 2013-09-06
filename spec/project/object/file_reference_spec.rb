@@ -25,6 +25,18 @@ module ProjectSpecs
       @sut.real_path.should == Pathname.new('/project_dir/File.m')
     end
 
+    it "sets the source tree" do
+      @sut.source_tree = '<group>'
+      @sut.set_source_tree(:absolute)
+      @sut.source_tree.should == '<absolute>'
+    end
+
+    it "sets the path according to the source tree" do
+      @sut.source_tree = '<group>'
+      @sut.set_path('/project_dir/File.m')
+      @sut.path.should == 'File.m'
+    end
+
     it "sets its last known file type" do
       @sut.last_known_file_type = nil
       @sut.set_last_known_file_type('custom')

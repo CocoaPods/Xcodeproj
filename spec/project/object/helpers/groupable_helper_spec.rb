@@ -153,6 +153,17 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe '::set_source_tree' do
+
+      it "sets the source tree for the given object" do
+        @group = @project.new_group('Parent')
+        @sut.set_source_tree(@group, :absolute)
+        @group.source_tree.should == '<absolute>'
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
     describe '::set_path_with_source_tree' do
 
       before do
@@ -216,17 +227,7 @@ module ProjectSpecs
         new_group.path.should == 'project_dir/Parent/Classes'
       end
 
-      it "raises if an unsupported source key is provided" do
-        should.raise do
-          @sut.set_path_with_source_tree(@group, 'Files', :root_of_the_internets)
-        end.message.should.match /Unrecognized source tree option/
-      end
 
-      it "raises if a nil source key is provided" do
-        should.raise do
-          @sut.set_path_with_source_tree(@group, 'Files', nil)
-        end.message.should.match /Unrecognized source tree option/
-      end
     end
 
     #-------------------------------------------------------------------------#
@@ -256,6 +257,33 @@ module ProjectSpecs
         should.raise do
           @sut.send(:check_parents_integrity, new_group)
         end.message.should.match /multiple parents/
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe '::normalize_source_tree' do
+
+      it "converts the symbol representation of a source tree" do
+        value = @sut.send(:normalize_source_tree, :group)
+        value.should == '<group>'
+      end
+
+      it "allows to specify the source tree as a string" do
+        value = @sut.send(:normalize_source_tree, '<group>')
+        value.should == '<group>'
+      end
+
+      it "raises if an unsupported source key is provided" do
+        should.raise do
+          @sut.send(:normalize_source_tree, :root_of_the_internets)
+        end.message.should.match /Unrecognized source tree option/
+      end
+
+      it "raises if a nil source key is provided" do
+        should.raise do
+          @sut.send(:normalize_source_tree, nil)
+        end.message.should.match /Unrecognized source tree option/
       end
 
     end
