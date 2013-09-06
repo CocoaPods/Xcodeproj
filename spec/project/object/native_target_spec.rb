@@ -107,17 +107,27 @@ module ProjectSpecs
         @sut.build_settings('Debug')['PRODUCT_NAME'].should == "$(TARGET_NAME)"
       end
 
-      it "adds a dependency on another target" do
-        dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
-        @sut.add_dependency(dependency_target)
-        @sut.dependencies.count.should == 1
-        target_dependency = @sut.dependencies.first
-        target_dependency.target.should == dependency_target
-        container_proxy = target_dependency.target_proxy
-        container_proxy.container_portal.should == @project.root_object.uuid
-        container_proxy.proxy_type.should == '1'
-        container_proxy.remote_global_id_string.should == dependency_target.uuid
-        container_proxy.remote_info.should == dependency_target.name
+      describe "#add_dependency" do
+
+        it "adds a dependency on another target" do
+          dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
+          @sut.add_dependency(dependency_target)
+          @sut.dependencies.count.should == 1
+          target_dependency = @sut.dependencies.first
+          target_dependency.target.should == dependency_target
+          container_proxy = target_dependency.target_proxy
+          container_proxy.container_portal.should == @project.root_object.uuid
+          container_proxy.proxy_type.should == '1'
+          container_proxy.remote_global_id_string.should == dependency_target.uuid
+          container_proxy.remote_info.should == dependency_target.name
+        end
+
+        it "doesn't duplicate dependencies" do
+          dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
+          @sut.add_dependency(dependency_target)
+          @sut.add_dependency(dependency_target)
+          @sut.dependencies.count.should == 1
+        end
       end
     end
 

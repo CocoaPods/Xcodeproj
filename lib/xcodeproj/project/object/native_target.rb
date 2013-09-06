@@ -137,17 +137,19 @@ module Xcodeproj
         # @return [void]
         #
         def add_dependency(target)
-          container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
-          container_proxy.container_portal = project.root_object.uuid
-          container_proxy.proxy_type = '1'
-          container_proxy.remote_global_id_string = target.uuid
-          container_proxy.remote_info = target.name
+          unless dependencies.map(&:target).include?(target)
+            container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
+            container_proxy.container_portal = project.root_object.uuid
+            container_proxy.proxy_type = '1'
+            container_proxy.remote_global_id_string = target.uuid
+            container_proxy.remote_info = target.name
 
-          dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
-          dependency.target = target
-          dependency.target_proxy = container_proxy
+            dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
+            dependency.target = target
+            dependency.target_proxy = container_proxy
 
-          dependencies << dependency
+            dependencies << dependency
+          end
         end
 
         # Creates a new copy files build phase.
