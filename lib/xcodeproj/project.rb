@@ -334,11 +334,11 @@ module Xcodeproj
       File.open(filename, 'wb') { |file| file.write(output) }
     end
 
-    #-------------------------------------------------------------------------#
 
     public
 
     # @!group Creating objects
+    #-------------------------------------------------------------------------#
 
     # Creates a new object with a suitable UUID.
     #
@@ -408,11 +408,11 @@ module Xcodeproj
       @available_uuids += uniques
     end
 
-    #-------------------------------------------------------------------------#
 
     public
 
     # @!group Convenience accessors
+    #-------------------------------------------------------------------------#
 
     # @return [Array<AbstractObject>] all the objects of the project.
     #
@@ -491,7 +491,7 @@ module Xcodeproj
     # @return [PBXGroup] the `Frameworks` group creating it if necessary.
     #
     def frameworks_group
-      main_group['Frameworks'] || new_group('Frameworks')
+      main_group['Frameworks'] || main_group.new_group('Frameworks')
     end
 
     # @return [ObjectList<XCBuildConfiguration>] A list of project wide
@@ -513,11 +513,11 @@ module Xcodeproj
       root_object.build_configuration_list.build_settings(name)
     end
 
-    #-------------------------------------------------------------------------#
 
     public
 
-    # @!group Helpers for generating objects
+    # @!group Helpers
+    #-------------------------------------------------------------------------#
 
     # Creates a new file reference in the main group.
     #
@@ -637,7 +637,12 @@ module Xcodeproj
       end
     end
 
+
+    public
+
+    # @!group Helpers
     #-------------------------------------------------------------------------#
+
     # Get list of shared schemes in project
     #
     # @param [String] path
@@ -645,7 +650,7 @@ module Xcodeproj
     #
     # @return [Array]
     #
-    def self.schemes project_path
+    def self.schemes(project_path)
       schemes = Dir[File.join(project_path, 'xcshareddata', 'xcschemes', '*.xcscheme')].map do |scheme|
         File.basename(scheme, '.xcscheme')
       end
