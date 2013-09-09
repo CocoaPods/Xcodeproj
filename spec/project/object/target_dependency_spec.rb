@@ -4,18 +4,18 @@ module ProjectSpecs
   describe PBXTargetDependency do
 
     before do
-      @dep = @project.new(PBXTargetDependency)
+      @sut = @project.new(PBXTargetDependency)
     end
 
     it "may have a name" do
-      @dep.name.should == nil
-      @dep.name = "This target's dependency"
-      @dep.name.should == "This target's dependency"
+      @sut.name.should == nil
+      @sut.name = "This target's dependency"
+      @sut.name.should == "This target's dependency"
     end
 
     it "returns the target on which this dependency is based" do
-      @dep.target = @project.new_target(:static, "Pods", :ios)
-      @dep.target.name.should == "Pods"
+      @sut.target = @project.new_target(:static, "Pods", :ios)
+      @sut.target.name.should == "Pods"
     end
 
     it "returns the proxy of the target on which this dependency is based" do
@@ -27,9 +27,34 @@ module ProjectSpecs
       proxy.proxy_type = "1"
       proxy.remote_global_id_string = target.uuid
 
-      @dep.target_proxy = proxy
-      @dep.target_proxy.remote_info.should == "Pods"
+      @sut.target_proxy = proxy
+      @sut.target_proxy.remote_info.should == "Pods"
     end
+
+    #----------------------------------------#
+
+    describe "#display_name" do
+
+      it "returns the name if set" do
+        @sut.name = "Pods"
+        @sut.display_name.should == 'Pods'
+      end
+
+      it "returns the name if needed" do
+        @sut.target = @project.new_target(:static, "Pods", :ios)
+        @sut.display_name.should == 'Pods'
+      end
+
+      it "returns the remote info if needed" do
+        proxy = @project.new(PBXContainerItemProxy)
+        proxy.remote_info = "Pods"
+        @sut.target_proxy = proxy
+        @sut.display_name.should == 'Pods'
+      end
+
+    end
+
+    #----------------------------------------#
 
   end
 end

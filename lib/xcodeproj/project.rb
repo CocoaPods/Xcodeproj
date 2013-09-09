@@ -642,9 +642,7 @@ module Xcodeproj
     # @return [void]
     #
     def sort
-      main_group.recursively_sort_by_type
-      targets.sort_by!(&:name)
-      root_object.build_configuration_list.sort
+      root_object.sort_recursively
     end
 
 

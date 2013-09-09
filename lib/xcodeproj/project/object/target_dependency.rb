@@ -27,6 +27,20 @@ module Xcodeproj
         #         target from a nested Xcode project.
         #
         attribute :name, String
+
+
+        public
+
+        # @!group AbstractObject Hooks
+        #--------------------------------------#
+
+        # @return [String] The name of the dependency.
+        #
+        def display_name
+          return name if name
+          return target.name if target
+          return target_proxy.remote_info if target_proxy
+        end
       end
     end
   end

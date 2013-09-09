@@ -26,15 +26,16 @@ module Xcodeproj
         #
         has_one :build_configuration_list, XCConfigurationList
 
-        # @return [PBXNativeTarget] the targets necessary to build this target.
+        # @return [ObjectList<PBXTargetDependency>] the targets necessary to
+        #         build this target.
         #
         has_many :dependencies, PBXTargetDependency
 
-        #--------------------------------------#
 
         public
 
         # @!group Helpers
+        #--------------------------------------#
 
         # @return [String] the SDK that the target should use.
         #
@@ -179,11 +180,11 @@ module Xcodeproj
           phase
         end
 
-        #--------------------------------------#
 
         public
 
         # @!group AbstractObject Hooks
+        #--------------------------------------#
 
         # @return [Hash{String => Hash}] A hash suitable to display the object
         #         to the user.
@@ -223,7 +224,8 @@ module Xcodeproj
         #
         attribute :product_install_path, String
 
-        # @return [PBXBuildRule] the build phases of the target.
+        # @return [ObjectList<AbstractBuildPhase>] the build phases of the 
+        #         target.
         #
         # @note   Apparently only PBXCopyFilesBuildPhase and
         #         PBXShellScriptBuildPhase can appear multiple times in a
@@ -231,11 +233,11 @@ module Xcodeproj
         #
         has_many :build_phases, AbstractBuildPhase
 
-        #--------------------------------------#
 
         public
 
         # @!group Helpers
+        #--------------------------------------#
 
         # Adds source files to the target.
         #
@@ -351,6 +353,26 @@ module Xcodeproj
           phase
         end
 
+
+        public
+
+        # @!group AbstractObject Hooks
+        #--------------------------------------#
+
+        # Sorts the to many attributes of the object according to the display
+        # name.
+        #
+        # Build phases are not sorted as they order is relevant.
+        #
+        def sort
+          attributes_to_sort = to_many_attributes.reject { |attr| attr.name == :build_phases }
+          attributes_to_sort.each do |attrb|
+            list = attrb.get_value(self)
+            list.sort! do |x, y|
+              x.display_name <=> y.display_name
+            end
+          end
+        end
       end
 
       #-----------------------------------------------------------------------#

@@ -6,6 +6,8 @@
 * [Command] Added new subcommand `sort`, to sort projects from the command
   line.
 
+* [Project::Object] Added `#sort`.
+
 * [Project] Added `#sort`.
 
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.

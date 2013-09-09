@@ -40,18 +40,6 @@ module ProjectSpecs
       @sut.build_settings('Debug').should == settings
     end
 
-    it "can be sorted" do
-      debug = @project.new(XCBuildConfiguration)
-      debug.name = 'Debug'
-      release = @project.new(XCBuildConfiguration)
-      release.name = 'Release'
-      @sut.build_configurations << release
-      @sut.build_configurations << debug
-      XCBuildConfiguration.any_instance.expects(:sort).twice
-      @sut.sort
-      @sut.build_configurations.map(&:name).should == ["Debug", "Release"]
-    end
-
   end
 end
 

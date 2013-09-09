@@ -161,6 +161,19 @@ module ProjectSpecs
       }
     end
 
+    describe "AbstractObject Hooks" do
+
+      describe "#sort" do
+
+        it "sorts by type" do
+          @sut.expects(:sort_by_type)
+          @sut.sort
+        end
+
+      end
+
+    end
+
     #-------------------------------------------------------------------------#
 
   end

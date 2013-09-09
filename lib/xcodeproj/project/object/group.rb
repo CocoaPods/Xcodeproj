@@ -78,24 +78,11 @@ module Xcodeproj
         #
         attribute :comments, String
 
-        #---------------------------------------------------------------------#
 
         public
 
         # @!group Helpers
-
-        # @return [String] the name of the group taking into account the path
-        #         or other factors if needed.
-        #
-        def display_name
-          if name
-            name
-          elsif path
-            File.basename(path)
-          elsif self.equal?(project.main_group)
-            'Main Group'
-          end
-        end
+        #---------------------------------------------------------------------#
 
         # @return [PBXGroup, PBXProject] The parent of the group.
         #
@@ -343,6 +330,32 @@ module Xcodeproj
         #
         def recursively_sort_by_type
           groups.each { |group| group.recursively_sort_by_type }
+          sort_by_type
+        end
+
+
+        public
+
+        # @!group AbstractObject Hooks
+        #---------------------------------------------------------------------#
+
+        # @return [String] the name of the group taking into account the path
+        #         or other factors if needed.
+        #
+        def display_name
+          if name
+            name
+          elsif path
+            File.basename(path)
+          elsif self.equal?(project.main_group)
+            'Main Group'
+          end
+        end
+
+        # Sorts the to many attributes of the object according to the display
+        # name.
+        #
+        def sort
           sort_by_type
         end
       end

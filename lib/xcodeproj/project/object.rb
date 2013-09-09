@@ -131,8 +131,35 @@ module Xcodeproj
             isa.gsub(/^(PBX|XC)/, '')
           end
         end
-
         alias :to_s :display_name
+
+        # Sorts the to many attributes of the object according to the display
+        # name.
+        #
+        def sort
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            list.sort! do |x, y|
+              x.display_name <=> y.display_name
+            end
+          end
+        end
+
+        # Sorts the object and the objects that it references.
+        #
+        def sort_recursively
+          to_one_attributes.each do |attrb|
+            value = attrb.get_value(self)
+            value.sort_recursively if value
+          end
+
+          to_many_attributes.each do |attrb|
+            list = attrb.get_value(self)
+            list.each(&:sort_recursively)
+          end
+
+          sort
+        end
 
         # @!group Reference counting
 

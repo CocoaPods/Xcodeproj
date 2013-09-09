@@ -211,6 +211,32 @@ module ProjectSpecs
         @sut.dependencies.to_a.should == []
         @sut.build_rules.to_a.should == []
       end
+
+      describe "#sort" do
+
+        it "can be sorted" do
+          dep_2 = @project.new_target(:static_library, 'Dep_2', :ios)
+          dep_1 = @project.new_target(:static_library, 'Dep_1', :ios)
+          @sut.add_dependency(dep_2)
+          @sut.add_dependency(dep_1)
+          @sut.sort
+          @sut.dependencies.map(&:display_name).should == ['Dep_1', 'Dep_2']
+        end
+
+        it "doesn't sort the build phases" do
+          @sut.build_phases << @project.new(PBXSourcesBuildPhase)
+          @sut.build_phases << @project.new(PBXHeadersBuildPhase)
+          @sut.build_phases << @project.new(PBXSourcesBuildPhase)
+          @sut.sort
+          @sut.build_phases.map(&:isa).should == [
+            "PBXSourcesBuildPhase",
+            "PBXFrameworksBuildPhase",
+            "PBXSourcesBuildPhase",
+            "PBXHeadersBuildPhase",
+            "PBXSourcesBuildPhase"
+          ]
+        end
+      end
     end
 
     #----------------------------------------#

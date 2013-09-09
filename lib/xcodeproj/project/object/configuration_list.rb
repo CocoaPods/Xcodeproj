@@ -58,15 +58,6 @@ module Xcodeproj
           end
         end
 
-        # Sorts the build configurations by name.
-        #
-        # @return [void]
-        #
-        def sort
-          build_configurations.sort_by!(&:name)
-          build_configurations.each(&:sort)
-        end
-
         #---------------------------------------------------------------------#
 
       end
