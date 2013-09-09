@@ -19,7 +19,7 @@ module Xcodeproj
       def run
         xcodeproj.sort
         xcodeproj.save
-        puts "Project sorted & saved"
+        puts "The `#{File.basename(xcodeproj_path)}` project was sorted"
       end
     end
   end

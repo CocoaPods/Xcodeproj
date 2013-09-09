@@ -83,6 +83,7 @@ module Xcodeproj
       'sh'          => 'text.script.sh',
       'plist'       => 'text.plist.xml',
       'markdown'    => 'text',
+      'xcassets'    => 'folder.assetcatalog'
     }.freeze
 
     # @return [Hash] The uniform type identifier of various product types.

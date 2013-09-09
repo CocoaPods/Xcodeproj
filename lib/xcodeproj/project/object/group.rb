@@ -314,9 +314,9 @@ module Xcodeproj
         #
         def sort_by_type
           children.sort! do |x, y|
-            if x.is_a?(PBXGroup) && y.is_a?(PBXFileReference)
+            if x.isa == 'PBXGroup' && !(y.isa == 'PBXGroup')
               -1
-            elsif x.is_a?(PBXFileReference) && y.is_a?(PBXGroup)
+            elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
               1
             else
               x.display_name <=> y.display_name

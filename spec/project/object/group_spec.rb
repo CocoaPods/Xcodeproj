@@ -138,14 +138,38 @@ module ProjectSpecs
       @project.objects_by_uuid[file2.uuid].should == nil
     end
 
-    it "sorts by group vs file first, then name" do
-      @sut.new_group('Apemachine')
-      @sut.sort_by_type
-      @sut.children.map(&:display_name).should == %w{
+    #----------------------------------------#
+
+    describe "#sort_by_type" do
+
+      it "sorts by group vs file first, then name" do
+        @sut.new_group('Apemachine')
+        @sut.sort_by_type
+        @sut.children.map(&:display_name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h Abracadabra.m Banana.h Banana.m
-      }
+        }
+      end
+
+      it "doesn't treat PBXVariantGroup as a group for sorting purposes" do
+        group = @project.new('PBXVariantGroup')
+        group.name = 'Z'
+        @sut.children << group
+        @sut.sort_by_type
+        @sut.children.last.name.should == 'Z'
+      end
+
+      it "doesn't treat XCVersionGroup as a group for sorting purposes" do
+        group = @project.new('XCVersionGroup')
+        group.name = 'Z'
+        @sut.children << group
+        @sut.sort_by_type
+        @sut.children.last.name.should == 'Z'
+      end
+
     end
+
+    #----------------------------------------#
 
     it "recursively sorts by type" do
       subgroup = @sut.new_group('Apemachine')
