@@ -4,7 +4,8 @@
 ###### Enhancements
 
 * [Command] Added new subcommand `sort`, to sort projects from the command
-  line.
+  line. This command is useful for sorting projects as well to easy comparison
+  of existing projects.
 
 * [Project::Object] Added `#sort`.
 
