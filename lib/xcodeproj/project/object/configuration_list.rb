@@ -26,11 +26,11 @@ module Xcodeproj
         #
         has_many :build_configurations, XCBuildConfiguration
 
-        #---------------------------------------------------------------------#
 
         public
 
         # @!group Helpers
+        # --------------------------------------------------------------------#
 
         # Returns the build configuration with the given name.
         #
@@ -56,6 +56,15 @@ module Xcodeproj
           if config = self[build_configuration_name]
             config.build_settings
           end
+        end
+
+        # Sorts the build configurations by name.
+        #
+        # @return [void]
+        #
+        def sort
+          build_configurations.sort_by!(&:name)
+          build_configurations.each(&:sort)
         end
 
         #---------------------------------------------------------------------#

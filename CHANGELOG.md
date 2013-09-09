@@ -3,6 +3,8 @@
 
 ###### Enhancements
 
+* [Project] Added `#sort`.
+
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.
 
 * [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.

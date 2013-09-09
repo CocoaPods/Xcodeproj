@@ -23,11 +23,11 @@ module Xcodeproj
         #
         has_one :base_configuration_reference, PBXFileReference
 
-        #---------------------------------------------------------------------#
 
         public
 
         # @!group AbstractObject Hooks
+        #---------------------------------------------------------------------#
 
         # @return [Hash{String => Hash}] A hash suitable to display the object
         #         to the user.
@@ -39,6 +39,25 @@ module Xcodeproj
             data['Base Configuration'] = base_configuration_reference.pretty_print
           end
           { name => data }
+        end
+
+
+        public
+
+        # @!group Helpers
+        # --------------------------------------------------------------------#
+
+        # Sorts the build settings. Valid only in Ruby > 1.9.2 because in
+        # previous versions the hash are not sorted.
+        #
+        # @return [void]
+        #
+        def sort
+          sorted = {}
+          build_settings.keys.sort.each do |key|
+            sorted[key] = build_settings[key]
+          end
+          self.build_settings = sorted
         end
 
         #---------------------------------------------------------------------#

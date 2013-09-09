@@ -4,24 +4,24 @@ module ProjectSpecs
   describe XCBuildConfiguration do
 
     before do
-      @configuration = @project.new(XCBuildConfiguration)
+      @sut = @project.new(XCBuildConfiguration)
     end
 
     describe "In general" do
 
       it "returns its name" do
-        @configuration.name = "Release"
-        @configuration.name.should == "Release"
+        @sut.name = "Release"
+        @sut.name.should == "Release"
       end
 
       it "returns the empty hash as default build settings" do
-        @configuration.build_settings.should == {}
+        @sut.build_settings.should == {}
       end
 
       it "returns the xcconfig that this configuration is based on" do
         xcconfig = @project.new_file('file.xcconfig')
-        @configuration.base_configuration_reference = xcconfig
-        @configuration.base_configuration_reference.should.be.not.nil
+        @sut.base_configuration_reference = xcconfig
+        @sut.base_configuration_reference.should.be.not.nil
       end
     end
 
@@ -30,12 +30,12 @@ module ProjectSpecs
     describe "AbstractObject Hooks" do
 
       it "returns the pretty print representation" do
-        @configuration.name = "Release"
-        @configuration.build_settings = {'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES'}
+        @sut.name = "Release"
+        @sut.build_settings = {'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES'}
         xcconfig = @project.new_file('file.xcconfig')
-        @configuration.base_configuration_reference = xcconfig
+        @sut.base_configuration_reference = xcconfig
 
-        @configuration.pretty_print.should == {
+        @sut.pretty_print.should == {
           "Release" => {
             "Build Settings" => {
               "GCC_PRECOMPILE_PREFIX_HEADER" => "YES"
@@ -43,6 +43,19 @@ module ProjectSpecs
             "Base Configuration" => "file.xcconfig"
           }
         }
+      end
+
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe "AbstractObject Hooks" do
+
+      it "can be sorted" do
+        @sut.name = "Release"
+        @sut.build_settings = {'KEY_B' => 'B', 'KEY_A' => 'A'}
+        @sut.sort
+        @sut.build_settings.keys.should == ["KEY_A", "KEY_B"]
       end
 
     end

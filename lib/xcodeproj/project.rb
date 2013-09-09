@@ -637,6 +637,16 @@ module Xcodeproj
       end
     end
 
+    # Sorts the project.
+    #
+    # @return [void]
+    #
+    def sort
+      main_group.recursively_sort_by_type
+      targets.sort_by!(&:name)
+      root_object.build_configuration_list.sort
+    end
+
 
     public
 

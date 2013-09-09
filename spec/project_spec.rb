@@ -421,6 +421,20 @@ module ProjectSpecs
 
       end
 
+      it "can be sorted" do
+        @project.new_group('Test')
+        @project['Test'].new_group('B')
+        @project['Test'].new_group('A')
+        @project.new_target(:static_library, 'B', :ios)
+        @project.new_target(:static_library, 'A', :ios)
+        @project.add_build_configuration('B', :release)
+        @project.add_build_configuration('A', :release)
+        @project.sort
+        @project.main_group['Test'].children.map(&:name).should == ["A", "B"]
+        @project.targets.map(&:name).should == ["A", "B"]
+        @project.build_configurations.map(&:name).should == ["A", "B", "Debug", "Release"]
+      end
+
     end
 
     #-------------------------------------------------------------------------#
