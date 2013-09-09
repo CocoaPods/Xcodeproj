@@ -11,6 +11,8 @@
 
 ###### Bug Fixes
 
+* [Command] Fixed opening existing projects.
+
 * [GroupableHelper] Improved handling of ambiguous parents.
 
 
