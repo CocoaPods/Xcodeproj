@@ -3,6 +3,9 @@
 
 ###### Enhancements
 
+* [Command] Added new subcommand `sort`, to sort projects from the command
+  line.
+
 * [Project] Added `#sort`.
 
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.

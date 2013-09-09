@@ -19,7 +19,7 @@ module Xcodeproj
       def initialize(argv)
         xcodeproj_path = argv.shift_argument
         @xcodeproj_path = File.expand_path(xcodeproj_path) if xcodeproj_path
-        
+
         if argv.option('--format')
           @output_format = argv.shift_argument
         end
