@@ -318,8 +318,16 @@ module Xcodeproj
               -1
             elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
               1
+            elsif x.display_name && y.display_name
+              extname_x = File.extname(x.display_name)
+              extname_y = File.extname(y.display_name)
+              if extname_x != extname_y
+                extname_x <=> extname_y
+              else
+                File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+              end
             else
-              x.display_name <=> y.display_name
+              0
             end
           end
         end

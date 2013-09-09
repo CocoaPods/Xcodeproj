@@ -142,21 +142,26 @@ module ProjectSpecs
 
     describe "#sort_by_type" do
 
+      before do
+        @sut = @project.new_group('test')
+      end
+
       it "sorts by group vs file first, then name" do
-        @sut.new_group('Apemachine')
+        @sut.new_file('FA')
+        @sut.new_file('FB')
+        @sut.new_group('GB')
+        @sut.new_group('GA')
         @sut.sort_by_type
-        @sut.children.map(&:display_name).should == %w{
-        Apemachine ZappMachine
-        Abracadabra.h Abracadabra.m Banana.h Banana.m
-        }
+        @sut.children.map(&:display_name).should == %w{ GA GB FA FB }
       end
 
       it "doesn't treat PBXVariantGroup as a group for sorting purposes" do
         group = @project.new('PBXVariantGroup')
-        group.name = 'Z'
+        group.name = 'B.xib'
+        @sut.new_file('A.xib')
         @sut.children << group
         @sut.sort_by_type
-        @sut.children.last.name.should == 'Z'
+        @sut.children.map(&:display_name).should == ["A.xib", "B.xib"]
       end
 
       it "doesn't treat XCVersionGroup as a group for sorting purposes" do
@@ -167,6 +172,38 @@ module ProjectSpecs
         @sut.children.last.name.should == 'Z'
       end
 
+      it "sorts by display name if available" do
+        @sut = @project.new_group('test')
+        f_1 = @project.new('PBXFileReference')
+        f_2 = @project.new('PBXFileReference')
+        f_3 = @project.new('PBXFileReference')
+        f_1.name = 'A'
+        f_2.path = 'B'
+        f_3.name = 'C'
+        @sut << f_3 << f_2 << f_1
+        @sut.sort_by_type
+        @sut.children.map(&:display_name).should == ["A", "B", "C"]
+      end
+
+      it "sorts by base name if the extensions match" do
+        @sut = @project.new_group('test')
+        files = %w[
+        MagicalRecord.h
+        MagicalRecord.m
+        MagicalRecord+Actions.h
+        MagicalRecord+Actions.m
+        ]
+        files.each do |file|
+          @sut.new_file(file)
+        end
+        @sut.sort_by_type
+        @sut.children.map(&:display_name).should == [
+          "MagicalRecord.h",
+          "MagicalRecord+Actions.h",
+          "MagicalRecord.m",
+          "MagicalRecord+Actions.m",
+        ]
+      end
     end
 
     #----------------------------------------#
@@ -178,7 +215,10 @@ module ProjectSpecs
       @sut.recursively_sort_by_type
       @sut.children.map(&:display_name).should == %w{
         Apemachine ZappMachine
-        Abracadabra.h Abracadabra.m Banana.h Banana.m
+        Abracadabra.h
+        Banana.h
+        Abracadabra.m
+        Banana.m
       }
       subgroup.children.map(&:display_name).should == %w{
         Orangemachine Orange.m
