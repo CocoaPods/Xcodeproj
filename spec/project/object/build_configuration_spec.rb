@@ -51,11 +51,13 @@ module ProjectSpecs
 
     describe "AbstractObject Hooks" do
 
-      it "can be sorted" do
-        @sut.name = "Release"
-        @sut.build_settings = {'KEY_B' => 'B', 'KEY_A' => 'A'}
-        @sut.sort
-        @sut.build_settings.keys.should == ["KEY_A", "KEY_B"]
+      unless RUBY_VERSION < "1.9"
+        it "can be sorted" do
+          @sut.name = "Release"
+          @sut.build_settings = {'KEY_B' => 'B', 'KEY_A' => 'A'}
+          @sut.sort
+          @sut.build_settings.keys.should == ["KEY_A", "KEY_B"]
+        end
       end
 
     end
