@@ -34,10 +34,6 @@ module Xcodeproj
       #
       attr_reader :owner
 
-      #------------------------------------------------------------------------#
-
-      # @!group ObjectList
-
       # @return [Array<String>]
       #   the UUIDs of all the objects referenced by this list.
       #
@@ -52,9 +48,11 @@ module Xcodeproj
         to_a
       end
 
-      #------------------------------------------------------------------------#
+
+      public
 
       # @!group Notification enabled methods
+      #------------------------------------------------------------------------#
 
       # TODO: the overridden methods are incomplete.
 
@@ -66,11 +64,11 @@ module Xcodeproj
       # @return [void]
       #
       def +(objects)
-        super
         perform_additions_operations(objects)
+        super
       end
 
-      # Adds an object to list the and updates its references count.
+      # Appends an object to list the and updates its references count.
       #
       # @param  [AbstractObject, ObjectDictionary] object
       #         The object to add to the list.
@@ -78,8 +76,21 @@ module Xcodeproj
       # @return [void]
       #
       def <<(object)
-        super
         perform_additions_operations(object)
+        super
+      end
+
+      # Adds an object to the given index of the list the and updates its
+      # references count.
+      #
+      # @param  [AbstractObject, ObjectDictionary] object
+      #         The object to add to the list.
+      #
+      # @return [void]
+      #
+      def insert(index, object)
+        perform_additions_operations(object)
+        super
       end
 
       # Prepends an object to the list and updates its references count.
@@ -90,8 +101,8 @@ module Xcodeproj
       # @return [void]
       #
       def unshift(object)
-        super
         perform_additions_operations(object)
+        super
       end
 
       # Removes an object to list and updates its references count.
@@ -99,11 +110,25 @@ module Xcodeproj
       # @param [AbstractObject, ObjectDictionary] object
       #   the object to delete from the list.
       #
-      # @return [void]
+      # @return [AbstractObject, ObjectDictionary, Nil] the object if found.
       #
       def delete(object)
-        super
         perform_deletion_operations(object)
+        super
+      end
+
+      # Removes the object at the given index from the list and updates its
+      # references count.
+      #
+      # @param [Fixnum] from
+      #        The index of the object.
+      #
+      # @return [AbstractObject, ObjectDictionary, Nil] the object if found.
+      #
+      def delete_at(index)
+        object = at(index)
+        perform_deletion_operations(object)
+        super
       end
 
       # Removes all the objects contained in the list and updates their
@@ -118,11 +143,47 @@ module Xcodeproj
         super
       end
 
-      #------------------------------------------------------------------------#
+      # Moves the object at the given given index to the given position.
+      #
+      # @param [Fixnum] from
+      #        The current index of the object.
+      #
+      # @param [Fixnum] to
+      #        The new index for the object.
+      #
+      # @return [void]
+      #
+      def move(object, new_index)
+        if obj = delete(object)
+          insert(new_index, obj)
+        else
+          raise "Attempt to move object `#{object}` not present in the list `#{self.inspect}`"
+        end
+      end
 
-      # @!group Notification Methods
+      # Moves the object at the given given index to the given position.
+      #
+      # @param [Fixnum] from
+      #        The current index of the object.
+      #
+      # @param [Fixnum] to
+      #        The new index for the object.
+      #
+      # @return [void]
+      #
+      def move_from(current_index, new_index)
+        if obj = delete_at(current_index)
+          insert(new_index, obj)
+        else
+          raise "Attempt to move object from index `#{current_index}` which is beyond bounds of the list `#{self.inspect}`"
+        end
+      end
+
 
       private
+
+      # @!group Notification Methods
+      #------------------------------------------------------------------------#
 
       # Informs an object that it was added to the list. In practice it adds
       # the owner of the list as referrer to the objects. It also validates the

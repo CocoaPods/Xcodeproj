@@ -10,6 +10,8 @@
 
 * [Project] Added `#sort`.
 
+* [Project::ObjectList] Added `#move` and `#move_from`.
+
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.
 
 * [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.
