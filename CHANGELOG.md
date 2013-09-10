@@ -60,6 +60,10 @@
 
 ###### Enhancements
 
+* Decode XML entities in project paths when reading workspace files. This prevents
+  double-encoding the entities (for example, &amp;apos;) when writing the file later.
+  [amolloy](https://github.com/amolloy)
+
 * CoreData versioned models are now properly handled respecting the contents of
   the `.xccurrentversion` file.  
   [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1288),

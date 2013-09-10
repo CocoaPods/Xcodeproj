@@ -51,7 +51,7 @@ module Xcodeproj
     def self.from_s(xml, workspace_path='')
       document = REXML::Document.new(xml)
       projpaths = document.get_elements("/Workspace/FileRef").map do |node|
-        node.attribute("location").to_s.sub(/^group:/, '')
+        node.attribute("location").value.sub(/^group:/, '')
       end
       instance = new(projpaths)
       instance.load_schemes(workspace_path)
