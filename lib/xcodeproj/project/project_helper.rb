@@ -137,30 +137,11 @@ module Xcodeproj
       # @return [PBXFileReference] The file reference of the framework.
       #
       def self.add_system_framework(project, name, target)
-        sdk = target.sdk
-        raise "Unable to find and SDK for the target `#{target.name}`" unless sdk
-        if sdk.include?('iphoneos')
-          if sdk == 'iphoneos'
-            version = XcodebuildHelper.instance.last_ios_sdk || Constants::LAST_KNOWN_IOS_SDK
-            base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{version}.sdk/"
-          else
-            base_dir = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS#{sdk.gsub('iphoneos', '')}.sdk/"
-          end
-        elsif sdk.include?('macosx')
-          if sdk == 'macosx'
-            version = XcodebuildHelper.instance.last_osx_sdk || Constants::LAST_KNOWN_OSX_SDK
-            base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{version}.sdk/"
-          else
-            base_dir = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{sdk.gsub('macosx', '')}.sdk/"
-          end
-        end
-
-        path = base_dir + "System/Library/Frameworks/#{name}.framework"
-        ref = project.frameworks_group.files.find { |f| f.path == path }
+        path = "System/Library/Frameworks/#{name}.framework"
+        ref = project.frameworks_group.files.find { |ref| ref.path == path }
         unless ref
-          ref = project.frameworks_group.new_file(path, :developer_dir)
+          ref = project.frameworks_group.new_file(path, :sdk_root)
         end
-
         target.frameworks_build_phase.add_file_reference(ref)
         ref
       end

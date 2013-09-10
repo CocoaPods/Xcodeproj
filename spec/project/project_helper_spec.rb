@@ -5,7 +5,6 @@ module ProjectSpecs
 
     before do
       @sut = Xcodeproj::Project::ProjectHelper
-      Xcodeproj::XcodebuildHelper.any_instance.stubs(:last_ios_sdk).returns(Xcodeproj::Constants::LAST_KNOWN_IOS_SDK)
     end
 
     #-------------------------------------------------------------------------#
@@ -67,22 +66,16 @@ module ProjectSpecs
       end
 
       it "adds a file reference for a system framework, to the Frameworks group" do
-        @target.stubs(:sdk).returns('iphoneos5.0')
+        @target.stubs(:platform_name).returns(:ios)
+        @target.stubs(:deployment_target).returns('5.0')
         file = @sut.add_system_framework(@project, 'QuartzCore', @target)
         file.parent.should == @project['Frameworks']
         file.name.should == 'QuartzCore.framework'
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework|
-        file.source_tree.should == 'DEVELOPER_DIR'
+        file.path.should == "System/Library/Frameworks/QuartzCore.framework"
+        file.source_tree.should == 'SDKROOT'
       end
 
-      it "links system frameworks to the last known SDK if needed" do
-        @target.stubs(:sdk).returns('iphoneos')
-        file = @sut.add_system_framework(@project, 'QuartzCore', @target)
-        file.path.should.match %r|Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.*.sdk/System/Library/Frameworks/QuartzCore.framework|
-        file.source_tree.should == 'DEVELOPER_DIR'
-      end
-
-      it "does not add a system framework if it already exists in the project" do
+      it "does duplicate references to a frameworks if one already exists" do
         file_1 = @sut.add_system_framework(@project, 'Foundation', @target)
         file_1.name.should == 'Foundation.framework'
         before_size = @project.frameworks_group.files.size

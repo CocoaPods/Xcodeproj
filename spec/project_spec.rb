@@ -5,10 +5,6 @@ require File.expand_path('../spec_helper', __FILE__)
 module ProjectSpecs
   describe Xcodeproj::Project do
 
-    before do
-      Xcodeproj::XcodebuildHelper.any_instance.stubs(:last_ios_sdk).returns(Xcodeproj::Constants::LAST_KNOWN_IOS_SDK)
-    end
-
     #-------------------------------------------------------------------------#
 
     describe "In general" do

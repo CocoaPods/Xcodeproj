@@ -3,6 +3,8 @@
 
 ###### Enhancements
 
+* [Project] `#add_system_framework` now specifies path relative to the SDK.
+
 * [Command] Added new subcommand `sort`, to sort projects from the command
   line. This command is useful for sorting projects as well to easy comparison
   of existing projects.
