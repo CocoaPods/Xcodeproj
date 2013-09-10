@@ -68,4 +68,15 @@ describe "Xcodeproj::Workspace" do
       @workspace.schemes.keys.sort.should == ['Pods', 'SharedSchemes', 'SharedSchemesForTest']
     end
   end
+  
+  describe "built from a workspace file with XML entities in a project path" do
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("Otto's Remote.xcworkspace"))
+    end
+
+    it "contains all of the projects in the workspace" do
+      @workspace.projpaths.should.include "Otto's Remote.xcodeproj"
+      @workspace.projpaths.should.include "Pods/Pods.xcodeproj"
+    end
+  end
 end
