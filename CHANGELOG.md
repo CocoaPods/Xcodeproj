@@ -3,7 +3,13 @@
 
 ###### Breaking
 
-* Added support for Xcode 5 (`ARCHS` are not set anymore).
+* Added support for Xcode 5 (`ARCHS` are not set anymore).  
+  [CocoaPods#1352](https://github.com/CocoaPods/CocoaPods/issues/1352)
+
+* [PBXNativeTarget] Added `#add_system_framework`, `#add_system_frameworks`,
+  `#add_system_library`, `#add_system_libraries`.
+
+* [Project] `#add_system_framework` was deprecated.
 
 ###### Enhancements
 
@@ -11,7 +17,10 @@
   line. This command is useful for sorting projects as well to easy comparison
   of existing projects.
 
-* [Project] `#add_system_framework` now specifies path relative to the SDK.
+* Decode XML entities in project paths when reading workspace files. This
+  prevents double-encoding the entities (for example, &amp;apos;) when writing
+  the file.  
+  [amolloy](https://github.com/amolloy)
 
 * [Project::Object] Added `#sort`.
 
@@ -22,9 +31,6 @@
 * [Project::ObjectList] Added `#move` and `#move_from`.
 
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.
-
-* [PBXNativeTarget] Added `#add_system_framework`, `#add_system_frameworks`,
-  `#add_system_library`, `#add_system_libraries`.
 
 * [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.
 
@@ -74,10 +80,6 @@
   build phase of the target as well.
 
 ###### Enhancements
-
-* Decode XML entities in project paths when reading workspace files. This prevents
-  double-encoding the entities (for example, &amp;apos;) when writing the file later.
-  [amolloy](https://github.com/amolloy)
 
 * CoreData versioned models are now properly handled respecting the contents of
   the `.xccurrentversion` file.  
