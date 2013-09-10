@@ -1,6 +1,10 @@
 
 ## Master
 
+###### Breaking
+
+* Added support for Xcode 5 (`ARCHS` are not set anymore).
+
 ###### Enhancements
 
 * [Command] Added new subcommand `sort`, to sort projects from the command
