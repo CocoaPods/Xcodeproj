@@ -15,24 +15,7 @@ module ProjectSpecs
       end
     end
 
-    #----------------------------------------#
 
-    describe "AbstractObject Hooks" do
-
-      before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
-      end
-
-      it "returns the pretty print representation" do
-        pretty_print = @sut.pretty_print
-        pretty_print['Pods']['Build Phases'].should == [
-          { "SourcesBuildPhase" => [] },
-          { "FrameworksBuildPhase" => ["Foundation.framework"] }
-        ]
-        build_configurations = pretty_print['Pods']['Build Configurations']
-        build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
-      end
-    end
 
     #----------------------------------------#
 
@@ -131,6 +114,7 @@ module ProjectSpecs
       end
     end
 
+
     #----------------------------------------#
 
     describe "Build phases" do
@@ -178,6 +162,105 @@ module ProjectSpecs
         before = @sut.shell_script_build_phases.count
         @sut.new_shell_script_build_phase
         @sut.shell_script_build_phases.count.should == before + 1
+      end
+    end
+
+    #----------------------------------------#
+
+    describe "System frameworks" do
+
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @sut.frameworks_build_phase.clear
+        @project.frameworks_group.clear
+      end
+
+      describe "#add_system_framework" do
+
+        it "adds a file reference for a system framework, to the Frameworks group" do
+          @sut.add_system_framework('QuartzCore')
+          file = @project['Frameworks'].files.first
+          file.path.should == "System/Library/Frameworks/QuartzCore.framework"
+          file.source_tree.should == 'SDKROOT'
+        end
+
+        it "doesn't duplicate references to a frameworks if one already exists" do
+          @sut.add_system_framework('QuartzCore')
+          @sut.add_system_framework('QuartzCore')
+          @project.frameworks_group.files.count.should == 1
+        end
+
+        it "adds the framework to the framework build phases" do
+          @sut.add_system_framework('QuartzCore')
+          @sut.frameworks_build_phase.file_display_names.should == ["QuartzCore.framework"]
+        end
+
+        it "doesn't duplicate the frameworks in the build phases" do
+          @sut.add_system_framework('QuartzCore')
+          @sut.add_system_framework('QuartzCore')
+          @sut.frameworks_build_phase.files.count.should == 1
+        end
+
+        it "can add multiple frameworks" do
+          @sut.add_system_frameworks(['CoreData', 'QuartzCore'])
+          names = @sut.frameworks_build_phase.file_display_names
+          names.should == ["CoreData.framework", "QuartzCore.framework"]
+        end
+      end
+
+      #----------------------------------------#
+
+      describe "#add_system_library" do
+
+        it "adds a file reference for a system framework, to the Frameworks group" do
+          @sut.add_system_library('xml')
+          file = @project['Frameworks'].files.first
+          file.path.should == "usr/lib/libxml.dylib"
+          file.source_tree.should == 'SDKROOT'
+        end
+
+        it "doesn't duplicate references to a frameworks if one already exists" do
+          @sut.add_system_library('xml')
+          @sut.add_system_library('xml')
+          @project.frameworks_group.files.count.should == 1
+        end
+
+        it "adds the framework to the framework build phases" do
+          @sut.add_system_library('xml')
+          @sut.frameworks_build_phase.file_display_names.should == ["libxml.dylib"]
+        end
+
+        it "doesn't duplicate the frameworks in the build phases" do
+          @sut.add_system_library('xml')
+          @sut.add_system_library('xml')
+          @sut.frameworks_build_phase.files.count.should == 1
+        end
+
+        it "can add multiple libraries" do
+          @sut.add_system_libraries(['z', 'xml'])
+          names = @sut.frameworks_build_phase.file_display_names
+          names.should == ["libz.dylib", "libxml.dylib"]
+        end
+      end
+
+    end
+
+    #----------------------------------------#
+
+    describe "AbstractObject Hooks" do
+
+      before do
+        @sut = @project.new_target(:static_library, 'Pods', :ios)
+      end
+
+      it "returns the pretty print representation" do
+        pretty_print = @sut.pretty_print
+        pretty_print['Pods']['Build Phases'].should == [
+          { "SourcesBuildPhase" => [] },
+          { "FrameworksBuildPhase" => ["Foundation.framework"] }
+        ]
+        build_configurations = pretty_print['Pods']['Build Configurations']
+        build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
       end
     end
   end

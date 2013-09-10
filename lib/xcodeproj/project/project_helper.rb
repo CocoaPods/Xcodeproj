@@ -55,7 +55,7 @@ module Xcodeproj
 
         # Frameworks
         framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-        framework_ref = project.add_system_framework(framework_name, target)
+        framework_ref = target.add_system_framework(framework_name)
 
         target
       end
@@ -115,36 +115,6 @@ module Xcodeproj
         target
       end
 
-      # @!group System Frameworks
-
-      #-----------------------------------------------------------------------#
-
-      # Adds a file reference for a system framework to the project if needed
-      # and adds it to the {PBXFrameworksBuildPhase} of the given target.
-      #
-      # @param  [Project] project
-      #         the project to which the configuration list should be added.
-      #
-      # @param  [String] name
-      #         The name of a framework.
-      #
-      # @param  [PBXNativeTarget] target
-      #         The target to which to add the framework.
-      #
-      # @note   This method adds a reference to the highest know SDK for the
-      #         given platform.
-      #
-      # @return [PBXFileReference] The file reference of the framework.
-      #
-      def self.add_system_framework(project, name, target)
-        path = "System/Library/Frameworks/#{name}.framework"
-        ref = project.frameworks_group.files.find { |ref| ref.path == path }
-        unless ref
-          ref = project.frameworks_group.new_file(path, :sdk_root)
-        end
-        target.frameworks_build_phase.add_file_reference(ref)
-        ref
-      end
 
       # @!group Private Helpers
 

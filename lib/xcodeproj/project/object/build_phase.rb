@@ -48,37 +48,62 @@ module Xcodeproj
         #         referenced by this build phase.
         #
         def files_references
-          files.map { |bf| bf.file_ref }.uniq
+          files.map { |bf| bf.file_ref }
+        end
+
+        # @return [Array<String>] The display name of the build files.
+        #
+        def file_display_names
+          files.map(&:display_name)
+        end
+
+        # @return [PBXBuildFile] the first build file associated with the given
+        #         file reference if one exists.
+        #
+        def build_file(file_ref)
+          (file_ref.referrers & files).first
+        end
+
+        # Returns whether a build file for the given file reference exists.
+        #
+        # @param  [PBXFileReference] file_ref
+        #
+        # @return [Bool] whether the reference is already present.
+        #
+        def include?(file_ref)
+          !build_file(file_ref).nil?
         end
 
         # Adds a new build file, initialized with the given file reference, to
         # the phase.
         #
-        # @param  [PBXFileReference] file
-        #         the file reference that should be added to the build phase.
+        # @param  [PBXFileReference] file_ref
+        #         The file reference that should be added to the build phase.
         #
         # @return [PBXBuildFile] the build file generated.
         #
-        def add_file_reference(file)
-          build_file = project.new(PBXBuildFile)
-          build_file.file_ref = file
-          files << build_file
-          build_file
+        def add_file_reference(file_ref, avoid_duplicates = false)
+          if avoid_duplicates && existing = build_file(file_ref)
+            existing
+          else
+            build_file = project.new(PBXBuildFile)
+            build_file.file_ref = file_ref
+            files << build_file
+            build_file
+          end
         end
 
         # Removes the build file associated with the given file reference from
         # the phase.
         #
-        # @param  [PBXFileReference] file the file to remove
+        # @param  [PBXFileReference] file_ref
+        #         The file to remove
         #
         # @return [void]
         #
-        def remove_file_reference(file)
-          build_file = files.find { |bf| bf.file_ref == file }
-          if build_file
-            build_file.file_ref = nil
-            build_file.remove_from_project
-          end
+        def remove_file_reference(file_ref)
+          build_file = files.find { |bf| bf.file_ref == file_ref }
+          remove_build_file(build_file) if build_file
         end
 
         # Removes a build file from the phase and clears its relationship to
@@ -98,11 +123,12 @@ module Xcodeproj
         #
         # @return [void]
         #
-        def clear_build_files
+        def clear
           files.objects.each do |bf|
             remove_build_file(bf)
           end
         end
+        alias :clear_build_files :clear
 
       end
 

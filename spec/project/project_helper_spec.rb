@@ -59,35 +59,11 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
-    describe "System Frameworks" do
+    describe "Frameworks" do
 
-      before do
-        @target = @sut.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
-      end
 
-      it "adds a file reference for a system framework, to the Frameworks group" do
-        @target.stubs(:platform_name).returns(:ios)
-        @target.stubs(:deployment_target).returns('5.0')
-        file = @sut.add_system_framework(@project, 'QuartzCore', @target)
-        file.parent.should == @project['Frameworks']
-        file.name.should == 'QuartzCore.framework'
-        file.path.should == "System/Library/Frameworks/QuartzCore.framework"
-        file.source_tree.should == 'SDKROOT'
-      end
 
-      it "does duplicate references to a frameworks if one already exists" do
-        file_1 = @sut.add_system_framework(@project, 'Foundation', @target)
-        file_1.name.should == 'Foundation.framework'
-        before_size = @project.frameworks_group.files.size
-        file_2 = @sut.add_system_framework(@project, 'Foundation', @target)
-        file_2.should == file_1
-        @project.frameworks_group.files.size.should == before_size
-      end
 
-      it "adds the framework to the framework build phase of the target" do
-        ref = @sut.add_system_framework(@project, 'QuartzCore', @target)
-        @target.frameworks_build_phase.files_references.should.include(ref)
-      end
     end
 
     #-------------------------------------------------------------------------#

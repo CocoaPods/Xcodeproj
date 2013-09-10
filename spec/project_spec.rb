@@ -381,13 +381,6 @@ module ProjectSpecs
         @project.main_group.children.should.include file
       end
 
-      it "adds a file reference for a system framework, to the Frameworks group" do
-        target = @project.new_target(:static_library, 'Pods', :ios, '6.0')
-        file = @project.add_system_framework('QuartzCore', target)
-        file.parent.should == @project['Frameworks']
-        file.name.should == 'QuartzCore.framework'
-      end
-
       it "creates a new target" do
         target = @project.new_target(:static_library, 'Pods', :ios, '6.0')
         target.name.should == 'Pods'

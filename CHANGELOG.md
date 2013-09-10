@@ -3,21 +3,30 @@
 
 ###### Enhancements
 
-* [Project] `#add_system_framework` now specifies path relative to the SDK.
-
 * [Command] Added new subcommand `sort`, to sort projects from the command
   line. This command is useful for sorting projects as well to easy comparison
   of existing projects.
 
+* [Project] `#add_system_framework` now specifies path relative to the SDK.
+
 * [Project::Object] Added `#sort`.
 
-* [Project] Added `#sort`.
+* [Project] Added `#sort`, `#add_system_library`.
+
+* [Project] Deprecated `#add_system_framework`.
 
 * [Project::ObjectList] Added `#move` and `#move_from`.
 
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.
 
+* [PBXNativeTarget] Added `#add_system_framework`, `#add_system_frameworks`,
+  `#add_system_library`, `#add_system_libraries`.
+
 * [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.
+
+* [PBXGroup] Added `find_file_by_path`.
+
+* [AbstractBuildPhase] Added `#file_display_names`, `#build_file`, and `#include`.
 
 ###### Bug Fixes
 

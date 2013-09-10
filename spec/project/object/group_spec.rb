@@ -68,6 +68,10 @@ module ProjectSpecs
       }
     end
 
+    it "returns the file matching the given path" do
+      @sut.find_file_by_path('Abracadabra.h').display_name.should == 'Abracadabra.h'
+    end
+
     it "returns a list of groups" do
       @sut.groups.map(&:display_name).sort.should == %w{ ZappMachine }
     end

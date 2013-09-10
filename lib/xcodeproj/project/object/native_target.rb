@@ -183,6 +183,51 @@ module Xcodeproj
 
         public
 
+        # @!group System frameworks
+        #--------------------------------------#
+
+        # Adds a file reference for one or more system framework to the project
+        # if needed and adds them to the Frameworks build phases.
+        #
+        # @param  [Array<String>, String] name
+        #         The name or the list of the names of the framework.
+        #
+        # @return [void]
+        #
+        def add_system_framework(names)
+          Array(names).each do |name|
+            path = "System/Library/Frameworks/#{name}.framework"
+            unless ref = project.frameworks_group.find_file_by_path(path)
+              ref = project.frameworks_group.new_file(path, :sdk_root)
+            end
+            frameworks_build_phase.add_file_reference(ref, true)
+            ref
+          end
+        end
+        alias :add_system_frameworks :add_system_framework
+
+        # Adds a file reference for one or more system libraries to the project
+        # if needed and adds them to the Frameworks build phases.
+        #
+        # @param  [Array<String>, String] name
+        #         The name or the list of the names of the libraries.
+        #
+        # @return [void]
+        #
+        def add_system_library(names)
+          Array(names).each do |name|
+            path = "usr/lib/lib#{name}.dylib"
+            unless ref = project.frameworks_group.files.find { |ref| ref.path == path }
+              ref = project.frameworks_group.new_file(path, :sdk_root)
+            end
+            frameworks_build_phase.add_file_reference(ref, true)
+            ref
+          end
+        end
+        alias :add_system_libraries :add_system_library
+
+        public
+
         # @!group AbstractObject Hooks
         #--------------------------------------#
 
@@ -224,7 +269,7 @@ module Xcodeproj
         #
         attribute :product_install_path, String
 
-        # @return [ObjectList<AbstractBuildPhase>] the build phases of the 
+        # @return [ObjectList<AbstractBuildPhase>] the build phases of the
         #         target.
         #
         # @note   Apparently only PBXCopyFilesBuildPhase and

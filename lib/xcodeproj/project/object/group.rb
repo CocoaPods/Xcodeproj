@@ -141,11 +141,18 @@ module Xcodeproj
           end
         end
 
-        # @return [Array<PBXFileReference>] the files references in the group
+        # @return [Array<PBXFileReference>] the file references in the group
         #         children.
         #
         def files
           children.select { |obj| obj.class == PBXFileReference }
+        end
+
+        # @return [PBXFileReference] The file references whose path (regardless
+        # of the source tree) matches the give path.
+        #
+        def find_file_by_path(path)
+          files.find { |ref| ref.path == path }
         end
 
         # @return [Array<PBXGroup>] the groups in the group children.
@@ -249,11 +256,10 @@ module Xcodeproj
 
         # Removes children files and groups under this group.
         #
-        # @TODO: remove from project should suffice.
-        #
-        def remove_children_recursively
+        def clear
           children.objects.each(&:remove_from_project)
         end
+        alias :remove_children_recursively :clear
 
         # Traverses the children groups and finds the children with the given
         # path, optionally, creating any needed group. If the given path is
