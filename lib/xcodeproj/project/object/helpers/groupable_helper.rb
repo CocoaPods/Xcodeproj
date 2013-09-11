@@ -108,11 +108,10 @@ module Xcodeproj
               end
             when 'SOURCE_ROOT'
               object.project.path.dirname
-            when '<absolute>', 'BUILT_PRODUCTS_DIR', 'DEVELOPER_DIR'
+            when '<absolute>'
               nil
             else
-              raise "[Xcodeproj] Unable to compute the source tree for " \
-                " `#{object.display_name}`: `#{object.source_tree}`"
+              Pathname.new("${#{object.source_tree}}")
             end
           end
 

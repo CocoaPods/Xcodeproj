@@ -143,11 +143,9 @@ module ProjectSpecs
         @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
-      it "raises if unable to resolve the source tree" do
-        should.raise do
-          @group.source_tree = '<unknown>'
-          @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
-        end.message.should.match /Unable to compute the source tree/
+      it "returns the source tree relative to an environment variable" do
+        @group.source_tree = 'BUILT_PRODUCTS_DIR'
+        @sut.source_tree_real_path(@group).should == Pathname.new('${BUILT_PRODUCTS_DIR}')
       end
     end
 
