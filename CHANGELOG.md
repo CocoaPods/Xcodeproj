@@ -34,6 +34,10 @@
 
 * [GroupableHelper] Improved handling of ambiguous parents.
 
+* Fix C-ext memory leak by closing and releasing the CFWriteStream used to write
+  projects when done.
+  [#93](https://github.com/CocoaPods/Xcodeproj/pull/93)
+  [jasonprado](https://github.com/jasonprado)
 
 
 ## 0.10.1
