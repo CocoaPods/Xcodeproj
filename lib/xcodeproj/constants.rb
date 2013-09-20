@@ -126,13 +126,11 @@ module Xcodeproj
         'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
       }.freeze,
       :ios => {
-        'ARCHS'                             => "$(ARCHS_STANDARD_32_BIT)",
         'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
         'PUBLIC_HEADERS_FOLDER_PATH'        => "$(TARGET_NAME)",
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       :osx => {
-        'ARCHS'                             => "$(ARCHS_STANDARD_64_BIT)",
         'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
         'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
         'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
