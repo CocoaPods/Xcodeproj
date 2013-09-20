@@ -60,7 +60,7 @@ module ProjectSpecs
 
         configurations = list.build_configurations
         configurations.map(&:name).sort.should == %w| Debug Release |
-        list.build_settings('Debug').should == {}
+        list.build_settings('Debug').should == { 'ONLY_ACTIVE_ARCH' => 'YES' }
         list.build_settings('Release').should == {}
       end
 
@@ -327,7 +327,7 @@ module ProjectSpecs
         list.default_configuration_name.should == 'Release'
         list.default_configuration_is_visible.should == '0'
 
-        @project.build_settings('Debug').should == {}
+        @project.build_settings('Debug').should == { 'ONLY_ACTIVE_ARCH' => 'YES' }
         @project.build_settings('Release').should == {}
       end
 
@@ -354,7 +354,7 @@ module ProjectSpecs
           ],
           "Targets" => [],
           "Build Configurations" => [
-            { "Debug" => {"Build Settings" => {} } },
+            { "Debug" => {"Build Settings" => { 'ONLY_ACTIVE_ARCH' => 'YES' } } },
             { "Release" => {"Build Settings" => {} } }
           ]
         }

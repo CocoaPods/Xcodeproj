@@ -118,7 +118,6 @@ module Xcodeproj
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
         'GCC_OPTIMIZATION_LEVEL'            => '0',
         'COPY_PHASE_STRIP'                  => 'NO',
-        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       :release => {
         'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
@@ -156,8 +155,7 @@ module Xcodeproj
       :release => {
       }.freeze,
       :debug => {
-        # TODO: enable after Xcode 4
-        # 'ONLY_ACTIVE_ARCH' => 'YES',
+        'ONLY_ACTIVE_ARCH' => 'YES',
       }.freeze,
     }.freeze
 
