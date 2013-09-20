@@ -2,10 +2,16 @@
 
 ###### Breaking
 
-* Added support for Xcode 5. The `ARCHS` option is not set anymore and will use
-  Xcode’s defaults. This fixes the build and archive issue with the new `arm64`
-  architecture.
+* Added support for Xcode 5.
+
+* The `ARCHS` option is not set anymore and will use Xcode’s defaults. This
+  fixes the build and archive issue with the new `arm64` architecture.
   [CocoaPods#1352](https://github.com/CocoaPods/CocoaPods/issues/1352)
+
+* The default of the `ONLY_ACTIVE_ARCH` setting has changed to `YES`
+  in the `Debug` configuration. This means that if this is a static library,
+  the application that links the library in will have to make the same
+  adjustment, or the build will fail.
 
 * [Project] `#add_system_framework` has been removed in favor of
   `PBXNativeTarget#add_system_framework`.
