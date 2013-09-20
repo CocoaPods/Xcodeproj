@@ -16,11 +16,6 @@
   line. This command is useful for sorting projects as well to easy comparison
   of existing projects.
 
-* Decode XML entities in project paths when reading workspace files. This
-  prevents double-encoding the entities (for example, &amp;apos;) when writing
-  the file.  
-  [amolloy](https://github.com/amolloy)
-
 * [Project::Object] Added `#sort`.
 
 * [Project] Added `#sort`, `#add_system_library`.
@@ -43,6 +38,11 @@
 * [Command] Fixed opening existing projects.
 
 * [GroupableHelper] Improved handling of ambiguous parents.
+
+* Decode XML entities in project paths when reading workspace files. This
+  prevents double-encoding the entities (for example, `&amp;apos;`) when writing
+  the file.
+  [amolloy](https://github.com/amolloy)
 
 * Fix C-ext memory leak by closing and releasing the CFWriteStream used to write
   projects when done.
