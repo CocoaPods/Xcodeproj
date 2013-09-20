@@ -256,10 +256,12 @@ write_plist(VALUE self, VALUE hash, VALUE path) {
     if (!success) {
       CFShow(errorString);
     }
+    CFWriteStreamClose(stream);
   } else {
     printf("Unable to open stream!\n");
   }
 
+  CFRelease(stream);
   CFRelease(dict);
   return success ? Qtrue : Qfalse;
 }
