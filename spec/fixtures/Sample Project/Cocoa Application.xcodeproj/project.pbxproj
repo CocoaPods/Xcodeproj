@@ -1580,7 +1580,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CP;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = CocoaPods;
 			};
 			buildConfigurationList = E525238616245A900012E2BA /* Build configuration list for PBXProject "Cocoa Application" */;

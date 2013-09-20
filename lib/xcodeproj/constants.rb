@@ -22,7 +22,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0450'
+    LAST_UPGRADE_CHECK  = '0500'
 
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
@@ -118,8 +118,7 @@ module Xcodeproj
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
         'GCC_OPTIMIZATION_LEVEL'            => '0',
         'COPY_PHASE_STRIP'                  => 'NO',
-        # TODO: enable after Xcode 4
-        # 'ONLY_ACTIVE_ARCH'                  => 'YES',
+        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       :release => {
         'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
@@ -138,7 +137,7 @@ module Xcodeproj
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:osx, :debug] => {
-        'ONLY_ACTIVE_ARCH'                  => 'YES',
+        # Empty?
       }.freeze,
       [:osx, :release] => {
         'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
