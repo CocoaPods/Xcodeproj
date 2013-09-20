@@ -1,15 +1,14 @@
-
 ## Master
 
 ###### Breaking
 
-* Added support for Xcode 5 (`ARCHS` are not set anymore).  
+* Added support for Xcode 5. The `ARCHS` option is not set anymore and will use
+  Xcode’s defaults. This fixes the build and archive issue with the new `arm64`
+  architecture.
   [CocoaPods#1352](https://github.com/CocoaPods/CocoaPods/issues/1352)
 
-* [PBXNativeTarget] Added `#add_system_framework`, `#add_system_frameworks`,
-  `#add_system_library`, `#add_system_libraries`.
-
-* [Project] `#add_system_framework` was deprecated.
+* [Project] `#add_system_framework` has been removed in favor of
+  `PBXNativeTarget#add_system_framework`.
 
 ###### Enhancements
 
@@ -26,11 +25,12 @@
 
 * [Project] Added `#sort`, `#add_system_library`.
 
-* [Project] Deprecated `#add_system_framework`.
-
 * [Project::ObjectList] Added `#move` and `#move_from`.
 
 * [PBXNativeTarget] Improve `#add_dependency` to avoid duplicates.
+
+* [PBXNativeTarget] Added `#add_system_framework`, `#add_system_frameworks`,
+  `#add_system_library`, `#add_system_libraries`.
 
 * [PBXFileReference, PBXGroup] Added `set_source_tree` and `#set_path`.
 
