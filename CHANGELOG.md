@@ -1,3 +1,13 @@
+## 0.11.1
+
+###### Bug Fixes
+
+* No longer allow `PBXTargetDependency` to sort recursively. When two targets
+  depend on each other, this would lead to the two targets endlessly sorting
+  each other and finally crashing with a stack overflow.
+  [CocoaPods#1384](https://github.com/CocoaPods/CocoaPods/issues/1384)
+
+
 ## 0.11.0
 
 ###### Breaking
