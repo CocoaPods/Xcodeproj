@@ -41,6 +41,14 @@ module Xcodeproj
           return target.name if target
           return target_proxy.remote_info if target_proxy
         end
+
+        # @note This is a no-op, because the targets could theoretically depend
+        #   on each other, leading to a stack level too deep error.
+        #
+        # @see AbstractObject#sort_recursively
+        #
+        def sort_recursively
+        end
       end
     end
   end

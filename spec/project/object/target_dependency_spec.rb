@@ -31,6 +31,16 @@ module ProjectSpecs
       @sut.target_proxy.remote_info.should == "Pods"
     end
 
+    # This is a contrived example of two targets depending on each other, which
+    # would lead to an endless sort. It is unlikely that a target would ever
+    # depend on itself, as in this example, though.
+    it "does not sort recursively, which would case stack level too deep errors" do
+      target = @project.new_target(:static, "Pods", :ios)
+      @sut.target = target
+      target.dependencies << @sut
+      lambda { @sut.sort_recursively }.should.not.raise
+    end
+
     #----------------------------------------#
 
     describe "#display_name" do

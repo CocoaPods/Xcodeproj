@@ -147,6 +147,13 @@ module Xcodeproj
 
         # Sorts the object and the objects that it references.
         #
+        # @note Some objects may in turn refer back to objects higher in the
+        #   object tree, which will lead to stack level deep errors. These
+        #   objects should **not** try to perform a recursive sort, also
+        #   because these objects would get sorted through other paths in the
+        #   tree anyways.
+        #
+        #   At the time of writing the only known case is `PBXTargetDependency`.
         def sort_recursively
           to_one_attributes.each do |attrb|
             value = attrb.get_value(self)
