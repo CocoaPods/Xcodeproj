@@ -605,7 +605,10 @@ module Xcodeproj
       unless build_configuration_list[name]
         build_configuration = new(XCBuildConfiguration)
         build_configuration.name = name
-        build_configuration.build_settings = Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type].dup
+        common_settings = Constants::PROJECT_DEFAULT_BUILD_SETTINGS
+        settings = ProjectHelper.deep_dup(common_settings[:all])
+        settings.merge!(ProjectHelper.deep_dup(common_settings[type]))
+        build_configuration.build_settings = settings
         build_configuration_list.build_configurations << build_configuration
         build_configuration
       end
