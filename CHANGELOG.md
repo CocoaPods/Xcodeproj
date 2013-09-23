@@ -1,3 +1,11 @@
+
+## Master
+
+###### Enhancements
+
+* Added default build settings to new projects according to Xcode defaults.
+
+
 ## 0.11.1
 
 ###### Bug Fixes
