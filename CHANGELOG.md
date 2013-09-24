@@ -1,3 +1,9 @@
+## Master
+
+###### Enhancements
+
+* [PBXGroup] Now defaults to sorting by name.
+
 ## 0.11.1
 
 ###### Bug Fixes

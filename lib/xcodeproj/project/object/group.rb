@@ -370,7 +370,14 @@ module Xcodeproj
         # name.
         #
         def sort
-          sort_by_type
+          children.sort! do |x, y|
+            result = File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+            if result.zero?
+              File.extname(x.display_name) <=> File.extname(y.display_name)
+            else
+              result
+            end
+          end
         end
       end
 
