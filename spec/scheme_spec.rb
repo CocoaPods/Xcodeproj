@@ -27,9 +27,10 @@ module ProjectSpecs
         @sut.to_s.lines.first.chomp.should == '<?xml version="1.0" encoding="UTF-8"?>'
       end
 
-      it "indents the string representation as Xcode" do
-        require 'active_support/core_ext/string/strip.rb'
-        @sut.to_s[0..190].should == <<-DOC.strip_heredoc
+      if RUBY_VERSION > '1.8.7'
+        it "indents the string representation as Xcode" do
+          require 'active_support/core_ext/string/strip.rb'
+          @sut.to_s[0..190].should == <<-DOC.strip_heredoc
           <?xml version="1.0" encoding="UTF-8"?>
           <Scheme
              LastUpgradeVersion = "0500"
@@ -37,7 +38,8 @@ module ProjectSpecs
              <BuildAction
                 parallelizeBuildables = "YES"
                 buildImplicitDependencies = "YES">
-        DOC
+          DOC
+        end
       end
     end
 
