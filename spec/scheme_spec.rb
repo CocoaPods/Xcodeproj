@@ -82,12 +82,21 @@ module Xcodeproj
         @ios_application_tests = Xcodeproj::Project::PBXNativeTarget.new(nil, 'E525241E16245AB20012E2BA')
         @ios_application_tests.name = "iOS applicationTests"
         @ios_application_tests.product_type = "com.apple.product-type.bundle"
+        @ios_static_library = Xcodeproj::Project::PBXNativeTarget.new(nil, '806F6FC217EFAF47001051EE')
+        @ios_static_library.name = "iOS staticLibrary"
+        @ios_static_library.product_type = "com.apple.product-type.library.static"
+        @ios_static_library_tests = Xcodeproj::Project::PBXNativeTarget.new(nil, '806F6FC217EFAF47001051EE')
+        @ios_static_library_tests.name = "iOS staticLibraryTests"
+        @ios_static_library_tests.product_type = "com.apple.product-type.bundle"
       end
 
       describe 'For iOS Application' do
 
         before do
-          @scheme = Xcodeproj::XCScheme.new('Cocoa Application', @ios_application, @ios_application_tests)
+          @scheme = Xcodeproj::XCScheme.new
+          @scheme.add_build_target(@ios_application, 'Cocoa Application')
+          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
+          @scheme.set_launch_target(@ios_application, 'Cocoa Application')
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS application.xcscheme')
         end
 
@@ -248,7 +257,8 @@ module Xcodeproj
       describe 'For iOS Application Tests' do
 
         before do
-          @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application_tests, @ios_application_tests
+          @scheme = Xcodeproj::XCScheme.new
+          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests.xcscheme')
         end
 
@@ -331,10 +341,9 @@ module Xcodeproj
         extend SpecHelper::TemporaryDirectory
 
         before do
-          @scheme = Xcodeproj::XCScheme.new 'Cocoa Application', @ios_application_tests, @ios_application_tests
-          @scheme.build_target_for_running?.should.be.false
-          @scheme.build_target_for_running = true
-          @scheme.build_target_for_running?.should.be.true
+          @scheme = Xcodeproj::XCScheme.new
+          @scheme.add_build_target(@ios_application_tests, 'Cocoa Application')
+          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests Set Build Target For Running.xcscheme')
         end
 
@@ -409,13 +418,113 @@ module Xcodeproj
         end
 
         it 'Save as Shared Scheme' do
-          result = @scheme.save_as(temporary_directory, true)
+          result = @scheme.save_as(temporary_directory, 'iOS applicationTests', true)
           (result > 0).should.be.true
           File.exists?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
 
         it 'Save as User Scheme' do
-          result = @scheme.save_as(temporary_directory, false)
+          result = @scheme.save_as(temporary_directory, 'iOS applicationTests', false)
+          (result > 0).should.be.true
+          File.exists?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+        end
+
+      end
+
+      #-------------------------------------------------------------------------#
+
+      describe 'For iOS Application And Static Library' do
+
+        extend SpecHelper::TemporaryDirectory
+
+        before do
+          @scheme = Xcodeproj::XCScheme.new
+          @scheme.add_build_target(@ios_application, 'Cocoa Application')
+          @scheme.add_build_target(@ios_static_library, 'Cocoa Application')
+          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
+          @scheme.add_test_target(@ios_static_library_tests, 'Cocoa Application')
+          @scheme.set_launch_target(@ios_application, 'Cocoa Application')
+          @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS application and static library.xcscheme')
+        end
+
+        it 'XML Decl' do
+          @xml.xml_decl.should.be.equal @scheme.doc.xml_decl
+        end
+
+        it 'Scheme' do
+          compare_elements @xml.root, @scheme.doc.root
+        end
+
+        it 'Scheme > BuildAction' do
+          compare_elements @xml.root.elements['BuildAction'], @scheme.doc.root.elements['BuildAction']
+        end
+
+        it 'Scheme > TestAction' do
+          compare_elements @xml.root.elements['TestAction'], @scheme.doc.root.elements['TestAction']
+        end
+
+        it 'Scheme > TestAction > Testables' do
+          compare_elements \
+            @xml.root.elements['TestAction'] \
+            .elements['Testables'], \
+            @scheme.doc.root.elements['TestAction'] \
+            .elements['Testables']
+        end
+
+        it 'Scheme > TestAction > Testables > TestableReference' do
+          compare_elements \
+            @xml.root.elements['TestAction'] \
+            .elements['Testables'] \
+            .elements['TestableReference'], \
+            @scheme.doc.root.elements['TestAction'] \
+            .elements['Testables'] \
+            .elements['TestableReference']
+        end
+
+        it 'Scheme > TestAction > Testables > TestableReference > BuildableReference' do
+          compare_elements \
+            @xml.root.elements['TestAction'] \
+            .elements['Testables'] \
+            .elements['TestableReference'] \
+            .elements['BuildableReference'], \
+            @scheme.doc.root.elements['TestAction'] \
+            .elements['Testables'] \
+            .elements['TestableReference'] \
+            .elements['BuildableReference']
+        end
+
+        it 'Scheme > LaunchAction' do
+          compare_elements @xml.root.elements['LaunchAction'], @scheme.doc.root.elements['LaunchAction']
+        end
+
+        it 'Scheme > LaunchAction > AdditionalOptions' do
+          compare_elements \
+            @xml.root.elements['LaunchAction'] \
+            .elements['AdditionalOptions'], \
+            @scheme.doc.root.elements['LaunchAction'] \
+            .elements['AdditionalOptions']
+        end
+
+        it 'Scheme > ProfileAction' do
+          compare_elements @xml.root.elements['ProfileAction'], @scheme.doc.root.elements['ProfileAction']
+        end
+
+        it 'Scheme > AnalyzeAction' do
+          compare_elements @xml.root.elements['AnalyzeAction'], @scheme.doc.root.elements['AnalyzeAction']
+        end
+
+        it 'Scheme > ArchiveAction' do
+          compare_elements @xml.root.elements['ArchiveAction'], @scheme.doc.root.elements['ArchiveAction']
+        end
+
+        it 'Save as Shared Scheme' do
+          result = @scheme.save_as(temporary_directory, 'iOS applicationTests', true)
+          (result > 0).should.be.true
+          File.exists?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+        end
+
+        it 'Save as User Scheme' do
+          result = @scheme.save_as(temporary_directory, 'iOS applicationTests', false)
           (result > 0).should.be.true
           File.exists?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
