@@ -11,6 +11,10 @@
 
 ###### Enhancements
 
+* [Project] The project can now recreate it schemes from scratch and optionally
+  hide them.  
+  [@irrationalfab](https://github.com/irrationalfab)
+
 * Added support for booleans in the C extension which handles Property list
   files.  
   [@irrationalfab](https://github.com/irrationalfab)
