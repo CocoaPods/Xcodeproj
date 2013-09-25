@@ -23,6 +23,15 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		806F6FB717EFAF46001051EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52523D016245A910012E2BA /* Foundation.framework */; };
+		806F6FBC17EFAF46001051EE /* iOS_staticLibrary.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 806F6FBB17EFAF46001051EE /* iOS_staticLibrary.h */; };
+		806F6FBE17EFAF46001051EE /* iOS_staticLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 806F6FBD17EFAF46001051EE /* iOS_staticLibrary.m */; };
+		806F6FC517EFAF47001051EE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 806F6FC417EFAF47001051EE /* XCTest.framework */; };
+		806F6FC617EFAF47001051EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52523D016245A910012E2BA /* Foundation.framework */; };
+		806F6FC717EFAF47001051EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E52523F616245AB20012E2BA /* UIKit.framework */; };
+		806F6FCA17EFAF47001051EE /* libiOS staticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 806F6FB617EFAF46001051EE /* libiOS staticLibrary.a */; };
+		806F6FD017EFAF47001051EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 806F6FCE17EFAF47001051EE /* InfoPlist.strings */; };
+		806F6FD217EFAF47001051EE /* iOS_staticLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 806F6FD117EFAF47001051EE /* iOS_staticLibraryTests.m */; };
 		E525239116245A900012E2BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E525239016245A900012E2BA /* Cocoa.framework */; };
 		E525239B16245A900012E2BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E525239916245A900012E2BA /* InfoPlist.strings */; };
 		E525239D16245A900012E2BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E525239C16245A900012E2BA /* main.m */; };
@@ -162,6 +171,20 @@
 			remoteGlobalIDString = E5FBB2E41635ED34009E96B0;
 			remoteInfo = ReferencedProject;
 		};
+		806F6FC817EFAF47001051EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E525238316245A900012E2BA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 806F6FB517EFAF46001051EE;
+			remoteInfo = "iOS staticLibrary";
+		};
+		806F6FDB17EFB0E7001051EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E525238316245A900012E2BA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E52523F316245AB20012E2BA;
+			remoteInfo = "iOS application";
+		};
 		E52523B716245A910012E2BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E525238316245A900012E2BA /* Project object */;
@@ -228,6 +251,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		806F6FB417EFAF46001051EE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				806F6FBC17EFAF46001051EE /* iOS_staticLibrary.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E525243E16245B1A0012E2BA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +301,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		806F6FB617EFAF46001051EE /* libiOS staticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libiOS staticLibrary.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		806F6FBA17EFAF46001051EE /* iOS staticLibrary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iOS staticLibrary-Prefix.pch"; sourceTree = "<group>"; };
+		806F6FBB17EFAF46001051EE /* iOS_staticLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOS_staticLibrary.h; sourceTree = "<group>"; };
+		806F6FBD17EFAF46001051EE /* iOS_staticLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS_staticLibrary.m; sourceTree = "<group>"; };
+		806F6FC317EFAF47001051EE /* iOS staticLibraryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS staticLibraryTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		806F6FC417EFAF47001051EE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		806F6FCD17EFAF47001051EE /* iOS staticLibraryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS staticLibraryTests-Info.plist"; sourceTree = "<group>"; };
+		806F6FCF17EFAF47001051EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		806F6FD117EFAF47001051EE /* iOS_staticLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS_staticLibraryTests.m; sourceTree = "<group>"; };
 		E525238C16245A900012E2BA /* Cocoa Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E525239016245A900012E2BA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E525239316245A900012E2BA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -380,6 +422,25 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		806F6FB317EFAF46001051EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				806F6FB717EFAF46001051EE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		806F6FC017EFAF47001051EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				806F6FCA17EFAF47001051EE /* libiOS staticLibrary.a in Frameworks */,
+				806F6FC517EFAF47001051EE /* XCTest.framework in Frameworks */,
+				806F6FC717EFAF47001051EE /* UIKit.framework in Frameworks */,
+				806F6FC617EFAF47001051EE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E525238916245A900012E2BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -644,6 +705,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		806F6FB817EFAF46001051EE /* iOS staticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				806F6FBB17EFAF46001051EE /* iOS_staticLibrary.h */,
+				806F6FBD17EFAF46001051EE /* iOS_staticLibrary.m */,
+				806F6FB917EFAF46001051EE /* Supporting Files */,
+			);
+			path = "iOS staticLibrary";
+			sourceTree = "<group>";
+		};
+		806F6FB917EFAF46001051EE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				806F6FBA17EFAF46001051EE /* iOS staticLibrary-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		806F6FCB17EFAF47001051EE /* iOS staticLibraryTests */ = {
+			isa = PBXGroup;
+			children = (
+				806F6FD117EFAF47001051EE /* iOS_staticLibraryTests.m */,
+				806F6FCC17EFAF47001051EE /* Supporting Files */,
+			);
+			path = "iOS staticLibraryTests";
+			sourceTree = "<group>";
+		};
+		806F6FCC17EFAF47001051EE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				806F6FCD17EFAF47001051EE /* iOS staticLibraryTests-Info.plist */,
+				806F6FCE17EFAF47001051EE /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E525238116245A900012E2BA = {
 			isa = PBXGroup;
 			children = (
@@ -668,6 +765,8 @@
 				E52523D216245A910012E2BA /* Cocoa ApplicationImporter */,
 				E52523FC16245AB20012E2BA /* iOS application */,
 				E525242616245AB20012E2BA /* iOS applicationTests */,
+				806F6FB817EFAF46001051EE /* iOS staticLibrary */,
+				806F6FCB17EFAF47001051EE /* iOS staticLibraryTests */,
 				E525238F16245A900012E2BA /* Frameworks */,
 				E525238D16245A900012E2BA /* Products */,
 				E525243B16245AE10012E2BA /* Linked Folder */,
@@ -708,6 +807,8 @@
 				E550D8A516371C0F00A003E9 /* CommandLineTool */,
 				E550D8B616371C1700A003E9 /* MacRubyApplication.app */,
 				E550D8D816371C1800A003E9 /* MacRubyApplicationImporter.mdimporter */,
+				806F6FB617EFAF46001051EE /* libiOS staticLibrary.a */,
+				806F6FC317EFAF47001051EE /* iOS staticLibraryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -734,6 +835,7 @@
 				E550D7F416371BA500A003E9 /* InstallerPlugins.framework */,
 				E550D81216371BAF00A003E9 /* Quartz.framework */,
 				E550D88816371C0600A003E9 /* AppleScriptObjC.framework */,
+				806F6FC417EFAF47001051EE /* XCTest.framework */,
 				E525239216245A900012E2BA /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -1031,6 +1133,42 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		806F6FB517EFAF46001051EE /* iOS staticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 806F6FD917EFAF47001051EE /* Build configuration list for PBXNativeTarget "iOS staticLibrary" */;
+			buildPhases = (
+				806F6FB217EFAF46001051EE /* Sources */,
+				806F6FB317EFAF46001051EE /* Frameworks */,
+				806F6FB417EFAF46001051EE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "iOS staticLibrary";
+			productName = "iOS staticLibrary";
+			productReference = 806F6FB617EFAF46001051EE /* libiOS staticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		806F6FC217EFAF47001051EE /* iOS staticLibraryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 806F6FDA17EFAF47001051EE /* Build configuration list for PBXNativeTarget "iOS staticLibraryTests" */;
+			buildPhases = (
+				806F6FBF17EFAF47001051EE /* Sources */,
+				806F6FC017EFAF47001051EE /* Frameworks */,
+				806F6FC117EFAF47001051EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				806F6FDC17EFB0E7001051EE /* PBXTargetDependency */,
+				806F6FC917EFAF47001051EE /* PBXTargetDependency */,
+			);
+			name = "iOS staticLibraryTests";
+			productName = "iOS staticLibraryTests";
+			productReference = 806F6FC317EFAF47001051EE /* iOS staticLibraryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E525238B16245A900012E2BA /* Cocoa Application */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E52523E616245A910012E2BA /* Build configuration list for PBXNativeTarget "Cocoa Application" */;
@@ -1582,6 +1720,11 @@
 				CLASSPREFIX = CP;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = CocoaPods;
+				TargetAttributes = {
+					806F6FC217EFAF47001051EE = {
+						TestTargetID = E525238B16245A900012E2BA;
+					};
+				};
 			};
 			buildConfigurationList = E525238616245A900012E2BA /* Build configuration list for PBXProject "Cocoa Application" */;
 			compatibilityVersion = "Xcode 3.1";
@@ -1607,6 +1750,8 @@
 				E52523C516245A910012E2BA /* Cocoa ApplicationImporter */,
 				E52523F316245AB20012E2BA /* iOS application */,
 				E525241E16245AB20012E2BA /* iOS applicationTests */,
+				806F6FB517EFAF46001051EE /* iOS staticLibrary */,
+				806F6FC217EFAF47001051EE /* iOS staticLibraryTests */,
 				E550D6AA16371AF600A003E9 /* Aggregate */,
 				E550D6B016371B0600A003E9 /* External */,
 				E550D6B816371B1A00A003E9 /* UnitTestingBundle */,
@@ -1664,6 +1809,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		806F6FC117EFAF47001051EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				806F6FD017EFAF47001051EE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E525238A16245A900012E2BA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2027,6 +2180,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		806F6FB217EFAF46001051EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				806F6FBE17EFAF46001051EE /* iOS_staticLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		806F6FBF17EFAF47001051EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				806F6FD217EFAF47001051EE /* iOS_staticLibraryTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E525238816245A900012E2BA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2254,6 +2423,16 @@
 			name = ReferencedProject;
 			targetProxy = 5138059B16499F4C001D82AD /* PBXContainerItemProxy */;
 		};
+		806F6FC917EFAF47001051EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 806F6FB517EFAF46001051EE /* iOS staticLibrary */;
+			targetProxy = 806F6FC817EFAF47001051EE /* PBXContainerItemProxy */;
+		};
+		806F6FDC17EFB0E7001051EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E52523F316245AB20012E2BA /* iOS application */;
+			targetProxy = 806F6FDB17EFB0E7001051EE /* PBXContainerItemProxy */;
+		};
 		E52523B816245A910012E2BA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E525238B16245A900012E2BA /* Cocoa Application */;
@@ -2287,6 +2466,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		806F6FCE17EFAF47001051EE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				806F6FCF17EFAF47001051EE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		E525239916245A900012E2BA /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2371,6 +2558,130 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		806F6FD317EFAF47001051EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DSTROOT = /tmp/iOS_staticLibrary.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS staticLibrary/iOS staticLibrary-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		806F6FD417EFAF47001051EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DSTROOT = /tmp/iOS_staticLibrary.dst;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS staticLibrary/iOS staticLibrary-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		806F6FD517EFAF47001051EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iOS application.app/iOS application";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS staticLibrary/iOS staticLibrary-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iOS staticLibraryTests/iOS staticLibraryTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		806F6FD617EFAF47001051EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iOS application.app/iOS application";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS staticLibrary/iOS staticLibrary-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "iOS staticLibraryTests/iOS staticLibraryTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		E52523E116245A910012E2BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3307,6 +3618,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		806F6FD917EFAF47001051EE /* Build configuration list for PBXNativeTarget "iOS staticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				806F6FD317EFAF47001051EE /* Debug */,
+				806F6FD417EFAF47001051EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		806F6FDA17EFAF47001051EE /* Build configuration list for PBXNativeTarget "iOS staticLibraryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				806F6FD517EFAF47001051EE /* Debug */,
+				806F6FD617EFAF47001051EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E525238616245A900012E2BA /* Build configuration list for PBXProject "Cocoa Application" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
