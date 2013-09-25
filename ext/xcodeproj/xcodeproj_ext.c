@@ -80,7 +80,10 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
   CFTypeID valueType = CFGetTypeID(valueRef);
   if (valueType == CFStringGetTypeID()) {
     value = cfstr_to_str(valueRef);
-
+  } else if (valueRef == kCFBooleanTrue) {
+    value = Qtrue;
+  } else if (valueRef == kCFBooleanFalse) {
+    value = Qfalse;
   } else if (valueType == CFDictionaryGetTypeID()) {
     value = rb_hash_new();
     CFDictionaryApplyFunction(valueRef, hash_set, (void *)value);
@@ -146,7 +149,10 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
       CFArrayAppendValue((CFMutableArrayRef)valueRef, elementRef);
       CFRelease(elementRef);
     }
-
+  } else if (value == Qtrue) {
+    valueRef = kCFBooleanTrue;
+  } else if (value == Qfalse) {
+    valueRef = kCFBooleanFalse;
   } else {
     valueRef = str_to_cfstr(value);
   }
