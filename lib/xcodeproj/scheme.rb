@@ -72,13 +72,10 @@ module Xcodeproj
     # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
     #        A target used by scheme in the build step.
     #
-    # @param [String] container
-    #        The name of the container (the project name file without the extension) that has this target.
-    #
     # @param [Bool] build_for_running
     #        Whether to build this target in the launch action. Often false for test targets.
     #
-    def add_build_target(build_target, container, build_for_running = true)
+    def add_build_target(build_target, build_for_running = true)
       if !@build_action_entries then
         @build_action_entries = @build_action.add_element 'BuildActionEntries'
       end
@@ -95,7 +92,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
       buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+      buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
     end
 
     # Add a target to the list of targets to build in the build action.
@@ -103,10 +100,7 @@ module Xcodeproj
     # @param [Xcodeproj::Project::Object::AbstractTarget] test_target
     #        A target used by scheme in the test step.
     #
-    # @param [String] container
-    #        The name of the container (the project name file without the extension) that has this target.
-    #
-    def add_test_target(test_target, container)
+    def add_test_target(test_target)
       testable_reference = @testables.add_element 'TestableReference'
       testable_reference.attributes['skipped'] = 'NO'
 
@@ -115,7 +109,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = test_target.uuid
       buildable_reference.attributes['BuildableName'] = "#{test_target.name}.octest"
       buildable_reference.attributes['BlueprintName'] = test_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+      buildable_reference.attributes['ReferencedContainer'] = "container:#{test_target.project.path.basename}"
     end
 
     # Sets a runnable target target to be the target of the launch action of the scheme.
@@ -123,10 +117,7 @@ module Xcodeproj
     # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
     #        A target used by scheme in the launch step.
     #
-    # @param [String] container
-    #        The name of the container (the project name file without the extension) that has this target.
-    #
-    def set_launch_target(build_target, container)
+    def set_launch_target(build_target)
       launch_product_runnable = @launch_action.add_element 'BuildableProductRunnable'
 
       launch_buildable_reference = launch_product_runnable.add_element 'BuildableReference'
@@ -134,7 +125,7 @@ module Xcodeproj
       launch_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       launch_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
       launch_buildable_reference.attributes['BlueprintName'] = build_target.name
-      launch_buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+      launch_buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
 
       profile_product_runnable = @profile_action.add_element 'BuildableProductRunnable'
 
@@ -143,7 +134,7 @@ module Xcodeproj
       profile_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       profile_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
       profile_buildable_reference.attributes['BlueprintName'] = build_target.name
-      profile_buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+      profile_buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
 
       macro_expansion = @test_action.add_element 'MacroExpansion'
 
@@ -152,7 +143,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
       buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
+      buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
     end
 
     # @!group Class methods

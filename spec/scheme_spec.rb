@@ -9,6 +9,10 @@ module ProjectSpecs
 
   describe Xcodeproj::XCScheme do
 
+    before do
+      @project.stubs(:path).returns(Pathname.new('path/Cocoa Application.xcodeproj'))
+    end
+
     #-------------------------------------------------------------------------#
 
     describe 'Serialization' do
@@ -16,7 +20,7 @@ module ProjectSpecs
       before do
         app = @project.new_target(:application, 'iOS application', :osx)
         @sut = Xcodeproj::XCScheme.new
-        @sut.set_launch_target(app, 'Pods')
+        @sut.set_launch_target(app)
       end
 
       it "indents declares the XML as Xcode" do
@@ -89,9 +93,9 @@ module ProjectSpecs
 
         before do
           @scheme = Xcodeproj::XCScheme.new
-          @scheme.add_build_target(@ios_application, 'Cocoa Application')
-          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
-          @scheme.set_launch_target(@ios_application, 'Cocoa Application')
+          @scheme.add_build_target(@ios_application)
+          @scheme.add_test_target(@ios_application_tests)
+          @scheme.set_launch_target(@ios_application)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS application.xcscheme')
         end
 
@@ -253,7 +257,7 @@ module ProjectSpecs
 
         before do
           @scheme = Xcodeproj::XCScheme.new
-          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
+          @scheme.add_test_target(@ios_application_tests)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests.xcscheme')
         end
 
@@ -337,8 +341,8 @@ module ProjectSpecs
 
         before do
           @scheme = Xcodeproj::XCScheme.new
-          @scheme.add_build_target(@ios_application_tests, 'Cocoa Application')
-          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
+          @scheme.add_build_target(@ios_application_tests)
+          @scheme.add_test_target(@ios_application_tests)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests Set Build Target For Running.xcscheme')
         end
 
@@ -434,11 +438,11 @@ module ProjectSpecs
 
         before do
           @scheme = Xcodeproj::XCScheme.new
-          @scheme.add_build_target(@ios_application, 'Cocoa Application')
-          @scheme.add_build_target(@ios_static_library, 'Cocoa Application')
-          @scheme.add_test_target(@ios_application_tests, 'Cocoa Application')
-          @scheme.add_test_target(@ios_static_library_tests, 'Cocoa Application')
-          @scheme.set_launch_target(@ios_application, 'Cocoa Application')
+          @scheme.add_build_target(@ios_application)
+          @scheme.add_build_target(@ios_static_library)
+          @scheme.add_test_target(@ios_application_tests)
+          @scheme.add_test_target(@ios_static_library_tests)
+          @scheme.set_launch_target(@ios_application)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS application and static library.xcscheme')
         end
 
