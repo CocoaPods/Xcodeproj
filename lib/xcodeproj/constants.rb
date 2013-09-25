@@ -70,7 +70,7 @@ module Xcodeproj
     #
     FILE_TYPES_BY_EXTENSION = {
       'a'           => 'archive.ar',
-      'application' => 'wrapper.application',
+      'app'         => 'wrapper.application',
       'dylib'       => 'compiled.mach-o.dylib',
       'framework'   => 'wrapper.framework',
       'bundle'      => 'wrapper.plug-in',
@@ -94,6 +94,16 @@ module Xcodeproj
       :dynamic_library  => 'com.apple.product-type.library.dynamic',
       :static_library   => 'com.apple.product-type.library.static',
       :bundle           => 'com.apple.product-type.bundle',
+    }.freeze
+
+    # @return [Hash] The extensions or the various product UTIs.
+    #
+    PRODUCT_UTI_EXTENSIONS = {
+      :application     => 'app',
+      :framework       => 'framework',
+      :dynamic_library => 'dylib',
+      :static_library  => 'a',
+      :bundle          => 'bundle',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build

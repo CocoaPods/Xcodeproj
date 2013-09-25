@@ -287,7 +287,7 @@ module ProjectSpecs
       end
 
       it "returns all the files of the project" do
-        f = @project.products_group.new_static_library('Pods')
+        f = @project.products_group.new_product_ref_for_target('Pods', :static_library)
         @project.files.should.include?(f)
       end
 

@@ -94,7 +94,7 @@ module ProjectSpecs
     end
 
     it "creates a new static library" do
-      file = @sut.new_static_library('Pods')
+      file = @sut.new_product_ref_for_target('Pods', :static_library)
       file.parent.should == @sut
     end
 

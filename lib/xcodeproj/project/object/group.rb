@@ -212,8 +212,8 @@ module Xcodeproj
         #
         # @return [PBXFileReference] The new file reference.
         #
-        def new_static_library(product_name)
-          FileReferencesFactory.new_static_library(self, product_name)
+        def new_product_ref_for_target(target_name, product_type)
+          FileReferencesFactory.new_product_ref_for_target(self, target_name, product_type)
         end
 
         # Creates a file reference to a new bundle.

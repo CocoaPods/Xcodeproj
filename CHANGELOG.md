@@ -1,6 +1,13 @@
 ## Master
 
+###### Breaking
+
+* [PBXGroup] `#new_static_library` has been replaced by the more versatile
+  `#new_product_ref_for_target`.
+
 ###### Enhancements
+
+* Improvements to the generation of new targets.
 
 * [PBXGroup] Now defaults to sorting by name.
 

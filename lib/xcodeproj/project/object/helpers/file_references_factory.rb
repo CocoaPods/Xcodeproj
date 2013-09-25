@@ -44,8 +44,12 @@ module Xcodeproj
           #
           # @return [PBXFileReference] The new file reference.
           #
-          def new_static_library(group, product_name)
-            ref = new_reference(group, "lib#{product_name}.a", :built_products)
+          def new_product_ref_for_target(group, target_name, product_type)
+            if product_type == :static_library
+              prefix = 'lib'
+            end
+            extension = Constants::PRODUCT_UTI_EXTENSIONS[product_type]
+            ref = new_reference(group, "#{prefix}#{target_name}.#{extension}", :built_products)
             ref.include_in_index = '0'
             ref.set_explicit_file_type
             ref

@@ -46,7 +46,7 @@ module Xcodeproj
         target.build_configuration_list = configuration_list(project, platform, deployment_target)
 
         # Product
-        product = product_group.new_static_library(name)
+        product = product_group.new_product_ref_for_target(name, type)
         target.product_reference = product
 
         # Build phases

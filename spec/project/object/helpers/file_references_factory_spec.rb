@@ -34,33 +34,32 @@ module ProjectSpecs
 
     describe '::new_static_library' do
 
+      before do
+        @ref = @sut.new_product_ref_for_target(@group, 'Pods', :static_library)
+      end
+
       it "creates a new static library" do
-        ref = @sut.new_static_library(@group, 'Pods')
-        ref.isa.should == 'PBXFileReference'
-        ref.parent.should == @group
-        @group.children.should.include?(ref)
+        @ref.isa.should == 'PBXFileReference'
+        @ref.parent.should == @group
+        @group.children.should.include?(@ref)
       end
 
       it "configures the paths relative to the built products dir" do
-        ref = @sut.new_static_library(@group, 'Pods')
-        ref.path.should == 'libPods.a'
-        ref.source_tree.should == 'BUILT_PRODUCTS_DIR'
+        @ref.path.should == 'libPods.a'
+        @ref.source_tree.should == 'BUILT_PRODUCTS_DIR'
       end
 
       it "doesn't set the name" do
-        ref = @sut.new_static_library(@group, 'Pods')
-        ref.name.should.be.nil
+        @ref.name.should.be.nil
       end
 
       it "sets the reference to be not included in the index" do
-        ref = @sut.new_static_library(@group, 'Pods')
-        ref.include_in_index.should == '0'
+        @ref.include_in_index.should == '0'
       end
 
       it "sets the explicit file type" do
-        ref = @sut.new_static_library(@group, 'Pods')
-        ref.last_known_file_type.should.be.nil
-        ref.explicit_file_type.should == 'archive.ar'
+        @ref.last_known_file_type.should.be.nil
+        @ref.explicit_file_type.should == 'archive.ar'
       end
 
     end
