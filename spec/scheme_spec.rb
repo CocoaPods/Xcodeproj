@@ -9,6 +9,35 @@ module Xcodeproj
 
   describe XCScheme do
 
+    #-------------------------------------------------------------------------#
+
+    describe 'Serialization' do
+
+      before do
+        @ios_application = Xcodeproj::Project::PBXNativeTarget.new(nil, 'E52523F316245AB20012E2BA')
+        @ios_application.name = "iOS application"
+        @ios_application.product_type = "com.apple.product-type.application"
+        @sut = Xcodeproj::XCScheme.new('Cocoa Application', @ios_application, @ios_application_tests)
+      end
+
+      it "indents declares the XML as Xcode" do
+        @sut.to_s.lines.first.chomp.should == '<?xml version="1.0" encoding="UTF-8"?>'
+      end
+
+      it "indents the string representation as Xcode" do
+        require 'active_support/core_ext/string/strip.rb'
+        @sut.to_s[0..190].should == <<-DOC.strip_heredoc
+          <?xml version="1.0" encoding="UTF-8"?>
+          <Scheme
+             LastUpgradeVersion = "0500"
+             version = "1.3">
+             <BuildAction
+                parallelizeBuildables = "YES"
+                buildImplicitDependencies = "YES">
+        DOC
+      end
+    end
+
 
     #-------------------------------------------------------------------------#
 

@@ -4,6 +4,9 @@
 
 * [PBXGroup] Now defaults to sorting by name.
 
+* [XCScheme] The string representation of schemes now closely matches Xcode
+  behaviour.
+
 ## 0.11.1
 
 ###### Bug Fixes
