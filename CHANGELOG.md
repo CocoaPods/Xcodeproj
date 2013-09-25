@@ -5,7 +5,8 @@
 * [PBXGroup] `#new_static_library` has been replaced by the more versatile
   `#new_product_ref_for_target`.
 
-* [XCScheme] Overhauled interface to support multiple targets.
+* [XCScheme] Overhauled interface to support multiple targets.  
+  [@jasonprado](https://github.com/jasonprado), [#95](https://github.com/CocoaPods/Xcodeproj/pull/95)
 
 ###### Enhancements
 
