@@ -5,19 +5,18 @@ def compare_elements a, b
   a.elements.count.should.be.equal b.elements.count
 end
 
-module Xcodeproj
+module ProjectSpecs
 
-  describe XCScheme do
+  describe Xcodeproj::XCScheme do
 
     #-------------------------------------------------------------------------#
 
     describe 'Serialization' do
 
       before do
-        @ios_application = Xcodeproj::Project::PBXNativeTarget.new(nil, 'E52523F316245AB20012E2BA')
-        @ios_application.name = "iOS application"
-        @ios_application.product_type = "com.apple.product-type.application"
-        @sut = Xcodeproj::XCScheme.new('Cocoa Application', @ios_application, @ios_application_tests)
+        app = @project.new_target(:application, 'iOS application', :osx)
+        @sut = Xcodeproj::XCScheme.new
+        @sut.set_launch_target(app, 'Pods')
       end
 
       it "indents declares the XML as Xcode" do
@@ -76,18 +75,14 @@ module Xcodeproj
     describe 'Creating a Shared Scheme' do
 
       before do
-        @ios_application = Xcodeproj::Project::PBXNativeTarget.new(nil, 'E52523F316245AB20012E2BA')
-        @ios_application.name = "iOS application"
-        @ios_application.product_type = "com.apple.product-type.application"
-        @ios_application_tests = Xcodeproj::Project::PBXNativeTarget.new(nil, 'E525241E16245AB20012E2BA')
-        @ios_application_tests.name = "iOS applicationTests"
-        @ios_application_tests.product_type = "com.apple.product-type.bundle"
-        @ios_static_library = Xcodeproj::Project::PBXNativeTarget.new(nil, '806F6FC217EFAF47001051EE')
-        @ios_static_library.name = "iOS staticLibrary"
-        @ios_static_library.product_type = "com.apple.product-type.library.static"
-        @ios_static_library_tests = Xcodeproj::Project::PBXNativeTarget.new(nil, '806F6FC217EFAF47001051EE')
-        @ios_static_library_tests.name = "iOS staticLibraryTests"
-        @ios_static_library_tests.product_type = "com.apple.product-type.bundle"
+        @ios_application = @project.new_target(:application, 'iOS application', :osx)
+        @ios_application.stubs(:uuid).returns('E52523F316245AB20012E2BA')
+        @ios_application_tests = @project.new_target(:bundle, 'iOS applicationTests', :osx)
+        @ios_application_tests.stubs(:uuid).returns('E525241E16245AB20012E2BA')
+        @ios_static_library = @project.new_target(:bundle, 'iOS staticLibrary', :osx)
+        @ios_static_library.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
+        @ios_static_library_tests = @project.new_target(:bundle, 'iOS staticLibraryTests', :osx)
+        @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
       end
 
       describe 'For iOS Application' do

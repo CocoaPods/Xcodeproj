@@ -5,6 +5,8 @@
 * [PBXGroup] `#new_static_library` has been replaced by the more versatile
   `#new_product_ref_for_target`.
 
+* [XCScheme] Overhauled interface to support multiple targets.
+
 ###### Enhancements
 
 * Improvements to the generation of new targets.

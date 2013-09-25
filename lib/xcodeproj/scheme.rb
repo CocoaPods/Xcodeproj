@@ -93,7 +93,7 @@ module Xcodeproj
       buildable_reference = build_action_entry.add_element 'BuildableReference'
       buildable_reference.attributes['BuildableIdentifier'] = 'primary'
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
+      buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
       buildable_reference.attributes['BlueprintName'] = build_target.name
       buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
     end
@@ -145,16 +145,14 @@ module Xcodeproj
       profile_buildable_reference.attributes['BlueprintName'] = build_target.name
       profile_buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
 
-      if build_target.product_type == 'com.apple.product-type.application' then
-        macro_expansion = @test_action.add_element 'MacroExpansion'
+      macro_expansion = @test_action.add_element 'MacroExpansion'
 
-        buildable_reference = macro_expansion.add_element 'BuildableReference'
-        buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-        buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-        buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
-        buildable_reference.attributes['BlueprintName'] = build_target.name
-        buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
-      end
+      buildable_reference = macro_expansion.add_element 'BuildableReference'
+      buildable_reference.attributes['BuildableIdentifier'] = 'primary'
+      buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
+      buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
+      buildable_reference.attributes['BlueprintName'] = build_target.name
+      buildable_reference.attributes['ReferencedContainer'] = "container:#{container}.xcodeproj"
     end
 
     # @!group Class methods
@@ -215,6 +213,7 @@ module Xcodeproj
       out = ''
       formatter.write(@doc, out)
       out.gsub!("<?xml version='1.0' encoding='UTF-8'?>", '<?xml version="1.0" encoding="UTF-8"?>')
+      out << "\n"
       out
     end
 
