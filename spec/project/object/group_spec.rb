@@ -16,6 +16,10 @@ module ProjectSpecs
       @sut.parent.should == @project.main_group
     end
 
+    it "returns the parents" do
+      @sut.parents.should == [@project.main_group]
+    end
+
     it "returns the representation of the group hierarchy" do
       group = @sut.new_group('Child')
       group.hierarchy_path.should == "/Parent/Child"

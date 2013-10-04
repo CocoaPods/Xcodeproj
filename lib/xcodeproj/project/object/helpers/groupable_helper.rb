@@ -10,8 +10,8 @@ module Xcodeproj
           # @return [PBXGroup, PBXProject] The parent of the object.
           #
           def parent(object)
-            check_parents_integrity(object)
-            object.referrers.first
+            referrers = acceptable_refferers(object)
+            referrers.first
           end
 
           # @param  [PBXGroup, PBXFileReference] object
@@ -192,21 +192,22 @@ module Xcodeproj
           #
           # @return [void]
           #
-          def check_parents_integrity(object)
-            referrers_count = object.referrers.uniq.count
-            if referrers_count > 1
-              referrers_count = object.referrers.select{ |obj| obj.isa == 'PBXGroup' }.count
+          def acceptable_refferers(object)
+            referrers = object.referrers.uniq
+            if referrers.count > 1
+              referrers.select!{ |obj| obj.isa == 'PBXGroup' }
             end
 
-            if referrers_count == 0
+            if referrers.count == 0
               raise "[Xcodeproj] Consistency issue: no parent " \
                 "for object `#{object.display_name}`: "\
                 "`#{object.referrers.join('`, `')}`"
-            elsif referrers_count > 1
+            elsif referrers.count > 1
               raise "[Xcodeproj] Consistency issue: unexpected multiple parents " \
                 "for object `#{object.display_name}`: "\
                 "#{object.referrers}"
             end
+            referrers
           end
 
           # Converts the given source tree to its string value.

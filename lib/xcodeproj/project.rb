@@ -84,6 +84,7 @@ module Xcodeproj
     #         Project.open("path/to/Project.xcodeproj")
     #
     def self.open(path)
+      path = Pathname.pwd + path
       unless Pathname.new(path).exist?
         raise "[Xcodeproj] Unable to open `#{path}` because it doesn't exist."
       end
@@ -622,7 +623,7 @@ module Xcodeproj
 
     public
 
-    # @!group Helpers
+    # @!group Schemes
     #-------------------------------------------------------------------------#
 
     # Get list of shared schemes in project
@@ -638,6 +639,34 @@ module Xcodeproj
       end
       schemes << File.basename(project_path, '.xcodeproj') if schemes.empty?
       schemes
+    end
+
+    # Recreates the user schemes of the project from scratch (removes the
+    # folder) and optionally hides them.
+    #
+    # @param  [Bool] visible
+    #         Wether the schemes should be visible or hidden.
+    #
+    # @return [void]
+    #
+    def recreate_user_schemes(visible = true)
+      schemes_dir = XCScheme.user_data_dir(path)
+      FileUtils.rm_rf(schemes_dir)
+
+      xcschememanagement = {}
+      xcschememanagement['SchemeUserState'] = {}
+      xcschememanagement['SuppressBuildableAutocreation'] = {}
+
+      targets.each do |target|
+        scheme = XCScheme.new
+        scheme.add_build_target(target)
+        scheme.save_as(path, target.name, false)
+        xcschememanagement['SchemeUserState']["#{target.name}.xcscheme"] = {}
+        xcschememanagement['SchemeUserState']["#{target.name}.xcscheme"]['isShown'] = visible
+      end
+
+      xcschememanagement_path = schemes_dir + 'xcschememanagement.plist'
+      Xcodeproj.write_plist(xcschememanagement, xcschememanagement_path)
     end
 
     #-------------------------------------------------------------------------#
