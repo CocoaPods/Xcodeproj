@@ -10,7 +10,20 @@ module Xcodeproj
           # @return [PBXGroup, PBXProject] The parent of the object.
           #
           def parent(object)
-            referrers = acceptable_refferers(object)
+            referrers = object.referrers.uniq
+            if referrers.count > 1
+              referrers.select!{ |obj| obj.isa == 'PBXGroup' }
+            end
+
+            if referrers.count == 0
+              raise "[Xcodeproj] Consistency issue: no parent " \
+                "for object `#{object.display_name}`: "\
+                "`#{object.referrers.join('`, `')}`"
+            elsif referrers.count > 1
+              raise "[Xcodeproj] Consistency issue: unexpected multiple parents " \
+                "for object `#{object.display_name}`: "\
+                "#{object.referrers}"
+            end
             referrers.first
           end
 
@@ -186,29 +199,6 @@ module Xcodeproj
 
           # @group Helpers
           #-------------------------------------------------------------------#
-
-          # Checks whether there is a single identifiable parent and raises
-          # otherwise.
-          #
-          # @return [void]
-          #
-          def acceptable_refferers(object)
-            referrers = object.referrers.uniq
-            if referrers.count > 1
-              referrers.select!{ |obj| obj.isa == 'PBXGroup' }
-            end
-
-            if referrers.count == 0
-              raise "[Xcodeproj] Consistency issue: no parent " \
-                "for object `#{object.display_name}`: "\
-                "`#{object.referrers.join('`, `')}`"
-            elsif referrers.count > 1
-              raise "[Xcodeproj] Consistency issue: unexpected multiple parents " \
-                "for object `#{object.display_name}`: "\
-                "#{object.referrers}"
-            end
-            referrers
-          end
 
           # Converts the given source tree to its string value.
           #
