@@ -15,8 +15,34 @@ module ProjectSpecs
         @group = @project.new_group('Parent')
       end
 
-      it "returns the parent" do
-        @sut.parent(@group).should == @project.main_group
+      describe '::parent' do
+
+        it "returns the parent" do
+          @sut.parent(@group).should == @project.main_group
+        end
+
+        it "includes only groups in the parents" do
+          file = @project.new_file('File.m')
+          target = @project.new_target(:library, 'Pods', :ios)
+          target.add_file_references([file])
+          @sut.parent(file).should == @project.main_group
+        end
+
+        it "raises if there is not a suitable parent" do
+          @group.remove_referrer(@project.main_group)
+          should.raise do
+            @sut.parent(@group)
+          end.message.should.match /no parent/
+        end
+
+        it "raises if there are multiple parents" do
+          new_group = @group.new_group('Child')
+          new_group.add_referrer(@project.main_group)
+          should.raise do
+            @sut.parent(new_group)
+          end.message.should.match /multiple parents/
+        end
+
       end
 
       it "returns the parents of the object" do
@@ -225,37 +251,6 @@ module ProjectSpecs
         new_group.path.should == 'project_dir/Parent/Classes'
       end
 
-
-    end
-
-    #-------------------------------------------------------------------------#
-
-    describe '::check_parents_integrity' do
-
-      before do
-        @group = @project.new_group('Parent')
-      end
-
-      it "raises if there is not a suitable parent" do
-        @group.remove_referrer(@project.main_group)
-        should.raise do
-          @sut.send(:check_parents_integrity, @group)
-        end.message.should.match /no parent/
-      end
-
-      it "doesn't raise for objects referenced by the project which have single identifiable parent" do
-        should.not.raise do
-          @sut.send(:check_parents_integrity, @project.products_group)
-        end
-      end
-
-      it "raises if there are multiple parents" do
-        new_group = @group.new_group('Child')
-        new_group.add_referrer(@project.main_group)
-        should.raise do
-          @sut.send(:check_parents_integrity, new_group)
-        end.message.should.match /multiple parents/
-      end
     end
 
     #-------------------------------------------------------------------------#

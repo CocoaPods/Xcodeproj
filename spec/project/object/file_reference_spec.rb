@@ -11,6 +11,10 @@ module ProjectSpecs
       @sut.parent.should == @project.main_group
     end
 
+    it "returns the parents" do
+      @sut.parents.should == [@project.main_group]
+    end
+
     it "returns the representation of the group hierarchy" do
       @sut.hierarchy_path.should == "/File.m"
     end

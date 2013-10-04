@@ -16,6 +16,10 @@ module ProjectSpecs
       @sut.parent.should == @project.main_group
     end
 
+    it "returns the parents" do
+      @sut.parents.should == [@project.main_group]
+    end
+
     it "returns the representation of the group hierarchy" do
       group = @sut.new_group('Child')
       group.hierarchy_path.should == "/Parent/Child"
@@ -82,6 +86,12 @@ module ProjectSpecs
       groups = @sut.recursive_children_groups.map(&:display_name).sort
       groups.should == ["1", "2", "ZappMachine", "group1", "group2"]
     end
+
+    it "returns the recursive list of the children" do
+      @sut.new_group('group1').new_group('1')
+      @sut.new_group('group2').new_group('2')
+      groups = @sut.recursive_children.map(&:display_name).sort
+      groups.should == ["1", "2", "Abracadabra.h", "Abracadabra.m", "Banana.h", "Banana.m", "ZappMachine", "group1", "group2"]    end
 
     it "returns whether it is empty" do
       @sut.should.not.be.empty

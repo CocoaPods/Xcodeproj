@@ -90,6 +90,13 @@ module Xcodeproj
           GroupableHelper.parent(self)
         end
 
+        # @return [Array<PBXGroup, PBXProject>] The list of the parents of the
+        #         group.
+        #
+        def parents
+          GroupableHelper.parents(self)
+        end
+
         # @return [String] A representation of the group hierarchy.
         #
         def hierarchy_path
@@ -176,6 +183,20 @@ module Xcodeproj
           groups.each do |child|
             result << child
             result.concat(child.recursive_children_groups)
+          end
+          result
+        end
+
+        # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
+        #         recursive list of the children of the group.
+        #
+        def recursive_children
+          result = []
+          children.each do |child|
+            result << child
+            if child.is_a?(PBXGroup)
+              result.concat(child.recursive_children)
+            end
           end
           result
         end

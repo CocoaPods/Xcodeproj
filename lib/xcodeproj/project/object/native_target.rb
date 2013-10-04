@@ -259,7 +259,7 @@ module Xcodeproj
 
         # @return [String] the build product type identifier.
         #
-        attribute :product_type, String, 'com.apple.product-type.library.static'
+        attribute :product_type, String
 
         # @return [PBXFileReference] the reference to the product file.
         #
@@ -283,6 +283,13 @@ module Xcodeproj
 
         # @!group Helpers
         #--------------------------------------#
+
+        # @return [Symbol] The type of the target expressed as a symbol.
+        #
+        def symbol_type
+          pair = Constants::PRODUCT_TYPE_UTI.find { |key, value| value == product_type }
+          pair.first
+        end
 
         # Adds source files to the target.
         #

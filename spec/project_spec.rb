@@ -430,15 +430,40 @@ module ProjectSpecs
 
     describe "Project schemes" do
       it "return project name as scheme if there are no shared schemes" do
-        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/Pods/Pods.xcodeproj')
+        schemes = Xcodeproj::Project.schemes(fixture_path('SharedSchemes/Pods/Pods.xcodeproj'))
         schemes[0].should == "Pods"
       end
 
       it "return all project's shared schemes" do
-        schemes = Xcodeproj::Project.schemes fixture_path('SharedSchemes/SharedSchemes.xcodeproj')
+        schemes = Xcodeproj::Project.schemes(fixture_path('SharedSchemes/SharedSchemes.xcodeproj'))
         schemes.sort.should == ['SharedSchemes', 'SharedSchemesForTest']
       end
 
+      describe "#recreate_user_schemes" do
+
+        it "can recreate the user schemes" do
+          sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
+          sut.new_target(:application, 'Xcode', :ios)
+          sut.recreate_user_schemes
+          schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
+          schemes_dir.children.map { |f| f.basename.to_s }.should == ["Xcode.xcscheme", "xcschememanagement.plist"]
+          manifest = schemes_dir + "xcschememanagement.plist"
+          plist = Xcodeproj.read_plist(manifest.to_s)
+          plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == true
+        end
+
+        it "can hide the recreated user schemes" do
+          sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
+          sut.new_target(:application, 'Xcode', :ios)
+          sut.recreate_user_schemes(false)
+          manifest = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes/xcschememanagement.plist"
+          plist = Xcodeproj.read_plist(manifest.to_s)
+          plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == false
+        end
+      end
     end
+
+    #-------------------------------------------------------------------------#
+
   end
 end

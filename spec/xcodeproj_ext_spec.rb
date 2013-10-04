@@ -42,10 +42,12 @@ describe "Xcodeproj C ext" do
     Xcodeproj.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
   end
 
-  it "allows hashes, strings, and arrays of hashes and strings as values" do
+  it "allows hashes, strings, booleans, and arrays of hashes and strings as values" do
     hash = {
       'hash'   => { 'a hash' => 'in a hash' },
       'string' => 'string',
+      'true_bool' => true,
+      'false_bool' => false,
       'array'  => ['string in an array', { 'a hash' => 'in an array' }]
     }
     Xcodeproj.write_plist(hash, @plist)

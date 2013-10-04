@@ -330,6 +330,10 @@ module ProjectSpecs
         @sut = @project.new_target(:static_library, 'Pods', :ios)
       end
 
+      it "returns the symbol type" do
+        @sut.symbol_type.should == :static_library
+      end
+
       it "adds a list of sources file to the target to the source build phase" do
         ref = @project.main_group.new_file('Class.m')
         @sut.add_file_references([ref], '-fobjc-arc')
