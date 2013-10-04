@@ -84,6 +84,7 @@ module Xcodeproj
     #         Project.open("path/to/Project.xcodeproj")
     #
     def self.open(path)
+      path = Pathname.pwd + path
       unless Pathname.new(path).exist?
         raise "[Xcodeproj] Unable to open `#{path}` because it doesn't exist."
       end
