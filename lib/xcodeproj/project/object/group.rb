@@ -188,8 +188,7 @@ module Xcodeproj
         end
 
         # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
-        #         recursive children of the group.
-        #         TODO
+        #         recursive list of the children of the group.
         #
         def recursive_children
           result = []

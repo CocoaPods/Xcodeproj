@@ -32,6 +32,9 @@
 * [PBXGroup, PBXFileReference] Added `#parents`  
   [@irrationalfab](https://github.com/irrationalfab)
 
+* [PBXGroup] Added `#recursive_children_groups`  
+  [@irrationalfab](https://github.com/irrationalfab)
+
 ## 0.11.1
 
 ###### Bug Fixes
