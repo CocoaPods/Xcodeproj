@@ -43,7 +43,11 @@ module Xcodeproj
         #         user.
         #
         def display_name
-          file_ref.display_name
+          if file_ref
+            file_ref.display_name
+          else
+            super
+          end
         end
 
         # @return [Hash{String => Hash}, String] A hash suitable to display the
