@@ -134,6 +134,13 @@ module Xcodeproj
           GroupableHelper.parent(self)
         end
 
+        # @return [Array<PBXGroup, PBXProject>] The list of the parents of the
+        #         reference.
+        #
+        def parents
+          GroupableHelper.parents(self)
+        end
+
         # @return [String] A representation of the reference hierarchy.
         #
         def hierarchy_path

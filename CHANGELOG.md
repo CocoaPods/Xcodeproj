@@ -29,6 +29,9 @@
   behaviour.  
   [@irrationalfab](https://github.com/irrationalfab)
 
+* [PBXGroup, PBXFileReference] Added `#parents`  
+  [@irrationalfab](https://github.com/irrationalfab)
+
 ## 0.11.1
 
 ###### Bug Fixes
