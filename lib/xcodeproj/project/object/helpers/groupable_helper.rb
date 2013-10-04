@@ -12,7 +12,7 @@ module Xcodeproj
           def parent(object)
             referrers = object.referrers.uniq
             if referrers.count > 1
-              referrers.select!{ |obj| obj.isa == 'PBXGroup' }
+              referrers = referrers.select{ |obj| obj.isa == 'PBXGroup' }
             end
 
             if referrers.count == 0
