@@ -60,8 +60,8 @@ module ProjectSpecs
 
         configurations = list.build_configurations
         configurations.map(&:name).sort.should == %w| Debug Release |
-        list.build_settings('Debug').should == { 'ONLY_ACTIVE_ARCH' => 'YES' }
-        list.build_settings('Release').should == {}
+        list.build_settings('Debug')['ONLY_ACTIVE_ARCH'].should == 'YES'
+        list.build_settings('Release')["VALIDATE_PRODUCT"].should == 'YES'
       end
 
       it "adds the frameworks group" do
@@ -326,9 +326,8 @@ module ProjectSpecs
         list = @project.root_object.build_configuration_list
         list.default_configuration_name.should == 'Release'
         list.default_configuration_is_visible.should == '0'
-
-        @project.build_settings('Debug').should == { 'ONLY_ACTIVE_ARCH' => 'YES' }
-        @project.build_settings('Release').should == {}
+        list.build_settings('Debug')['ONLY_ACTIVE_ARCH'].should == 'YES'
+        list.build_settings('Release')["VALIDATE_PRODUCT"].should == 'YES'
       end
 
       it "returns a succinct diff representation of the project" do
@@ -347,16 +346,14 @@ module ProjectSpecs
 
       it "returns a pretty print representation" do
         pretty_print = @project.pretty_print
+        pretty_print['Build Configurations'] = []
         pretty_print.should == {
           "File References" => [
             {"Products" => [] },
             {"Frameworks" => [] }
           ],
           "Targets" => [],
-          "Build Configurations" => [
-            { "Debug" => {"Build Settings" => { 'ONLY_ACTIVE_ARCH' => 'YES' } } },
-            { "Release" => {"Build Settings" => {} } }
-          ]
+          "Build Configurations" => []
         }
       end
     end

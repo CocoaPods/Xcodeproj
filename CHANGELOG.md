@@ -35,6 +35,10 @@
 * [PBXGroup] Added `#recursive_children_groups`  
   [@irrationalfab](https://github.com/irrationalfab)
 
+* Added default build settings to new projects according to Xcode defaults.  
+  [@irrationalfab](https://github.com/irrationalfab)
+
+
 ## 0.11.1
 
 ###### Bug Fixes
