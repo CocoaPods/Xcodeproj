@@ -416,7 +416,7 @@ module Xcodeproj
         #
         # Build phases are not sorted as they order is relevant.
         #
-        def sort
+        def sort(options = nil)
           attributes_to_sort = to_many_attributes.reject { |attr| attr.name == :build_phases }
           attributes_to_sort.each do |attrb|
             list = attrb.get_value(self)

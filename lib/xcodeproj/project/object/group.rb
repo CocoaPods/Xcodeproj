@@ -368,7 +368,6 @@ module Xcodeproj
           sort_by_type
         end
 
-
         public
 
         # @!group AbstractObject Hooks
@@ -390,8 +389,25 @@ module Xcodeproj
         # Sorts the to many attributes of the object according to the display
         # name.
         #
-        def sort
+        # @param  [Hash] options
+        #         the sorting options.
+        # @option options [Symbol] :groups_position
+        #         the position of the groups can be either `:above` or
+        #         `:below`.
+        #
+        # @return [void]
+        #
+        def sort(options = nil)
           children.sort! do |x, y|
+            if options && groups_position = options[:groups_position]
+              raise ArgumentError unless [:above, :below].include?(groups_position)
+              if x.isa == 'PBXGroup' && !(y.isa == 'PBXGroup')
+                next groups_position == :above ? -1 : 1
+              elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
+                next groups_position == :above ? 1 : -1
+              end
+            end
+
             result = File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
             if result.zero?
               File.extname(x.display_name) <=> File.extname(y.display_name)

@@ -617,10 +617,15 @@ module Xcodeproj
 
     # Sorts the project.
     #
+    # @param  [Hash] options
+    #         the sorting options.
+    # @option options [Symbol] :groups_position
+    #         the position of the groups can be either `:above` or `:below`.
+    #
     # @return [void]
     #
-    def sort
-      root_object.sort_recursively
+    def sort(options = nil)
+      root_object.sort_recursively(options)
     end
 
 

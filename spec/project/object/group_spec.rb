@@ -277,6 +277,28 @@ module ProjectSpecs
           ]
         end
 
+        it "can sort groups above" do
+          files = %w[ B.m A.h B.h A.m ]
+          files.each do |file|
+            @sut.new_file(file)
+          end
+          @sut.new_group('Z')
+
+          @sut.sort({:groups_position => :above})
+          @sut.children.map(&:display_name).should == %w[ Z A.h A.m B.h B.m ]
+        end
+
+        it "can sort groups below" do
+          files = %w[ B.m A.h B.h A.m ]
+          files.each do |file|
+            @sut.new_file(file)
+          end
+          @sut.new_group('A')
+
+          @sut.sort({:groups_position => :below})
+          @sut.children.map(&:display_name).should == %w[ A.h A.m B.h B.m A ]
+        end
+
       end
 
     end

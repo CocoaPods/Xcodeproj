@@ -47,7 +47,7 @@ module Xcodeproj
         #
         # @see AbstractObject#sort_recursively
         #
-        def sort_recursively
+        def sort_recursively(options = nil)
         end
       end
     end

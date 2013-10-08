@@ -4,39 +4,42 @@
 
 * [PBXGroup] `#new_static_library` has been replaced by the more versatile
   `#new_product_ref_for_target`.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [XCScheme] Overhauled interface to support multiple targets.  
-  [@jasonprado](https://github.com/jasonprado), [#95](https://github.com/CocoaPods/Xcodeproj/pull/95)
+  [Jason Prado](https://github.com/jasonprado), [#95](https://github.com/CocoaPods/Xcodeproj/pull/95)
 
 ###### Enhancements
 
 * [Project] The project can now recreate it schemes from scratch and optionally
   hide them.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [Project] Added possibility to specify the position of groups while sorting.
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Added support for booleans in the C extension which handles Property list
   files.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Improvements to the generation of new targets.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [PBXGroup] Now defaults to sorting by name.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [XCScheme] The string representation of schemes now closely matches Xcode
   behaviour.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [PBXGroup, PBXFileReference] Added `#parents`  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [PBXGroup] Added `#recursive_children_groups`  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Added default build settings to new projects according to Xcode defaults.  
-  [@irrationalfab](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 
 ## 0.11.1

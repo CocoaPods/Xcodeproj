@@ -136,7 +136,7 @@ module Xcodeproj
         # Sorts the to many attributes of the object according to the display
         # name.
         #
-        def sort
+        def sort(options = nil)
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
             list.sort! do |x, y|
@@ -147,25 +147,33 @@ module Xcodeproj
 
         # Sorts the object and the objects that it references.
         #
-        # @note Some objects may in turn refer back to objects higher in the
-        #   object tree, which will lead to stack level deep errors. These
-        #   objects should **not** try to perform a recursive sort, also
-        #   because these objects would get sorted through other paths in the
-        #   tree anyways.
+        # @param  [Hash] options
+        #         the sorting options.
+        # @option options [Symbol] :groups_position
+        #         the position of the groups can be either `:above` or
+        #         `:below`.
         #
-        #   At the time of writing the only known case is `PBXTargetDependency`.
-        def sort_recursively
+        # @note   Some objects may in turn refer back to objects higher in the
+        #         object tree, which will lead to stack level deep errors.
+        #         These objects should **not** try to perform a recursive sort,
+        #         also because these objects would get sorted through other
+        #         paths in the tree anyways.
+        #
+        #         At the time of writing the only known case is
+        #         `PBXTargetDependency`.
+        #
+        def sort_recursively(options = nil)
           to_one_attributes.each do |attrb|
             value = attrb.get_value(self)
-            value.sort_recursively if value
+            value.sort_recursively(options) if value
           end
 
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
-            list.each(&:sort_recursively)
+            list.each { |entry| entry.sort_recursively(options) }
           end
 
-          sort
+          sort(options)
         end
 
         # @!group Reference counting

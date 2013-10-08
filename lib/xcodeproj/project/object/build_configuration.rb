@@ -52,7 +52,7 @@ module Xcodeproj
         #
         # @return [void]
         #
-        def sort
+        def sort(options = nil)
           sorted = {}
           build_settings.keys.sort.each do |key|
             sorted[key] = build_settings[key]
