@@ -198,13 +198,35 @@ module Xcodeproj
         # @param  [Array<String>, String] name
         #         The name or the list of the names of the framework.
         #
+        # @note   Xcode behaviour is following: if the target has the same SDK
+        #         of the project it adds the reference relative to the SDK root
+        #         otherwise the reference is added relative to the Developer
+        #         directory. This can create confusion or duplication of the
+        #         references of frameworks linked by iOS and OS X targets. For
+        #         this reason the new Xcodeproj behaviour is to add the
+        #         frameworks in a subgroup according to the platform.
+        #
         # @return [void]
         #
         def add_system_framework(names)
           Array(names).each do |name|
-            path = "System/Library/Frameworks/#{name}.framework"
-            unless ref = project.frameworks_group.find_file_by_path(path)
-              ref = project.frameworks_group.new_file(path, :sdk_root)
+
+            case platform_name
+            when :ios
+              group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')
+              path_sdk_name = 'iPhoneOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_IOS_SDK
+            when :osx
+              group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
+              path_sdk_name = 'MacOSX'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
+            else
+              raise "Unknown platform for target"
+            end
+
+            path = "Platforms/#{path_sdk_name}.platform/Developer/SDKs/#{path_sdk_name}#{path_sdk_version}.sdk/System/Library/Frameworks/#{name}.framework"
+            unless ref = group.find_file_by_path(path)
+              ref = group.new_file(path, :developer_dir)
             end
             frameworks_build_phase.add_file_reference(ref, true)
             ref

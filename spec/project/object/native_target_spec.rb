@@ -154,7 +154,7 @@ module ProjectSpecs
 
           phase.should.be.instance_of klass
           if phase.is_a? PBXFrameworksBuildPhase
-            phase.files.count.should == @project.frameworks_group.files.count
+            phase.files.count.should == 1
           else
             phase.files.to_a.should == []
           end
@@ -190,17 +190,31 @@ module ProjectSpecs
 
       describe "#add_system_framework" do
 
-        it "adds a file reference for a system framework, to the Frameworks group" do
+        it "adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group" do
           @sut.add_system_framework('QuartzCore')
-          file = @project['Frameworks'].files.first
-          file.path.should == "System/Library/Frameworks/QuartzCore.framework"
-          file.source_tree.should == 'SDKROOT'
+          file = @project['Frameworks/iOS'].files.first
+          file.path.should == "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/QuartzCore.framework"
+          file.source_tree.should == 'DEVELOPER_DIR'
+        end
+
+        it "uses the sdk version of the target" do
+          @sut.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos6.0'
+          @sut.add_system_framework('QuartzCore')
+          file = @project['Frameworks/iOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == "6.0"
+        end
+
+        it "uses the last known SDK version if none is specified in the target" do
+          @sut.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos'
+          @sut.add_system_framework('QuartzCore')
+          file = @project['Frameworks/iOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
         end
 
         it "doesn't duplicate references to a frameworks if one already exists" do
           @sut.add_system_framework('QuartzCore')
           @sut.add_system_framework('QuartzCore')
-          @project.frameworks_group.files.count.should == 1
+          @project['Frameworks/iOS'].files.count.should == 1
         end
 
         it "adds the framework to the framework build phases" do

@@ -16,6 +16,17 @@
 
 ###### Enhancements
 
+* [PBXNativeTarget] `#add_system_framework` now adds the system frameworks
+  relative to the developer directory. Xcode behaviour is following: if the
+  target has the same SDK of the project it adds the reference relative to the
+  SDK root otherwise the reference is added relative to the Developer
+  directory. This can create confusion or duplication of the references of
+  frameworks linked by iOS and OS X targets. For this reason the new Xcodeproj
+  behaviour is to add the frameworks in a subgroup according to the platform.
+  The method will also honor the SDK version of the target if available
+  (otherwise the last known version is used).
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
 * [Project] The project can now recreate it schemes from scratch and optionally
   hide them.  
   [Fabio Pelosin](https://github.com/irrationalfab)
@@ -43,7 +54,7 @@
 * [PBXGroup] Added `#recursive_children_groups`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* [AbstractTarget] Add `#sdk_version`.  
+* [AbstractTarget] Add #sdk_version.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Added default build settings to new projects according to Xcode defaults.  
