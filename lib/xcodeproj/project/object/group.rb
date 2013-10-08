@@ -363,7 +363,7 @@ module Xcodeproj
         #
         # @return [void]
         #
-        def recursively_sort_by_type
+        def sort_recursively_by_type
           groups.each { |group| group.recursively_sort_by_type }
           sort_by_type
         end

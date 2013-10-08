@@ -7,7 +7,12 @@
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [XCScheme] Overhauled interface to support multiple targets.  
-  [Jason Prado](https://github.com/jasonprado), [#95](https://github.com/CocoaPods/Xcodeproj/pull/95)
+  [Jason Prado](https://github.com/jasonprado)
+  [#95](https://github.com/CocoaPods/Xcodeproj/pull/95)
+
+* [PBXGroup] renamed `#recursively_sort_by_type` to
+  `#sort_recursively_by_type`.
+  [Fabio Pelosin](https://github.com/irrationalfab)
 
 ###### Enhancements
 
@@ -15,14 +20,14 @@
   hide them.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* [Project] Added possibility to specify the position of groups while sorting.
-  [Fabio Pelosin](https://github.com/irrationalfab)
-
 * Added support for booleans in the C extension which handles Property list
   files.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Improvements to the generation of new targets.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [Project] Added possibility to specify the position of groups while sorting.
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [PBXGroup] Now defaults to sorting by name.  
@@ -48,7 +53,8 @@
 
 * No longer allow `PBXTargetDependency` to sort recursively. When two targets
   depend on each other, this would lead to the two targets endlessly sorting
-  each other and finally crashing with a stack overflow.
+  each other and finally crashing with a stack overflow.  
+  [Eloy Durán](https://github.com/alloy)
   [CocoaPods#1384](https://github.com/CocoaPods/CocoaPods/issues/1384)
 
 
