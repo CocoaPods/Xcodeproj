@@ -41,6 +41,19 @@ module ProjectSpecs
         @project.new_target(:static_library, 'Pods', :osx).platform_name.should == :osx
       end
 
+      it "returns the SDK version" do
+        @project.new_target(:static_library, 'Pods', :ios).sdk_version.should == nil
+        @project.new_target(:static_library, 'Pods', :osx).sdk_version.should == nil
+
+        t1 = @project.new_target(:static_library, 'Pods', :ios)
+        t1.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos7.0'
+        t1.sdk_version.should == '7.0'
+
+        t2 = @project.new_target(:static_library, 'Pods', :osx)
+        t2.build_configurations.first.build_settings['SDKROOT'] = 'macosx10.8'
+        t2.sdk_version.should == '10.8'
+      end
+
       it "returns the deployment target specified in its build configuration" do
         @project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
         @project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil

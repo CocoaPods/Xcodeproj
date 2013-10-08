@@ -52,6 +52,12 @@ module Xcodeproj
           end
         end
 
+        # @return [String] the version of the SDK.
+        #
+        def sdk_version
+          sdk.scan(/[0-9.]+/).first
+        end
+
         # @return [String] the deployment target of the target according to its
         #         platform.
         #

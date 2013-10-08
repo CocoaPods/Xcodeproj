@@ -37,10 +37,13 @@
   behaviour.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* [PBXGroup, PBXFileReference] Added `#parents`  
+* [PBXGroup, PBXFileReference] Added `#parents`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* [PBXGroup] Added `#recursive_children_groups`  
+* [PBXGroup] Added `#recursive_children_groups`.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [AbstractTarget] Add `#sdk_version`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * Added default build settings to new projects according to Xcode defaults.  
