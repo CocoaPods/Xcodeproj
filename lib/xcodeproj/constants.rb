@@ -6,7 +6,7 @@ module Xcodeproj
 
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '6.1'
+    LAST_KNOWN_IOS_SDK = '7.0'
 
     # @return [String] The last known OS X SDK (stable).
     #
