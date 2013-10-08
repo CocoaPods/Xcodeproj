@@ -226,7 +226,7 @@ module ProjectSpecs
       subgroup = @sut.new_group('Apemachine')
       subgroup.new_file('Orange.m')
       subgroup.new_group('Orangemachine')
-      @sut.recursively_sort_by_type
+      @sut.sort_recursively_by_type
       @sut.children.map(&:display_name).should == %w{
         Apemachine ZappMachine
         Abracadabra.h
