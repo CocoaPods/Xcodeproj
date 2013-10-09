@@ -41,12 +41,6 @@ module Xcodeproj
           { name => data }
         end
 
-
-        public
-
-        # @!group Helpers
-        # --------------------------------------------------------------------#
-
         # Sorts the build settings. Valid only in Ruby > 1.9.2 because in
         # previous versions the hash are not sorted.
         #

@@ -1,3 +1,11 @@
+## Master
+
+###### Enhancements
+
+* [XCConfigurationList] added `#get_setting` and `#set_setting`.
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+
 ## 0.12.0
 
 ###### Breaking

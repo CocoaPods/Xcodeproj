@@ -40,6 +40,28 @@ module ProjectSpecs
       @sut.build_settings('Debug').should == settings
     end
 
+    it "sets a build setting to the given value for all the configurations" do
+      ['Debug', 'Release'].each do |name|
+        configuration = @project.new(XCBuildConfiguration)
+        configuration.name = name
+        configuration.build_settings = { 'CLANG_ENABLE_OBJC_ARC' => 'NO'}
+        @sut.build_configurations << configuration
+      end
+      @sut.get_setting('CLANG_ENABLE_OBJC_ARC').should == {"Debug"=>"NO", "Release"=>"NO"}
+    end
+
+    it "sets a build setting to the given value for all the configurations" do
+      ['Debug', 'Release'].each do |name|
+        configuration = @project.new(XCBuildConfiguration)
+        configuration.name = name
+        configuration.build_settings = { 'CLANG_ENABLE_OBJC_ARC' => 'NO'}
+        @sut.build_configurations << configuration
+      end
+
+      @sut.set_setting('CLANG_ENABLE_OBJC_ARC', 'YES')
+      @sut.get_setting('CLANG_ENABLE_OBJC_ARC').should == {"Debug"=>"YES", "Release"=>"YES"}
+    end
+
   end
 end
 

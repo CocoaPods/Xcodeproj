@@ -48,13 +48,47 @@ module Xcodeproj
         # the given name.
         #
         # @param [String] build_configuration_name
-        #   the name of the build configuration.
+        #        The name of the build configuration.
         #
         # @return [Hash {String=>String}] the build settings
         #
         def build_settings(build_configuration_name)
           if config = self[build_configuration_name]
             config.build_settings
+          end
+        end
+
+        # Gets the value for the given build setting in all the build
+        # configurations.
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @return [Hash{String => String}] The value of the build setting
+        #         grouped by the name of the build configuration.
+        #
+        def get_setting(key)
+          result = {}
+          build_configurations.each do |bc|
+            result[bc.name] = bc.build_settings[key]
+          end
+          result
+        end
+
+        # Sets the given value for the build setting associated with the given
+        # key across all the build configurations.
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @param [String] value
+        #        the value for the build setting.
+        #
+        # @return [void]
+        #
+        def set_setting(key, value)
+          build_configurations.each do |bc|
+            bc.build_settings[key] = value
           end
         end
 
