@@ -1,5 +1,12 @@
 ## Master
 
+
+###### Breaking
+
+* [AbstractTarget] The `#sdk` method now raises if the value is not the same
+  across all the build configurations.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
 ###### Enhancements
 
 * [AbstractTarget] Added `#resolved_build_setting` and
