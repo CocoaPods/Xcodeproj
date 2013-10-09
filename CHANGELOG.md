@@ -2,10 +2,14 @@
 
 ###### Enhancements
 
-* [XCConfigurationList] Added `#get_setting` and `#set_setting`.
+* [AbstractTarget] Added `#resolved_build_setting` and
+  `#common_resolved_build_setting`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* [Project] Added `#build_configuration_list`.
+* [XCConfigurationList] Added `#get_setting` and `#set_setting`.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [Project] Added `#build_configuration_list`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 

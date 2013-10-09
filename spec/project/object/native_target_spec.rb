@@ -25,14 +25,65 @@ module ProjectSpecs
         @sut = @project.new_target(:static_library, 'Pods', :ios)
       end
 
+      describe "#common_resolved_build_setting" do
+
+        it "returns the resolved build setting for the given key as indicated in the target build configuration" do
+          @project.build_configuration_list.set_setting('ARCHS', nil)
+          @sut.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"VALID_ARCHS", "Debug"=>"VALID_ARCHS"}
+        end
+
+        it "returns the resolved build setting for the given key as indicated in the project build configuration" do
+          @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @sut.build_configuration_list.set_setting('ARCHS', nil)
+          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"VALID_ARCHS", "Debug"=>"VALID_ARCHS"}
+        end
+
+        it "overrides the project settings with the target ones" do
+          @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @sut.build_configuration_list.set_setting('ARCHS', "arm64")
+          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"arm64", "Debug"=>"arm64"}
+        end
+
+      end
+
+      #----------------------------------------#
+
+      describe "#common_resolved_build_setting" do
+
+        it "returns the common resolved build setting for the given key as indicated in the target build configuration" do
+          @project.build_configuration_list.set_setting('ARCHS', nil)
+          @sut.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @sut.common_resolved_build_setting('ARCHS').should == "VALID_ARCHS"
+        end
+
+        it "returns the common resolved build setting for the given key as indicated in the project build configuration" do
+          @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @sut.build_configuration_list.set_setting('ARCHS', nil)
+          @sut.common_resolved_build_setting('ARCHS').should == "VALID_ARCHS"
+        end
+
+        it "raises if the build setting has multiple values across the build configurations" do
+          @sut.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = "arm64"
+          @sut.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = "VALID_ARCHS"
+          should.raise do
+            @sut.common_resolved_build_setting('ARCHS')
+          end.message.should.match /multiple values/
+        end
+
+      end
+
+      #----------------------------------------#
+
       it "returns the SDK specified in its build configuration" do
-        @project.build_configurations.first.build_settings['SDKROOT'] = nil
+        @project.build_configuration_list.set_setting('SDKROOT', nil)
+        @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
         @sut.sdk.should == 'iphoneos'
       end
 
       it "returns the SDK of the project if one is not specified in the build configurations" do
-        @project.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos'
-        @sut.build_configurations.first.build_settings['SDKROOT'] = nil
+        @project.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
+        @sut.build_configuration_list.set_setting('SDKROOT', nil)
         @sut.sdk.should == 'iphoneos'
       end
 
@@ -46,24 +97,24 @@ module ProjectSpecs
         @project.new_target(:static_library, 'Pods', :osx).sdk_version.should == nil
 
         t1 = @project.new_target(:static_library, 'Pods', :ios)
-        t1.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos7.0'
+        t1.build_configuration_list.set_setting('SDKROOT', 'iphoneos7.0')
         t1.sdk_version.should == '7.0'
 
         t2 = @project.new_target(:static_library, 'Pods', :osx)
-        t2.build_configurations.first.build_settings['SDKROOT'] = 'macosx10.8'
+        t2.build_configuration_list.set_setting('SDKROOT', 'macosx10.8')
         t2.sdk_version.should == '10.8'
       end
 
       it "returns the deployment target specified in its build configuration" do
-        @project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
-        @project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil
+        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
+        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
         @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
         @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
       end
 
       it "returns the deployment target" do
-        @project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '4.3'
-        @project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.7'
+        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', '4.3')
+        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', '10.7')
         mac_target = @project.new_target(:static_library, 'Pods', :ios)
         mac_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
         mac_target.deployment_target.should == '4.3'
@@ -198,14 +249,14 @@ module ProjectSpecs
         end
 
         it "uses the sdk version of the target" do
-          @sut.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos6.0'
+          @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos6.0')
           @sut.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
           file.path.scan(/\d\.\d/).first.should == "6.0"
         end
 
         it "uses the last known SDK version if none is specified in the target" do
-          @sut.build_configurations.first.build_settings['SDKROOT'] = 'iphoneos'
+          @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
           @sut.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
           file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK

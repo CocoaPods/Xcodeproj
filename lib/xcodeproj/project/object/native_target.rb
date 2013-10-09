@@ -37,11 +37,51 @@ module Xcodeproj
         # @!group Helpers
         #--------------------------------------#
 
+        # Gets the value for the given build setting in all the build
+        # configurations or the value inheriting the value from the project
+        # ones if needed.
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @return [Hash{String => String}] The value of the build setting
+        #         grouped by the name of the build configuration.
+        #
+        # TODO:   Full support for this would require to take into account
+        #         any associated xcconfig and the default values for the
+        #         platform.
+        #
+        def resolved_build_setting(key)
+          target_settings = build_configuration_list.get_setting(key)
+          project_settings = project.build_configuration_list.get_setting(key)
+          target_settings.merge(project_settings) do |key, target_val, proj_val|
+            target_val || proj_val
+          end
+        end
+
+        # Gets the value for the given build setting, properly inherited if
+        # need, if shared across the build configurations.
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @raise  If the build setting has multiple values.
+        #
+        # @return [String] The value of the build setting.
+        #
+        def common_resolved_build_setting(key)
+          values = resolved_build_setting(key).values.uniq
+          if values.count == 1
+            values.first
+          else
+            raise "Build setting `#{key}` has multiple values: `#{resolved_build_setting(key)}`"
+          end
+        end
+
         # @return [String] the SDK that the target should use.
         #
         def sdk
-          build_configurations.first.build_settings['SDKROOT'] \
-            || project.build_configurations.first.build_settings['SDKROOT']
+          common_resolved_build_setting('SDKROOT')
         end
 
         # @return [Symbol] the name of the platform of the target.
@@ -63,11 +103,9 @@ module Xcodeproj
         #
         def deployment_target
           if platform_name == :ios
-            build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] ||
-              project.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+            common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
           else
-            build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] ||
-              project.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET']
+            common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
           end
         end
 
