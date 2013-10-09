@@ -314,6 +314,10 @@ module ProjectSpecs
         g.name.should == 'Frameworks'
       end
 
+      it "returns the build configuration list" do
+        @project.build_configuration_list.build_configurations.map(&:name).sort.should == %w| Debug Release |
+      end
+
       it "returns the build configurations" do
         @project.build_configurations.map(&:name).sort.should == %w| Debug Release |
       end

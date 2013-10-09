@@ -2,7 +2,10 @@
 
 ###### Enhancements
 
-* [XCConfigurationList] added `#get_setting` and `#set_setting`.
+* [XCConfigurationList] Added `#get_setting` and `#set_setting`.
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [Project] Added `#build_configuration_list`.
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 

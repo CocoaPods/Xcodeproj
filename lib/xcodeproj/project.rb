@@ -495,6 +495,13 @@ module Xcodeproj
       main_group['Frameworks'] || main_group.new_group('Frameworks')
     end
 
+    # @return [ObjectList<XCConfigurationList>] The build configuration list of
+    #         the project.
+    #
+    def build_configuration_list
+      root_object.build_configuration_list
+    end
+
     # @return [ObjectList<XCBuildConfiguration>] A list of project wide
     #         build configurations.
     #
