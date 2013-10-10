@@ -1,9 +1,9 @@
-## Master
+## 0.13.1
 
 ###### Enhancements
 
-* [AbstractTarget] The `#sdk` method now raises if the value is not the same
-  across all the build configurations.  
+* [AbstractTarget] Added default value for `default_configuration_name`
+  attribute.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * [XCConfigurationList] `common_resolved_build_setting` will now ignore nil
@@ -13,6 +13,7 @@
   For example nothing prevents a target to build with the iOS sdk in one
   configuration and with the OS X in another.  
   [Fabio Pelosin](https://github.com/irrationalfab)
+  [CocoaPods/CocoaPods#1462](https://github.com/CocoaPods/CocoaPods/issues/1462)
 
 
 ## 0.13.0
