@@ -71,6 +71,15 @@ module ProjectSpecs
           end.message.should.match /multiple values/
         end
 
+        it "ignores nil values when determining if an unique value exists" do
+          @sut.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = nil
+          @sut.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = "VALID_ARCHS"
+          should.not.raise do
+            @sut.common_resolved_build_setting('ARCHS')
+          end
+
+        end
+
       end
 
       #----------------------------------------#
