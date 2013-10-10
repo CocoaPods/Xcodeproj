@@ -67,14 +67,19 @@ module Xcodeproj
         #
         # @raise  If the build setting has multiple values.
         #
+        # @note   As it is common not to have a setting with no value for
+        #         custom build configurations nil keys are not considered to
+        #         determine if the setting is unique. This is an heuristic
+        #         which might not closely match Xcode behaviour.
+        #
         # @return [String] The value of the build setting.
         #
         def common_resolved_build_setting(key)
-          values = resolved_build_setting(key).values.uniq
-          if values.count == 1
+          values = resolved_build_setting(key).values.compact.uniq
+          if values.count <= 1
             values.first
           else
-            raise "Build setting `#{key}` has multiple values: `#{resolved_build_setting(key)}`"
+            raise "[Xcodeproj] Consistency issue: build setting `#{key}` has multiple values: `#{resolved_build_setting(key)}`"
           end
         end
 
@@ -95,7 +100,9 @@ module Xcodeproj
         # @return [String] the version of the SDK.
         #
         def sdk_version
-          sdk.scan(/[0-9.]+/).first
+          if sdk
+            sdk.scan(/[0-9.]+/).first
+          end
         end
 
         # @return [String] the deployment target of the target according to its

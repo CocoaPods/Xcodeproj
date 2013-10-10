@@ -2,8 +2,16 @@
 
 ###### Enhancements
 
-* [XCConfigurationList] Added default value for `default_configuration_name`
-  attribute.  
+* [AbstractTarget] The `#sdk` method now raises if the value is not the same
+  across all the build configurations.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* [XCConfigurationList] `common_resolved_build_setting` will now ignore nil
+  values. This is an heuristic which might not closely match Xcode behaviour.
+  This is done because some information, like the SDK, is usually considered at
+  the target level but it might actually differ in the build configurations.
+  For example nothing prevents a target to build with the iOS sdk in one
+  configuration and with the OS X in another.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 
@@ -12,7 +20,8 @@
 ###### Breaking
 
 * [AbstractTarget] The `#sdk` method now raises if the value is not the same
-  across all the build configurations.  
+  across all the build configurations. This has been done to prevent clients
+  from accidentally using arbitrary values.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 ###### Enhancements
