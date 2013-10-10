@@ -1,5 +1,11 @@
 ## 0.13.1
 
+###### Bug Fixes
+
+* Fix `Unable to read data from Model.xcdatamodeld/.xccurrentversion` when 
+  there are more Data model versions.
+  [Pim Snel](https://github.com/mipmip)
+
 ###### Enhancements
 
 * [AbstractTarget] Added default value for `default_configuration_name`
