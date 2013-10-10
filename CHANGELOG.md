@@ -1,5 +1,11 @@
 ## Master
 
+###### Enhancements
+
+* [XCConfigurationList] Added default value for `default_configuration_name`
+  attribute.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
 
 ## 0.13.0
 

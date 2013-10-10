@@ -10,19 +10,20 @@ module Xcodeproj
         # @!group Attributes
 
         # @return [String] whether the default configuration is visible.
-        #
-        # Usually `0`.
+        #         Usually `0`. The purpose of this flag and how Xcode displays
+        #         it in the UI is unknown.
         #
         attribute :default_configuration_is_visible, String, '0'
 
         # @return [String] the name of the default configuration.
+        #         Usually `Release`. Xcode exposes this attribute as the
+        #         configuration for the command line tools and only allows to
+        #         set it at the project level.
         #
-        # Usually `Release`.
-        #
-        attribute :default_configuration_name, String
+        attribute :default_configuration_name, String, 'Release'
 
         # @return [ObjectList<XCBuildConfiguration>] the build
-        #   configurations of the target.
+        #         configurations of the target.
         #
         has_many :build_configurations, XCBuildConfiguration
 
