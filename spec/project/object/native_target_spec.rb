@@ -155,6 +155,17 @@ module ProjectSpecs
           @sut.build_configurations.map(&:name).grep('App Store').size.should == 1
         end
 
+        it "returns the new build configuration" do
+          conf = @sut.add_build_configuration('App Store', :release)
+          conf.name.should == 'App Store'
+        end
+
+        it "returns the existing build configuration" do
+          conf_1 = @sut.add_build_configuration('App Store', :release)
+          conf_2 = @sut.add_build_configuration('App Store', :release)
+          conf_1.object_id.should == conf_2.object_id
+        end
+
       end
 
       #----------------------------------------#
