@@ -5,6 +5,7 @@ gemspec
 group :development do
   gem 'coveralls', :require => false
   gem "rake"
+  gem "rake-compiler"
   gem "mocha"
   gem "bacon"
   gem "mocha-on-bacon"

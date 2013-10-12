@@ -5,10 +5,10 @@ Makefile
 *.o
 *.rbc
 .rbenv-version
-ext/xcodeproj/extconf.h
-ext/xcodeproj/conftest.dSYM
-ext/xcodeproj/.RUBYARCHDIR.time
-ext/xcodeproj/siteconf*.rb
+ext/xcodeproj_ext/extconf.h
+ext/xcodeproj_ext/conftest.dSYM
+ext/xcodeproj_ext/.RUBYARCHDIR.time
+ext/xcodeproj_ext/siteconf*.rb
 *.gem
 .yardoc
 doc

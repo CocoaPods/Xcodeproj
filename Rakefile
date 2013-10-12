@@ -31,6 +31,10 @@ namespace :ext do
   task :cleanbuild => [:clean, :build]
 end
 
+require 'rake/extensiontask'
+
+Rake::ExtensionTask.new('xcodeproj_ext')
+
 #-----------------------------------------------------------------------------#
 
 namespace :gem do
