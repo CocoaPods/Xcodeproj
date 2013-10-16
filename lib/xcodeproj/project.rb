@@ -469,6 +469,24 @@ module Xcodeproj
       objects.select { |obj| obj.class == PBXFileReference }
     end
 
+    # Returns the file reference for the given absolute path.
+    #
+    # @param  [#to_s] absolute_path
+    #         The absolute path of the file whose reference is needed.
+    #
+    # @return [PBXFileReference] The file reference.
+    # @return [Nil] If no file reference could be found.
+    #
+    def reference_for_path(absolute_path)
+      unless Pathname.new(absolute_path).absolute?
+        raise ArgumentError, "Paths must be absolute #{absolute_path}"
+      end
+
+      objects.find do |child|
+        child.isa == 'PBXFileReference' && child.real_path == absolute_path
+      end
+    end
+
     # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
     #         project.
     #

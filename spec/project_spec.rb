@@ -291,6 +291,19 @@ module ProjectSpecs
         @project.files.should.include?(f)
       end
 
+      it "finds file references by absolute path" do
+        file_path = 'Classes/Test.h'
+        @project.reference_for_path(@project.path.dirname + file_path).should.be.nil
+        file = @project.new_file(file_path)
+        @project.reference_for_path(@project.path.dirname + file_path).should == file
+      end
+
+      it "does not find references by relative path" do
+        should.raise ArgumentError do
+          @project.reference_for_path(@project.path.basename)
+        end.message.should.match /must be absolute/
+      end
+
       it "returns the targets" do
         target = @project.new_target(:static_library, 'Pods', :ios).product_reference
         @project.products.should.include?(target)
