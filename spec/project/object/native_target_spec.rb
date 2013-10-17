@@ -189,6 +189,28 @@ module ProjectSpecs
           container_proxy.remote_info.should == dependency_target.name
         end
 
+        it "adds a dependency on a target in a subproject" do
+          subproject = Xcodeproj::Project.new('/other_project_dir/OtherProject.xcodeproj')
+          dependency_target = subproject.new_target(:static_library, 'Pods-SMCalloutView', :ios)
+          subproject_file_reference = @project.main_group.new_file(subproject.path)
+          @sut.add_dependency(dependency_target)
+
+          @sut.dependencies.count.should == 1
+          target_dependency = @sut.dependencies.first
+          target_dependency.target.should == dependency_target
+
+          target_dependency.target_proxy.container_portal.should == subproject_file_reference.uuid
+        end
+
+        it "doesn't add a dependency on a target in an unknown project" do
+          unknown_project = Xcodeproj::Project.new('/other_project_dir/OtherProject.xcodeproj')
+          dependency_target = unknown_project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
+
+          should.raise ArgumentError do
+            @sut.add_dependency(dependency_target)
+          end.message.should.match /not this project/
+        end
+
         it "doesn't duplicate dependencies" do
           dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
           @sut.add_dependency(dependency_target)
