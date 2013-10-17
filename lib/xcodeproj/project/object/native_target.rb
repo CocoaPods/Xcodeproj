@@ -190,14 +190,22 @@ module Xcodeproj
         #
         # @param  [AbstractTarget] target
         #         the target which should be added to the dependencies list of
-        #         the receiver.
+        #         the receiver. The target may be a target of this target's
+        #         project or of a subproject of this project. Note that the
+        #         subproject must already be added to this target's project.
         #
         # @return [void]
         #
         def add_dependency(target)
           unless dependencies.map(&:target).include?(target)
             container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
-            container_proxy.container_portal = project.root_object.uuid
+            if target.project == project
+              container_proxy.container_portal = project.root_object.uuid
+            else
+              subproject_reference = project.reference_for_path(target.project.path)
+              raise ArgumentError, "add_dependency got target that belongs to a project is not this project and is not a subproject of this project" unless subproject_reference
+              container_proxy.container_portal = subproject_reference.uuid
+            end
             container_proxy.proxy_type = '1'
             container_proxy.remote_global_id_string = target.uuid
             container_proxy.remote_info = target.name
