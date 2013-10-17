@@ -89,13 +89,14 @@ module ProjectSpecs
         @ios_static_library.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
         @ios_static_library_tests = @project.new_target(:bundle, 'iOS staticLibraryTests', :osx)
         @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
+
+        @scheme = Xcodeproj::XCScheme.new
       end
 
       it 'Supports adding native build targets' do
-        scheme = Xcodeproj::XCScheme.new
-        scheme.add_build_target(@ios_application)
+        @scheme.add_build_target(@ios_application)
 
-        scheme.doc.root.elements['BuildAction'] \
+        @scheme.doc.root.elements['BuildAction'] \
           .elements['BuildActionEntries'] \
           .elements['BuildActionEntry'] \
           .elements['BuildableReference'] \
@@ -103,12 +104,11 @@ module ProjectSpecs
       end
 
       it 'Supports adding aggregate build targets' do
-        scheme = Xcodeproj::XCScheme.new
         aggregate_target = @project.new(PBXAggregateTarget)
         aggregate_target.name = 'Hello'
-        scheme.add_build_target(aggregate_target)
+        @scheme.add_build_target(aggregate_target)
 
-        scheme.doc.root.elements['BuildAction'] \
+        @scheme.doc.root.elements['BuildAction'] \
           .elements['BuildActionEntries'] \
           .elements['BuildActionEntry'] \
           .elements['BuildableReference'] \
@@ -116,18 +116,26 @@ module ProjectSpecs
       end
 
       it 'Does not support adding legacy build targets' do
-        scheme = Xcodeproj::XCScheme.new
         legacy_target = @project.new(PBXLegacyTarget)
 
         should.raise ArgumentError do
-          scheme.add_build_target(legacy_target)
+          @scheme.add_build_target(legacy_target)
         end.message.should.match /Unsupported build target/
+      end
+
+      it 'Constructs ReferencedContainer attributes correctly' do
+        project = Xcodeproj::Project.new('/project_dir/Project.xcodeproj')
+        target = project.new_target(:application, 'iOS application', :osx)
+
+        @scheme.send(:construct_referenced_container_uri, target).should == 'container:Project.xcodeproj'
+
+        project.root_object.project_dir_path = '/a_dir'
+        @scheme.send(:construct_referenced_container_uri, target).should == 'container:../project_dir/Project.xcodeproj'
       end
 
       describe 'For iOS Application' do
 
         before do
-          @scheme = Xcodeproj::XCScheme.new
           @scheme.add_build_target(@ios_application)
           @scheme.add_test_target(@ios_application_tests)
           @scheme.set_launch_target(@ios_application)
@@ -291,7 +299,6 @@ module ProjectSpecs
       describe 'For iOS Application Tests' do
 
         before do
-          @scheme = Xcodeproj::XCScheme.new
           @scheme.add_test_target(@ios_application_tests)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests.xcscheme')
         end
@@ -375,7 +382,6 @@ module ProjectSpecs
         extend SpecHelper::TemporaryDirectory
 
         before do
-          @scheme = Xcodeproj::XCScheme.new
           @scheme.add_build_target(@ios_application_tests)
           @scheme.add_test_target(@ios_application_tests)
           @xml = REXML::Document.new File.new fixture_path('Sample Project/Cocoa Application.xcodeproj/xcshareddata/xcschemes/iOS applicationTests Set Build Target For Running.xcscheme')
@@ -472,7 +478,6 @@ module ProjectSpecs
         extend SpecHelper::TemporaryDirectory
 
         before do
-          @scheme = Xcodeproj::XCScheme.new
           @scheme.add_build_target(@ios_application)
           @scheme.add_build_target(@ios_static_library)
           @scheme.add_test_target(@ios_application_tests)

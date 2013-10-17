@@ -1,5 +1,12 @@
 ## Master
 
+###### Bug Fixes
+
+* [Scheme] Generate correct ReferencedContainer attribute when the Xcode project
+  has a non-empty `projectDirPath`.
+  [Per Eckerdal](https://github.com/pereckerdal)
+  [#102](https://github.com/CocoaPods/Xcodeproj/pull/102)
+
 ###### Enhancements
 
 * [Scheme] Add support for aggregate targets to `#add_build_target`

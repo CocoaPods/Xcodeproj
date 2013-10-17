@@ -92,7 +92,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       buildable_reference.attributes['BuildableName'] = construct_buildable_name(build_target)
       buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
+      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
     end
 
     # Add a target to the list of targets to build in the build action.
@@ -109,7 +109,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = test_target.uuid
       buildable_reference.attributes['BuildableName'] = "#{test_target.name}.octest"
       buildable_reference.attributes['BlueprintName'] = test_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{test_target.project.path.basename}"
+      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(test_target)
     end
 
     # Sets a runnable target target to be the target of the launch action of the scheme.
@@ -125,7 +125,7 @@ module Xcodeproj
       launch_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       launch_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
       launch_buildable_reference.attributes['BlueprintName'] = build_target.name
-      launch_buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
+      launch_buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
 
       profile_product_runnable = @profile_action.add_element 'BuildableProductRunnable'
 
@@ -134,7 +134,7 @@ module Xcodeproj
       profile_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       profile_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
       profile_buildable_reference.attributes['BlueprintName'] = build_target.name
-      profile_buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
+      profile_buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
 
       macro_expansion = @test_action.add_element 'MacroExpansion'
 
@@ -143,7 +143,7 @@ module Xcodeproj
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
       buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
       buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
+      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
     end
 
     # @!group Class methods
@@ -288,6 +288,19 @@ module Xcodeproj
       else
         raise ArgumentError, "Unsupported build target type #{build_target.isa}"
       end
+    end
+
+    # @param [Xcodeproj::Project::Object::AbstractTarget] target
+    #
+    # @return [String] A string in the format "container:[path to the project
+    #                  file relative to the project_dir_path, always ending with
+    #                  the actual project directory name]"
+    #
+    def construct_referenced_container_uri(target)
+      project = target.project
+      relative_path = project.path.relative_path_from(project.path + project.root_object.project_dir_path).to_s
+      relative_path = project.path.basename if relative_path == '.'
+      "container:#{relative_path}"
     end
 
     #-------------------------------------------------------------------------#
