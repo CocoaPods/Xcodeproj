@@ -1,3 +1,16 @@
+## Master
+
+###### Enhancements
+
+* [PBXNativeTarget] Add support for subproject targets in `#add_dependency`
+  [Per Eckerdal](https://github.com/pereckerdal)
+  [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
+* [Project] Add `#reference_for_path` for retrieving a file reference for a
+  given absolute path.
+  [Per Eckerdal](https://github.com/pereckerdal)
+  [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
+
+
 ## 0.13.1
 
 ###### Bug Fixes
