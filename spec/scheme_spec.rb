@@ -91,6 +91,39 @@ module ProjectSpecs
         @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
       end
 
+      it 'Supports adding native build targets' do
+        scheme = Xcodeproj::XCScheme.new
+        scheme.add_build_target(@ios_application)
+
+        scheme.doc.root.elements['BuildAction'] \
+          .elements['BuildActionEntries'] \
+          .elements['BuildActionEntry'] \
+          .elements['BuildableReference'] \
+          .attributes['BuildableName'].should == @ios_application.product_reference.path
+      end
+
+      it 'Supports adding aggregate build targets' do
+        scheme = Xcodeproj::XCScheme.new
+        aggregate_target = @project.new(PBXAggregateTarget)
+        aggregate_target.name = 'Hello'
+        scheme.add_build_target(aggregate_target)
+
+        scheme.doc.root.elements['BuildAction'] \
+          .elements['BuildActionEntries'] \
+          .elements['BuildActionEntry'] \
+          .elements['BuildableReference'] \
+          .attributes['BuildableName'].should == aggregate_target.name
+      end
+
+      it 'Does not support adding legacy build targets' do
+        scheme = Xcodeproj::XCScheme.new
+        legacy_target = @project.new(PBXLegacyTarget)
+
+        should.raise ArgumentError do
+          scheme.add_build_target(legacy_target)
+        end.message.should.match /Unsupported build target/
+      end
+
       describe 'For iOS Application' do
 
         before do

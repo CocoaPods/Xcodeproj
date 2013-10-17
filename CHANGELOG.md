@@ -2,6 +2,9 @@
 
 ###### Enhancements
 
+* [Scheme] Add support for aggregate targets to `#add_build_target`
+  [Per Eckerdal](https://github.com/pereckerdal)
+  [#102](https://github.com/CocoaPods/Xcodeproj/pull/102)
 * [PBXNativeTarget] Add support for subproject targets in `#add_dependency`
   [Per Eckerdal](https://github.com/pereckerdal)
   [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)

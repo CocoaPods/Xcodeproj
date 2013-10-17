@@ -90,7 +90,7 @@ module Xcodeproj
       buildable_reference = build_action_entry.add_element 'BuildableReference'
       buildable_reference.attributes['BuildableIdentifier'] = 'primary'
       buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
+      buildable_reference.attributes['BuildableName'] = construct_buildable_name(build_target)
       buildable_reference.attributes['BlueprintName'] = build_target.name
       buildable_reference.attributes['ReferencedContainer'] = "container:#{build_target.project.path.basename}"
     end
@@ -266,6 +266,27 @@ module Xcodeproj
         @level -= @indentation
         output << ' '*@level
         output << "</#{node.expanded_name}>"
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    private
+
+    # @!group Private helpers
+
+    # @param [Xcodeproj::Project::Object::AbstractTarget] target
+    #
+    # @return [String] The buildable name of the scheme.
+    #
+    def construct_buildable_name(build_target)
+      case build_target.isa
+      when 'PBXNativeTarget'
+        File.basename(build_target.product_reference.path)
+      when 'PBXAggregateTarget'
+        build_target.name
+      else
+        raise ArgumentError, "Unsupported build target type #{build_target.isa}"
       end
     end
 
