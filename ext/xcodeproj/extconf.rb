@@ -4,9 +4,14 @@ use_prebuilt = case ENV['XCODEPROJ_BUILD']
                when '0'
                  true
                else
-                 prebuilt_dir = File.expand_path('../prebuilt', __FILE__)
-                 prebuilt_ext = File.join(prebuilt_dir, "#{RUBY_PLATFORM}-#{RUBY_VERSION}", 'xcodeproj_ext.bundle')
-                 File.exist?(prebuilt_ext)
+                 require 'rbconfig'
+                 if Config::CONFIG['prefix'] =~ %r{^/System/Library/Frameworks/Ruby.framework/}
+                   prebuilt_dir = File.expand_path('../prebuilt', __FILE__)
+                   prebuilt_ext = File.join(prebuilt_dir, "#{RUBY_PLATFORM}-#{RUBY_VERSION}", 'xcodeproj_ext.bundle')
+                   File.exist?(prebuilt_ext)
+                 else
+                   false
+                 end
                end
 
 if use_prebuilt
