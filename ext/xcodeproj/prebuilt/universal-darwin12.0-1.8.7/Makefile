@@ -4,11 +4,12 @@ SHELL = /bin/sh
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin12.0
+topdir = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin12.0
 hdrdir = $(topdir)
 VPATH = $(srcdir):$(topdir):$(hdrdir)
 exec_prefix = $(prefix)
-prefix = $(DESTDIR)/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr
+#prefix = $(DESTDIR)/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr
+prefix = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr
 mandir = $(DESTDIR)/usr/share/man
 rubylibdir = $(libdir)/ruby/$(ruby_version)
 oldincludedir = $(DESTDIR)/usr/include
@@ -45,7 +46,7 @@ LIBRUBYARG_STATIC = -l$(RUBY_SO_NAME)
 
 RUBY_EXTCONF_H = extconf.h
 CFLAGS   =  -fno-common -arch i386 -arch x86_64 -g -Os -pipe -fno-common -DENABLE_DTRACE  -fno-common  -pipe -fno-common $(cflags) -std=c99 
-INCFLAGS = -I. -I. -I/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin12.0 -I.
+INCFLAGS = -I. -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/universal-darwin12.0 -I.
 DEFS     = 
 CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\"  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE  
 CXXFLAGS = $(CFLAGS) 
