@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   ).strip.gsub(/\s+/, ' ')
 
   s.extensions    = "ext/xcodeproj/extconf.rb"
-  s.files         = Dir["lib/**/*.rb"] + Dir["ext/xcodeproj/{extconf.rb,xcodeproj_ext.c}"] + %w{ README.md LICENSE }
+  s.files         = %w{ README.md LICENSE } + Dir["lib/**/*.rb", "ext/xcodeproj/{extconf.rb,xcodeproj_ext.c}", "ext/xcodeproj/prebuilt/**/*.bundle"]
   s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ ext lib }
 
