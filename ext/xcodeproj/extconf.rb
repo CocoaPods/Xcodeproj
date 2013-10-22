@@ -81,10 +81,10 @@ else
     end
   end
 
-  have_header 'CoreFoundation/CoreFoundation.h'
-  have_header 'CoreFoundation/CFStream.h'
-  have_header 'CoreFoundation/CFPropertyList.h'
-  have_header 'ruby/st.h' or have_header 'st.h' or abort 'xcodeproj currently requires the (ruby/)st.h header'
+  have_header('CoreFoundation/CoreFoundation.h')
+  have_header('CoreFoundation/CFStream.h')
+  have_header('CoreFoundation/CFPropertyList.h')
+  have_header('ruby/st.h') || have_header('st.h') || abort('xcodeproj currently requires the (ruby/)st.h header')
 
   create_header
   create_makefile 'xcodeproj_ext'
