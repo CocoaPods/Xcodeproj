@@ -1,13 +1,13 @@
 *.swp
-Makefile
 *.log
 *.bundle
 *.o
 *.rbc
 .rbenv-version
+ext/xcodeproj/.RUBYARCHDIR.time
 ext/xcodeproj/extconf.h
 ext/xcodeproj/conftest.dSYM
-ext/xcodeproj/.RUBYARCHDIR.time
+ext/xcodeproj/Makefile
 ext/xcodeproj/siteconf*.rb
 *.gem
 .yardoc

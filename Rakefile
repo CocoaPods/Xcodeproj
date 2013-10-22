@@ -12,7 +12,7 @@ end
 namespace :ext do
   desc "Clean the ext files"
   task :clean do
-    sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle"
+    sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle prebuilt/**/*.o prebuilt/**/*.bundle"
   end
 
   desc "Build the ext"
@@ -24,6 +24,16 @@ namespace :ext do
         sh "ruby extconf.rb"
       end
       sh "make"
+    end
+  end
+
+  desc "Pre-compile the ext for default Ruby on 10.8 and 10.9"
+  task :precompile do
+    versions = Dir.glob(File.expand_path('../ext/xcodeproj/prebuilt/*darwin*', __FILE__)).sort
+    versions.each do |version|
+      Dir.chdir version do
+        sh "make"
+      end
     end
   end
 
@@ -44,7 +54,7 @@ namespace :gem do
   end
 
   desc "Build the gem"
-  task :build do
+  task :build => 'ext:clean' do
     sh "gem build xcodeproj.gemspec"
   end
 
@@ -52,6 +62,9 @@ namespace :gem do
   task :install => :build do
     sh "gem install #{gem_filename}"
   end
+
+  desc "Build the gem for distribution"
+  task :release_build => ['ext:clean', 'ext:precompile', :build]
 
   def silent_sh(command)
     output = `#{command} 2>&1`
@@ -100,7 +113,7 @@ namespace :gem do
     tmp = File.expand_path('../tmp', __FILE__)
     tmp_gems = File.join(tmp, 'gems')
 
-    Rake::Task['gem:build'].invoke
+    Rake::Task['gem:release_build'].invoke
 
     puts "* Testing gem installation (tmp/gems)"
     silent_sh "rm -rf '#{tmp}'"
