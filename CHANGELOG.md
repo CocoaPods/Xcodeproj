@@ -9,12 +9,23 @@
 
 ###### Enhancements
 
+* [Gem] Provide prebuilt binary versions of the C extension for the stock Ruby
+  versions on both OS X 10.8 (MRI 1.8.7) and 10.9 (MRI 2.0.0). Due to the ABI
+  of MRI’s C ext API not always being consistent, these will **not** install on
+  Ruby versions you have installed yourself. To override the default behaviour
+  you can use the `XCODEPROJ_BUILD` environment variable. Set it to `1` to
+  _always_ build the C extension or to `0` to _never_ build the C extension.
+  [Eloy Durán](https://github.com/alloy)
+  [#88](https://github.com/CocoaPods/Xcodeproj/issues/88)
+
 * [Scheme] Add support for aggregate targets to `#add_build_target`
   [Per Eckerdal](https://github.com/pereckerdal)
   [#102](https://github.com/CocoaPods/Xcodeproj/pull/102)
+
 * [PBXNativeTarget] Add support for subproject targets in `#add_dependency`
   [Per Eckerdal](https://github.com/pereckerdal)
   [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
+
 * [Project] Add `#reference_for_path` for retrieving a file reference for a
   given absolute path.
   [Per Eckerdal](https://github.com/pereckerdal)
