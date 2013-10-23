@@ -1,0 +1,36 @@
+desc 'Creates a Makefile only if needed. (Explicitly control with XCODEPROJ_BUILD)'
+task :ext do
+  use_prebuilt = case ENV['XCODEPROJ_BUILD']
+                 when '1'
+                   false
+                 when '0'
+                   true
+                 else
+                   require 'rbconfig'
+                   if RbConfig::CONFIG['prefix'] =~ %r{^/System/Library/Frameworks/Ruby.framework/}
+                     prebuilt_ext = File.join('prebuilt', "#{RUBY_PLATFORM}-#{RUBY_VERSION}", 'xcodeproj_ext.bundle')
+                     File.exist?(prebuilt_ext)
+                   else
+                     false
+                   end
+                 end
+
+  if use_prebuilt
+    # TODO It might be important that we communicate this, but there is no other way than this hack.
+    #      Can't change the spec anymore to have a post install message nor can we output to stdout/stderr,
+    #      because RubyGems catches all output and only shows it in case of a build failure.
+    #
+    #      Do we want this?
+    #
+    if File.writable?('/dev/tty')
+      File.open('/dev/tty', 'w') do |out|
+        out.puts "[!] You are using the prebuilt binary version of the xcodeproj gem."
+      end
+    end
+  else
+    ruby 'extconf.rb'
+    sh 'make'
+  end
+end
+
+task :default => :ext
