@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activesupport', '~> 3.0'
   s.add_runtime_dependency 'colored',       '~> 1.2'
 
+  s.rdoc_options += %w{ -x ext/.+\.(o|bundle) }
+
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
