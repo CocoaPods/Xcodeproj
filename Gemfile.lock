@@ -18,14 +18,14 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (0.13.1)
+    xcodeproj (0.14.0)
       activesupport (~> 3.0)
       colored (~> 1.2)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.2.14)
+    activesupport (3.2.15)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     bacon (1.2.0)
