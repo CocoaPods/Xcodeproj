@@ -1,14 +1,7 @@
 require 'fileutils'
 require 'pathname'
 
-# In case a binary built for the current Ruby exists, use that, otherwise see
-# if a prebuilt binary exists for the current platform and Ruby version.
-begin
-  require 'xcodeproj/xcodeproj_ext'
-rescue LoadError
-  require "xcodeproj/prebuilt/#{RUBY_PLATFORM}-#{RUBY_VERSION}/xcodeproj_ext"
-end
-
+require 'xcodeproj/ext'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/xcproj_helper'
