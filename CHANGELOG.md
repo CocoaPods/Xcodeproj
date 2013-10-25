@@ -1,3 +1,12 @@
+## master
+
+###### Bug Fixes
+
+* [bin] Ensure the version file is loaded before trying to print it.
+  [Eloy Durán](https://github.com/alloy)
+  [#107](https://github.com/CocoaPods/Xcodeproj/issues/107)
+
+
 ## 0.14.0
 
 ###### Bug Fixes
