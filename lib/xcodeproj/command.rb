@@ -81,6 +81,7 @@ module Xcodeproj
     def self.parse(*argv)
       argv = ARGV.new(argv)
       if argv.option('--version')
+        require 'xcodeproj/gem_version'
         puts VERSION
         exit!(0)
       end
