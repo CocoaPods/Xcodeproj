@@ -2,6 +2,10 @@
 
 ###### Bug Fixes
 
+* [Gem] Ensure rake is installed.
+  [Johannes Würbach](https://github.com/johanneswuerbach)
+  [#110](https://github.com/CocoaPods/Xcodeproj/pull/110)
+
 * [bin] Ensure the version file is loaded before trying to print it.
   [Eloy Durán](https://github.com/alloy)
   [#107](https://github.com/CocoaPods/Xcodeproj/issues/107)
