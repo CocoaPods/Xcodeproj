@@ -17,8 +17,8 @@ task :ext do
 
   if use_prebuilt
     # It’s important that we communicate this, so we can differentiate between
-    # types of installations when people paste output.but there is no other way
-    # than this hack.
+    # types of installations when people paste output, but there is
+    # unfortunately no other way than this hack.
     #
     # By the time we decide wether prebuilt binaries should be used we can't
     # change the spec anymore to have a post install message nor can we output
