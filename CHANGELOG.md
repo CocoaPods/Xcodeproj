@@ -2,6 +2,12 @@
 
 ###### Bug Fixes
 
+* [Gem] On MRI 1.8.7 /dev/tty is considered writable when not configured,
+  leading to an exception when ran in an environment without a TTY.
+  [Eloy Durán](https://github.com/alloy)
+  [#111](https://github.com/CocoaPods/Xcodeproj/issues/111)
+  [#112](https://github.com/CocoaPods/Xcodeproj/issues/112)
+
 * [Gem] Ensure rake is installed.
   [Johannes Würbach](https://github.com/johanneswuerbach)
   [#110](https://github.com/CocoaPods/Xcodeproj/pull/110)
