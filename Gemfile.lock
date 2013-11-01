@@ -18,9 +18,10 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (0.14.0)
+    xcodeproj (0.14.1)
       activesupport (~> 3.0)
       colored (~> 1.2)
+      rake
 
 GEM
   remote: http://rubygems.org/
