@@ -9,6 +9,8 @@ ext/xcodeproj/extconf.h
 ext/xcodeproj/conftest.dSYM
 ext/xcodeproj/Makefile
 ext/xcodeproj/siteconf*.rb
+ext/xcodeproj/config/lexer.c
+ext/xcodeproj/config/Makefile
 *.gem
 .yardoc
 doc

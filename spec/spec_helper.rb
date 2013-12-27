@@ -26,6 +26,8 @@ require 'pathname'
 
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
+ENV['XCODEPROJ_BUILD'] = '1'
+
 $:.unshift((ROOT + 'ext').to_s)
 $:.unshift((ROOT + 'lib').to_s)
 require 'xcodeproj'

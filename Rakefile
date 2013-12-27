@@ -15,17 +15,30 @@ namespace :ext do
     sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle prebuilt/**/*.o prebuilt/**/*.bundle"
   end
 
-  desc "Build the ext"
-  task :build do
-    Dir.chdir 'ext/xcodeproj' do
-      if on_rvm?
-        sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
-      else
-        sh "ruby extconf.rb"
+  desc "Generate the lexer source from the Ragel source"
+  task :generate_lexer do
+    sh "ragel -C -o ext/xcodeproj/config/lexer.c ext/xcodeproj/config/lexer.c.rl"
+  end
+
+  namespace :build do
+    %w{ ext/xcodeproj ext/xcodeproj/config }.each do |dir|
+      name = File.basename(dir)
+      desc "Build the #{name} ext"
+      task name do
+        Dir.chdir dir do
+          if on_rvm?
+            sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
+          else
+            sh "ruby extconf.rb"
+          end
+          sh "make"
+        end
       end
-      sh "make"
     end
   end
+
+  desc "Build the extensions"
+  task :build => ['build:xcodeproj', 'build:config']
 
   desc "Pre-compile the ext for default Ruby on 10.8 and 10.9"
   task :precompile do
