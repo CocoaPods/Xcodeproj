@@ -1,7 +1,6 @@
 require 'fileutils'
 require 'pathname'
 
-require 'xcodeproj/ext'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/xcproj_helper'

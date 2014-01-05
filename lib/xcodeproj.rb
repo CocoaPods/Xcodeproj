@@ -21,3 +21,10 @@ module Xcodeproj
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
 end
+
+# TODO It appears that loading the C ext from xcodeproj/project while it's
+# being autoloaded doesn't actually define the singleton methods. Ruby bug?
+#
+# This leads to `NoMethodError: undefined method write_plist for Xcodeproj:Module`
+# working around it by always loading the ext ASAP.
+require 'xcodeproj/ext'
