@@ -125,6 +125,7 @@ lexer_lex_config(VALUE self, VALUE input)
   action emit_setting {
     EMIT_TOKEN(sSetting);
     // Skip over next character.
+    // TODO modifying cs directly breaks with `ragel -G2`
     cs++;
   }
 

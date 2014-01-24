@@ -17,7 +17,7 @@ namespace :ext do
 
   desc "Generate the lexer source from the Ragel source"
   task :generate_lexer do
-    sh "ragel -C -o ext/xcodeproj/config/lexer.c ext/xcodeproj/config/lexer.c.rl"
+    sh "ragel -C -G1 -o ext/xcodeproj/config/lexer.c ext/xcodeproj/config/lexer.c.rl"
   end
 
   namespace :build do
