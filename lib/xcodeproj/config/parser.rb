@@ -12,6 +12,13 @@ module Xcodeproj
     end
 
     module Parser
+      # Container should be Pathname when from a xcconfig file, or a Xcodeproj::Project in case it's defined inside the project.
+      def self.parse_config(input, container = nil)
+        config = Config.new
+        config.settings = parse_settings(input, container)
+        config
+      end
+
       def self.parse_value(input, container, character_number_offset = 0, line_number = nil)
         value_fields = []
         Lexer.lex_value(input).each do |token|
@@ -23,36 +30,34 @@ module Xcodeproj
         value_fields
       end
 
-      # Container should be Pathname when from a xcconfig file, or a Xcodeproj::Project in case it's defined inside the project.
-      def self.parse(input, container = nil)
-        config = Config.new
-        config.settings = []
+      private
 
+      def self.parse_settings(input, container)
+        settings = []
         current_setting = nil
         Lexer.lex_config(input).each do |token|
           next if token[:type] == :comment
+          # Parse included xcconfig files
           if current_setting.nil? && token[:type] == :include && container.is_a?(Pathname)
             # TODO
             # * relative and absolute paths
             # * with or without xcconfig extname
             path = container.dirname + token[:token]
-            c = parse(File.read(path.to_s), path)
-            config.settings.concat(c.settings)
+            settings.concat(parse_settings(File.read(path.to_s), path))
+          # Start a new BuildSetting
           elsif current_setting.nil? && token[:type] == :setting
             current_setting = BuildSetting.new(create_field(token, container))
+          # Parse a setting's value and assign it to the BuildSetting
           elsif current_setting && token[:type] == :value
             current_setting.value = parse_value(token[:token], container, token[:character_number] - 1, token[:line_number])
-            config.settings << current_setting
+            settings << current_setting
             current_setting = nil
           else
             raise "Parse error at token: #{token.inspect}"
           end
         end
-
-        config
+        settings
       end
-
-      private
 
       def self.create_field(token, container)
         location = BuildSetting::Field::Location.new(container, token[:line_number], token[:character_number])

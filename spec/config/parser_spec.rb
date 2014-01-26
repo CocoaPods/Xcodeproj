@@ -32,13 +32,13 @@ class Xcodeproj::Config
 
   describe Parser do
     it "generates a BuildSetting for a setting and value assignment" do
-      config = Parser.parse('OTHER_LDFLAGS = $(inherited) -framework Foundation')
+      config = Parser.parse_config('OTHER_LDFLAGS = $(inherited) -framework Foundation')
       setting = config.settings.first
       setting.name.content.should == 'OTHER_LDFLAGS'
     end
 
     it "automatically parses setting values" do
-      config = Parser.parse('OTHER_LDFLAGS = $(inherited) -framework Foundation')
+      config = Parser.parse_config('OTHER_LDFLAGS = $(inherited) -framework Foundation')
       fields = config.settings.first.value
       fields.map { |field| [field.type, field.content] }.should == [
         [:setting, 'inherited'],
@@ -48,13 +48,13 @@ class Xcodeproj::Config
     end
 
     it "ignores comments" do
-      config = Parser.parse(%{// comment 1\n//comment 2})
+      config = Parser.parse_config(%{// comment 1\n//comment 2})
       config.settings.should.be.empty
     end
 
     it "stores the file location info for each field" do
       path = Pathname.new('some/custom.xcconfig')
-      config = Parser.parse(%{// comment\nOTHER_LDFLAGS = $(inherited) -framework Foundation}, path)
+      config = Parser.parse_config(%{// comment\nOTHER_LDFLAGS = $(inherited) -framework Foundation}, path)
       setting = config.settings.first
 
       setting.name.defined_at.container.should == path
@@ -80,7 +80,7 @@ class Xcodeproj::Config
 
       File.expects(:read).with(other_path.to_s).returns(%{//comment\nOTHER_LDFLAGS = $(inherited)})
 
-      config = Parser.parse(%{#include "other.xcconfig"}, path)
+      config = Parser.parse_config(%{#include "other.xcconfig"}, path)
       setting = config.settings.first
       setting.name.content.should == 'OTHER_LDFLAGS'
       setting.name.defined_at.container.should == other_path
