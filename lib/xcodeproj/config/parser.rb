@@ -17,6 +17,17 @@ module Xcodeproj
         BuildSetting::Field.new(token[:type], token[:token], location)
       end
 
+      def self.parse_value(input, container, character_number_offset = 0, line_number = nil)
+        value_fields = []
+        Lexer.lex_value(input).each do |token|
+          next if token[:type] == :space
+          token[:line_number] = line_number
+          token[:character_number] += character_number_offset
+          value_fields << create_field(token, container)
+        end
+        value_fields
+      end
+
       # Container should be Pathname when from a xcconfig file, or a Xcodeproj::Project in case it's defined inside the project.
       def self.parse(input, container = nil)
         config = Config.new
@@ -28,19 +39,11 @@ module Xcodeproj
           if current_setting.nil? && token[:type] == :setting
             current_setting = BuildSetting.new(create_field(token, container))
           elsif current_setting && token[:type] == :value
-            value_fields = []
-            Lexer.lex_value(token[:token]).each do |value_token|
-              next if value_token[:type] == :space
-              value_token[:line_number] = token[:line_number]
-              # TODO eh, what's with the off by one?
-              value_token[:character_number] += token[:character_number] - 1
-              value_fields << create_field(value_token, container)
-            end
-            current_setting.value = value_fields
+            current_setting.value = parse_value(token[:token], container, token[:character_number] - 1, token[:line_number])
             config.settings << current_setting
             current_setting = nil
           else
-            raise 'Parse error!'
+            raise "Parse error at token: #{token.inspect}"
           end
         end
 

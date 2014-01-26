@@ -47,6 +47,11 @@ class Xcodeproj::Config
       ]
     end
 
+    it "ignores comments" do
+      config = Parser.parse(%{// comment 1\n//comment 2})
+      config.settings.should.be.empty
+    end
+
     it "stores the file location info for each field" do
       path = Pathname.new('some/custom.xcconfig')
       config = Parser.parse(%{// comment\nOTHER_LDFLAGS = $(inherited) -framework Foundation}, path)
