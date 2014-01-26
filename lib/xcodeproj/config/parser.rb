@@ -39,10 +39,10 @@ module Xcodeproj
           next if token[:type] == :comment
           # Parse included xcconfig files
           if current_setting.nil? && token[:type] == :include && container.is_a?(Pathname)
-            # TODO
-            # * relative and absolute paths
-            # * with or without xcconfig extname
-            path = container.dirname + token[:token]
+            # TODO relative and absolute paths
+            filename = token[:token]
+            filename << '.xcconfig' unless File.extname(filename) == '.xcconfig'
+            path = container.dirname + filename
             settings.concat(parse_settings(File.read(path.to_s), path))
           # Start a new BuildSetting
           elsif current_setting.nil? && token[:type] == :setting
