@@ -12,11 +12,6 @@ module Xcodeproj
     end
 
     module Parser
-      def self.create_field(token, container)
-        location = BuildSetting::Field::Location.new(container, token[:line_number], token[:character_number])
-        BuildSetting::Field.new(token[:type], token[:token], location)
-      end
-
       def self.parse_value(input, container, character_number_offset = 0, line_number = nil)
         value_fields = []
         Lexer.lex_value(input).each do |token|
@@ -36,7 +31,14 @@ module Xcodeproj
         current_setting = nil
         Lexer.lex_config(input).each do |token|
           next if token[:type] == :comment
-          if current_setting.nil? && token[:type] == :setting
+          if current_setting.nil? && token[:type] == :include && container.is_a?(Pathname)
+            # TODO
+            # * relative and absolute paths
+            # * with or without xcconfig extname
+            path = container.dirname + token[:token]
+            c = parse(File.read(path.to_s), path)
+            config.settings.concat(c.settings)
+          elsif current_setting.nil? && token[:type] == :setting
             current_setting = BuildSetting.new(create_field(token, container))
           elsif current_setting && token[:type] == :value
             current_setting.value = parse_value(token[:token], container, token[:character_number] - 1, token[:line_number])
@@ -48,6 +50,13 @@ module Xcodeproj
         end
 
         config
+      end
+
+      private
+
+      def self.create_field(token, container)
+        location = BuildSetting::Field::Location.new(container, token[:line_number], token[:character_number])
+        BuildSetting::Field.new(token[:type], token[:token], location)
       end
     end
   end

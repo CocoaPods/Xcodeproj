@@ -73,5 +73,23 @@ class Xcodeproj::Config
       setting.value[2].defined_at.line_number.should == 2
       setting.value[2].defined_at.character_number.should == 41
     end
+
+    it "includes settings from another file relative to the current one" do
+      path = Pathname.new('/some/custom.xcconfig')
+      other_path = Pathname.new('/some/other.xcconfig')
+
+      File.expects(:read).with(other_path.to_s).returns(%{//comment\nOTHER_LDFLAGS = $(inherited)})
+
+      config = Parser.parse(%{#include "other.xcconfig"}, path)
+      setting = config.settings.first
+      setting.name.content.should == 'OTHER_LDFLAGS'
+      setting.name.defined_at.container.should == other_path
+      setting.name.defined_at.line_number.should == 2
+      setting.name.defined_at.character_number.should == 1
+      setting.value[0].content.should == 'inherited'
+      setting.value[0].defined_at.container.should == other_path
+      setting.value[0].defined_at.line_number.should == 2
+      setting.value[0].defined_at.character_number.should == 19
+    end
   end
 end
