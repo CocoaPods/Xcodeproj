@@ -24,8 +24,7 @@ by performing the following command:
 ## Collaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
-is really easy and gratifying. You even get push access when one of your patches
-is accepted.
+is really easy and gratifying.
 
 Follow [@CocoaPods][twitter] to get up to date information about what's
 going on in the CocoaPods world.
