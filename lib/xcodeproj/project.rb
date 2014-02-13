@@ -54,7 +54,7 @@ module Xcodeproj
     #         Project.new("path/to/Project.xcodeproj")
     #
     def initialize(path, skip_initialization = false)
-      @path = Pathname.new(path)
+      @path = Pathname.new(path).expand_path
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
