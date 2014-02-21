@@ -47,6 +47,7 @@ module Xcodeproj
     attr_reader :path
 
     # @param  [Pathname, String] path @see path
+    #         The path provided will be expanded to an absolute path.
     # @param  [Bool] skip_initialization
     #         Wether the project should be initialized from scratch.
     #
