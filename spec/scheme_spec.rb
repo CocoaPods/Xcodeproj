@@ -40,6 +40,21 @@ module ProjectSpecs
                 buildImplicitDependencies = "YES">
           DOC
         end
+
+        it "does not modify attribute values" do
+          scheme = @sut.instance_variable_get :@scheme
+          scheme.attributes["name"] = "key=value"
+          @sut.to_s[0..212].should == <<-DOC.strip_heredoc
+          <?xml version="1.0" encoding="UTF-8"?>
+          <Scheme
+             LastUpgradeVersion = "0500"
+             version = "1.3"
+             name = "key=value">
+             <BuildAction
+                parallelizeBuildables = "YES"
+                buildImplicitDependencies = "YES">
+          DOC
+        end
       end
     end
 
