@@ -285,6 +285,8 @@ module Xcodeproj
         File.basename(build_target.product_reference.path)
       when 'PBXAggregateTarget'
         build_target.name
+      when 'PBXLegacyTarget'
+        build_target.name
       else
         raise ArgumentError, "Unsupported build target type #{build_target.isa}"
       end

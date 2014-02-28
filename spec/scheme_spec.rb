@@ -130,12 +130,15 @@ module ProjectSpecs
           .attributes['BuildableName'].should == aggregate_target.name
       end
 
-      it 'Does not support adding legacy build targets' do
+      it 'Supports adding legacy build targets' do
         legacy_target = @project.new(PBXLegacyTarget)
-
-        should.raise ArgumentError do
-          @scheme.add_build_target(legacy_target)
-        end.message.should.match /Unsupported build target/
+        legacy_target.name = 'Legacy'
+        @scheme.add_build_target(legacy_target)
+        @scheme.doc.root.elements['BuildAction'] \
+          .elements['BuildActionEntries'] \
+          .elements['BuildActionEntry'] \
+          .elements['BuildableReference'] \
+          .attributes['BuildableName'].should == legacy_target.name
       end
 
       it 'Constructs ReferencedContainer attributes correctly' do
