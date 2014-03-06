@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = %w{ ext lib }
 
   s.add_runtime_dependency 'rake'
-  s.add_runtime_dependency 'activesupport', '~> 3.0'
+  s.add_runtime_dependency 'activesupport', '~> 4.0'
   s.add_runtime_dependency 'colored',       '~> 1.2'
 
   s.rdoc_options += %w{ -x ext/.+\.(o|bundle) }
