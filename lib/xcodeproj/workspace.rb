@@ -8,16 +8,75 @@ module Xcodeproj
   #
   class Workspace
 
+    class FileReference
+      # @return [String] the path to the project
+      #
+      attr_reader :path
+
+      # @return [String] the type of reference to the project
+      #
+      # This can be of the following values:
+      # - absolute
+      # - group
+      # - container
+      # - developer (unsupported)
+      attr_reader :type
+
+      def self.from_node(node)
+        type, path = node.attribute('location').value.split(':', 2)
+        new(path, type)
+      end
+
+      def initialize(path, type=nil)
+        @path = path
+        @type = type || "group"
+      end
+
+      def ==(other)
+          @path == other.path && @type == other.type
+      end
+
+      def to_node
+        REXML::Element.new("FileRef").tap do |element|
+          element.attributes['location'] = "#{@type}:#{@path}"
+        end
+      end
+
+      # Get the absolute path to a project in a workspace
+      #
+      # @param [String] workspace_dir_path
+      #         path of workspaces dir
+      #
+      # @return [String] The absolute path to the project
+      #
+      def absolute_path(workspace_dir_path)
+        case @type
+        when 'group'
+          File.expand_path(File.join(workspace_dir_path, @path))
+        when 'container'
+          File.expand_path(File.join(workspace_dir_path, @path))
+        when 'absolute'
+          File.expand_path(@path)
+        when 'developer'
+          # TODO
+          raise "Developer file reference type is not yet supported"
+        else
+          raise "Unsupported workspace file reference type #{@type}"
+        end
+      end
+    end
+
     # @return [Array<String>] the paths of the projects contained in the
+    # @return [Array<FileReference>] the paths of the projects contained in the
     #         workspace.
     #
-    attr_reader :projpaths
+    attr_reader :file_references
     attr_reader :schemes
 
-    # @param  [Array] projpaths @see projpaths
+    # @param  [Array] file_references @see file_references
     #
-    def initialize(*projpaths)
-      @projpaths = projpaths.flatten
+    def initialize(*file_references)
+      @file_references = file_references.flatten
       @schemes = {}
     end
 
@@ -50,10 +109,10 @@ module Xcodeproj
     #
     def self.from_s(xml, workspace_path='')
       document = REXML::Document.new(xml)
-      projpaths = document.get_elements("/Workspace/FileRef").map do |node|
-        node.attribute("location").value.sub(/^group:/, '')
+      file_references = document.get_elements("/Workspace/FileRef").map do |node|
+        FileReference.from_node(node)
       end
-      instance = new(projpaths)
+      instance = new(file_references)
       instance.load_schemes(workspace_path)
       instance
     end
@@ -69,19 +128,20 @@ module Xcodeproj
     # @return [void]
     #
     def <<(projpath)
-      @projpaths << projpath
+      @file_references << projpath
       load_schemes_from_project File.expand_path(projpath)
     end
 
-    # Checks if the workspace contains the project with the given path.
+    # Checks if the workspace contains the project with the given file
+    # reference.
     #
-    # @param  [String] projpath
-    #         The path of the project to add.
+    # @param  [FileReference] file_reference
+    #         The file_reference to the project.
     #
     # @return [Boolean] whether the project is contained in the workspace.
     #
-    def include?(projpath)
-      @projpaths.include?(projpath)
+    def include?(file_reference)
+      @file_references.include?(file_reference)
     end
 
     # The template to generate a workspace XML representation.
@@ -92,10 +152,8 @@ module Xcodeproj
     #
     def to_s
       REXML::Document.new(TEMPLATE).tap do |document|
-        @projpaths.each do |projpath|
-          document.root << REXML::Element.new("FileRef").tap do |el|
-            el.attributes['location'] = "group:#{projpath}"
-          end
+        @file_references.each do |file_reference|
+          document.root << file_reference.to_node
         end
       end.to_s
     end
@@ -124,9 +182,9 @@ module Xcodeproj
     # @return [void]
     #
     def load_schemes workspace_dir_path
-      @projpaths.each do |projpath|
-        project_full_path = File.expand_path(File.join(workspace_dir_path, projpath))
-        load_schemes_from_project project_full_path
+      @file_references.each do |file_reference|
+        project_full_path = file_reference.absolute_path(workspace_dir_path)
+        load_schemes_from_project(project_full_path)
       end
     end
 

@@ -1,5 +1,11 @@
 ## 0.14.1
 
+###### Enhancements
+
+* Add support for absolute, group and container project references in workspaces  
+  [Kyle Fuller](https://github.com/kylef)
+  [#118](https://github.com/CocoaPods/Xcodeproj/issues/118)
+
 ###### Bug Fixes
 
 * [Gem] On MRI 1.8.7 /dev/tty is considered writable when not configured,
