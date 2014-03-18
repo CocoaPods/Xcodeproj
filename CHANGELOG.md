@@ -1,3 +1,11 @@
+## master
+
+###### Enhancements
+
+* Bumping last known Xcode version to 5.1
+  [Romans Karpelcevs](https://github.com/coverback)
+  [#138](https://github.com/CocoaPods/Xcodeproj/pull/138)
+
 ## 0.14.1
 
 ###### Bug Fixes

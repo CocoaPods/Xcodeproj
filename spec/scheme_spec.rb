@@ -33,7 +33,7 @@ module ProjectSpecs
           @sut.to_s[0..190].should == <<-DOC.strip_heredoc
           <?xml version="1.0" encoding="UTF-8"?>
           <Scheme
-             LastUpgradeVersion = "0500"
+             LastUpgradeVersion = "0510"
              version = "1.3">
              <BuildAction
                 parallelizeBuildables = "YES"
