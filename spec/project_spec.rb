@@ -22,6 +22,11 @@ module ProjectSpecs
 
     describe "Initialization from scratch" do
 
+      it "expands the provided path" do
+        project = Xcodeproj::Project.new('foo.xcodeproj')
+        project.path.should == Pathname.new('./foo.xcodeproj').expand_path
+      end
+
       it "initializes to the last known archive version" do
         @project.archive_version.should == Xcodeproj::Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
       end
