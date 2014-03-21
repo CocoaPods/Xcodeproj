@@ -246,11 +246,7 @@ module ProjectSpecs
           end
 
           phase.should.be.instance_of klass
-          if phase.is_a? PBXFrameworksBuildPhase
-            phase.files.count.should == 1
-          else
-            phase.files.to_a.should == []
-          end
+          phase.files.to_a.should == []
         end
       end
 
@@ -377,7 +373,7 @@ module ProjectSpecs
         pretty_print = @sut.pretty_print
         pretty_print['Pods']['Build Phases'].should == [
           { "SourcesBuildPhase" => [] },
-          { "FrameworksBuildPhase" => ["Foundation.framework"] }
+          { "FrameworksBuildPhase" => [] }
         ]
         build_configurations = pretty_print['Pods']['Build Configurations']
         build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
