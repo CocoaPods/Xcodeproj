@@ -53,10 +53,6 @@ module Xcodeproj
         target.build_phases << project.new(PBXSourcesBuildPhase)
         target.build_phases << project.new(PBXFrameworksBuildPhase)
 
-        # Frameworks
-        framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-        framework_ref = target.add_system_framework(framework_name)
-
         target
       end
 
