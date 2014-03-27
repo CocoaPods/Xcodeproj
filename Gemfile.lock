@@ -31,7 +31,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    mime-types (2.2)
+    mime-types (1.25.1)
     mocha (1.0.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
@@ -73,6 +73,7 @@ DEPENDENCIES
   coveralls
   github-markup
   kicker
+  mime-types (< 2.0)
   mocha
   mocha-on-bacon
   prettybacon
