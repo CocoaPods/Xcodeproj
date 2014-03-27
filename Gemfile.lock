@@ -4,7 +4,6 @@ PATH
     xcodeproj (0.15.0)
       activesupport (~> 3.0)
       colored (~> 1.2)
-      rake
 
 GEM
   remote: http://rubygems.org/
