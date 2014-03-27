@@ -1,26 +1,44 @@
 ## master
 
+###### Breaking
+
+* [Project] Now the provided path is always expanded on initialization.  
+  [Gordon Fontenot](https://github.com/gfontenot)
+  [#121](https://github.com/CocoaPods/Xcodeproj/pull/121)
+
 ###### Enhancements
 
-* Bumping last known Xcode version to 5.1
+* [Constants] Bumped last know SDK versions.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+  [#141](https://github.com/CocoaPods/Xcodeproj/pull/141)
+
+* [Constants] Removed empty `OTHER_LDFLAGS` setting to match Xcode's behaviour.  
+  [Gordon Fontenot](https://github.com/gfontenot)
+
+* [Constants] Bumped last known Xcode version to `5.1`.  
   [Romans Karpelcevs](https://github.com/coverback)
   [#138](https://github.com/CocoaPods/Xcodeproj/pull/138)
+
+###### Bug Fixes
+
+* [Extension] Fixed intermittent `Xcodeproj.write_plist` error.  
+  [Eloy Durán](https://github.com/alloy)
 
 ## 0.14.1
 
 ###### Bug Fixes
 
 * [Gem] On MRI 1.8.7 /dev/tty is considered writable when not configured,
-  leading to an exception when ran in an environment without a TTY.
+  leading to an exception when ran in an environment without a TTY.  
   [Eloy Durán](https://github.com/alloy)
   [#111](https://github.com/CocoaPods/Xcodeproj/issues/111)
   [#112](https://github.com/CocoaPods/Xcodeproj/issues/112)
 
-* [Gem] Ensure rake is installed.
+* [Gem] Ensure rake is installed.  
   [Johannes Würbach](https://github.com/johanneswuerbach)
   [#110](https://github.com/CocoaPods/Xcodeproj/pull/110)
 
-* [bin] Ensure the version file is loaded before trying to print it.
+* [bin] Ensure the version file is loaded before trying to print it.  
   [Eloy Durán](https://github.com/alloy)
   [#107](https://github.com/CocoaPods/Xcodeproj/issues/107)
 
@@ -30,7 +48,7 @@
 ###### Bug Fixes
 
 * [Scheme] Generate correct ReferencedContainer attribute when the Xcode project
-  has a non-empty `projectDirPath`.
+  has a non-empty `projectDirPath`.  
   [Per Eckerdal](https://github.com/pereckerdal)
   [#102](https://github.com/CocoaPods/Xcodeproj/pull/102)
 
@@ -41,20 +59,20 @@
   of MRI’s C ext API not always being consistent, these will **not** install on
   Ruby versions you have installed yourself. To override the default behaviour
   you can use the `XCODEPROJ_BUILD` environment variable. Set it to `1` to
-  _always_ build the C extension or to `0` to _never_ build the C extension.
+  _always_ build the C extension or to `0` to _never_ build the C extension.  
   [Eloy Durán](https://github.com/alloy)
   [#88](https://github.com/CocoaPods/Xcodeproj/issues/88)
 
-* [Scheme] Add support for aggregate targets to `#add_build_target`
+* [Scheme] Add support for aggregate targets to `#add_build_target`.  
   [Per Eckerdal](https://github.com/pereckerdal)
   [#102](https://github.com/CocoaPods/Xcodeproj/pull/102)
 
-* [PBXNativeTarget] Add support for subproject targets in `#add_dependency`
+* [PBXNativeTarget] Add support for subproject targets in `#add_dependency`.  
   [Per Eckerdal](https://github.com/pereckerdal)
   [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
 
 * [Project] Add `#reference_for_path` for retrieving a file reference for a
-  given absolute path.
+  given absolute path.  
   [Per Eckerdal](https://github.com/pereckerdal)
   [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
 
@@ -63,8 +81,8 @@
 
 ###### Bug Fixes
 
-* Fix `Unable to read data from Model.xcdatamodeld/.xccurrentversion` when 
-  there are more Data model versions.
+* Fix `Unable to read data from Model.xcdatamodeld/.xccurrentversion` when
+  there are more Data model versions.  
   [Pim Snel](https://github.com/mipmip)
 
 ###### Enhancements
