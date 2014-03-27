@@ -32,6 +32,7 @@ namespace :ext do
     versions = Dir.glob(File.expand_path('../ext/xcodeproj/prebuilt/*darwin*', __FILE__)).sort
     versions.each do |version|
       Dir.chdir version do
+        puts "\n#{File.basename(version)}"
         sh "make"
       end
     end
