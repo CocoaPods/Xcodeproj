@@ -62,6 +62,8 @@ module Xcodeproj
         #
         attribute :project_root, String, ''
 
+        attribute :name, String
+
         # @return [Array<ObjectDictionary>] any reference to other projects.
         #
         has_many_references_by_keys :project_references, {

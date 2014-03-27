@@ -115,6 +115,8 @@ module Xcodeproj
         #
         attribute :comments, String
 
+        attribute :options, Hash
+
         #---------------------------------------------------------------------#
 
         public
