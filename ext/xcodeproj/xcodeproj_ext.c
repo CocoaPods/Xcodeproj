@@ -181,6 +181,8 @@ str_to_url(VALUE path) {
   return fileURL;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 /* @overload read_plist(path)
  *
@@ -272,6 +274,7 @@ write_plist(VALUE self, VALUE hash, VALUE path) {
   return success ? Qtrue : Qfalse;
 }
 
+#pragma GCC diagnostic pop
 
 void Init_xcodeproj_ext() {
   Xcodeproj = rb_define_module("Xcodeproj");
