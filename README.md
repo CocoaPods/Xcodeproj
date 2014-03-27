@@ -1,8 +1,8 @@
 # Xcodeproj
 
 [![Build Status](https://travis-ci.org/CocoaPods/Xcodeproj.svg?branch=master)](https://travis-ci.org/CocoaPods/Xcodeproj)
-[![Coverage Status](http://img.shields.io/coveralls/CocoaPods/Xcodeproj.svg)](https://coveralls.io/r/CocoaPods/Xcodeproj)
-[![Code Climate](http://img.shields.io/codeclimate/github/CocoaPods/Xcodeproj.svg)](https://codeclimate.com/github/CocoaPods/Xcodeproj)
+[![Coverage Status](https://img.shields.io/coveralls/CocoaPods/Xcodeproj.svg)](https://coveralls.io/r/CocoaPods/Xcodeproj)
+[![Code Climate](https://img.shields.io/codeclimate/github/CocoaPods/Xcodeproj.svg)](https://codeclimate.com/github/CocoaPods/Xcodeproj)
 
 Xcodeproj lets you create and modify Xcode projects from [Ruby][ruby].
 Script boring management tasks or build Xcode-friendly libraries. Also includes
