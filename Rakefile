@@ -12,11 +12,13 @@ end
 namespace :ext do
   desc "Clean the ext files"
   task :clean do
+    title "Cleaning extension"
     sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle prebuilt/**/*.o prebuilt/**/*.bundle"
   end
 
   desc "Build the ext"
   task :build do
+    title "Building the extension"
     Dir.chdir 'ext/xcodeproj' do
       if on_rvm?
         sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
@@ -29,10 +31,11 @@ namespace :ext do
 
   desc "Pre-compile the ext for default Ruby on 10.8 and 10.9"
   task :precompile do
+    title "Pre-compiling the extension"
     versions = Dir.glob(File.expand_path('../ext/xcodeproj/prebuilt/*darwin*', __FILE__)).sort
     versions.each do |version|
       Dir.chdir version do
-        puts "\n#{File.basename(version)}"
+        subtitle "#{File.basename(version)}"
         sh "make"
       end
     end
@@ -56,6 +59,7 @@ namespace :gem do
 
   desc "Build the gem"
   task :build => 'ext:clean' do
+    title "Building the gem"
     sh "gem build xcodeproj.gemspec"
   end
 
@@ -79,6 +83,9 @@ namespace :gem do
   desc "Run all specs, build and install gem, commit version change, tag version change, and push everything"
   task :release do
 
+    title "Releasing..."
+
+    subtitle "Running checks"
     unless ENV['SKIP_CHECKS']
       if `git symbolic-ref HEAD 2>/dev/null`.strip.split('/').last != 'master'
         $stderr.puts "[!] You need to be on the `master' branch in order to be able to do a release."
@@ -89,9 +96,6 @@ namespace :gem do
         $stderr.puts "[!] A tag for version `#{gem_version}' already exists. Change the version in lib/xcodeproj.rb"
         exit 1
       end
-
-      puts "You are about to release `#{gem_version}', is that correct? [y/n]"
-      exit if $stdin.gets.strip.downcase != 'y'
 
       diff_lines = `git diff --name-only`.strip.split("\n")
       diff_lines.delete('CHANGELOG.md')
@@ -106,9 +110,12 @@ namespace :gem do
         $stderr.puts "[!] Only change the version number in a release commit! `#{not_allowed_files}`"
         exit 1
       end
+
+      puts "You are about to release `#{gem_version}', is that correct? [y/n]"
+      exit if $stdin.gets.strip.downcase != 'y'
     end
 
-    puts "* Running specs"
+    subtitle "Running specs"
     silent_sh('rake spec:all')
 
     tmp = File.expand_path('../tmp', __FILE__)
@@ -116,7 +123,7 @@ namespace :gem do
 
     Rake::Task['gem:release_build'].invoke
 
-    puts "* Testing gem installation (tmp/gems)"
+    subtitle "Testing gem installation (tmp/gems)"
     silent_sh "rm -rf '#{tmp}'"
     silent_sh "gem install --install-dir='#{tmp_gems}' #{gem_filename}"
 
@@ -127,10 +134,13 @@ namespace :gem do
     # silent_sh "rake examples:build"
 
     # Then release
+    subtitle "Committing & pushing the repo"
     sh "git commit -am 'Release #{gem_version}'"
     sh "git tag -a #{gem_version} -m 'Release #{gem_version}'"
     sh "git push origin master"
     sh "git push origin --tags"
+
+    subtitle "Pushing the gem"
     sh "gem push #{gem_filename}"
   end
 end
@@ -169,3 +179,46 @@ desc "Run all specs"
 task :spec => 'spec:all'
 
 task :default => :spec
+
+# UI
+#-----------------------------------------------------------------------------#
+
+# Prints a title.
+#
+def title(string)
+  puts
+  puts "-" * 80
+  puts green(string)
+  puts "-" * 80
+  puts
+end
+
+def subtitle(string)
+  puts yellow(string)
+end
+
+def error(string)
+  raise "[!] #{red(string)}"
+end
+
+# Colorizes a string to green.
+#
+def green(string)
+  "\033[0;32m#{string}\e[0m"
+end
+
+# Colorizes a string to yellow.
+#
+def yellow(string)
+  "\033[0;33m#{string}\e[0m"
+end
+
+# Colorizes a string to red.
+#
+def red(string)
+  "\033[0;31m#{string}\e[0m"
+end
+
+def cyan(string)
+  "\033[0;36m#{string}\033[0m"
+end
