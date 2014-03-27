@@ -44,7 +44,7 @@ GEM
     pygments.rb (0.5.4)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
-    rake (10.2.1)
+    rake (10.1.1)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.3)
       ffi (>= 0.5.0)
@@ -77,7 +77,7 @@ DEPENDENCIES
   mocha-on-bacon
   prettybacon
   pygments.rb
-  rake
+  rake (~> 10.1.0)
   redcarpet
   xcodeproj!
   yard
