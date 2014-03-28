@@ -119,6 +119,7 @@ module Xcodeproj
         'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
         'GCC_C_LANGUAGE_STANDARD'           => 'gnu99',
         'INSTALL_PATH'                      => "$(BUILT_PRODUCTS_DIR)",
+        'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
       }.freeze,
       :debug => {
