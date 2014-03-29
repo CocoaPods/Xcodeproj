@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## 0.15.2
+
+###### Bug Fixes
+
+* [Extension] Fixed build on OS X 10.9's system Ruby (2.0.0).
+  [Eloy Durán](https://github.com/alloy)
+
+
 ## 0.15.1
 
 ###### Bug Fixes
@@ -7,6 +15,7 @@
 * [Constants] Temporarily reverting the changes to `OTHER_LDFLAGS` as the were
   creating issues in CocoaPods.  
   [Fabio Pelosin](https://github.com/irrationalfab)
+
 
 ## 0.15.0
 
@@ -33,6 +42,7 @@
 
 * [Extension] Fixed intermittent `Xcodeproj.write_plist` error.  
   [Eloy Durán](https://github.com/alloy)
+
 
 ## 0.14.1
 
