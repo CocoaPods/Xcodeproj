@@ -85,7 +85,7 @@ DEFS     =
 CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\" -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT $(DEFS) $(cppflags)
 CXXFLAGS = $(CCDLFLAGS)  -g -Os -pipe  $(ARCH_FLAG)
 ldflags  = -L. -L/usr/local/lib -ObjC -framework CoreFoundation
-dldflags = -undefineddynamic_lookup -multiply_definedsuppress 
+dldflags = -undefined dynamic_lookup -multiply_defined suppress
 ARCH_FLAG = -Wno-error=unused-command-line-argument-hard-error-in-future
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
 LDSHARED = $(CC) -dynamic -bundle
