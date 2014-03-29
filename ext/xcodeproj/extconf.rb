@@ -32,6 +32,12 @@ end
 # in the running system, which is our use case.
 $LDFLAGS.gsub!(/\s-Z\s/,' ')
 
+# See https://github.com/CocoaPods/Xcodeproj/issues/137
+#
+$ARCH_FLAG ||= ''
+$ARCH_FLAG << ' -Wno-error=unused-command-line-argument-hard-error-in-future'
+
+
 unless have_framework('CoreFoundation')
   if have_library('CoreFoundation')
     # this is needed for opencflite, assume it's on linux
