@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## 0.15.1
+
+###### Bug Fixes
+
+* [Constants] Temporarily reverting the changes to `OTHER_LDFLAGS` as the were
+  creating issues in CocoaPods.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
 ## 0.15.0
 
 ###### Breaking
