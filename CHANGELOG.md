@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## 0.15.2
+## 0.15.3
 
 ###### Bug Fixes
 

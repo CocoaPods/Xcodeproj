@@ -19,12 +19,6 @@ end
 # Release tasks
 #-----------------------------------------------------------------------------#
 
-# http://www.dan-manges.com/blog/modifying-rake-tasks
-#
-Rake::Task[:build].enhance ['ext:clean']
-
-# TODO why isn't the gem pre-compiled on every build?
-#
 desc "Build the gem for distribution"
 task :release_build => ['ext:clean', 'ext:precompile', :build]
 
@@ -36,6 +30,8 @@ task :pre_release do
   Rake::Task[:release_build].invoke
 end
 
+# Always prebuilt for gems!
+Rake::Task[:build].enhance [:pre_release]
 
 # Ext Namespace
 #-----------------------------------------------------------------------------#
