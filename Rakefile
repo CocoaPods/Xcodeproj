@@ -1,3 +1,7 @@
+task :build do
+  title "Building the gem"
+end
+
 require "bundler/gem_tasks"
 
 # Bootstrap task
