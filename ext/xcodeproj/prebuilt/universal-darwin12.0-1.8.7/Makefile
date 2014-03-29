@@ -52,7 +52,7 @@ CPPFLAGS = -DRUBY_EXTCONF_H=\"$(RUBY_EXTCONF_H)\"  -D_XOPEN_SOURCE -D_DARWIN_C_S
 CXXFLAGS = $(CFLAGS) 
 ldflags  = -L. -arch i386 -arch x86_64  -ObjC -framework CoreFoundation
 dldflags = 
-archflag = -Wno-error=unused-command-line-argument-hard-error-in-future
+archflag = 
 DLDFLAGS = $(ldflags) $(dldflags) $(archflag)
 LDSHARED = cc -arch i386 -arch x86_64 -pipe -bundle -undefined dynamic_lookup
 AR = ar
