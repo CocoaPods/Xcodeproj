@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## 0.16.0
+
+###### Breaking
+
+* [Constants] Disable errors on warnings for default build settings  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+
 ## 0.15.3
 
 ###### Bug Fixes
