@@ -479,12 +479,14 @@ module Xcodeproj
     # @return [Nil] If no file reference could be found.
     #
     def reference_for_path(absolute_path)
-      unless Pathname.new(absolute_path).absolute?
+      absolute_pathname = Pathname.new(absolute_path)
+      
+      unless absolute_pathname.absolute?
         raise ArgumentError, "Paths must be absolute #{absolute_path}"
       end
 
       objects.find do |child|
-        child.isa == 'PBXFileReference' && child.real_path == absolute_path
+        child.isa == 'PBXFileReference' && child.real_path == absolute_pathname
       end
     end
 
