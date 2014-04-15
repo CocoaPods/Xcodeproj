@@ -1,5 +1,17 @@
 # Xcodeproj Changelog
 
+## 0.16.1
+
+###### Minor Enhancements
+
+* [Constants] Added support for .ipp files as headers.  
+  [Samuel E. Giddins](https://github.com/segiddins)
+
+###### Bug Fixes
+
+* [Xcodeproj::Project#reference_for_path] Support for string parameter.  
+  [jlj](https://github.com/jlj)
+
 ## 0.16.0
 
 ###### Breaking
