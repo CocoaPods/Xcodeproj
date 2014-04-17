@@ -1,5 +1,11 @@
 # Xcodeproj Changelog
 
+###### Enhancements
+
+* [Workspace] Added support for file references.  
+  [Fabio Pelosin][irrationalfab]
+  [Kyle Fuller][kylef]
+
 ## 0.16.1
 
 ###### Minor Enhancements
@@ -381,3 +387,7 @@
 ###### Bug Fixes
 
 * The file type of the frameworks file references has be corrected.
+
+
+[irrationalfab]: https://github.com/irrationalfab
+[kylef]: (https://github.com/kylef)
