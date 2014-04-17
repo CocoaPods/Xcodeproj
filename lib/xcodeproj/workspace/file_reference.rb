@@ -17,18 +17,6 @@ module Xcodeproj
       #
       attr_reader :type
 
-      # Returns a file reference given XML representation.
-      #
-      # @param  [String] xml_node
-      #         the XML representation.
-      #
-      # @return [FileReference] The new file reference instance.
-      #
-      def self.from_s(xml_node)
-        type, path = xml_node.attribute('location').value.split(':', 2)
-        new(path, type)
-      end
-
       # @param [#to_s] path @see path
       # @param [#to_s] type @see type
       #
@@ -40,14 +28,26 @@ module Xcodeproj
       # @return [Bool] Wether a file reference is equal to another.
       #
       def ==(other)
-        @path == other.path && @type == other.type
+        path == other.path && type == other.type
       end
 
-      # @return [String] the XML representation of the file reference.
+      # Returns a file reference given XML representation.
       #
-      def to_s
+      # @param  [REXML::Element] xml_node
+      #         the XML representation.
+      #
+      # @return [FileReference] The new file reference instance.
+      #
+      def self.from_node(xml_node)
+        type, path = xml_node.attribute('location').value.split(':', 2)
+        new(path, type)
+      end
+
+      # @return [REXML::Element] the XML representation of the file reference.
+      #
+      def to_node
         REXML::Element.new("FileRef").tap do |element|
-          element.attributes['location'] = "#{@type}:#{@path}"
+          element.attributes['location'] = "#{type}:#{path}"
         end
       end
 
@@ -61,18 +61,18 @@ module Xcodeproj
       #
       def absolute_path(workspace_dir_path)
         workspace_dir_path = workspace_dir_path.to_s
-        case @type
+        case type
         when 'group'
-          File.expand_path(File.join(workspace_dir_path, @path))
+          File.expand_path(File.join(workspace_dir_path, path))
         when 'container'
-          File.expand_path(File.join(workspace_dir_path, @path))
+          File.expand_path(File.join(workspace_dir_path, path))
         when 'absolute'
-          File.expand_path(@path)
+          File.expand_path(path)
         when 'developer'
           raise "Developer workspace file reference type is not yet " \
             "#{self}"
         else
-          raise "Unsupported workspace file reference type #{@type}"
+          raise "Unsupported workspace file reference type #{type}"
         end
       end
     end

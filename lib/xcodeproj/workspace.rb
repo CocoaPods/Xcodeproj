@@ -53,7 +53,7 @@ module Xcodeproj
     def self.from_s(xml, workspace_path='')
       document = REXML::Document.new(xml)
       file_references = document.get_elements("/Workspace/FileRef").map do |node|
-        FileReference.from_s(node)
+        FileReference.from_node(node)
       end
       instance = new(file_references)
       instance.load_schemes(workspace_path)
@@ -96,7 +96,7 @@ module Xcodeproj
     def to_s
       REXML::Document.new(TEMPLATE).tap do |document|
         @file_references.each do |file_reference|
-          document.root << file_reference.to_s
+          document.root << file_reference.to_node
         end
       end.to_s
     end
