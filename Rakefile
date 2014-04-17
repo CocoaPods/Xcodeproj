@@ -85,8 +85,9 @@ end
 
 namespace :spec do
   desc "Run all specs"
-  task :all => "ext:cleanbuild" do
-    puts "\033[0;32mUsing #{`ruby --version`}\033[0m"
+  task :all do
+    puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
+    Rake::Task["ext:cleanbuild"].invoke
 
     title "Running the specs"
     ENV['GENERATE_COVERAGE'] = 'true'
