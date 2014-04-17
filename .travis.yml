@@ -1,14 +1,17 @@
 language: objective-c
 env:
-  - RVM_RUBY_VERSION=system     ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem install bundler --no-ri --no-rdoc'
-  - RVM_RUBY_VERSION=1.8.7-p358 NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='gem install bundler --no-ri --no-rdoc'
+  - RVM_RUBY_VERSION=system
+  - RVM_RUBY_VERSION=1.8.7-p358
 before_install:
+  -  BUNDLE_WITHOUT='debugging:documentation'
   - curl http://curl.haxx.se/ca/cacert.pem -o /usr/local/share/cacert.pem
   - source ~/.rvm/scripts/rvm
-  - rvm install $RVM_RUBY_VERSION
+  - if [[ $RVM_RUBY_VERSION != 'system' ]]; then rvm install $RVM_RUBY_VERSION; fi
+  - if [[ $RVM_RUBY_VERSION == 'system' ]]; then ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future; fi
   - rvm use $RVM_RUBY_VERSION
-install:
+  - if [[ $RVM_RUBY_VERSION != 'system' ]]; then gem install bundler --no-ri --no-rdoc; else sudo gem install bundler --no-ri --no-rdoc; fi
   - eval $RUBY_VERSION_SPECIFIC
+install:
   - rake bootstrap[use_bundle_dir]
 script: bundle exec rake spec
 notifications:
