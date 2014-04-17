@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'rexml/document'
+require 'xcodeproj/workspace/file_reference'
 
 module Xcodeproj
 
@@ -9,15 +10,16 @@ module Xcodeproj
   class Workspace
 
     # @return [Array<String>] the paths of the projects contained in the
+    # @return [Array<FileReference>] the paths of the projects contained in the
     #         workspace.
     #
-    attr_reader :projpaths
+    attr_reader :file_references
     attr_reader :schemes
 
-    # @param  [Array] projpaths @see projpaths
+    # @param  [Array] file_references @see file_references
     #
-    def initialize(*projpaths)
-      @projpaths = projpaths.flatten
+    def initialize(*file_references)
+      @file_references = file_references.flatten
       @schemes = {}
     end
 
@@ -50,10 +52,10 @@ module Xcodeproj
     #
     def self.from_s(xml, workspace_path='')
       document = REXML::Document.new(xml)
-      projpaths = document.get_elements("/Workspace/FileRef").map do |node|
-        node.attribute("location").value.sub(/^group:/, '')
+      file_references = document.get_elements("/Workspace/FileRef").map do |node|
+        FileReference.from_node(node)
       end
-      instance = new(projpaths)
+      instance = new(file_references)
       instance.load_schemes(workspace_path)
       instance
     end
@@ -69,19 +71,20 @@ module Xcodeproj
     # @return [void]
     #
     def <<(projpath)
-      @projpaths << projpath
+      @file_references << projpath
       load_schemes_from_project File.expand_path(projpath)
     end
 
-    # Checks if the workspace contains the project with the given path.
+    # Checks if the workspace contains the project with the given file
+    # reference.
     #
-    # @param  [String] projpath
-    #         The path of the project to add.
+    # @param  [FileReference] file_reference
+    #         The file_reference to the project.
     #
     # @return [Boolean] whether the project is contained in the workspace.
     #
-    def include?(projpath)
-      @projpaths.include?(projpath)
+    def include?(file_reference)
+      @file_references.include?(file_reference)
     end
 
     # The template to generate a workspace XML representation.
@@ -92,10 +95,8 @@ module Xcodeproj
     #
     def to_s
       REXML::Document.new(TEMPLATE).tap do |document|
-        @projpaths.each do |projpath|
-          document.root << REXML::Element.new("FileRef").tap do |el|
-            el.attributes['location'] = "group:#{projpath}"
-          end
+        @file_references.each do |file_reference|
+          document.root << file_reference.to_node
         end
       end.to_s
     end
@@ -124,9 +125,9 @@ module Xcodeproj
     # @return [void]
     #
     def load_schemes workspace_dir_path
-      @projpaths.each do |projpath|
-        project_full_path = File.expand_path(File.join(workspace_dir_path, projpath))
-        load_schemes_from_project project_full_path
+      @file_references.each do |file_reference|
+        project_full_path = file_reference.absolute_path(workspace_dir_path)
+        load_schemes_from_project(project_full_path)
       end
     end
 
