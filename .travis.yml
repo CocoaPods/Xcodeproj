@@ -3,7 +3,7 @@ env:
   - ARCHFLAGS= -Wno-error=unused-command-line-argument-hard-error-in-future
 
   # This is what 10.8.x comes with and we want to support that.
-  - RVM_RUBY_VERSION=system           NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem update --system && sudo gem install bundler --no-ri --no-rdoc'
+  - RVM_RUBY_VERSION=system           NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem install bundler --no-ri --no-rdoc'
     #- RVM_RUBY_VERSION=ruby-1.9.3-p392  NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo ln -s /usr/bin/llvm-gcc-4.2 /usr/bin/gcc-4.2 && curl http://curl.haxx.se/ca/cacert.pem -o /usr/local/share/cacert.pem' SSL_CERT_FILE=/usr/local/share/cacert.pem
   - RVM_RUBY_VERSION=2.0.0-p247       NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem install bundler --no-ri --no-rdoc'
 before_install:
