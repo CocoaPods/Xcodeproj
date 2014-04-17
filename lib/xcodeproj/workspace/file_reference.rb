@@ -1,5 +1,7 @@
 module Xcodeproj
   class Workspace
+    # Describes a file reference of a Workspace.
+    #
     class FileReference
       # @return [String] the path to the project
       #
@@ -12,36 +14,53 @@ module Xcodeproj
       # - group
       # - container
       # - developer (unsupported)
+      #
       attr_reader :type
 
-      def self.from_node(node)
-        type, path = node.attribute('location').value.split(':', 2)
+      # Returns a file reference given XML representation.
+      #
+      # @param  [String] xml_node
+      #         the XML representation.
+      #
+      # @return [FileReference] The new file reference instance.
+      #
+      def self.from_s(xml_node)
+        type, path = xml_node.attribute('location').value.split(':', 2)
         new(path, type)
       end
 
-      def initialize(path, type=nil)
-        @path = path
-        @type = type || "group"
+      # @param [#to_s] path @see path
+      # @param [#to_s] type @see type
+      #
+      def initialize(path, type="group")
+        @path = path.to_s
+        @type = type.to_s
       end
 
+      # @return [Bool] Wether a file reference is equal to another.
+      #
       def ==(other)
         @path == other.path && @type == other.type
       end
 
-      def to_node
+      # @return [String] the XML representation of the file reference.
+      #
+      def to_s
         REXML::Element.new("FileRef").tap do |element|
           element.attributes['location'] = "#{@type}:#{@path}"
         end
       end
 
-      # Get the absolute path to a project in a workspace
+      # Returns the absolute path of a file reference given the path of the
+      # directory containing workspace.
       #
-      # @param [String] workspace_dir_path
-      #         path of workspaces dir
+      # @param  [#to_s] workspace_dir_path
+      #         The Path of the directory containing the workspace.
       #
-      # @return [String] The absolute path to the project
+      # @return [String] The absolute path to the project.
       #
       def absolute_path(workspace_dir_path)
+        workspace_dir_path = workspace_dir_path.to_s
         case @type
         when 'group'
           File.expand_path(File.join(workspace_dir_path, @path))
@@ -50,8 +69,8 @@ module Xcodeproj
         when 'absolute'
           File.expand_path(@path)
         when 'developer'
-          # TODO
-          raise "Developer file reference type is not yet supported"
+          raise "Developer workspace file reference type is not yet " \
+            "#{self}"
         else
           raise "Unsupported workspace file reference type #{@type}"
         end
