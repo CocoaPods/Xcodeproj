@@ -8,11 +8,8 @@ require "bundler/gem_tasks"
 #-----------------------------------------------------------------------------#
 
 desc 'Install dependencies'
-task :bootstrap, :use_bundle_dir? do |t, args|
-  options = []
-  options << "--without=documentation"
-  options << "--path ./travis_bundle_dir" if args[:use_bundle_dir?]
-  sh "bundle install #{options * ' '}"
+task :bootstrap do
+  sh "bundle install"
 end
 
 

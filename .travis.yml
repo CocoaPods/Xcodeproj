@@ -17,7 +17,7 @@ before_install:
   - if [[ $RVM_RUBY_VERSION == 'system' ]]; then sudo gem install bundler --no-ri --no-rdoc; else gem install bundler --no-ri --no-rdoc; fi
 
 install:
-  - rake bootstrap[use_bundle_dir]
+  - bundle install --without=documentation --path ./travis_bundle_dir
 
 script: rake spec
 
