@@ -6,11 +6,11 @@ module Xcodeproj
 
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '7.0'
+    LAST_KNOWN_IOS_SDK = '7.1'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK  = '10.8'
+    LAST_KNOWN_OSX_SDK  = '10.9'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -22,7 +22,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0500'
+    LAST_UPGRADE_CHECK  = '0510'
 
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
@@ -169,15 +169,15 @@ module Xcodeproj
         'CLANG_ENABLE_OBJC_ARC'            => 'YES',
         'CLANG_WARN_BOOL_CONVERSION'       => 'YES',
         'CLANG_WARN_CONSTANT_CONVERSION'   => 'YES',
-        'CLANG_WARN_DIRECT_OBJC_ISA_USAGE' => 'YES_ERROR',
+        'CLANG_WARN_DIRECT_OBJC_ISA_USAGE' => 'YES',
         'CLANG_WARN_EMPTY_BODY'            => 'YES',
         'CLANG_WARN_ENUM_CONVERSION'       => 'YES',
         'CLANG_WARN_INT_CONVERSION'        => 'YES',
-        'CLANG_WARN_OBJC_ROOT_CLASS'       => 'YES_ERROR',
+        'CLANG_WARN_OBJC_ROOT_CLASS'       => 'YES',
         'CLANG_ENABLE_MODULES'             => 'YES',
         'GCC_C_LANGUAGE_STANDARD'          => 'gnu99',
         'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'YES',
-        'GCC_WARN_ABOUT_RETURN_TYPE'       => 'YES_ERROR',
+        'GCC_WARN_ABOUT_RETURN_TYPE'       => 'YES',
         'GCC_WARN_UNDECLARED_SELECTOR'     => 'YES',
         'GCC_WARN_UNINITIALIZED_AUTOS'     => 'YES',
         'GCC_WARN_UNUSED_FUNCTION'         => 'YES',
@@ -216,7 +216,7 @@ module Xcodeproj
 
     # @return [Hash] The extensions which are associated with header files.
     #
-    HEADER_FILES_EXTENSIONS = %w| .h .hh .hpp |.freeze
+    HEADER_FILES_EXTENSIONS = %w| .h .hh .hpp .ipp |.freeze
 
   end
 end

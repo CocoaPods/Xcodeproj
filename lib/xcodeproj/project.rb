@@ -47,6 +47,7 @@ module Xcodeproj
     attr_reader :path
 
     # @param  [Pathname, String] path @see path
+    #         The path provided will be expanded to an absolute path.
     # @param  [Bool] skip_initialization
     #         Wether the project should be initialized from scratch.
     #
@@ -54,7 +55,7 @@ module Xcodeproj
     #         Project.new("path/to/Project.xcodeproj")
     #
     def initialize(path, skip_initialization = false)
-      @path = Pathname.new(path)
+      @path = Pathname.new(path).expand_path
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
@@ -478,12 +479,14 @@ module Xcodeproj
     # @return [Nil] If no file reference could be found.
     #
     def reference_for_path(absolute_path)
-      unless Pathname.new(absolute_path).absolute?
+      absolute_pathname = Pathname.new(absolute_path)
+      
+      unless absolute_pathname.absolute?
         raise ArgumentError, "Paths must be absolute #{absolute_path}"
       end
 
       objects.find do |child|
-        child.isa == 'PBXFileReference' && child.real_path == absolute_path
+        child.isa == 'PBXFileReference' && child.real_path == absolute_pathname
       end
     end
 

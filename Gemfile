@@ -1,15 +1,16 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 gemspec
 
 group :development do
   gem 'coveralls', :require => false
-  gem "rake"
-  gem "mocha"
-  gem "bacon"
-  gem "mocha-on-bacon"
-  gem 'prettybacon', :git => 'https://github.com/irrationalfab/PrettyBacon.git', :branch => 'master'
-  gem "kicker", :git => 'https://github.com/alloy/kicker.git', :branch => '3.0.0'
+  gem 'rake', '~> 10.1.0'   # Ruby 1.8.7
+  gem "mime-types", "< 2.0" # Ruby 1.8.7
+  gem 'mocha'
+  gem 'bacon'
+  gem 'mocha-on-bacon'
+  gem 'prettybacon'
+  gem 'kicker'
 end
 
 group :documentation do

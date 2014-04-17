@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ ext lib }
 
-  s.add_runtime_dependency 'rake'
   s.add_runtime_dependency 'activesupport', '~> 3.0'
   s.add_runtime_dependency 'colored',       '~> 1.2'
 

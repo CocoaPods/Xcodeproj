@@ -32,6 +32,16 @@ end
 # in the running system, which is our use case.
 $LDFLAGS.gsub!(/\s-Z\s/,' ')
 
+# Fix Apple's mess. They built Ruby in a custom way that has lead to these
+# options not containing the original commas anymore [1], which when combined
+# with the change they made to clang (in Xcode 5.1) to error out on unrecognized
+# options [2] leads to failing builds.
+#
+# [1]: https://bugs.ruby-lang.org/issues/9624#note-11
+# [2]: https://developer.apple.com/library/ios/releasenotes/DeveloperTools/RN-Xcode/Introduction/Introduction.html
+$DLDFLAGS.sub!('-undefineddynamic_lookup', '-undefined dynamic_lookup')
+$DLDFLAGS.sub!('-multiply_definedsuppress', '-multiply_defined suppress')
+
 unless have_framework('CoreFoundation')
   if have_library('CoreFoundation')
     # this is needed for opencflite, assume it's on linux
