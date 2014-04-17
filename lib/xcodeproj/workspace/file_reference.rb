@@ -30,6 +30,13 @@ module Xcodeproj
       def ==(other)
         path == other.path && type == other.type
       end
+      alias_method :eql?, :==
+
+      # @return [Fixnum] A hash identical for equals objects.
+      #
+      def hash
+        [path, type].hash
+      end
 
       # Returns a file reference given XML representation.
       #

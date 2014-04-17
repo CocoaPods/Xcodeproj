@@ -6,6 +6,12 @@ module Xcodeproj
       @subject = Workspace::FileReference.new('project.xcodeproj', 'group')
     end
 
+    it 'properly implements equality comparison' do
+      @subject.should == @subject.dup
+      @subject.should.eql @subject.dup
+      @subject.hash.should == @subject.dup.hash
+    end
+
     it 'can be initialized by the XML representation' do
       node = REXML::Element.new("FileRef")
       node.attributes['location'] = "group:project.xcodeproj"
