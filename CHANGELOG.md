@@ -1,10 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
 ###### Enhancements
 
 * [Workspace] Added support for file references.  
-  [Fabio Pelosin][irrationalfab]
   [Kyle Fuller][kylef]
+  [Fabio Pelosin][irrationalfab]
+  [Xcodeproj#105](https://github.com/CocoaPods/Xcodeproj/pull/150)
 
 ## 0.16.1
 
