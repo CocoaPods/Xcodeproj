@@ -86,6 +86,8 @@ end
 namespace :spec do
   desc "Run all specs"
   task :all => "ext:cleanbuild" do
+    puts "\033[0;32mUsing #{`ruby --version`}\033[0m"
+
     title "Running the specs"
     ENV['GENERATE_COVERAGE'] = 'true'
     sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
