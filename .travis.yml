@@ -1,13 +1,15 @@
 language: objective-c
 env:
-  - ARCHFLAGS= -Wno-error=unused-command-line-argument-hard-error-in-future
-
-  - RVM_RUBY_VERSION=system           NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem install bundler --no-ri --no-rdoc'
-  - RVM_RUBY_VERSION=1.8.7-p358       NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='gem install bundler --no-ri --no-rdoc'
+  - RVM_RUBY_VERSION=system     ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='sudo gem install bundler --no-ri --no-rdoc'
+  - RVM_RUBY_VERSION=1.8.7-p358 NOEXEC_DISABLE=1 CI=true BUNDLE_WITHOUT='debugging:documentation' RUBY_VERSION_SPECIFIC='gem install bundler --no-ri --no-rdoc'
 before_install:
   - curl http://curl.haxx.se/ca/cacert.pem -o /usr/local/share/cacert.pem
-  - source ~/.rvm/scripts/rvm && rvm use $RVM_RUBY_VERSION
-install: eval $RUBY_VERSION_SPECIFIC && rake bootstrap[use_bundle_dir]
+  - source ~/.rvm/scripts/rvm
+  - rvm install $RVM_RUBY_VERSION
+  - rvm use $RVM_RUBY_VERSION
+install:
+  - eval $RUBY_VERSION_SPECIFIC
+  - rake bootstrap[use_bundle_dir]
 script: bundle exec rake spec
 notifications:
   campfire:
