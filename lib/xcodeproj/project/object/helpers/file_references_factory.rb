@@ -135,7 +135,8 @@ module Xcodeproj
             if path.exist?
               path.children.each do |child_path|
                 if File.extname(child_path) == '.xcdatamodel'
-                  child_ref = new_file_reference(ref, child_path, :group)
+                  relative_path = File.basename(child_path)
+                  child_ref = new_file_reference(ref, relative_path, :group)
                   last_child_ref = child_ref
                 elsif File.basename(child_path) == '.xccurrentversion'
                   full_path = path + File.basename(child_path)
