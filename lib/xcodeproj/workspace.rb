@@ -71,7 +71,8 @@ module Xcodeproj
     # @return [void]
     #
     def <<(projpath)
-      @file_references << projpath
+      project_file_reference = Xcodeproj::Workspace::FileReference.new(projpath)
+      @file_references << project_file_reference
       load_schemes_from_project File.expand_path(projpath)
     end
 
