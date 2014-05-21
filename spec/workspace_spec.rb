@@ -3,12 +3,14 @@ require File.expand_path('../spec_helper', __FILE__)
 describe Xcodeproj::Workspace do
   describe "from new" do
     before do
-      @workspace = Xcodeproj::Workspace.new('Pods/Pods.xcodeproj', 'App.xcodeproj')
+      pods_project_file_reference = Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
+      project_file_reference = Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
+      @workspace = Xcodeproj::Workspace.new(pods_project_file_reference, project_file_reference)
     end
 
     it "accepts new projects" do
       @workspace << 'Framework.xcodeproj'
-      @workspace.file_references.should.include 'Framework.xcodeproj'
+      @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('Framework.xcodeproj')
     end
   end
 

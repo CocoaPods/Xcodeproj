@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## master
+
+###### Bug fixes
+
+* [Workspace] Fixed adding a project to a workspace.
+  [Alessandro Orrù](https://github.com/alessandroorru)
+  [Xcodeproj#155](https://github.com/CocoaPods/Xcodeproj/pull/155)
+
 ## 0.17.0
 
 ###### Enhancements
