@@ -490,11 +490,20 @@ module Xcodeproj
       end
     end
 
-    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    # @return [ObjectList<AbstractTarget>] A list of all the targets in the
     #         project.
     #
     def targets
       root_object.targets
+    end
+
+    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    #         project excluding aggregate targets.
+    #
+    def native_targets
+      root_object.targets.reject do |target|
+        target.is_a? PBXAggregateTarget
+      end
     end
 
     # @return [PBXGroup] The group which holds the product file references.
