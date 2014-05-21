@@ -1,5 +1,11 @@
 # Xcodeproj Changelog
 
+## 0.17.1
+
+###### Bug fixes
+
+* [Xcodeproj#155](https://github.com/CocoaPods/Xcodeproj/pull/155)
+
 ## 0.17.0
 
 ###### Enhancements
