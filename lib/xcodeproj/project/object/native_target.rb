@@ -427,10 +427,6 @@ module Xcodeproj
           unless @headers_build_phase
             headers_build_phase = build_phases.find { |bp| bp.class == PBXHeadersBuildPhase }
             unless headers_build_phase
-              # Working around a bug in Xcode 4.2 betas, remove this once the
-              # Xcode bug is fixed:
-              # https://github.com/alloy/cocoapods/issues/13
-              # phase = copy_header_phase || headers_build_phases.first
               headers_build_phase = project.new(PBXHeadersBuildPhase)
               build_phases << headers_build_phase
             end
