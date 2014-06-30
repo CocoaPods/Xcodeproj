@@ -500,6 +500,13 @@ module ProjectSpecs
         build_files.first.settings.should.be.nil
       end
 
+      it 'returns a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        new_build_files = @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        new_build_files.should == build_files
+      end
+
       it 'adds a list of resources to the resources build phase' do
         ref = @project.main_group.new_file('Image.png')
         @target.add_resources([ref])
