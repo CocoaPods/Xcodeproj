@@ -507,6 +507,15 @@ module ProjectSpecs
         new_build_files.should == build_files
       end
 
+      it 'yields a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        build_files = @target.add_file_references([ref], '-fobjc-arc') do |build_file|
+          build_file.should.be.an.instance_of?(PBXBuildFile)
+          build_file.settings = { 'ATTRIBUTES' => ['Public'] }
+        end
+        build_files.first.settings.should == { 'ATTRIBUTES' => ['Public'] }
+      end
+
       it 'adds a list of resources to the resources build phase' do
         ref = @project.main_group.new_file('Image.png')
         @target.add_resources([ref])

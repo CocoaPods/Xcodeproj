@@ -400,6 +400,8 @@ module Xcodeproj
         # @param  [Hash{String=>String}] compiler_flags
         #         the compiler flags for the source files.
         #
+        # @yield_param [PBXBuildFile] each created build file.
+        #
         # @return [Array<PBXBuildFile>] the created build files.
         #
         def add_file_references(file_references, compiler_flags = {})
@@ -417,6 +419,8 @@ module Xcodeproj
               end
               source_build_phase.files << build_file
             end
+
+            yield build_file if block_given?
 
             build_file
           end
