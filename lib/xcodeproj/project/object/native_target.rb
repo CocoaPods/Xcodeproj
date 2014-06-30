@@ -424,15 +424,7 @@ module Xcodeproj
         # @return [PBXHeadersBuildPhase] the headers build phase.
         #
         def headers_build_phase
-          unless @headers_build_phase
-            headers_build_phase = build_phases.find { |bp| bp.class == PBXHeadersBuildPhase }
-            unless headers_build_phase
-              headers_build_phase = project.new(PBXHeadersBuildPhase)
-              build_phases << headers_build_phase
-            end
-            @headers_build_phase = headers_build_phase
-          end
-          @headers_build_phase
+          find_or_create_build_phase_by_class(PBXHeadersBuildPhase)
         end
 
         # Finds or creates the source build phase of the target.
@@ -442,15 +434,7 @@ module Xcodeproj
         # @return [PBXSourcesBuildPhase] the source build phase.
         #
         def source_build_phase
-          unless @source_build_phase
-            source_build_phase = build_phases.find { |bp| bp.class == PBXSourcesBuildPhase }
-            unless source_build_phase
-              source_build_phase = project.new(PBXSourcesBuildPhase)
-              build_phases << source_build_phase
-            end
-            @source_build_phase = source_build_phase
-          end
-          @source_build_phase
+          find_or_create_build_phase_by_class(PBXSourcesBuildPhase)
         end
 
         # Finds or creates the frameworks build phase of the target.
@@ -460,12 +444,7 @@ module Xcodeproj
         # @return [PBXFrameworksBuildPhase] the frameworks build phase.
         #
         def frameworks_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
-          unless phase
-            phase = project.new(PBXFrameworksBuildPhase)
-            build_phases << phase
-          end
-          phase
+          find_or_create_build_phase_by_class(PBXFrameworksBuildPhase)
         end
 
         # Finds or creates the resources build phase of the target.
@@ -475,12 +454,34 @@ module Xcodeproj
         # @return [PBXResourcesBuildPhase] the resources build phase.
         #
         def resources_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
-          unless phase
-            phase = project.new(PBXResourcesBuildPhase)
-            build_phases << phase
+          find_or_create_build_phase_by_class(PBXResourcesBuildPhase)
+        end
+
+        private
+
+        # @!group Internal Helpers
+        #--------------------------------------#
+
+        # Find or create a build phase by a given class
+        #
+        # @param [Class] phase_class the class of the build phase to find or create.
+        #
+        # @return [AbstractBuildPhase] the build phase whose class match the given phase_class.
+        #
+        def find_or_create_build_phase_by_class(phase_class)
+          @phases ||= {}
+          unless phase_class < AbstractBuildPhase
+            raise ArgumentError, "#{phase_class} must be a subclass of #{AbstractBuildPhase.class}"
           end
-          phase
+          unless @phases[phase_class]
+            phase = build_phases.find { |bp| bp.class == phase_class }
+            unless phase
+              phase = project.new(phase_class)
+              build_phases << phase
+            end
+            @phases[phase_class] = phase
+          end
+          @phases[phase_class]
         end
 
         public
