@@ -159,10 +159,9 @@ module ProjectSpecs
       end
 
       it "saves the project to the given path" do
-        path = temporary_directory + 'Project.xcodeproj'
         save_path = temporary_directory + 'Project_2.xcodeproj'
-        @project.save
-        new_instance = Xcodeproj::Project.open(@path)
+        @project.save(save_path)
+        new_instance = Xcodeproj::Project.open(save_path)
         new_instance.should == @project
       end
 
