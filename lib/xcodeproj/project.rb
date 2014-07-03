@@ -371,7 +371,7 @@ module Xcodeproj
     # @note   Implementation detail: as objects usually are created serially
     #         this method creates a batch of UUID and stores the not colliding
     #         ones, so the search for collisions with known UUIDS (a
-    #         performance bottleneck) is performed is performed less often.
+    #         performance bottleneck) is performed less often.
     #
     # @return [String] A UUID unique to the project.
     #

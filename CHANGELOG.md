@@ -2,6 +2,16 @@
 
 ## master
 
+###### Enhancements
+
+* [PBXFileReference] If a file reference represents an external Xcode project
+  and is removed from the project then all items related to the external
+  project will also be removed.
+  [JP Simard](https://github.com/jpsim)
+  [Eloy Durán](https://github.com/alloy)
+  [Xcodeproj#158](https://github.com/CocoaPods/Xcodeproj/issues/158)
+  [Xcodeproj#161](https://github.com/CocoaPods/Xcodeproj/pull/161)
+
 ###### Bug fixes
 
 * [Workspace] Fixed adding a project to a workspace.
