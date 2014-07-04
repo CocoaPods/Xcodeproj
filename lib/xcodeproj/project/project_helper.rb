@@ -162,7 +162,8 @@ module Xcodeproj
       #         the deployment target for the platform.
       #
       # @param  [Symbol] target_product_type
-      #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`.
+      #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`
+      #         or `Constants::PRODUCT_TYPE_UTI.keys`.
       #
       # @param  [Symbol] language
       #         the primary language of the target, can be `:objc` or `:swift`.
@@ -170,7 +171,8 @@ module Xcodeproj
       # @return [Hash] The common build settings
       #
       def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
-        if target_product_type == Constants::PRODUCT_TYPE_UTI[:bundle]
+        target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_,v| v == target_product_type } || [target_product_type])[0]
+        if target_product_type == :bundle
           build_settings = {
             'PRODUCT_NAME' => '$(TARGET_NAME)',
             'WRAPPER_EXTENSION' => 'bundle',
