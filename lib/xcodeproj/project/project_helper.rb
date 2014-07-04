@@ -164,9 +164,12 @@ module Xcodeproj
       # @param  [Symbol] target_product_type
       #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`.
       #
+      # @param  [Symbol] language
+      #         the primary language of the target, can be `:objc` or `:swift`.
+      #
       # @return [Hash] The common build settings
       #
-      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil)
+      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
         if target_product_type == Constants::PRODUCT_TYPE_UTI[:bundle]
           build_settings = {
             'PRODUCT_NAME' => '$(TARGET_NAME)',
@@ -188,7 +191,7 @@ module Xcodeproj
           settings = deep_dup(common_settings[:all])
 
           # Match further common settings by key sets
-          keys = [type, platform, target_product_type].compact
+          keys = [type, platform, target_product_type, language].compact
           key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
           key_combinations.each do |key_combination|
             settings.merge!(deep_dup(common_settings[key_combination]))
