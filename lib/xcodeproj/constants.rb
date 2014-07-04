@@ -127,6 +127,8 @@ module Xcodeproj
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
         'GCC_OPTIMIZATION_LEVEL'            => '0',
         'COPY_PHASE_STRIP'                  => 'NO',
+        'METAL_ENABLE_DEBUG_INFO'           => 'YES',
+        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       :release => {
         'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
@@ -155,6 +157,30 @@ module Xcodeproj
       }.freeze,
       [:ios, :release] => {
         'VALIDATE_PRODUCT'                  => 'YES',
+      }.freeze,
+      [:debug, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+      }.freeze,
+      [:framework] => {
+        'VERSION_INFO_PREFIX'               => '',
+        'DYLIB_COMPATIBILITY_VERSION'       => '1',
+        'DEFINES_MODULE'                    => 'YES',
+        'DYLIB_INSTALL_NAME_BASE'           => '@rpath',
+        'CURRENT_PROJECT_VERSION'           => '1',
+        'VERSIONING_SYSTEM'                 => 'apple-generic',
+        'DYLIB_CURRENT_VERSION'             => '1',
+        'SKIP_INSTALL'                      => 'YES',
+        'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Frameworks',
+      }.freeze,
+      [:framework, :ios] => {
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+      }.freeze,
+      [:framework, :osx] => {
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/../Frameworks'],
+        'FRAMEWORK_VERSION'                 => 'A',
+      }.freeze,
+      [:framework, :swift] => {
+        'DEFINES_MODULE'                    => 'YES',
       }.freeze,
     }.freeze
 
