@@ -194,7 +194,7 @@ module Xcodeproj
           keys = [type, platform, target_product_type, language].compact
           key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
           key_combinations.each do |key_combination|
-            settings.merge!(deep_dup(common_settings[key_combination]))
+            settings.merge!(deep_dup(common_settings[key_combination] || {}))
           end
 
           if deployment_target
