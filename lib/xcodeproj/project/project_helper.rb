@@ -180,10 +180,17 @@ module Xcodeproj
           build_settings
         else
           common_settings = Constants::COMMON_BUILD_SETTINGS
+
+          # Use intersecting settings for all key sets as base
           settings = deep_dup(common_settings[:all])
-          settings.merge!(deep_dup(common_settings[type]))
-          settings.merge!(deep_dup(common_settings[platform]))
-          settings.merge!(deep_dup(common_settings[[platform, type]]))
+
+          # Match further common settings by key sets
+          keys = [type, platform].compact
+          key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
+          key_combinations.each do |key_combination|
+            settings.merge!(deep_dup(common_settings[key_combination]))
+          end
+
           if deployment_target
             if platform == :ios
               settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
@@ -191,6 +198,7 @@ module Xcodeproj
               settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
             end
           end
+
           settings
         end
       end
