@@ -161,6 +161,9 @@ module Xcodeproj
       # @param  [String] deployment_target
       #         the deployment target for the platform.
       #
+      # @param  [Symbol] target_product_type
+      #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`.
+      #
       # @return [Hash] The common build settings
       #
       def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil)
