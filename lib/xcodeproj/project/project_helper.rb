@@ -188,7 +188,7 @@ module Xcodeproj
           settings = deep_dup(common_settings[:all])
 
           # Match further common settings by key sets
-          keys = [type, platform].compact
+          keys = [type, platform, target_product_type].compact
           key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
           key_combinations.each do |key_combination|
             settings.merge!(deep_dup(common_settings[key_combination]))
