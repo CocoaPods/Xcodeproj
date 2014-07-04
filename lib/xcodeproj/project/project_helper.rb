@@ -172,43 +172,31 @@ module Xcodeproj
       #
       def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
         target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_,v| v == target_product_type } || [target_product_type])[0]
-        if target_product_type == :bundle
-          build_settings = {
-            'PRODUCT_NAME' => '$(TARGET_NAME)',
-            'WRAPPER_EXTENSION' => 'bundle',
-            'SKIP_INSTALL' => 'YES',
-          }
+        common_settings = Constants::COMMON_BUILD_SETTINGS
 
-          if platform == :osx
-            build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
-            build_settings['SDKROOT'] = 'macosx'
-          else
-            build_settings['SDKROOT'] = 'iphoneos'
-          end
-          build_settings
-        else
-          common_settings = Constants::COMMON_BUILD_SETTINGS
-
-          # Use intersecting settings for all key sets as base
+        # Use intersecting settings for all key sets as base
+        if target_product_type != :bundle
           settings = deep_dup(common_settings[:all])
-
-          # Match further common settings by key sets
-          keys = [type, platform, target_product_type, language].compact
-          key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
-          key_combinations.each do |key_combination|
-            settings.merge!(deep_dup(common_settings[key_combination] || {}))
-          end
-
-          if deployment_target
-            if platform == :ios
-              settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-            elsif platform == :osx
-              settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
-            end
-          end
-
-          settings
+        else
+          settings = {}
         end
+
+        # Match further common settings by key sets
+        keys = [type, platform, target_product_type, language].compact
+        key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
+        key_combinations.each do |key_combination|
+          settings.merge!(deep_dup(common_settings[key_combination] || {}))
+        end
+
+        if deployment_target
+          if platform == :ios
+            settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+          elsif platform == :osx
+            settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+          end
+        end
+
+        settings
       end
 
       # Creates a deep copy of the given object

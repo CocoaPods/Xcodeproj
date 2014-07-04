@@ -182,6 +182,18 @@ module Xcodeproj
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
       }.freeze,
+      [:bundle] => {
+        'PRODUCT_NAME'                      => '$(TARGET_NAME)',
+        'WRAPPER_EXTENSION'                 => 'bundle',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:bundle, :ios] => {
+        'SDKROOT'                           => 'iphoneos',
+      }.freeze,
+      [:bundle, :osx] => {
+        'COMBINE_HIDPI_IMAGES'              => 'YES',
+        'SDKROOT'                           => 'macosx',
+      }.freeze,
     }.freeze
 
     # @return [Hash] The default build settings for a new project.
