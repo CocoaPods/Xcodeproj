@@ -24,6 +24,7 @@ require 'xcodeproj'
 
 $LOAD_PATH.unshift((ROOT + 'spec').to_s)
 require 'spec_helper/project'
+require 'spec_helper/project_helper'
 require 'spec_helper/temporary_directory'
 
 def fixture_path(path)
