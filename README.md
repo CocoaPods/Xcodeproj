@@ -39,4 +39,4 @@ for more info.
 [ruby]: http://www.ruby-lang.org/en/
 [xcodeproj]: https://github.com/cocoapods/xcodeproj
 [tickets]: https://github.com/cocoapods/xcodeproj/issues
-[license]: xcodeproj/blob/master/LICENSE
+[license]: LICENSE
