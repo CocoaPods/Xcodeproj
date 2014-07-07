@@ -1,3 +1,5 @@
+require 'colored'
+
 module SpecHelper
   module ProjectHelper
 
@@ -16,26 +18,42 @@ module SpecHelper
     # @param [Hash{String => String}] expected
     #        the expected build settings.
     #
-    def compare_settings(produced, expected)
-      # Expect given settings
-      expected.each do |key, value|
-        it "should match setting #{key}" do
-          produced[key].should.satisfy("#{key} should be '#{value}', but is #{produced[key] || 'missing'}.") do
-            produced[key] == value
-          end
-        end
-      end
-
-      # Expect that no additional settings are set,
-      # but if there are any, print a list which were not expected
-      it 'should have no additional settings' do
+    # @param [#to_s] params
+    #        the parameters used to construct the produced build settings.
+    #
+    def compare_settings(produced, expected, params)
+      it 'should match build settings' do
+        # Find faulty settings in different categories
+        missing_settings    = expected.keys.select { |k| produced[k] == nil }
         unexpected_settings = produced.keys.select { |k| expected[k] == nil }
+        wrong_settings      = (expected.keys - missing_settings).select { |k| produced[k] != expected[k] }
 
-        description = "Unexpected additional build settings:\n"
-        description << unexpected_settings.map { |s| "* #{s}" } * "\n"
+        # Build pretty description for what is going on
+        description = []
+        description << "Doesn't match build settings for #{params.to_s.bold}"
 
-        unexpected_settings.should.satisfy(description) do
-          unexpected_settings.length == 0
+        if wrong_settings.count > 0
+          description << "Wrong build settings:"
+          description += wrong_settings.map { |s| "* #{s.yellow} is #{produced[s].red}, but should be #{expected[s].green}" }
+          description << ""
+        end
+
+        if missing_settings.count > 0
+          description << "Missing build settings:"
+          description << missing_settings.map { |s| "* #{s.red}" }
+          description << ""
+        end
+
+        if unexpected_settings.count > 0
+          description << "Unexpected additional build settings:"
+          description += unexpected_settings.map { |s| "* #{s.green}" }
+          description << ""
+        end
+
+        # Expect
+        faulty_settings = missing_settings + unexpected_settings + wrong_settings
+        faulty_settings.should.satisfy(description * "\n") do
+          faulty_settings.length == 0
         end
       end
     end
