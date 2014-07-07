@@ -90,36 +90,12 @@ module SpecHelper
 end
 
 
-module Xcodeproj
-  class ParametrizedContext < Bacon::Context
+class Bacon::Context
 
-    def initialize(*args, &block)
-      @params = args.first.is_a?(Hash) ? args.shift : {}
-      @name = args.unshift(@params.map { |k,v| "#{k} = #{v}" }.join(', ')).select { |s| s.to_s.length > 0 }.join(' ')
-      @before, @after = [], []
-      @block = Proc.new do
-        @params.each { |k,v| class<<self; self end.send(:define_method, k) { v } }
-        instance_eval(&block)
-      end
+  def define(values)
+    values.each do |key,value|
+      class<<self; self end.send(:define_method, key) { value }
     end
-
-    def describe(*args, &block)
-      # Instantiate sub-class, without joining args already, let's handle that our constructor
-      context = self.class.new(*args, &block)
-      (parent_context = self).methods(false).each {|e|
-        class<<context; self end.send(:define_method, e) {|*args| parent_context.send(e, *args)}
-      }
-      @before.each { |b| context.before(&b) }
-      @after.each { |b| context.after(&b) }
-      context.run
-    end
-
   end
-end
 
-module ProjectHelperSpecs
-  # Extend each context with SpecHelper::ProjectHelper.
-  def self.describe(*args, &block)
-    Xcodeproj::ParametrizedContext.new(*args, &block).run
-  end
 end
