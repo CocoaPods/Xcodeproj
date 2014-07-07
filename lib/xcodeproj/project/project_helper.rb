@@ -25,10 +25,10 @@ module Xcodeproj
       #         `:static_library`.
       #
       # @param  [String] name
-      #         the name of the static library product.
+      #         the name of the target product.
       #
       # @param  [Symbol] platform
-      #         the platform of the static library. Can be `:ios` or `:osx`.
+      #         the platform of the target. Can be `:ios` or `:osx`.
       #
       # @param  [String] deployment_target
       #         the deployment target for the platform.
