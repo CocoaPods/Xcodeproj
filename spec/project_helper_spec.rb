@@ -10,7 +10,7 @@ module ProjectHelperSpecs
     shared 'configuration settings' do
       extend SpecHelper::ProjectHelper
       built_settings = subject.common_build_settings(configuration, platform, nil, product_type, (language rescue nil))
-      compare_settings(built_settings, fixture_settings[configuration])
+      compare_settings(built_settings, fixture_settings[configuration], [configuration, platform, product_type, (language rescue nil)])
     end
 
     shared 'target settings' do
