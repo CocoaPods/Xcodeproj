@@ -83,8 +83,6 @@ module SpecHelper
       return settings
     end
 
-    private
-
     # @!group Helper
 
     #-----------------------------------------------------------------------#
