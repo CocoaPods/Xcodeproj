@@ -111,13 +111,11 @@ module Xcodeproj
     #
     COMMON_BUILD_SETTINGS = {
       :all => {
-        'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
         'GCC_PRECOMPILE_PREFIX_HEADER'      => 'YES',
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
         'SKIP_INSTALL'                      => 'YES',
         'DSTROOT'                           => '/tmp/xcodeproj.dst',
         'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
-        'GCC_C_LANGUAGE_STANDARD'           => 'gnu99',
         'INSTALL_PATH'                      => "$(BUILT_PRODUCTS_DIR)",
         'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
