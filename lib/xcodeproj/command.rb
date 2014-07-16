@@ -57,7 +57,7 @@ module Xcodeproj
         # ['--silent',   'Print nothing'],
         # ['--no-color', 'Print output without color'],
         # ['--verbose',  'Print more information while working'],
-        ['--version',  'Prints the version of CocoaPods'],
+        ['--version',  'Prints the version of Xcodeproj'],
       ]
     end
 
