@@ -4,18 +4,18 @@ module ProjectSpecs
   describe PBXTargetDependency do
 
     before do
-      @sut = @project.new(PBXTargetDependency)
+      @target_dependency = @project.new(PBXTargetDependency)
     end
 
     it "may have a name" do
-      @sut.name.should == nil
-      @sut.name = "This target's dependency"
-      @sut.name.should == "This target's dependency"
+      @target_dependency.name.should == nil
+      @target_dependency.name = "This target's dependency"
+      @target_dependency.name.should == "This target's dependency"
     end
 
     it "returns the target on which this dependency is based" do
-      @sut.target = @project.new_target(:static, "Pods", :ios)
-      @sut.target.name.should == "Pods"
+      @target_dependency.target = @project.new_target(:static, "Pods", :ios)
+      @target_dependency.target.name.should == "Pods"
     end
 
     it "returns the proxy of the target on which this dependency is based" do
@@ -27,8 +27,8 @@ module ProjectSpecs
       proxy.proxy_type = "1"
       proxy.remote_global_id_string = target.uuid
 
-      @sut.target_proxy = proxy
-      @sut.target_proxy.remote_info.should == "Pods"
+      @target_dependency.target_proxy = proxy
+      @target_dependency.target_proxy.remote_info.should == "Pods"
     end
 
     # This is a contrived example of two targets depending on each other, which
@@ -36,9 +36,9 @@ module ProjectSpecs
     # depend on itself, as in this example, though.
     it "does not sort recursively, which would case stack level too deep errors" do
       target = @project.new_target(:static, "Pods", :ios)
-      @sut.target = target
-      target.dependencies << @sut
-      lambda { @sut.sort_recursively }.should.not.raise
+      @target_dependency.target = target
+      target.dependencies << @target_dependency
+      lambda { @target_dependency.sort_recursively }.should.not.raise
     end
 
     #----------------------------------------#
@@ -46,20 +46,20 @@ module ProjectSpecs
     describe "#display_name" do
 
       it "returns the name if set" do
-        @sut.name = "Pods"
-        @sut.display_name.should == 'Pods'
+        @target_dependency.name = "Pods"
+        @target_dependency.display_name.should == 'Pods'
       end
 
       it "returns the name if needed" do
-        @sut.target = @project.new_target(:static, "Pods", :ios)
-        @sut.display_name.should == 'Pods'
+        @target_dependency.target = @project.new_target(:static, "Pods", :ios)
+        @target_dependency.display_name.should == 'Pods'
       end
 
       it "returns the remote info if needed" do
         proxy = @project.new(PBXContainerItemProxy)
         proxy.remote_info = "Pods"
-        @sut.target_proxy = proxy
-        @sut.display_name.should == 'Pods'
+        @target_dependency.target_proxy = proxy
+        @target_dependency.display_name.should == 'Pods'
       end
 
     end

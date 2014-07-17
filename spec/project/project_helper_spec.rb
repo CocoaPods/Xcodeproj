@@ -4,7 +4,7 @@ module ProjectSpecs
   describe Xcodeproj::Project::ProjectHelper do
 
     before do
-      @sut = Xcodeproj::Project::ProjectHelper
+      @helper = Xcodeproj::Project::ProjectHelper
     end
 
     #-------------------------------------------------------------------------#
@@ -12,7 +12,7 @@ module ProjectSpecs
     describe "Targets" do
 
       it "creates a new target" do
-        target = @sut.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
+        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.library.static'
 
@@ -33,7 +33,7 @@ module ProjectSpecs
       end
 
       it "creates a new resources bundle" do
-        target = @sut.new_resources_bundle(@project, 'Pods', :ios, @project.products_group)
+        target = @helper.new_resources_bundle(@project, 'Pods', :ios, @project.products_group)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
 
@@ -71,24 +71,24 @@ module ProjectSpecs
     describe "::common_build_settings" do
 
       it "returns the build settings for an application by default" do
-        settings = @sut.common_build_settings(:release, :ios, nil, nil)
+        settings = @helper.common_build_settings(:release, :ios, nil, nil)
         settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
       end
 
       it "returns the build settings for an application" do
-        settings = @sut.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
+        settings = @helper.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
         settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
       end
 
 
       it "returns the build settings for an application" do
-        settings = @sut.common_build_settings(:release, :osx, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings = @helper.common_build_settings(:release, :osx, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
         settings['COMBINE_HIDPI_IMAGES'].should == 'YES'
       end
 
       it "returns a deep copy of the common build settings" do
-        settings_1 = @sut.common_build_settings(:release, :ios, nil, nil)
-        settings_2 = @sut.common_build_settings(:release, :ios, nil, nil)
+        settings_1 = @helper.common_build_settings(:release, :ios, nil, nil)
+        settings_2 = @helper.common_build_settings(:release, :ios, nil, nil)
 
         settings_1.object_id.should.not == settings_2.object_id
         settings_1['OTHER_CFLAGS'].object_id.should.not == settings_2['OTHER_CFLAGS'].object_id
@@ -102,14 +102,14 @@ module ProjectSpecs
 
       it "creates a copy of a given object" do
         object = 'String'
-        copy = @sut.deep_dup(object)
+        copy = @helper.deep_dup(object)
         object.should == copy
         object.object_id.should.not == copy.object_id
       end
 
       it "creates a deep copy of an array" do
         object = ['String']
-        copy = @sut.deep_dup(object)
+        copy = @helper.deep_dup(object)
         object.should == copy
         object.object_id.should.not == copy.object_id
         object[1].object_id.should.not == copy.object_id[1]
@@ -117,7 +117,7 @@ module ProjectSpecs
 
       it "creates a deep copy of an array" do
         object = { :value => 'String' }
-        copy = @sut.deep_dup(object)
+        copy = @helper.deep_dup(object)
         object.should == copy
         object.object_id.should.not == copy.object_id
         object.values[1].object_id.should.not == copy.values.object_id[1]
