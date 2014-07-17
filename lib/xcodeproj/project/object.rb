@@ -199,8 +199,8 @@ module Xcodeproj
         end
 
         # Informs the object that another object stopped referencing it. If the
-        # object has no other references it is removed form project UUIDs hash
-        # because it is unreachable.
+        # object has no other references it is removed from the project UUIDs
+        # hash because it is unreachable.
         #
         # @return [void]
         #

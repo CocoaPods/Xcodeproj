@@ -44,9 +44,9 @@ module Xcodeproj
         #         the class that owns the attribute.
         #
         def initialize(type, name, owner)
-          @type  =  type
-          @name  =  name
-          @owner =  owner
+          @type  = type
+          @name  = name
+          @owner = owner
         end
 
         # @return[String] The name of the attribute in camel case.
@@ -65,7 +65,7 @@ module Xcodeproj
           end
         end
 
-        # @return [Hash] a shared store which cahces the plist name of the
+        # @return [Hash] a shared store which caches the plist name of the
         #         attributes.
         #
         def self.plist_name_store
