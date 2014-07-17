@@ -19,18 +19,18 @@ module ProjectSpecs
 
       before do
         app = @project.new_target(:application, 'iOS application', :osx)
-        @sut = Xcodeproj::XCScheme.new
-        @sut.set_launch_target(app)
+        @scheme = Xcodeproj::XCScheme.new
+        @scheme.set_launch_target(app)
       end
 
       it "indents declares the XML as Xcode" do
-        @sut.to_s.lines.first.chomp.should == '<?xml version="1.0" encoding="UTF-8"?>'
+        @scheme.to_s.lines.first.chomp.should == '<?xml version="1.0" encoding="UTF-8"?>'
       end
 
       if RUBY_VERSION > '1.8.7'
         it "indents the string representation as Xcode" do
           require 'active_support/core_ext/string/strip.rb'
-          @sut.to_s[0..190].should == <<-DOC.strip_heredoc
+          @scheme.to_s[0..190].should == <<-DOC.strip_heredoc
           <?xml version="1.0" encoding="UTF-8"?>
           <Scheme
              LastUpgradeVersion = "0510"

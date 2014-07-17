@@ -4,24 +4,24 @@ module ProjectSpecs
   describe XCBuildConfiguration do
 
     before do
-      @sut = @project.new(XCBuildConfiguration)
+      @configuration = @project.new(XCBuildConfiguration)
     end
 
     describe "In general" do
 
       it "returns its name" do
-        @sut.name = "Release"
-        @sut.name.should == "Release"
+        @configuration.name = "Release"
+        @configuration.name.should == "Release"
       end
 
       it "returns the empty hash as default build settings" do
-        @sut.build_settings.should == {}
+        @configuration.build_settings.should == {}
       end
 
       it "returns the xcconfig that this configuration is based on" do
         xcconfig = @project.new_file('file.xcconfig')
-        @sut.base_configuration_reference = xcconfig
-        @sut.base_configuration_reference.should.be.not.nil
+        @configuration.base_configuration_reference = xcconfig
+        @configuration.base_configuration_reference.should.be.not.nil
       end
     end
 
@@ -30,12 +30,12 @@ module ProjectSpecs
     describe "AbstractObject Hooks" do
 
       it "returns the pretty print representation" do
-        @sut.name = "Release"
-        @sut.build_settings = {'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES'}
+        @configuration.name = "Release"
+        @configuration.build_settings = {'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES'}
         xcconfig = @project.new_file('file.xcconfig')
-        @sut.base_configuration_reference = xcconfig
+        @configuration.base_configuration_reference = xcconfig
 
-        @sut.pretty_print.should == {
+        @configuration.pretty_print.should == {
           "Release" => {
             "Build Settings" => {
               "GCC_PRECOMPILE_PREFIX_HEADER" => "YES"
@@ -53,10 +53,10 @@ module ProjectSpecs
 
       unless RUBY_VERSION < "1.9"
         it "can be sorted" do
-          @sut.name = "Release"
-          @sut.build_settings = {'KEY_B' => 'B', 'KEY_A' => 'A'}
-          @sut.sort
-          @sut.build_settings.keys.should == ["KEY_A", "KEY_B"]
+          @configuration.name = "Release"
+          @configuration.build_settings = {'KEY_B' => 'B', 'KEY_A' => 'A'}
+          @configuration.sort
+          @configuration.build_settings.keys.should == ["KEY_A", "KEY_B"]
         end
       end
 

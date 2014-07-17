@@ -4,7 +4,7 @@ module ProjectSpecs
   describe Xcodeproj::Project::Object::GroupableHelper do
 
     before do
-      @sut = GroupableHelper
+      @helper = GroupableHelper
     end
 
     #-------------------------------------------------------------------------#
@@ -18,20 +18,20 @@ module ProjectSpecs
       describe '::parent' do
 
         it "returns the parent" do
-          @sut.parent(@group).should == @project.main_group
+          @helper.parent(@group).should == @project.main_group
         end
 
         it "includes only groups in the parents" do
           file = @project.new_file('File.m')
           target = @project.new_target(:library, 'Pods', :ios)
           target.add_file_references([file])
-          @sut.parent(file).should == @project.main_group
+          @helper.parent(file).should == @project.main_group
         end
 
         it "raises if there is not a suitable parent" do
           @group.remove_referrer(@project.main_group)
           should.raise do
-            @sut.parent(@group)
+            @helper.parent(@group)
           end.message.should.match /no parent/
         end
 
@@ -39,7 +39,7 @@ module ProjectSpecs
           new_group = @group.new_group('Child')
           new_group.add_referrer(@project.main_group)
           should.raise do
-            @sut.parent(new_group)
+            @helper.parent(new_group)
           end.message.should.match /multiple parents/
         end
 
@@ -47,20 +47,20 @@ module ProjectSpecs
 
       it "returns the parents of the object" do
         child = @group.new_group('Child')
-        @sut.parents(child).should == [@project.main_group, @group]
+        @helper.parents(child).should == [@project.main_group, @group]
       end
 
       it "raises if there is not a single identifiable parent" do
         new_group = @group.new_group('Child')
         new_group.add_referrer(@project.main_group)
         should.raise do
-          @sut.parent(new_group)
+          @helper.parent(new_group)
         end.message.should.match /multiple parents/
       end
 
       it "returns the representation of the group hierarchy" do
         child = @group.new_group('Child')
-        @sut.hierarchy_path(child).should == "/Parent/Child"
+        @helper.hierarchy_path(child).should == "/Parent/Child"
       end
 
     end
@@ -70,11 +70,11 @@ module ProjectSpecs
     describe "::main_group" do
 
       it "returns that an object is the main group" do
-        @sut.main_group?(@project.main_group).should.be.true
+        @helper.main_group?(@project.main_group).should.be.true
       end
 
       it "returns that an object is not the main group" do
-        @sut.main_group?(@project.new_group('Classes')).should.be.false
+        @helper.main_group?(@project.new_group('Classes')).should.be.false
       end
 
     end
@@ -89,33 +89,33 @@ module ProjectSpecs
 
       it "can move an object from a group to another" do
         new_parent = @project.new_group('New Parent')
-        @sut.move(@group, new_parent)
+        @helper.move(@group, new_parent)
         @group.parent.should == new_parent
         @group.referrers.count.should == 1
       end
 
       it "raise if there there is an attempt to move a nil object" do
         should.raise do
-          @sut.move(nil, @group)
+          @helper.move(nil, @group)
         end.message.should.match /Attempt to move nil object/
       end
 
       it "raise if there there is an attempt to move to a nil parent" do
         should.raise do
-          @sut.move(@group, nil)
+          @helper.move(@group, nil)
         end.message.should.match /Attempt to move .* to nil parent/
       end
 
       it "raise if there there is an attempt to move an object to one of its children" do
         child = @group.new_group('Child')
         should.raise do
-          @sut.move(@group, child)
+          @helper.move(@group, child)
         end.message.should.match /Attempt to move .* to a child object/
       end
 
       it "raise if there there is an attempt to move an object to itself" do
         should.raise do
-          @sut.move(@group, @group)
+          @helper.move(@group, @group)
         end.message.should.match /Attempt to move .* to itself/
       end
 
@@ -132,7 +132,7 @@ module ProjectSpecs
       it "returns the real path of an object" do
         @group.source_tree = '<group>'
         @group.path = 'Classes'
-        @sut.real_path(@group).should == Pathname.new('/project_dir/Classes')
+        @helper.real_path(@group).should == Pathname.new('/project_dir/Classes')
       end
 
     end
@@ -147,12 +147,12 @@ module ProjectSpecs
 
       it "returns a nil source tree for absolute paths" do
         @group.source_tree = '<absolute>'
-        @sut.source_tree_real_path(@group).should.be.nil
+        @helper.source_tree_real_path(@group).should.be.nil
       end
 
       it "returns the source tree of a path relative to main group" do
         @group.source_tree = '<group>'
-        @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
+        @helper.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
       it "returns the source tree of a path relative to a group" do
@@ -161,17 +161,17 @@ module ProjectSpecs
         children = @group.new_group('child')
         children.source_tree = '<group>'
         children.path = 'dir'
-        @sut.source_tree_real_path(children).should == Pathname.new('/parent_group_path')
+        @helper.source_tree_real_path(children).should == Pathname.new('/parent_group_path')
       end
 
       it "returns the source tree of a path relative to the project root" do
         @group.source_tree = 'SOURCE_ROOT'
-        @sut.source_tree_real_path(@group).should == Pathname.new('/project_dir')
+        @helper.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
       it "returns the source tree relative to an environment variable" do
         @group.source_tree = 'BUILT_PRODUCTS_DIR'
-        @sut.source_tree_real_path(@group).should == Pathname.new('${BUILT_PRODUCTS_DIR}')
+        @helper.source_tree_real_path(@group).should == Pathname.new('${BUILT_PRODUCTS_DIR}')
       end
     end
 
@@ -181,7 +181,7 @@ module ProjectSpecs
 
       it "sets the source tree for the given object" do
         @group = @project.new_group('Parent')
-        @sut.set_source_tree(@group, :absolute)
+        @helper.set_source_tree(@group, :absolute)
         @group.source_tree.should == '<absolute>'
       end
     end
@@ -195,14 +195,14 @@ module ProjectSpecs
       end
 
       it "sets an absolute path" do
-        @sut.set_path_with_source_tree(@group, '/Files', :absolute)
+        @helper.set_path_with_source_tree(@group, '/Files', :absolute)
         @group.source_tree.should == '<absolute>'
         @group.path.should == '/Files'
       end
 
       it "raises if a relative path is provided for an absolute source tree" do
         should.raise do
-        @sut.set_path_with_source_tree(@group, 'Files', :absolute)
+        @helper.set_path_with_source_tree(@group, 'Files', :absolute)
         end.message.should.match /Attempt to set a relative path/
       end
 
@@ -210,7 +210,7 @@ module ProjectSpecs
         new_group = @group.new_group('Classes')
         @group.source_tree = '<group>'
         @group.path = 'Parent'
-        @sut.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :group)
+        @helper.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :group)
         new_group.source_tree.should == '<group>'
         new_group.path.should == 'Classes'
       end
@@ -219,25 +219,25 @@ module ProjectSpecs
         new_group = @group.new_group('Classes')
         @group.source_tree = '<group>'
         @group.path = 'Parent'
-        @sut.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :project)
+        @helper.set_path_with_source_tree(new_group, '/project_dir/Parent/Classes', :project)
         new_group.source_tree.should == 'SOURCE_ROOT'
         new_group.path.should == 'Parent/Classes'
       end
 
       it "sets a path relative to the products dir" do
-        @sut.set_path_with_source_tree(@group, 'Class.m', :built_products)
+        @helper.set_path_with_source_tree(@group, 'Class.m', :built_products)
         @group.source_tree.should == 'BUILT_PRODUCTS_DIR'
         @group.path.should == 'Class.m'
       end
 
       it "sets a path relative to the developer dir" do
-        @sut.set_path_with_source_tree(@group, 'Class.m', :developer_dir)
+        @helper.set_path_with_source_tree(@group, 'Class.m', :developer_dir)
         @group.source_tree.should == 'DEVELOPER_DIR'
         @group.path.should == 'Class.m'
       end
 
       it "sets a path relative to the sdk root" do
-        @sut.set_path_with_source_tree(@group, 'Class.m', :sdk_root)
+        @helper.set_path_with_source_tree(@group, 'Class.m', :sdk_root)
         @group.source_tree.should == 'SDKROOT'
         @group.path.should == 'Class.m'
       end
@@ -246,7 +246,7 @@ module ProjectSpecs
         new_group = @group.new_group('Classes')
         @group.source_tree = '<group>'
         @group.path = 'Parent'
-        @sut.set_path_with_source_tree(new_group, 'project_dir/Parent/Classes', :group)
+        @helper.set_path_with_source_tree(new_group, 'project_dir/Parent/Classes', :group)
         new_group.source_tree.should == '<group>'
         new_group.path.should == 'project_dir/Parent/Classes'
       end
@@ -258,24 +258,24 @@ module ProjectSpecs
     describe '::normalize_source_tree' do
 
       it "converts the symbol representation of a source tree" do
-        value = @sut.send(:normalize_source_tree, :group)
+        value = @helper.send(:normalize_source_tree, :group)
         value.should == '<group>'
       end
 
       it "allows to specify the source tree as a string" do
-        value = @sut.send(:normalize_source_tree, '<group>')
+        value = @helper.send(:normalize_source_tree, '<group>')
         value.should == '<group>'
       end
 
       it "raises if an unsupported source key is provided" do
         should.raise do
-          @sut.send(:normalize_source_tree, :root_of_the_internets)
+          @helper.send(:normalize_source_tree, :root_of_the_internets)
         end.message.should.match /Unrecognized source tree option/
       end
 
       it "raises if a nil source key is provided" do
         should.raise do
-          @sut.send(:normalize_source_tree, nil)
+          @helper.send(:normalize_source_tree, nil)
         end.message.should.match /Unrecognized source tree option/
       end
 
