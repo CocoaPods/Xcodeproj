@@ -233,6 +233,41 @@ module Xcodeproj
           false
         end
 
+        # 'contains' the items in the external reference
+        def proxy_containers
+          project.objects.select do |object|
+            object.isa == 'PBXContainerItemProxy' && object.container_portal == self.uuid
+          end
+        end
+
+        def file_reference_proxies
+          containers = proxy_containers
+          if containers.empty?
+            []
+          else
+            project.objects.select do |object|
+              object.isa == 'PBXReferenceProxy' && containers.include?(object.remote_ref)
+            end
+          end
+        end
+
+        def target_dependency_proxies
+          containers = proxy_containers
+          if containers.empty?
+            []
+          else
+            project.objects.select do |object|
+              object.isa == 'PBXTargetDependency' && containers.include?(object.target_proxy)
+            end
+          end
+        end
+
+        def remove_from_project
+          file_reference_proxies.each(&:remove_from_project)
+          target_dependency_proxies.each(&:remove_from_project)
+          super
+        end
+
         #---------------------------------------------------------------------#
 
       end

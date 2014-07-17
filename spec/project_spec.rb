@@ -173,28 +173,31 @@ module ProjectSpecs
         #        remove_from_project on the subproject PBXFileReference
         #        See https://github.com/CocoaPods/Xcodeproj/issues/158
         uuids_to_remove = [
-          "5138059B16499F4C001D82AD",
-          "5138059C16499F4C001D82AD",
-          "E5FBB3451635ED35009E96B0",
-          "E5FBB3461635ED35009E96B0",
-          "E5FBB34B1635ED36009E96B0",
-          "E5FBB34C1635ED36009E96B0",
-          "E5FBB34D1635ED36009E96B0",
-          "E5FBB34E1635ED36009E96B0",
-          "E5FBB34F1635ED36009E96B0",
-          "E5FBB3501635ED36009E96B0"
+          "E5FBB3451635ED35009E96B0", # The Xcode subproject file reference that should trigger the removal.
+
+          "5138059B16499F4C001D82AD", # PBXContainerItemProxy links to E5FBB3451635ED35009E96B0
+          "5138059C16499F4C001D82AD", # PBXTargetDependency links to 5138059B16499F4C001D82AD
+          "E5FBB3461635ED35009E96B0", # PBXGroup for products links to E5FBB34C1635ED36009E96B0, E5FBB34E1635ED36009E96B0, E5FBB3501635ED36009E96B0
+
+          "E5FBB34B1635ED36009E96B0", # PBXContainerItemProxy links to E5FBB3451635ED35009E96B0
+          "E5FBB34C1635ED36009E96B0", # PBXReferenceProxy links to E5FBB34B1635ED36009E96B0
+
+          "E5FBB34D1635ED36009E96B0", # PBXContainerItemProxy links to E5FBB3451635ED35009E96B0
+          "E5FBB34E1635ED36009E96B0", # PBXReferenceProxy links to E5FBB34D1635ED36009E96B0
+
+          "E5FBB34F1635ED36009E96B0", # PBXContainerItemProxy links to E5FBB3451635ED35009E96B0
+          "E5FBB3501635ED36009E96B0", # PBXReferenceProxy links to E5FBB34F1635ED36009E96B0
         ]
 
-        objects_to_remove = project.objects.select { |o| uuids_to_remove.include?(o.uuid) }
-        
-        objects_to_remove.each do |object|
-          object.remove_from_project
-        end
+        #p project.root_object.project_references
 
+        subproject_file_reference = project.objects_by_uuid['E5FBB3451635ED35009E96B0']
+        subproject_file_reference.remove_from_project
         project.save(@path)
 
         new_instance = Xcodeproj::Project.open(@path)
         new_instance.objects.count.should > 0 # make sure we still have a valid project
+        new_instance.root_object.project_references.should.be.empty # this contains the Products group of the external project
         removed_objects = new_instance.objects.select { |o| uuids_to_remove.include?(o.uuid) }
         removed_objects.count.should == 0
       end
