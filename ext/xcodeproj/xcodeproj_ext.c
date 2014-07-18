@@ -1,6 +1,3 @@
-// TODO
-// * free memory when raising
-
 #include "extconf.h"
 
 #include "ruby.h"
@@ -106,8 +103,8 @@ hash_set(const void *keyRef, const void *valueRef, void *hash) {
         CFStringRef descriptionRef = CFCopyDescription(elementRef);
         // obviously not optimal, but we're raising here, so it doesn't really matter
         VALUE description = cfstr_to_str(descriptionRef);
-        rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj. In: `%s'", RSTRING_PTR(description));
         CFRelease(descriptionRef);
+        rb_raise(rb_eTypeError, "Plist array value contains a object type unsupported by Xcodeproj. In: `%s'", RSTRING_PTR(description));
       }
     }
 
@@ -158,6 +155,7 @@ dictionary_set(st_data_t key, st_data_t value, CFMutableDictionaryRef dict) {
   }
 
   if (valueRef == NULL) {
+    CFRelease(keyRef);
     rb_raise(rb_eTypeError, "Unable to convert value of key `%s'.", RSTRING_PTR(rb_inspect(key)));
   }
 
@@ -213,10 +211,10 @@ read_plist(VALUE self, VALUE path) {
   }
 
   dict = CFPropertyListCreateFromXMLData(NULL, resourceData, kCFPropertyListImmutable, &errorString);
+  CFRelease(resourceData);
   if (!dict) {
     rb_raise(rb_eArgError, "Unable to read plist data from `%s': %s", RSTRING_PTR(rb_inspect(path)), RSTRING_PTR(cfstr_to_str(errorString)));
   }
-  CFRelease(resourceData);
 
   register VALUE hash = rb_hash_new();
   CFDictionaryApplyFunction(dict, hash_set, (void *)hash);
@@ -263,6 +261,7 @@ write_plist(VALUE self, VALUE hash, VALUE path) {
     success = CFPropertyListWriteToStream(dict, stream, kCFPropertyListXMLFormat_v1_0, &errorString);
     if (!success) {
       CFShow(errorString);
+      CFRelease(errorString);
     }
     CFWriteStreamClose(stream);
   } else {
