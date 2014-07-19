@@ -11,6 +11,7 @@ group :development do
   gem 'mocha-on-bacon'
   gem 'prettybacon'
   gem 'kicker'
+  gem 'codeclimate-test-reporter', :require => nil
 end
 
 group :documentation do
