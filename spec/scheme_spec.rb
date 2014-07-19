@@ -40,6 +40,21 @@ module ProjectSpecs
                 buildImplicitDependencies = "YES">
           DOC
         end
+
+        it "does not modify attribute values" do
+          scheme = @sut.instance_variable_get :@scheme
+          scheme.attributes["name"] = "key=value"
+          @sut.to_s[0..212].should == <<-DOC.strip_heredoc
+          <?xml version="1.0" encoding="UTF-8"?>
+          <Scheme
+             LastUpgradeVersion = "0500"
+             version = "1.3"
+             name = "key=value">
+             <BuildAction
+                parallelizeBuildables = "YES"
+                buildImplicitDependencies = "YES">
+          DOC
+        end
       end
     end
 
@@ -115,12 +130,15 @@ module ProjectSpecs
           .attributes['BuildableName'].should == aggregate_target.name
       end
 
-      it 'Does not support adding legacy build targets' do
+      it 'Supports adding legacy build targets' do
         legacy_target = @project.new(PBXLegacyTarget)
-
-        should.raise ArgumentError do
-          @scheme.add_build_target(legacy_target)
-        end.message.should.match /Unsupported build target/
+        legacy_target.name = 'Legacy'
+        @scheme.add_build_target(legacy_target)
+        @scheme.doc.root.elements['BuildAction'] \
+          .elements['BuildActionEntries'] \
+          .elements['BuildActionEntry'] \
+          .elements['BuildableReference'] \
+          .attributes['BuildableName'].should == legacy_target.name
       end
 
       it 'Constructs ReferencedContainer attributes correctly' do

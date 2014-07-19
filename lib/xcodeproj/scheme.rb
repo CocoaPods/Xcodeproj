@@ -252,7 +252,7 @@ module Xcodeproj
         node.attributes.each_attribute do |attr|
           output << "\n"
           output << ' '*@level
-          output << attr.to_string.gsub(/=/, ' = ')
+          output << attr.to_string.sub(/=/, ' = ')
         end unless node.attributes.empty?
 
         output << ">"
@@ -284,6 +284,8 @@ module Xcodeproj
       when 'PBXNativeTarget'
         File.basename(build_target.product_reference.path)
       when 'PBXAggregateTarget'
+        build_target.name
+      when 'PBXLegacyTarget'
         build_target.name
       else
         raise ArgumentError, "Unsupported build target type #{build_target.isa}"
