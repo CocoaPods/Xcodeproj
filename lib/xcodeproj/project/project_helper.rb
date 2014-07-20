@@ -175,11 +175,7 @@ module Xcodeproj
         common_settings = Constants::COMMON_BUILD_SETTINGS
 
         # Use intersecting settings for all key sets as base
-        if target_product_type != :bundle
-          settings = deep_dup(common_settings[:all])
-        else
-          settings = {}
-        end
+        settings = deep_dup(common_settings[:all])
 
         # Match further common settings by key sets
         keys = [type, platform, target_product_type, language].compact
