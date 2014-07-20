@@ -121,7 +121,7 @@ module Xcodeproj
         'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
       }.freeze,
-      :debug => {
+      [:debug] => {
         'GCC_DYNAMIC_NO_PIC'                => 'NO',
         'GCC_PREPROCESSOR_DEFINITIONS'      => ['DEBUG=1', '$(inherited)'],
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
@@ -130,29 +130,29 @@ module Xcodeproj
         'METAL_ENABLE_DEBUG_INFO'           => 'YES',
         'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
-      :release => {
+      [:release] => {
         'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
         'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
       }.freeze,
-      :ios => {
+      [:ios] => {
         'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
         'PUBLIC_HEADERS_FOLDER_PATH'        => '$(TARGET_NAME)',
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
-      :osx => {
+      [:osx] => {
         'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
         'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
         'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
         'SDKROOT'                           => 'macosx',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
-      [:osx, :debug] => {
+      [:debug, :osx] => {
         # Empty?
       }.freeze,
-      [:osx, :release] => {
+      [:release, :osx] => {
         'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
       }.freeze,
-      [:ios, :debug] => {
+      [:debug, :ios] => {
         # Empty?
       }.freeze,
       [:ios, :release] => {
@@ -172,10 +172,10 @@ module Xcodeproj
         'SKIP_INSTALL'                      => 'YES',
         'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Frameworks',
       }.freeze,
-      [:framework, :ios] => {
+      [:ios, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
       }.freeze,
-      [:framework, :osx] => {
+      [:osx, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/../Frameworks'],
         'FRAMEWORK_VERSION'                 => 'A',
       }.freeze,
@@ -187,10 +187,10 @@ module Xcodeproj
         'WRAPPER_EXTENSION'                 => 'bundle',
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
-      [:bundle, :ios] => {
+      [:ios, :bundle] => {
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
-      [:bundle, :osx] => {
+      [:osx, :bundle] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
         'SDKROOT'                           => 'macosx',
       }.freeze,
