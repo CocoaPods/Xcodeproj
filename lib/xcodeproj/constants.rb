@@ -116,10 +116,10 @@ module Xcodeproj
         'ENABLE_STRICT_OBJC_MSGSEND'        => 'YES',
       }.freeze,
       [:debug] => {
-        'METAL_ENABLE_DEBUG_INFO'           => 'YES',
+        'MTL_ENABLE_DEBUG_INFO'             => 'YES',
       }.freeze,
       [:release] => {
-        'METAL_ENABLE_DEBUG_INFO'           => 'NO',
+        'MTL_ENABLE_DEBUG_INFO'             => 'NO',
       }.freeze,
       [:ios] => {
         'SDKROOT'                           => 'iphoneos',
@@ -136,10 +136,7 @@ module Xcodeproj
       [:debug, :ios] => {
         # Empty?
       }.freeze,
-      [:debug, :ios, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
-      }.freeze,
-      [:debug, :osx, :application, :swift] => {
+      [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:framework] => {
@@ -159,12 +156,15 @@ module Xcodeproj
         'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :framework] => {
-        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/../Frameworks'],
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/Frameworks'],
         'FRAMEWORK_VERSION'                 => 'A',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
+      }.freeze,
+      [:debug, :framework, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:osx, :static_library] => {
         'EXECUTABLE_PREFIX'                 => 'lib',
