@@ -2,14 +2,13 @@
 //  AppDelegate.m
 //  Objc_iOS_Native
 //
-//  Created by Marius Rackwitz on 05.07.14.
+//  Created by Marius Rackwitz on 20.07.14.
 //
 //
 
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
-            
 
 @end
 
@@ -17,10 +16,7 @@
             
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
     return YES;
 }
 
