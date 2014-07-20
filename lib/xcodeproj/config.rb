@@ -294,8 +294,9 @@ module Xcodeproj
     #         entry is the value.
     #
     def extract_key_value(line)
-      key, value = line.split('=', 2)
-      if key && value
+      match = line.match /([^=]*?(?:\[[^\]]*=?[^\]]*\])*)\s+=(.*)/
+      if match
+        key, value = match[1], match[2]
         [key.strip, value.strip]
       else
         []

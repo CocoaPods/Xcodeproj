@@ -158,6 +158,13 @@ describe Xcodeproj::Config do
       config.should == { 'Key' => 'Value' }
     end
 
+    it 'can be created from file with subscripts' do
+      config = Xcodeproj::Config.new(fixture_path('subscript.xcconfig'))
+      config.should == {
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+      }
+    end
+
     it "doesn't duplicate libraries and frameworks" do
       hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
       config = Xcodeproj::Config.new(hash)
