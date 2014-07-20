@@ -7,6 +7,7 @@ addons:
  code_climate:
    repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152 
 
+install: bundle --without=documentation install
 script: bundle exec rake spec
 
 notifications:
