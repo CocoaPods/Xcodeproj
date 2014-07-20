@@ -1,4 +1,4 @@
-require File.expand_path('../spec_helper', __FILE__)
+require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectHelperSpecs
   describe Xcodeproj::Project::ProjectHelper do
