@@ -26,7 +26,11 @@ module SpecHelper
         # Find faulty settings in different categories
         missing_settings    = expected.keys.select { |k| produced[k] == nil }
         unexpected_settings = produced.keys.select { |k| expected[k] == nil }
-        wrong_settings      = (expected.keys - missing_settings).select { |k| produced[k] != expected[k] }
+        wrong_settings      = (expected.keys - missing_settings).select do |k|
+          produced_setting = produced[k]
+          produced_setting = produced_setting.join(' ') if produced_setting.respond_to? :join
+          produced_setting != expected[k]
+        end
 
         # Build pretty description for what is going on
         description = []
