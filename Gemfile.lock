@@ -48,7 +48,7 @@ GEM
     rb-kqueue (0.2.3)
       ffi (>= 0.5.0)
     redcarpet (3.1.2)
-    simplecov (0.8.2)
+    simplecov (0.9.0)
       docile (~> 1.1.0)
       multi_json
       simplecov-html (~> 0.8.0)
@@ -71,6 +71,6 @@ DEPENDENCIES
   pygments.rb
   rake (~> 10.1.0)
   redcarpet
-  simplecov (< 0.9)
+  simplecov
   xcodeproj!
   yard

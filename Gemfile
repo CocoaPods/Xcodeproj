@@ -13,8 +13,7 @@ group :development do
 
   if RUBY_VERSION >= '1.9.3'
     gem 'codeclimate-test-reporter', :require => nil
-    # Bug: https://github.com/colszowka/simplecov/issues/281
-    gem 'simplecov',   '< 0.9'  # Ruby 1.8.7
+    gem 'simplecov'
   end
 end
 
