@@ -32,6 +32,10 @@ module Xcodeproj
       # @param  [String] deployment_target
       #         the deployment target for the platform.
       #
+      # @param  [PBXGroup] product_group
+      #         the product group, where to add to a file reference of the
+      #         created target.
+      #
       # @return [PBXNativeTarget] the target.
       #
       def self.new_target(project, type, name, platform, deployment_target, product_group)
@@ -73,6 +77,10 @@ module Xcodeproj
       #
       # @param  [Symbol] platform
       #         the platform of the resources bundle. Can be `:ios` or `:osx`.
+      #
+      # @param  [PBXGroup] product_group
+      #         the product group, where to add to a file reference of the
+      #         created target.
       #
       # @return [PBXNativeTarget] the target.
       #
