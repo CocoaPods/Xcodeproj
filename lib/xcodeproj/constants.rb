@@ -112,39 +112,20 @@ module Xcodeproj
     #
     COMMON_BUILD_SETTINGS = {
       :all => {
-        'GCC_PRECOMPILE_PREFIX_HEADER'      => 'YES',
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
-        'SKIP_INSTALL'                      => 'YES',
-        'DSTROOT'                           => '/tmp/xcodeproj.dst',
-        'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
-        'INSTALL_PATH'                      => '$(BUILT_PRODUCTS_DIR)',
-        'OTHER_LDFLAGS'                     => '',
-        'COPY_PHASE_STRIP'                  => 'YES',
+        'ENABLE_STRICT_OBJC_MSGSEND'        => 'YES',
       }.freeze,
       [:debug] => {
-        'GCC_DYNAMIC_NO_PIC'                => 'NO',
-        'GCC_PREPROCESSOR_DEFINITIONS'      => ['DEBUG=1', '$(inherited)'],
-        'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
-        'GCC_OPTIMIZATION_LEVEL'            => '0',
-        'COPY_PHASE_STRIP'                  => 'NO',
         'METAL_ENABLE_DEBUG_INFO'           => 'YES',
-        'ONLY_ACTIVE_ARCH'                  => 'YES',
       }.freeze,
       [:release] => {
-        'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
-        'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
+        'METAL_ENABLE_DEBUG_INFO'           => 'NO',
       }.freeze,
       [:ios] => {
-        'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
-        'PUBLIC_HEADERS_FOLDER_PATH'        => '$(TARGET_NAME)',
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx] => {
-        'GCC_ENABLE_OBJC_EXCEPTIONS'        => 'YES',
-        'GCC_VERSION'                       => 'com.apple.compilers.llvm.clang.1_0',
-        'MACOSX_DEPLOYMENT_TARGET'          => '10.7',
         'SDKROOT'                           => 'macosx',
-        'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:debug, :osx] => {
         # Empty?
@@ -155,10 +136,10 @@ module Xcodeproj
       [:debug, :ios] => {
         # Empty?
       }.freeze,
-      [:ios, :release] => {
-        'VALIDATE_PRODUCT'                  => 'YES',
+      [:debug, :ios, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
-      [:debug, :swift] => {
+      [:debug, :osx, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:framework] => {
@@ -174,13 +155,41 @@ module Xcodeproj
       }.freeze,
       [:ios, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/../Frameworks'],
         'FRAMEWORK_VERSION'                 => 'A',
+        'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
+      }.freeze,
+      [:osx, :static_library] => {
+        'EXECUTABLE_PREFIX'                 => 'lib',
+      }.freeze,
+      [:ios, :static_library] => {
+        'OTHER_LDFLAGS'                     => '-ObjC',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:osx, :dynamic_library] => {
+        'EXECUTABLE_PREFIX'                 => 'lib',
+        'DYLIB_COMPATIBILITY_VERSION'       => '1',
+        'DYLIB_CURRENT_VERSION'             => '1',
+      }.freeze,
+      [:application] => {
+        'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
+      }.freeze,
+      [:ios, :application] => {
+        'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
+      }.freeze,
+      [:osx, :application] => {
+        'COMBINE_HIDPI_IMAGES'              => 'YES',
+        'CODE_SIGN_IDENTITY'                => '-',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks'],
       }.freeze,
       [:bundle] => {
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
@@ -193,6 +202,7 @@ module Xcodeproj
       [:osx, :bundle] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
         'SDKROOT'                           => 'macosx',
+        'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Bundles',
       }.freeze,
     }.freeze
 
