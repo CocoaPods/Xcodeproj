@@ -15,6 +15,10 @@ group :development do
     gem 'codeclimate-test-reporter', :require => nil
     gem 'simplecov'
   end
+
+  if RUBY_PLATFORM.include?('darwin')
+    gem 'libxml-ruby'
+  end
 end
 
 group :documentation do
