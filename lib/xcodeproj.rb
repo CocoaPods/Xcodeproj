@@ -22,7 +22,7 @@ module Xcodeproj
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
 
   def self.generate_uuid
-    require 'SecureRandom'
+    require 'securerandom'
     SecureRandom.hex(12).upcase
   end
 
