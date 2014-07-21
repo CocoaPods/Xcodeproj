@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activesupport',  '~> 3.0'
   s.add_runtime_dependency 'colored',        '~> 1.2'
   s.add_runtime_dependency 'CFPropertyList', '~> 2.2'
-  s.add_runtime_dependency 'libxml-ruby',    '~> 2.7'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
