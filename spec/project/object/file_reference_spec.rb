@@ -94,6 +94,16 @@ module ProjectSpecs
         @target = @project.new_target(:static_library, 'Pods', :ios)
         @target.dependencies << @target_dependency
         @target_dependency.target_proxy = @target_container
+
+        @group = @project.main_group.new_group('Products')
+        @project_reference = Xcodeproj::Project::ObjectDictionary.new(@project.root_object.references_by_keys_attributes.first, @project.root_object)
+        @project_reference['ProjectRef'] = @file
+        @project_reference['ProductGroup'] = @group
+        @project.root_object.project_references << @project_reference
+      end
+
+      it "returns the project reference metadata" do
+        @file.project_reference_metadata.should == @project_reference
       end
 
       it "returns the proxy containers that are contained in this external project" do
@@ -114,6 +124,8 @@ module ProjectSpecs
         @project.objects_by_uuid[@file_container.uuid].should == nil
         @project.objects_by_uuid[@target_container.uuid].should == nil
         @project.objects_by_uuid[@target_dependency.uuid].should == nil
+        @project.objects_by_uuid[@group.uuid].should == nil
+        @project.root_object.project_references.should.not.include @project_reference
         @target.dependencies.should.be.empty
       end
     end

@@ -262,18 +262,18 @@ module Xcodeproj
           end
         end
 
-        def project_reference
+        def project_reference_metadata
           project.root_object.project_references.find do |project_reference|
             project_reference['ProjectRef'] == self
           end
         end
 
         def remove_from_project
-          if reference = project_reference
+          if project_reference = project_reference_metadata
             file_reference_proxies.each(&:remove_from_project)
             target_dependency_proxies.each(&:remove_from_project)
-            reference['ProductGroup'].remove_from_project
-            project.root_object.project_references.delete(reference)
+            project_reference['ProductGroup'].remove_from_project
+            project.root_object.project_references.delete(project_reference)
           end
           super
         end

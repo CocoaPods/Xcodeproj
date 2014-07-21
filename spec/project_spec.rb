@@ -189,8 +189,6 @@ module ProjectSpecs
           "E5FBB3501635ED36009E96B0", # PBXReferenceProxy links to E5FBB34F1635ED36009E96B0
         ]
 
-        #p project.root_object.project_references
-
         subproject_file_reference = project.objects_by_uuid['E5FBB3451635ED35009E96B0']
         subproject_file_reference.remove_from_project
         project.save(@path)
