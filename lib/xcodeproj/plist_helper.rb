@@ -1,9 +1,19 @@
+begin
+  require 'libxml'
+rescue LoadError
+  Xcodeproj::UI.warn "Xcodeproj is using a fall back solution for parsing " \
+    "XML. To use a faster alternative install libxml:\n" \
+    "`$ gem install libxml-ruby`"
+end
 require 'cfpropertylist'
 
 module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
   module PlistHelper
+
+
+
     class << self
       # Serializes a hash as an XML property list file.
       #
@@ -84,7 +94,6 @@ module Xcodeproj
       def plutil_available?
         `which plutil`
         $?.exitstatus.zero?
-        false
       end
     end
   end
