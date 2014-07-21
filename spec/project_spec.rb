@@ -511,7 +511,7 @@ module ProjectSpecs
           sut.new_target(:application, 'Xcode', :ios)
           sut.recreate_user_schemes
           schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
-          schemes_dir.children.map { |f| f.basename.to_s }.should == ["Xcode.xcscheme", "xcschememanagement.plist"]
+          schemes_dir.children.map { |f| f.basename.to_s }.sort.should == ["Xcode.xcscheme", "xcschememanagement.plist"]
           manifest = schemes_dir + "xcschememanagement.plist"
           plist = Xcodeproj::PlistHelper.read_plist(manifest.to_s)
           plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == true

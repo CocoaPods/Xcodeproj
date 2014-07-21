@@ -41,7 +41,9 @@ module ProjectSpecs
       it "writes an XML plist file" do
         hash = { "archiveVersion" => '1.0' }
         Xcodeproj::PlistHelper.write_plist(hash, @plist)
-        @plist.read.should == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n  <dict>\n    <key>archiveVersion</key>\n    <string>1.0</string>\n  </dict>\n</plist>\n"
+        result = Xcodeproj::PlistHelper.read_plist(@plist)
+        result.should == hash
+        @plist.read.should.include("?xml")
       end
     end
 
