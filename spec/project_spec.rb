@@ -99,12 +99,13 @@ module ProjectSpecs
     describe "Initialization from a file" do
 
       before do
+        @dir = Pathname(fixture_path("Sample Project"))
         if Xcodeproj::PlistHelper.send(:plutil_available?)
-          @path = "Sample Project/Cocoa Application.xcodeproj"
+          @path = @dir + "Cocoa Application.xcodeproj"
         else
-          @path = "Sample Project/Cocoa Application.xml.xcodeproj"
+          @path = @dir + "Cocoa Application.xml.xcodeproj"
         end
-        @project = Xcodeproj::Project.open(fixture_path(@path))
+        @project = Xcodeproj::Project.open(@path)
       end
 
       it "sets itself as the owner of the root object" do
@@ -127,7 +128,7 @@ module ProjectSpecs
       # going to the object tree and serializing it back to a plist.
       #
       it "can regenerate the EXACT plist that initialized it" do
-        plist = Xcodeproj::PlistHelper.read(fixture_path("#{@path}/project.pbxproj"))
+        plist = Xcodeproj::PlistHelper.read(@path + "project.pbxproj")
         generated = @project.to_hash
         diff = Xcodeproj::Differ.diff(generated, plist)
         diff.should.be.nil
@@ -152,27 +153,30 @@ module ProjectSpecs
       extend SpecHelper::TemporaryDirectory
 
       before do
-        @path = temporary_directory + 'Project.xcodeproj'
-        @project = Xcodeproj::Project.new(@path)
+        @dir = Pathname(fixture_path("Sample Project"))
+        if Xcodeproj::PlistHelper.send(:plutil_available?)
+          @path = @dir + "Cocoa Application.xcodeproj"
+        else
+          @path = @dir + "Cocoa Application.xml.xcodeproj"
+        end
+        @project = Xcodeproj::Project.open(@path)
         @project.disable_xcproj = true
+        @tmp_path = temporary_directory + 'Pods.xcodeproj'
       end
 
       it "saves the project to the default path" do
-        @project.save
+        @project.save(@tmp_path)
         new_instance = Xcodeproj::Project.open(@path)
         new_instance.should == @project
       end
 
       it "saves the project to the given path" do
-        save_path = temporary_directory + 'Project_2.xcodeproj'
-        @project.save(save_path)
-        new_instance = Xcodeproj::Project.open(save_path)
+        @project.save(@tmp_path)
+        new_instance = Xcodeproj::Project.open(@tmp_path)
         new_instance.should == @project
       end
 
       it "can save a project after removing a subproject" do
-        project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
-
         # UUID's related to ReferencedProject.xcodeproj (subproject)
         # FIXME: these UUID's should all be deleted automatically when calling 
         #        remove_from_project on the subproject PBXFileReference
@@ -194,11 +198,11 @@ module ProjectSpecs
           "E5FBB3501635ED36009E96B0", # PBXReferenceProxy links to E5FBB34F1635ED36009E96B0
         ]
 
-        subproject_file_reference = project.objects_by_uuid['E5FBB3451635ED35009E96B0']
+        subproject_file_reference = @project.objects_by_uuid['E5FBB3451635ED35009E96B0']
         subproject_file_reference.remove_from_project
-        project.save(@path)
+        @project.save(@tmp_path)
 
-        new_instance = Xcodeproj::Project.open(@path)
+        new_instance = Xcodeproj::Project.open(@tmp_path)
         new_instance.objects.count.should > 0 # make sure we still have a valid project
         new_instance.root_object.project_references.should.be.empty # this contains the Products group of the external project
         removed_objects = new_instance.objects.select { |o| uuids_to_remove.include?(o.uuid) }
@@ -206,16 +210,9 @@ module ProjectSpecs
       end
 
       it "can open a project and save it without altering any information" do
-        if Xcodeproj::PlistHelper.send(:plutil_available?)
-          path = "Sample Project/Cocoa Application.xcodeproj"
-        else
-          path = "Sample Project/Cocoa Application.xml.xcodeproj"
-        end
-        project = Xcodeproj::Project.open(fixture_path(path))
-        plist = Xcodeproj::PlistHelper.read(fixture_path("#{path}/project.pbxproj"))
-
-        project.disable_xcproj = true
-        project.save(File.join(temporary_directory, 'Pods.xcodeproj'))
+        plist = Xcodeproj::PlistHelper.read(@path + "project.pbxproj")
+        @project.disable_xcproj = true
+        @project.save(@tmp_path)
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
         Xcodeproj::PlistHelper.read(project_file).should == plist
       end
@@ -225,8 +222,8 @@ module ProjectSpecs
         file_ref.name = 'わくわく'
         file_ref = @project.new_file('Cédric')
         file_ref.name = 'Cédric'
-        @project.save
-        contents = File.read(@path + 'project.pbxproj')
+        @project.save(@tmp_path)
+        contents = File.read(@tmp_path + "project.pbxproj")
         contents.should.not.include('わくわく')
         contents.should.include('&#12431;&#12367;&#12431;&#12367;')
         contents.should.not.include('Cédric')
@@ -235,14 +232,14 @@ module ProjectSpecs
 
       it "uses xcproj to convert the project to match Xcode output" do
         @project.disable_xcproj = false
-        Xcodeproj::Project::XCProjHelper.expects(:touch).with(@path)
-        @project.save
+        Xcodeproj::Project::XCProjHelper.expects(:touch).with(@tmp_path)
+        @project.save(@tmp_path)
       end
 
       it "skips the xcproj to convert the project to match Xcode output" do
         @project.disable_xcproj = true
         Xcodeproj::Project::XCProjHelper.expects(:touch).never
-        @project.save
+        @project.save(@tmp_path)
       end
     end
 
