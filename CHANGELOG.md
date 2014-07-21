@@ -87,7 +87,7 @@
 
 ###### Bug Fixes
 
-* [Extension] Fixed intermittent `Xcodeproj.write_plist` error.  
+* [Extension] Fixed intermittent `Xcodeproj::PlistHelper.write_plist` error.  
   [Eloy Durán](https://github.com/alloy)
 
 

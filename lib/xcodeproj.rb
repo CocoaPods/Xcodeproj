@@ -16,6 +16,7 @@ module Xcodeproj
   autoload :Constants,        'xcodeproj/constants'
   autoload :Differ,           'xcodeproj/differ'
   autoload :Helper,           'xcodeproj/helper'
+  autoload :PlistHelper,      'xcodeproj/plist_helper'
   autoload :Project,          'xcodeproj/project'
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'
@@ -24,29 +25,5 @@ module Xcodeproj
   def self.generate_uuid
     require 'securerandom'
     SecureRandom.hex(12).upcase
-  end
-
-  def self.write_plist(hash, path)
-    unless hash.is_a?(Hash)
-      if hash.respond_to?(:to_hash)
-        hash = hash.to_hash
-      else
-        raise TypeError, "The given #{hash}, must be a hash or respond to to_hash"
-      end
-    end
-    require 'cfpropertylist'
-    plist = CFPropertyList::List.new
-    plist.value = CFPropertyList.guess(hash, :convert_unknown_to_string => true)
-    plist.save(path, CFPropertyList::List::FORMAT_XML)
-    # puts plist.to_str(CFPropertyList::List::FORMAT_XML)
-  end
-
-  def self.read_plist(path)
-    raise ArgumentError unless File.exist?(path)
-    require 'cfpropertylist'
-    xml = `plutil -convert xml1 "#{path}" -o -`
-    plist = CFPropertyList::List.new
-    plist.load_xml_str(xml)
-    CFPropertyList.native_types(plist.value)
   end
 end
