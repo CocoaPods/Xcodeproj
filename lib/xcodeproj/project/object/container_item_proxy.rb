@@ -38,6 +38,7 @@ module Xcodeproj
         #         If this assumption is incorrect, there could be loss of
         #         information opening and saving an existing project.
         #
+        # TODO this is the external reference that 'contains' other proxy items
         attribute :container_portal, String
 
         # @return [String] the type of the proxy.

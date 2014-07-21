@@ -225,12 +225,98 @@ module Xcodeproj
           end
         end
 
+        #---------------------------------------------------------------------#
+
         # Checks whether the reference is a proxy.
         #
         # @return [Bool] always false for this ISA.
         #
         def proxy?
           false
+        end
+
+        # If this file reference represents an external Xcode project reference
+        # then this will return metadata about it which includes the reference
+        # to the 'Products' group that's created in this project (the project
+        # that includes the external project).
+        #
+        # @return [ObjectDictionary, nil] The external project metadata for
+        #         this file reference or `nil` if it's not an external project.
+        #
+        def project_reference_metadata
+          project.root_object.project_references.find do |project_reference|
+            project_reference['ProjectRef'] == self
+          end
+        end
+
+        # If this file reference represents an external Xcode project reference
+        # then this will return the objects that are 'containers' for items
+        # contained in the external Xcode project.
+        #
+        # @return [Array<PBXContainerItemProxy>] The containers for items in
+        #         the external Xcode project.
+        #
+        def proxy_containers
+          project.objects.select do |object|
+            object.isa == 'PBXContainerItemProxy' &&
+              object.container_portal == self.uuid
+          end
+        end
+
+        # If this file reference represents an external Xcode project reference
+        # then this will return proxies for file references contained in the
+        # external Xcode project.
+        #
+        # @return [Array<PBXReferenceProxy>] The file reference proxies for
+        #         items located in the external Xcode project.
+        #
+        def file_reference_proxies
+          containers = proxy_containers
+          if containers.empty?
+            []
+          else
+            project.objects.select do |object|
+              object.isa == 'PBXReferenceProxy' &&
+                containers.include?(object.remote_ref)
+            end
+          end
+        end
+
+        # If this file reference represents an external Xcode project reference
+        # then this will return dependencies on targets contained in the
+        # external Xcode project.
+        #
+        # @return [Array<PBXTargetDependency>] The dependencies on targets
+        #         located in the external Xcode project.
+        #
+        def target_dependency_proxies
+          containers = proxy_containers
+          if containers.empty?
+            []
+          else
+            project.objects.select do |object|
+              object.isa == 'PBXTargetDependency' &&
+                containers.include?(object.target_proxy)
+            end
+          end
+        end
+
+        # In addition to removing the file reference, this will also remove any
+        # items related to this reference in case it represents an external
+        # Xcode project.
+        #
+        # @see AbstractObject#remove_from_project
+        #
+        # @return [void]
+        #
+        def remove_from_project
+          if project_reference = project_reference_metadata
+            file_reference_proxies.each(&:remove_from_project)
+            target_dependency_proxies.each(&:remove_from_project)
+            project_reference['ProductGroup'].remove_from_project
+            project.root_object.project_references.delete(project_reference)
+          end
+          super
         end
 
         #---------------------------------------------------------------------#
