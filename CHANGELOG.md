@@ -23,8 +23,8 @@
 ###### Enhancements
 
 * [Workspace] Added support for file references.  
-  [Kyle Fuller][kylef]
-  [Fabio Pelosin][irrationalfab]
+  [Kyle Fuller](https://github.com/kylef)
+  [Fabio Pelosin](https://github.com/irrationalfab)
   [Xcodeproj#105](https://github.com/CocoaPods/Xcodeproj/pull/150)
 
 ## 0.16.1
@@ -409,6 +409,3 @@
 
 * The file type of the frameworks file references has be corrected.
 
-
-[irrationalfab]: https://github.com/irrationalfab
-[kylef]: (https://github.com/kylef)
