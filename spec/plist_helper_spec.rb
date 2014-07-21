@@ -13,8 +13,8 @@ module ProjectSpecs
       extend SpecHelper::TemporaryDirectory
 
       it "reads an XML plist file" do
-        dir = "Sample Project/Cocoa Application.xcodeproj/"
-        path = fixture_path(dir + 'project.xml.pbxproj')
+        dir = "Sample Project/Cocoa Application.xml.xcodeproj/"
+        path = fixture_path(dir + 'project.pbxproj')
         result = Xcodeproj::PlistHelper.read_plist(path)
         result.keys.should.include?("archiveVersion")
       end
@@ -35,7 +35,7 @@ module ProjectSpecs
 
         should.raise RuntimeError do
           Xcodeproj::PlistHelper.read_plist(path)
-        end.message.should.include?('Unable to convert plist to XML')
+        end.message.should.match /Unable to convert the .* plist file to XML/
       end
 
       it "writes an XML plist file" do

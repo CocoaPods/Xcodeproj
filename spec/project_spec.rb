@@ -99,7 +99,12 @@ module ProjectSpecs
     describe "Initialization from a file" do
 
       before do
-        @project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
+        if Xcodeproj::PlistHelper.send(:plutil_available?)
+          @path = "Sample Project/Cocoa Application.xcodeproj"
+        else
+          @path = "Sample Project/Cocoa Application.xml.xcodeproj"
+        end
+        @project = Xcodeproj::Project.open(fixture_path(@path))
       end
 
       it "sets itself as the owner of the root object" do
@@ -122,7 +127,7 @@ module ProjectSpecs
       # going to the object tree and serializing it back to a plist.
       #
       it "can regenerate the EXACT plist that initialized it" do
-        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
+        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("#{@path}/project.pbxproj"))
         generated = @project.to_hash
         diff = Xcodeproj::Differ.diff(generated, plist)
         diff.should.be.nil
@@ -201,11 +206,18 @@ module ProjectSpecs
       end
 
       it "can open a project and save it without altering any information" do
-        project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
-        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("Sample Project/Cocoa Application.xcodeproj/project.pbxproj"))
+        if Xcodeproj::PlistHelper.send(:plutil_available?)
+          path = "Sample Project/Cocoa Application.xcodeproj"
+        else
+          path = "Sample Project/Cocoa Application.xml.xcodeproj"
+        end
+        project = Xcodeproj::Project.open(fixture_path(path))
+        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("#{path}/project.pbxproj"))
+
+        project.disable_xcproj = true
         project.save(File.join(temporary_directory, 'Pods.xcodeproj'))
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
-        Xcodeproj::PlistHelper.read_plist(project_file.to_s).should == plist
+        Xcodeproj::PlistHelper.read_plist(project_file).should == plist
       end
 
       it "escapes non ASCII characters in the project" do

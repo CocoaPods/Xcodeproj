@@ -63,7 +63,7 @@ module Xcodeproj
         elsif plutil_available?
           plutil_contents(path)
         else
-          raise "Unable to convert plist to XML"
+          raise "Unable to convert the `#{path}` plist file to XML"
         end
       end
 
@@ -84,6 +84,7 @@ module Xcodeproj
       def plutil_available?
         `which plutil`
         $?.exitstatus.zero?
+        false
       end
     end
   end

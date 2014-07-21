@@ -480,7 +480,7 @@ module Xcodeproj
     #
     def reference_for_path(absolute_path)
       absolute_pathname = Pathname.new(absolute_path)
-      
+
       unless absolute_pathname.absolute?
         raise ArgumentError, "Paths must be absolute #{absolute_path}"
       end
