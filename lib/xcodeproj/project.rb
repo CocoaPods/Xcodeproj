@@ -169,7 +169,7 @@ module Xcodeproj
     #
     def initialize_from_file
       pbxproj_path = path + 'project.pbxproj'
-      plist = Xcodeproj::PlistHelper.read_plist(pbxproj_path.to_s)
+      plist = Xcodeproj::PlistHelper.read(pbxproj_path.to_s)
       root_object_uuid = plist['rootObject']
       root_object.remove_referrer(self) if root_object
       @root_object = new_from_plist(root_object_uuid, plist['objects'], self)
@@ -300,7 +300,7 @@ module Xcodeproj
       save_path ||= path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
-      Xcodeproj::PlistHelper.write_plist(to_hash, file)
+      Xcodeproj::PlistHelper.write(to_hash, file)
       fix_encoding(file)
       XCProjHelper.touch(save_path) unless disable_xcproj
     end
@@ -702,7 +702,7 @@ module Xcodeproj
       end
 
       xcschememanagement_path = schemes_dir + 'xcschememanagement.plist'
-      Xcodeproj::PlistHelper.write_plist(xcschememanagement, xcschememanagement_path)
+      Xcodeproj::PlistHelper.write(xcschememanagement, xcschememanagement_path)
     end
 
     #-------------------------------------------------------------------------#

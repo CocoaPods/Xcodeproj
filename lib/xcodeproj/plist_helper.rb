@@ -11,9 +11,6 @@ module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
   module PlistHelper
-
-
-
     class << self
       # Serializes a hash as an XML property list file.
       #
@@ -23,7 +20,7 @@ module Xcodeproj
       # @param  [#to_s] path
       #         The path of the file.
       #
-      def write_plist(hash, path)
+      def write(hash, path)
         unless hash.is_a?(Hash)
           if hash.respond_to?(:to_hash)
             hash = hash.to_hash
@@ -44,7 +41,7 @@ module Xcodeproj
       # @param  [#to_s] path
       #         The path of the file.
       #
-      def read_plist(path)
+      def read(path)
         unless File.exist?(path)
           raise ArgumentError, "The file `#{path}` doesn't exists"
         end

@@ -127,7 +127,7 @@ module ProjectSpecs
       # going to the object tree and serializing it back to a plist.
       #
       it "can regenerate the EXACT plist that initialized it" do
-        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("#{@path}/project.pbxproj"))
+        plist = Xcodeproj::PlistHelper.read(fixture_path("#{@path}/project.pbxproj"))
         generated = @project.to_hash
         diff = Xcodeproj::Differ.diff(generated, plist)
         diff.should.be.nil
@@ -212,12 +212,12 @@ module ProjectSpecs
           path = "Sample Project/Cocoa Application.xml.xcodeproj"
         end
         project = Xcodeproj::Project.open(fixture_path(path))
-        plist = Xcodeproj::PlistHelper.read_plist(fixture_path("#{path}/project.pbxproj"))
+        plist = Xcodeproj::PlistHelper.read(fixture_path("#{path}/project.pbxproj"))
 
         project.disable_xcproj = true
         project.save(File.join(temporary_directory, 'Pods.xcodeproj'))
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
-        Xcodeproj::PlistHelper.read_plist(project_file).should == plist
+        Xcodeproj::PlistHelper.read(project_file).should == plist
       end
 
       it "escapes non ASCII characters in the project" do
@@ -513,7 +513,7 @@ module ProjectSpecs
           schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
           schemes_dir.children.map { |f| f.basename.to_s }.sort.should == ["Xcode.xcscheme", "xcschememanagement.plist"]
           manifest = schemes_dir + "xcschememanagement.plist"
-          plist = Xcodeproj::PlistHelper.read_plist(manifest.to_s)
+          plist = Xcodeproj::PlistHelper.read(manifest.to_s)
           plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == true
         end
 
@@ -522,7 +522,7 @@ module ProjectSpecs
           sut.new_target(:application, 'Xcode', :ios)
           sut.recreate_user_schemes(false)
           manifest = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes/xcschememanagement.plist"
-          plist = Xcodeproj::PlistHelper.read_plist(manifest.to_s)
+          plist = Xcodeproj::PlistHelper.read(manifest.to_s)
           plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == false
         end
       end
