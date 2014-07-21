@@ -34,7 +34,7 @@ module Xcodeproj
         raise TypeError, "The given #{hash}, must be a hash or respond to to_hash"
       end
     end
-    require 'CFPropertyList'
+    require 'cfpropertylist'
     plist = CFPropertyList::List.new
     plist.value = CFPropertyList.guess(hash, :convert_unknown_to_string => true)
     plist.save(path, CFPropertyList::List::FORMAT_XML)
@@ -43,7 +43,7 @@ module Xcodeproj
 
   def self.read_plist(path)
     raise ArgumentError unless File.exist?(path)
-    require 'CFPropertyList'
+    require 'cfpropertylist'
     xml = `plutil -convert xml1 "#{path}" -o -`
     plist = CFPropertyList::List.new
     plist.load_xml_str(xml)
