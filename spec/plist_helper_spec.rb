@@ -2,7 +2,7 @@
 
 require File.expand_path('../spec_helper', __FILE__)
 
-describe "Xcodeproj C ext" do
+describe Xcodeproj::PlistHelper do
   extend SpecHelper::TemporaryDirectory
 
   before do
@@ -15,17 +15,15 @@ describe "Xcodeproj C ext" do
     Xcodeproj::PlistHelper.read_plist(@plist).should == {}
   end
 
-  if RUBY_VERSION >= '1.9' && !(defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx')
-    it "raises when the given path can't be coerced into a string path" do
-      lambda { Xcodeproj::PlistHelper.write_plist({}, Object.new) }.should.raise TypeError
-    end
+  it "raises when the given path can't be coerced into a string path" do
+    lambda { Xcodeproj::PlistHelper.write_plist({}, Object.new) }.should.raise TypeError
   end
 
   it "raises if the given path doesn't exist" do
     lambda { Xcodeproj::PlistHelper.read_plist('doesnotexist') }.should.raise ArgumentError
   end
 
-  it "coherces the given hash to a Hash" do
+  it "coerces the given hash to a Hash" do
     o = Object.new
     def o.to_hash; { 'from' => 'object' }; end
     Xcodeproj::PlistHelper.write_plist(o, @plist)
