@@ -51,54 +51,9 @@ describe Xcodeproj::PlistHelper do
     Xcodeproj::PlistHelper.read_plist(@plist).should == hash
   end
 
-  xit "coerces values to strings if it is a disallowed type" do
-    Xcodeproj::PlistHelper.write_plist({ '1' => 1, 'symbol' => :symbol }, @plist)
-    Xcodeproj::PlistHelper.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
-  end
-
   it "handles unicode characters in paths and strings" do
     plist = @plist.to_s + 'øµ'
     Xcodeproj::PlistHelper.write_plist({ 'café' => 'før yoµ' }, plist)
     Xcodeproj::PlistHelper.read_plist(plist).should == { 'café' => 'før yoµ' }
-  end
-
-  xit "raises if a plist contains any other object type as value than string, dictionary, and array" do
-    @plist.open('w') do |f|
-      f.write <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>uhoh</key>
-  <integer>42</integer>
-</dict>
-</plist>
-EOS
-    end
-    lambda { Xcodeproj::PlistHelper.read_plist(@plist) }.should.raise TypeError
-  end
-
-  xit "raises if a plist array value contains any other object type than string, or dictionary" do
-    @plist.open('w') do |f|
-      f.write <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>uhoh</key>
-  <array>
-    <integer>42</integer>
-  </array>
-</dict>
-</plist>
-EOS
-    end
-    lambda { Xcodeproj::PlistHelper.read_plist(@plist) }.should.raise TypeError
-  end
-
-  xit "it raises if for whatever reason the value could not be converted to a CFTypeRef" do
-    lambda do
-      Xcodeproj::PlistHelper.write_plist({ "invalid" => "\xCA" }, @plist)
-    end.should.raise TypeError
   end
 end
