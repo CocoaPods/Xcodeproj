@@ -1,7 +1,6 @@
 # encoding: UTF-8
 
 require File.expand_path('../spec_helper', __FILE__)
-require 'xcodeproj/xcodeproj_ext'
 
 describe "Xcodeproj C ext" do
   extend SpecHelper::TemporaryDirectory
@@ -26,7 +25,7 @@ describe "Xcodeproj C ext" do
     lambda { Xcodeproj.read_plist('doesnotexist') }.should.raise ArgumentError
   end
 
-  it "coerces the given hash to a Hash" do
+  it "coherces the given hash to a Hash" do
     o = Object.new
     def o.to_hash; { 'from' => 'object' }; end
     Xcodeproj.write_plist(o, @plist)
@@ -54,7 +53,7 @@ describe "Xcodeproj C ext" do
     Xcodeproj.read_plist(@plist).should == hash
   end
 
-  it "coerces values to strings if it is a disallowed type" do
+  xit "coerces values to strings if it is a disallowed type" do
     Xcodeproj.write_plist({ '1' => 1, 'symbol' => :symbol }, @plist)
     Xcodeproj.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
   end
@@ -65,7 +64,7 @@ describe "Xcodeproj C ext" do
     Xcodeproj.read_plist(plist).should == { 'café' => 'før yoµ' }
   end
 
-  it "raises if a plist contains any other object type as value than string, dictionary, and array" do
+  xit "raises if a plist contains any other object type as value than string, dictionary, and array" do
     @plist.open('w') do |f|
       f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -81,7 +80,7 @@ EOS
     lambda { Xcodeproj.read_plist(@plist) }.should.raise TypeError
   end
 
-  it "raises if a plist array value contains any other object type than string, or dictionary" do
+  xit "raises if a plist array value contains any other object type than string, or dictionary" do
     @plist.open('w') do |f|
       f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -99,7 +98,7 @@ EOS
     lambda { Xcodeproj.read_plist(@plist) }.should.raise TypeError
   end
 
-  it "it raises if for whatever reason the value could not be converted to a CFTypeRef" do
+  xit "it raises if for whatever reason the value could not be converted to a CFTypeRef" do
     lambda do
       Xcodeproj.write_plist({ "invalid" => "\xCA" }, @plist)
     end.should.raise TypeError

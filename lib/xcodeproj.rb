@@ -20,11 +20,33 @@ module Xcodeproj
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
-end
 
-# TODO It appears that loading the C ext from xcodeproj/project while it's
-# being autoloaded doesn't actually define the singleton methods. Ruby bug?
-#
-# This leads to `NoMethodError: undefined method write_plist for Xcodeproj:Module`
-# working around it by always loading the ext ASAP.
-require 'xcodeproj/ext'
+  def self.generate_uuid
+    require 'SecureRandom'
+    SecureRandom.hex(12).upcase
+  end
+
+  def self.write_plist(hash, path)
+    unless hash.is_a?(Hash)
+      if hash.respond_to?(:to_hash)
+        hash = hash.to_hash
+      else
+        raise TypeError, "The given #{hash}, must be a hash or respond to to_hash"
+      end
+    end
+    require 'CFPropertyList'
+    plist = CFPropertyList::List.new
+    plist.value = CFPropertyList.guess(hash, :convert_unknown_to_string => true)
+    plist.save(path, CFPropertyList::List::FORMAT_XML)
+    # puts plist.to_str(CFPropertyList::List::FORMAT_XML)
+  end
+
+  def self.read_plist(path)
+    raise ArgumentError unless File.exist?(path)
+    require 'CFPropertyList'
+    xml = `plutil -convert xml1 "#{path}" -o -`
+    plist = CFPropertyList::List.new
+    plist.load_xml_str(xml)
+    CFPropertyList.native_types(plist.value)
+  end
+end

@@ -2,12 +2,14 @@ PATH
   remote: .
   specs:
     xcodeproj (0.17.0)
+      CFPropertyList (~> 2.2.8)
       activesupport (~> 3.0)
       colored (~> 1.2)
 
 GEM
   remote: http://rubygems.org/
   specs:
+    CFPropertyList (2.2.8)
     activesupport (3.2.19)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
