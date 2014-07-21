@@ -52,10 +52,12 @@ module Xcodeproj
       #         The path of the file.
       #
       def plist_xml_contents(path)
-        if plutil_available?
+        if File.read(path).include?('?xml')
+          File.read(path)
+        elsif plutil_available?
           `plutil -convert xml1 "#{path}" -o -`
         else
-          File.read(path)
+          raise "Unable to convert plist to XML"
         end
       end
 
