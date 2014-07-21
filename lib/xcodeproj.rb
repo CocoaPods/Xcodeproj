@@ -21,9 +21,4 @@ module Xcodeproj
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
-
-  def self.generate_uuid
-    require 'securerandom'
-    SecureRandom.hex(12).upcase
-  end
 end

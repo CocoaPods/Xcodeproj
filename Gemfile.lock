@@ -14,7 +14,10 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     bacon (1.2.0)
+    codeclimate-test-reporter (0.3.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     colored (1.2)
+    docile (1.1.5)
     ffi (1.9.3)
     i18n (0.6.11)
     kicker (3.0.0)
@@ -40,16 +43,23 @@ GEM
       ffi (>= 0.5.0)
     rb-kqueue (0.2.3)
       ffi (>= 0.5.0)
+    simplecov (0.9.0)
+      docile (~> 1.1.0)
+      multi_json
+      simplecov-html (~> 0.8.0)
+    simplecov-html (0.8.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bacon
+  codeclimate-test-reporter
   kicker
   libxml-ruby
   mocha
   mocha-on-bacon
   prettybacon
   rake (~> 10.1.0)
+  simplecov
   xcodeproj!

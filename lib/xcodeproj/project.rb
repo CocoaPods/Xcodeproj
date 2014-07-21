@@ -404,7 +404,7 @@ module Xcodeproj
     # @return [void]
     #
     def generate_available_uuid_list(count = 100)
-      new_uuids = (0..count).map { Xcodeproj.generate_uuid }
+      new_uuids = (0..count).map { SecureRandom.hex(12).upcase }
       uniques = (new_uuids - (@generated_uuids + uuids))
       @generated_uuids += uniques
       @available_uuids += uniques
