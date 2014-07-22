@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'pathname'
+require 'securerandom'
 
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
