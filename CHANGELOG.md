@@ -4,6 +4,13 @@
 
 ###### Enhancements
 
+* [PlistHelper] The xcode native extension has been removed and it has been
+  removed in favour of the usage of the `plutil` tool to read ASCII property
+  list files.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Xcodeproj#168](https://github.com/CocoaPods/Xcodeproj/pull/168)
+  [Xcodeproj#167](https://github.com/CocoaPods/Xcodeproj/issues/167)
+
 * [PBXFileReference] If a file reference represents an external Xcode project
   and is removed from the project then all items related to the external
   project will also be removed.
@@ -87,7 +94,7 @@
 
 ###### Bug Fixes
 
-* [Extension] Fixed intermittent `Xcodeproj.write_plist` error.  
+* [Extension] Fixed intermittent `Xcodeproj::PlistHelper.write_plist` error.  
   [Eloy Durán](https://github.com/alloy)
 
 

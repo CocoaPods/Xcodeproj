@@ -3,8 +3,7 @@ module Xcodeproj
     module XCProjHelper
       class << self
 
-        # @return [Bool] Whether the xcproj tool is available in the path of
-        #         the user.
+        # @return [Bool] Whether the xcproj tool is available.
         #
         def available?
           `which xcproj`

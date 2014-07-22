@@ -16,15 +16,19 @@ module Xcodeproj
   autoload :Constants,        'xcodeproj/constants'
   autoload :Differ,           'xcodeproj/differ'
   autoload :Helper,           'xcodeproj/helper'
+  autoload :PlistHelper,      'xcodeproj/plist_helper'
   autoload :Project,          'xcodeproj/project'
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
-end
 
-# TODO It appears that loading the C ext from xcodeproj/project while it's
-# being autoloaded doesn't actually define the singleton methods. Ruby bug?
-#
-# This leads to `NoMethodError: undefined method write_plist for Xcodeproj:Module`
-# working around it by always loading the ext ASAP.
-require 'xcodeproj/ext'
+
+  # TODO: Delete me (compatibility with CocoaPods 0.33.1)
+  def self.read_plist(path)
+    PlistHelper.read(path)
+  end
+
+  def self.write_plist(hash, path)
+    PlistHelper.write(hash, path)
+  end
+end

@@ -26,7 +26,7 @@ begin
   #-----------------------------------------------------------------------------#
 
   desc "Build the gem for distribution"
-  task :release_build => ['ext:clean', 'ext:precompile', :build]
+  task :release_build => :build
 
   desc "Runs the tasks necessary for the release of the gem"
   task :pre_release do
@@ -38,45 +38,6 @@ begin
 
   # Always prebuilt for gems!
   Rake::Task[:build].enhance [:pre_release]
-
-  # Ext Namespace
-  #-----------------------------------------------------------------------------#
-
-  namespace :ext do
-    desc "Clean the ext files"
-    task :clean do
-      title "Cleaning extension"
-      sh "cd ext/xcodeproj && rm -f Makefile *.o *.bundle prebuilt/**/*.o prebuilt/**/*.bundle"
-    end
-
-    desc "Build the ext"
-    task :build do
-      title "Building the extension"
-      Dir.chdir 'ext/xcodeproj' do
-        if on_rvm?
-          sh "CFLAGS='-I#{rvm_ruby_dir}/include' ruby extconf.rb"
-        else
-          sh "ruby extconf.rb"
-        end
-        sh "make"
-      end
-    end
-
-    desc "Pre-compile the ext for default Ruby on 10.8 and 10.9"
-    task :precompile do
-      title "Pre-compiling the extension"
-      versions = Dir.glob(File.expand_path('../ext/xcodeproj/prebuilt/*darwin*', __FILE__)).sort
-      versions.each do |version|
-        Dir.chdir version do
-          subtitle "#{File.basename(version)}"
-          sh "make"
-        end
-      end
-    end
-
-    desc "Clean and build the ext"
-    task :cleanbuild => [:clean, :build]
-  end
 
   # Travis support
   def on_rvm?
@@ -93,8 +54,6 @@ begin
     desc "Run all specs"
     task :all do
       puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
-      Rake::Task["ext:cleanbuild"].invoke
-
       title "Running the specs"
       ENV['GENERATE_COVERAGE'] = 'true'
       sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"

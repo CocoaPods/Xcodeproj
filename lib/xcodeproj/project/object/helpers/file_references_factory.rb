@@ -139,7 +139,7 @@ module Xcodeproj
                   last_child_ref = child_ref
                 elsif File.basename(child_path) == '.xccurrentversion'
                   full_path = path + File.basename(child_path)
-                  xccurrentversion = Xcodeproj.read_plist(full_path)
+                  xccurrentversion = Xcodeproj::PlistHelper.read(full_path)
                   current_version_name = xccurrentversion['_XCCurrentVersionName']
                 end
               end

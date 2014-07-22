@@ -24,6 +24,9 @@ module Xcodeproj
     #--------------------------------------------------------------------------------#
 
     describe "In general" do
+      before do
+        @helper.stubs(:xcodebuild_available?).returns(true)
+      end
 
       it "returns the last iOS SDK" do
         @helper.last_ios_sdk.should == '6.1'
