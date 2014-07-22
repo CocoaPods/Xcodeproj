@@ -110,7 +110,7 @@ module Xcodeproj
       #
       def to_hash
         result = {}
-        each { |key, obj| result[key] = obj.uuid if obj }
+        each { |key, obj| result[key] = obj.uuid }
         result
       end
 
