@@ -89,8 +89,7 @@ module Xcodeproj
       # @return [Bool] Whether the `plutil` tool is available.
       #
       def plutil_available?
-        `which plutil`
-        $?.exitstatus.zero?
+        system('which plutil > /dev/null 2>&1')
       end
     end
   end
