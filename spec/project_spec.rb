@@ -169,9 +169,6 @@ module ProjectSpecs
         project = Xcodeproj::Project.open(fixture_path("Sample Project/Cocoa Application.xcodeproj"))
 
         # UUID's related to ReferencedProject.xcodeproj (subproject)
-        # FIXME: these UUID's should all be deleted automatically when calling 
-        #        remove_from_project on the subproject PBXFileReference
-        #        See https://github.com/CocoaPods/Xcodeproj/issues/158
         uuids_to_remove = [
           "E5FBB3451635ED35009E96B0", # The Xcode subproject file reference that should trigger the removal.
 
