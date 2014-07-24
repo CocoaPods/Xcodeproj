@@ -31,6 +31,22 @@ describe Xcodeproj::Workspace do
         node.attributes["location"]
       end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj']
     end
+
+    it "formats the XML consistently with Xcode" do
+      expected = <<-DOC
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App.xcodeproj">
+   </FileRef>
+</Workspace>
+      DOC
+      @workspace.to_s.should == expected
+    end
   end
 
   describe "built from a workspace file" do

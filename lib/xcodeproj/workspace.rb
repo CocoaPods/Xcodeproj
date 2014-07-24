@@ -88,18 +88,11 @@ module Xcodeproj
       @file_references.include?(file_reference)
     end
 
-    # The template to generate a workspace XML representation.
-    #
-    TEMPLATE = %q[<?xml version="1.0" encoding="UTF-8"?><Workspace version="1.0"></Workspace>]
-
     # @return [String] the XML representation of the workspace.
     #
     def to_s
-      REXML::Document.new(TEMPLATE).tap do |document|
-        @file_references.each do |file_reference|
-          document.root << file_reference.to_node
-        end
-      end.to_s
+      contents = file_references.map { |reference| file_reference_xml(reference) }
+      root_xml(contents.join(""))
     end
 
     # Saves the workspace at the given `xcworkspace` path.
@@ -132,9 +125,9 @@ module Xcodeproj
       end
     end
 
+    private
     #-------------------------------------------------------------------------#
 
-    private
     # Load all schemes from project
     #
     # @param [String] project_full_path
@@ -147,6 +140,32 @@ module Xcodeproj
       schemes.each do |scheme_name|
         @schemes[scheme_name] = project_full_path
       end
+    end
+
+    # @return [String] The template of the workspace XML as formated by Xcode.
+    #
+    # @param  [String] contents The XML contents of the workspace.
+    #
+    def root_xml(contents)
+      <<-DOC
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   #{contents.strip}
+</Workspace>
+      DOC
+    end
+
+    # @return [String] The XML representation of a file reference.
+    #
+    # @param  [FileReference] file_reference The file reference.
+    #
+    def file_reference_xml(file_reference)
+      <<-DOC
+   <FileRef
+      location = "#{file_reference.type}:#{file_reference.path}">
+   </FileRef>
+      DOC
     end
 
     #-------------------------------------------------------------------------#
