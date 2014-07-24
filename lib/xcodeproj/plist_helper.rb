@@ -33,6 +33,7 @@ module Xcodeproj
         options = { :convert_unknown_to_string => true }
         plist.value = CFPropertyList.guess(hash, options)
         plist.save(path, CFPropertyList::List::FORMAT_XML)
+        plutil_touch(path)
       end
 
       # @return [String] Returns the native objects loaded from a property list
@@ -84,6 +85,23 @@ module Xcodeproj
       #
       def plutil_contents(path)
         `plutil -convert xml1 "#{path}" -o -`
+      end
+
+      # Touches an XML property list file with the `plutil` tool so the XML is
+      # consistent with Apple preferences. This reduces inconsistencies in the
+      # output of Xcodeproj (CFPropertyList has various XML strategies) and
+      # reduces SCM noise with the files touched with Xcode.
+      #
+      # @param  [#to_s] path
+      #         The path of the file.
+      #
+      # @note   This method was extracted to simplify testing.
+      #
+      def plutil_touch(path)
+        start = Time.now
+        if plutil_available?
+          `plutil -convert xml1 "#{path}"`
+        end
       end
 
       # @return [Bool] Whether the `plutil` tool is available.

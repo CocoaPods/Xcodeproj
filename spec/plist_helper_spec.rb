@@ -19,15 +19,6 @@ module ProjectSpecs
         result.keys.should.include?("archiveVersion")
       end
 
-      if Xcodeproj::PlistHelper.send(:plutil_available?)
-        it "reads an ASCII plist file" do
-          dir = "Sample Project/Cocoa Application.xcodeproj/"
-          path = fixture_path(dir + 'project.pbxproj')
-          result = Xcodeproj::PlistHelper.read(path)
-          result.keys.should.include?("archiveVersion")
-        end
-      end
-
       it "raises if unable to convert an ASCII plist file" do
         dir = "Sample Project/Cocoa Application.xcodeproj/"
         path = fixture_path(dir + 'project.pbxproj')
@@ -44,6 +35,22 @@ module ProjectSpecs
         result = Xcodeproj::PlistHelper.read(@plist)
         result.should == hash
         @plist.read.should.include("?xml")
+      end
+
+
+      if Xcodeproj::PlistHelper.send(:plutil_available?)
+        it "reads an ASCII plist file" do
+          dir = "Sample Project/Cocoa Application.xcodeproj/"
+          path = fixture_path(dir + 'project.pbxproj')
+          result = Xcodeproj::PlistHelper.read(path)
+          result.keys.should.include?("archiveVersion")
+        end
+
+        it "touches a file with the `plutil` after writing it" do
+          Xcodeproj::PlistHelper.expects(:plutil_touch)
+          hash = { "archiveVersion" => '1.0' }
+          Xcodeproj::PlistHelper.write(hash, @plist)
+        end
       end
     end
 
@@ -98,6 +105,32 @@ module ProjectSpecs
         plist = @plist.to_s + 'øµ'
         Xcodeproj::PlistHelper.write({ 'café' => 'før yoµ' }, plist)
         Xcodeproj::PlistHelper.read(plist).should == { 'café' => 'før yoµ' }
+      end
+
+      if Xcodeproj::PlistHelper.send(:plutil_available?)
+        it "touches a file with the `plutil` to normalize its XML serialization" do
+          input = <<-PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict><key>archiveVersion</key>
+	<string>1.0</string>
+</dict></plist>
+          PLIST
+
+          output = <<-PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1.0</string>
+</dict>
+</plist>
+          PLIST
+          File.open(@plist, 'w') { |file| file.write(input) }
+          Xcodeproj::PlistHelper.send(:plutil_touch, @plist)
+          @plist.read.should == output
+        end
       end
     end
   end
