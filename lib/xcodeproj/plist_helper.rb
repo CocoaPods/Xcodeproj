@@ -98,7 +98,6 @@ module Xcodeproj
       # @note   This method was extracted to simplify testing.
       #
       def plutil_touch(path)
-        start = Time.now
         if plutil_available?
           `plutil -convert xml1 "#{path}"`
         end
