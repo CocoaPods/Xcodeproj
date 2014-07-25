@@ -96,7 +96,7 @@ module Xcodeproj
       # @note   This method was extracted to simplify testing.
       #
       def plutil_contents(path)
-        `plutil -convert xml1 "#{path}" -o -`
+        `#{plutil_bin} -convert xml1 "#{path}" -o -`
       end
 
       # Saves a property to an XML file via the plutil tool.
@@ -108,17 +108,27 @@ module Xcodeproj
       #         The path of the file.
       #
       def plutil_save(contents, path)
-        Open3.popen3("plutil -convert xml1 -o '#{path}' -") do |stdin, stdout, stderr|
+        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, stdout, stderr|
           stdin.puts(contents)
           stdin.close
         end
-        `plutil -convert xml1 "#{path}" -o -`
       end
 
       # @return [Bool] Whether the `plutil` tool is available.
       #
       def plutil_available?
-        system('which plutil > /dev/null 2>&1')
+        !plutil_bin.nil?
+      end
+
+      # @return [String] The path of the `plutil` tool.
+      # @return [Nil] In case the plutil is not found.
+      #
+      def plutil_bin
+        unless @bin
+          bin = `which plutil`.strip
+          @bin = bin if $?.success?
+        end
+        @bin
       end
     end
   end
