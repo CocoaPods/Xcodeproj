@@ -1,5 +1,11 @@
 # Xcodeproj Changelog
 
+## Master
+
+* [PlistHelper] Now the `plutil` tool is used to save the files if available to
+  produce output consistent with Xcode.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
 ## 0.18.0
 
 ###### Enhancements
