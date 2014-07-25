@@ -1,3 +1,6 @@
+require 'cfpropertylist'
+require 'open3'
+
 begin
   require 'libxml'
 rescue LoadError
@@ -5,7 +8,6 @@ rescue LoadError
     "XML. To use a faster alternative install libxml:\n" \
     "`$ gem install libxml-ruby`"
 end
-require 'cfpropertylist'
 
 module Xcodeproj
   # Provides support for loading and serializing property list files.
@@ -29,11 +31,21 @@ module Xcodeproj
               "respond to to_hash"
           end
         end
+
+        unless path.is_a?(String) || path.is_a?(Pathname)
+            raise TypeError, "The given `#{path}`, must be a string or " \
+              "pathname"
+        end
         plist = CFPropertyList::List.new
         options = { :convert_unknown_to_string => true }
         plist.value = CFPropertyList.guess(hash, options)
-        plist.save(path, CFPropertyList::List::FORMAT_XML)
-        plutil_touch(path)
+
+        if plutil_available?
+          contents = plist.to_str(CFPropertyList::List::FORMAT_XML)
+          plutil_save(contents, path)
+        else
+          plist.save(path, CFPropertyList::List::FORMAT_XML)
+        end
       end
 
       # @return [String] Returns the native objects loaded from a property list
@@ -87,20 +99,20 @@ module Xcodeproj
         `plutil -convert xml1 "#{path}" -o -`
       end
 
-      # Touches an XML property list file with the `plutil` tool so the XML is
-      # consistent with Apple preferences. This reduces inconsistencies in the
-      # output of Xcodeproj (CFPropertyList has various XML strategies) and
-      # reduces SCM noise with the files touched with Xcode.
+      # Saves a property to an XML file via the plutil tool.
+      #
+      # @param  [#to_s] contents.
+      #         The contents of the property list.
       #
       # @param  [#to_s] path
       #         The path of the file.
       #
-      # @note   This method was extracted to simplify testing.
-      #
-      def plutil_touch(path)
-        if plutil_available?
-          `plutil -convert xml1 "#{path}"`
+      def plutil_save(contents, path)
+        Open3.popen3("plutil -convert xml1 -o '#{path}' -") do |stdin, stdout, stderr|
+          stdin.puts(contents)
+          stdin.close
         end
+        `plutil -convert xml1 "#{path}" -o -`
       end
 
       # @return [Bool] Whether the `plutil` tool is available.
