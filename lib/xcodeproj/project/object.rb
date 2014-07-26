@@ -100,7 +100,10 @@ module Xcodeproj
         #
         def remove_from_project
           project.objects_by_uuid.delete(uuid)
-          referrers.each { |referrer| referrer.remove_reference(self) }
+
+          referrers.dup.each { |referrer|
+            referrer.remove_reference(self)
+          }
 
           to_one_attributes.each do |attrb|
             object = attrb.get_value(self)
@@ -112,7 +115,10 @@ module Xcodeproj
             list.clear
           end
 
-          raise "[Xcodeproj] BUG: #{self} should have no referrers instead the following objects are still referencing it #{referrers}" unless referrers.count == 0
+          unless referrers.count == 0
+            raise "[Xcodeproj] BUG: #{self} should have no referrers instead" \
+              "the following objects are still referencing it #{referrers}"
+          end
         end
 
         # Returns the value of the name attribute or returns a generic name for
