@@ -58,5 +58,38 @@ module ProjectSpecs
       lambda { attrb.validate_value(file) }.should.not.raise
       lambda { attrb.validate_value(target) }.should.raise
     end
+
+
+    describe "references by keys attributes" do
+      before do
+        @attribute = AbstractObjectAttribute.new(:references_by_keys, :project_references, PBXProject)
+        @attribute.classes = [PBXFileReference, PBXGroup]
+        @attribute.classes_by_key = {
+          :project_ref   => PBXFileReference,
+          :product_group => PBXGroup
+        }
+      end
+
+      it "validates the key of an attribute which stores" do
+        file = @project.new(PBXFileReference)
+        should.raise do
+          @attribute.validate_value_for_key(file, :not_allowed)
+        end.message.should.include?('unsupported key')
+      end
+
+      it "validates the ISA of the value" do
+        file = @project.new(PBXFileReference)
+        should.raise do
+          @attribute.validate_value_for_key(file, :product_group)
+        end.message.should.include?('Type checking error')
+      end
+
+      it "accepts a value" do
+        file = @project.new(PBXFileReference)
+        should.not.raise do
+          @attribute.validate_value_for_key(file, :project_ref)
+        end
+      end
+    end
   end
 end

@@ -64,6 +64,11 @@ module Xcodeproj
         #
         attr_accessor :classes
 
+        # @return [{Symbol, Array<Class>}] the list of the classes accepted by
+        #   each key for attributes which store a dictionary.
+        #
+        attr_accessor :classes_by_key
+
         # @return [String, Array, Hash] the default value, if any, for simple
         #   attributes.
         #
@@ -143,6 +148,34 @@ module Xcodeproj
           end
         end
 
+        # Checks that a given value is compatible with a key for attributes
+        # which store references by key.
+        #
+        # This method is used by the #{ObjectDictionary} class.
+        #
+        # @raise If the class of the value is not compatible with the given
+        #  key.
+        #
+        def validate_value_for_key(object, key)
+          unless type == :references_by_keys
+            raise "[Xcodeproj] This method should be called only for " \
+              "attributes of type `references_by_keys`"
+          end
+
+          unless classes_by_key.keys.include?(key)
+            raise "[Xcodeproj] unsupported key `#{key}` " \
+              "(accepted `#{classes_by_key.keys}`) for attribute `#{inspect}`"
+          end
+
+          return unless object
+          classes = Array(classes_by_key[key])
+          acceptable = classes.find { |klass| object.class == klass || object.class < klass }
+          unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.isa}` " \
+              "for key `#{key}` (which accepts `#{classes}`) of " \
+              "attribute: `#{inspect}`"
+          end
+        end
 
         # @return [String] A string suitable for debugging the object.
         #
@@ -376,16 +409,17 @@ module Xcodeproj
           # @param [String] plural_name
           #   the name of the relationship.
           #
-          # @param [Class, Array<Class>] isas_hash
+          # @param [{Symbol, Array<Class>}] classes_by_key
           #   the list of the classes corresponding to the accepted isas for
           #   this relationship.
           #
           # @macro [attach] has_many
           #   @!attribute [r] $1
           #
-          def has_many_references_by_keys(plural_name, isas_hash)
+          def has_many_references_by_keys(plural_name, classes_by_key)
             attrb = AbstractObjectAttribute.new(:references_by_keys, plural_name, self)
-            attrb.classes = isas_hash.values
+            attrb.classes = classes_by_key.values
+            attrb.classes_by_key = classes_by_key
             add_attribute(attrb)
 
             define_method(attrb.name) do
