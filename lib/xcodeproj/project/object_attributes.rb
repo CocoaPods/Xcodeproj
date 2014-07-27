@@ -110,7 +110,9 @@ module Xcodeproj
         # @return [void]
         #
         def set_value(object, new_value)
-          raise "[Xcodeproj] Set value called for a to-many attribute" if type == :to_many
+          if type == :to_many
+            raise "[Xcodeproj] Set value called for a to-many attribute"
+          end
           object.send("#{name}=", new_value)
         end
 
@@ -127,7 +129,9 @@ module Xcodeproj
         # @return [void]
         #
         def set_default(object)
-          raise "[Xcodeproj] Set value called for a #{type} attribute" unless type == :simple
+          unless type == :simple
+            raise "[Xcodeproj] Set value called for a #{type} attribute"
+          end
           set_value(object, default_value.dup) if default_value
         end
 
@@ -144,17 +148,24 @@ module Xcodeproj
           return unless object
           acceptable = classes.find { |klass| object.class == klass || object.class < klass }
           if type == :simple
-            raise "[Xcodeproj] Type checking error: got `#{object.class}` for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.class}` " \
+              "for attribute: #{inspect}" unless acceptable
           else
-            raise "[Xcodeproj] Type checking error: got `#{object.isa}` for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.isa}` for " \
+              "attribute: #{inspect}" unless acceptable
           end
         end
 
+
+        # @return [String] A string suitable for debugging the object.
+        #
         def inspect
           if type == :simple
-            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes}`, owner class: `#{owner.isa}`)"
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: " \
+              "`#{classes}`, owner class: `#{owner.isa}`)"
           else
-            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes.map(&:isa)}`, owner class: `#{owner.isa}`)"
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: " \
+              "`#{classes.map(&:isa)}`, owner class: `#{owner.isa}`)"
           end
         end
       end
@@ -191,9 +202,14 @@ module Xcodeproj
           def attributes
             unless @full_attributes
               attributes = @attributes || []
-              super_attributes = superclass.respond_to?(:attributes) ? superclass.attributes : []
+              if superclass.respond_to?(:attributes)
+                super_attributes = superclass.attributes
+              else
+                super_attributes = []
+              end
               # The uniqueness of the attributes is very important because the
-              # initialization from plist deletes the values from the dictionary.
+              # initialization from plist deletes the values from the
+              # dictionary.
               @full_attributes = attributes.concat(super_attributes).uniq
             end
             @full_attributes
@@ -406,8 +422,14 @@ module Xcodeproj
           # @return [void]
           #
           def add_attribute(attribute)
-            raise "[Xcodeproj] BUG - missing classes for #{attribute.inspect}" unless attribute.classes
-            raise "[Xcodeproj] BUG - classes:#{attribute.classes} for #{attribute.inspect}" unless attribute.classes.all? { |klass| klass.is_a?(Class) }
+            unless attribute.classes
+              raise "[Xcodeproj] BUG - missing classes for #{attribute.inspect}"
+            end
+
+            unless attribute.classes.all? { |klass| klass.is_a?(Class) }
+              raise "[Xcodeproj] BUG - classes:#{attribute.classes} for #{attribute.inspect}"
+            end
+
             @attributes ||= []
             @attributes << attribute
           end
@@ -462,7 +484,7 @@ module Xcodeproj
         def references_by_keys_attributes
           self.class.references_by_keys_attributes
         end
-      end # AbstractObject
+      end
     end
   end
 end
