@@ -49,33 +49,25 @@ module Xcodeproj
           @owner = owner
         end
 
-        # @return[String] The name of the attribute in camel case.
+        # @return [String] The name of the attribute in camel case.
         #
         # @example
         #   attribute.new(:simple, :project_root)
         #   attribute.plist_name #=> projectRoot
         #
         def plist_name
-          case name
-          when :remote_global_id_string
-            # `_id_` would become `Id`
-            'remoteGlobalIDString'
-          else
-            self.class.plist_name_store[name] ||= name.to_s.camelize(:lower)
-          end
-        end
-
-        # @return [Hash] a shared store which caches the plist name of the
-        #         attributes.
-        #
-        def self.plist_name_store
-          @plist_name_store ||= {}
+          NameHelper.convert_to_plist(name, :lower)
         end
 
         # @return [Array<Class>] the list of the classes accepted by the
         #   attribute.
         #
         attr_accessor :classes
+
+        # @return [{Symbol, Array<Class>}] the list of the classes accepted by
+        #   each key for attributes which store a dictionary.
+        #
+        attr_accessor :classes_by_key
 
         # @return [String, Array, Hash] the default value, if any, for simple
         #   attributes.
@@ -110,7 +102,9 @@ module Xcodeproj
         # @return [void]
         #
         def set_value(object, new_value)
-          raise "[Xcodeproj] Set value called for a to-many attribute" if type == :to_many
+          if type == :to_many
+            raise "[Xcodeproj] Set value called for a to-many attribute"
+          end
           object.send("#{name}=", new_value)
         end
 
@@ -127,7 +121,9 @@ module Xcodeproj
         # @return [void]
         #
         def set_default(object)
-          raise "[Xcodeproj] Set value called for a #{type} attribute" unless type == :simple
+          unless type == :simple
+            raise "[Xcodeproj] Set value called for a #{type} attribute"
+          end
           set_value(object, default_value.dup) if default_value
         end
 
@@ -144,17 +140,52 @@ module Xcodeproj
           return unless object
           acceptable = classes.find { |klass| object.class == klass || object.class < klass }
           if type == :simple
-            raise "[Xcodeproj] Type checking error: got `#{object.class}` for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.class}` " \
+              "for attribute: #{inspect}" unless acceptable
           else
-            raise "[Xcodeproj] Type checking error: got `#{object.isa}` for attribute: #{inspect}" unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.isa}` for " \
+              "attribute: #{inspect}" unless acceptable
           end
         end
 
+        # Checks that a given value is compatible with a key for attributes
+        # which store references by key.
+        #
+        # This method is used by the #{ObjectDictionary} class.
+        #
+        # @raise If the class of the value is not compatible with the given
+        #  key.
+        #
+        def validate_value_for_key(object, key)
+          unless type == :references_by_keys
+            raise "[Xcodeproj] This method should be called only for " \
+              "attributes of type `references_by_keys`"
+          end
+
+          unless classes_by_key.keys.include?(key)
+            raise "[Xcodeproj] unsupported key `#{key}` " \
+              "(accepted `#{classes_by_key.keys}`) for attribute `#{inspect}`"
+          end
+
+          return unless object
+          classes = Array(classes_by_key[key])
+          acceptable = classes.find { |klass| object.class == klass || object.class < klass }
+          unless acceptable
+            raise "[Xcodeproj] Type checking error: got `#{object.isa}` " \
+              "for key `#{key}` (which accepts `#{classes}`) of " \
+              "attribute: `#{inspect}`"
+          end
+        end
+
+        # @return [String] A string suitable for debugging the object.
+        #
         def inspect
           if type == :simple
-            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes}`, owner class: `#{owner.isa}`)"
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: " \
+              "`#{classes}`, owner class: `#{owner.isa}`)"
           else
-            "Attribute `#{plist_name}` (type: `#{type}`, classes: `#{classes.map(&:isa)}`, owner class: `#{owner.isa}`)"
+            "Attribute `#{plist_name}` (type: `#{type}`, classes: " \
+              "`#{classes.map(&:isa)}`, owner class: `#{owner.isa}`)"
           end
         end
       end
@@ -191,9 +222,14 @@ module Xcodeproj
           def attributes
             unless @full_attributes
               attributes = @attributes || []
-              super_attributes = superclass.respond_to?(:attributes) ? superclass.attributes : []
+              if superclass.respond_to?(:attributes)
+                super_attributes = superclass.attributes
+              else
+                super_attributes = []
+              end
               # The uniqueness of the attributes is very important because the
-              # initialization from plist deletes the values from the dictionary.
+              # initialization from plist deletes the values from the
+              # dictionary.
               @full_attributes = attributes.concat(super_attributes).uniq
             end
             @full_attributes
@@ -373,16 +409,17 @@ module Xcodeproj
           # @param [String] plural_name
           #   the name of the relationship.
           #
-          # @param [Class, Array<Class>] isas_hash
+          # @param [{Symbol, Array<Class>}] classes_by_key
           #   the list of the classes corresponding to the accepted isas for
           #   this relationship.
           #
           # @macro [attach] has_many
           #   @!attribute [r] $1
           #
-          def has_many_references_by_keys(plural_name, isas_hash)
+          def has_many_references_by_keys(plural_name, classes_by_key)
             attrb = AbstractObjectAttribute.new(:references_by_keys, plural_name, self)
-            attrb.classes = isas_hash.values
+            attrb.classes = classes_by_key.values
+            attrb.classes_by_key = classes_by_key
             add_attribute(attrb)
 
             define_method(attrb.name) do
@@ -406,8 +443,14 @@ module Xcodeproj
           # @return [void]
           #
           def add_attribute(attribute)
-            raise "[Xcodeproj] BUG - missing classes for #{attribute.inspect}" unless attribute.classes
-            raise "[Xcodeproj] BUG - classes:#{attribute.classes} for #{attribute.inspect}" unless attribute.classes.all? { |klass| klass.is_a?(Class) }
+            unless attribute.classes
+              raise "[Xcodeproj] BUG - missing classes for #{attribute.inspect}"
+            end
+
+            unless attribute.classes.all? { |klass| klass.is_a?(Class) }
+              raise "[Xcodeproj] BUG - classes:#{attribute.classes} for #{attribute.inspect}"
+            end
+
             @attributes ||= []
             @attributes << attribute
           end
@@ -462,7 +505,7 @@ module Xcodeproj
         def references_by_keys_attributes
           self.class.references_by_keys_attributes
         end
-      end # AbstractObject
+      end
     end
   end
 end

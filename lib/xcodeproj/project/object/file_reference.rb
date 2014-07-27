@@ -245,7 +245,7 @@ module Xcodeproj
         #
         def project_reference_metadata
           project.root_object.project_references.find do |project_reference|
-            project_reference['ProjectRef'] == self
+            project_reference[:project_ref] == self
           end
         end
 
@@ -313,7 +313,7 @@ module Xcodeproj
           if project_reference = project_reference_metadata
             file_reference_proxies.each(&:remove_from_project)
             target_dependency_proxies.each(&:remove_from_project)
-            project_reference['ProductGroup'].remove_from_project
+            project_reference[:product_group].remove_from_project
             project.root_object.project_references.delete(project_reference)
           end
           super

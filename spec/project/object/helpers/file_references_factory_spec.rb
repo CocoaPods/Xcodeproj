@@ -185,6 +185,67 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe 'Xcode Projects' do
+      before do
+        @path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+        @ref = FileReferencesFactory.new_reference(@project.main_group, @path, :group)
+      end
+
+      it "creates a new file reference and sets is " do
+        @ref.isa.should == 'PBXFileReference'
+        @project.main_group.children.should.include?(@ref)
+      end
+
+      it "doesn't include the reference in index" do
+        @ref.include_in_index.should.be.nil
+      end
+
+      it "sets the project reference in the parent project" do
+        project_references = @project.root_object.project_references
+        project_references.count.should == 1
+        project_reference = project_references.first
+        project_reference[:project_ref].should == @ref
+        project_reference[:product_group].isa.should == 'PBXGroup'
+      end
+
+      it "configures the product group of the project" do
+        project_reference = @project.root_object.project_references.first
+        group = project_reference[:product_group]
+        group.name.should == 'Products'
+        group.source_tree.should == '<group>'
+      end
+
+      it "creates a reference proxy for each target" do
+        project_reference = @project.root_object.project_references.first
+        reference_proxies = project_reference[:product_group].children
+
+        reference_proxies.uniq.count.should == 3
+        reference_proxies.map(&:isa).uniq.should == ['PBXReferenceProxy']
+        reference_proxies.map(&:source_tree).uniq.should == ['BUILT_PRODUCTS_DIR']
+
+        reference_proxy = reference_proxies.first
+        reference_proxy.file_type.should == 'wrapper.application'
+        reference_proxy.path.should == 'ReferencedProject.app'
+        reference_proxy.remote_ref.isa.should == 'PBXContainerItemProxy'
+      end
+
+      it "creates a container proxy for each target" do
+        project_reference = @project.root_object.project_references.first
+        reference_proxies = project_reference[:product_group].children
+        container_proxies = reference_proxies.map(&:remote_ref)
+
+        container_proxies.uniq.count.should == 3
+        container_proxies.map(&:container_portal).uniq.should == [@ref.uuid]
+        container_proxies.map(&:proxy_type).uniq.should == ['2']
+        container_proxies.map(&:remote_info).uniq.should == ['Subproject']
+
+        container_proxy = container_proxies.first
+        container_proxy.remote_global_id_string.should == 'E5FBB2E51635ED34009E96B0'
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
     describe '::configure_defaults_for_file_reference' do
 
       it "doesn't set the name if its path relative to the source tree doesn't include directories" do
