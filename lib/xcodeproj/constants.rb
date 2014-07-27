@@ -71,21 +71,22 @@ module Xcodeproj
     FILE_TYPES_BY_EXTENSION = {
       'a'           => 'archive.ar',
       'app'         => 'wrapper.application',
+      'bundle'      => 'wrapper.plug-in',
       'dylib'       => 'compiled.mach-o.dylib',
       'framework'   => 'wrapper.framework',
-      'bundle'      => 'wrapper.plug-in',
       'h'           => 'sourcecode.c.h',
       'm'           => 'sourcecode.c.objc',
+      'markdown'    => 'text',
       'pch'         => 'sourcecode.c.h',
-      'xcconfig'    => 'text.xcconfig',
-      'xcdatamodel' => 'wrapper.xcdatamodel',
-      'xib'         => 'file.xib',
+      'plist'       => 'text.plist.xml',
       'sh'          => 'text.script.sh',
       'swift'       => 'sourcecode.swift',
-      'plist'       => 'text.plist.xml',
-      'markdown'    => 'text',
       'xcassets'    => 'folder.assetcatalog',
-      'xctest'      => 'wrapper.cfbundle'
+      'xcconfig'    => 'text.xcconfig',
+      'xcdatamodel' => 'wrapper.xcdatamodel',
+      'xcodeproj'   => 'wrapper.pb-project',
+      'xctest'      => 'wrapper.cfbundle',
+      'xib'         => 'file.xib',
     }.freeze
 
     # @return [Hash] The uniform type identifier of various product types.
