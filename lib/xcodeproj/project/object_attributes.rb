@@ -49,27 +49,14 @@ module Xcodeproj
           @owner = owner
         end
 
-        # @return[String] The name of the attribute in camel case.
+        # @return [String] The name of the attribute in camel case.
         #
         # @example
         #   attribute.new(:simple, :project_root)
         #   attribute.plist_name #=> projectRoot
         #
         def plist_name
-          case name
-          when :remote_global_id_string
-            # `_id_` would become `Id`
-            'remoteGlobalIDString'
-          else
-            self.class.plist_name_store[name] ||= name.to_s.camelize(:lower)
-          end
-        end
-
-        # @return [Hash] a shared store which caches the plist name of the
-        #         attributes.
-        #
-        def self.plist_name_store
-          @plist_name_store ||= {}
+          NameHelper.convert_to_plist(name, :lower)
         end
 
         # @return [Array<Class>] the list of the classes accepted by the

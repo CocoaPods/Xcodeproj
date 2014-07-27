@@ -466,9 +466,10 @@ module Xcodeproj
   end
 end
 
-require 'xcodeproj/project/object_list'
-require 'xcodeproj/project/object_dictionary'
+require 'xcodeproj/project/name_helper'
 require 'xcodeproj/project/object_attributes'
+require 'xcodeproj/project/object_dictionary'
+require 'xcodeproj/project/object_list'
 
 # Required because some classes have cyclical references to each other.
 #
