@@ -23,8 +23,11 @@ module Xcodeproj
           # @return [PBXFileReference, XCVersionGroup] The new reference.
           #
           def new_reference(group, path, source_tree)
-            if File.extname(path).downcase == '.xcdatamodeld'
+            ref = case File.extname(path).downcase
+            when '.xcdatamodeld'
               ref = new_xcdatamodeld(group, path, source_tree)
+            when '.xcodeproj'
+              ref = new_subproject(group, path, source_tree)
             else
               ref = new_file_reference(group, path, source_tree)
             end
@@ -150,6 +153,60 @@ module Xcodeproj
                 end
               end
             end
+
+            ref
+          end
+
+          # Creates a file reference to another Xcode subproject and setups the
+          # proxies to the targets.
+          #
+          # @param  [PBXGroup] group
+          #         The group to which to add the reference.
+          #
+          # @param  [#to_s] path
+          #         The, preferably absolute, path of the reference.
+          #
+          # @param  [Symbol] source_tree
+          #         The source tree key to use to configure the path (@see
+          #         GroupableHelper::SOURCE_TREES_BY_KEY).
+          #
+          # @note   To analyze the targets the given project is read and thus
+          #         it should already exist in the disk.
+          #
+          # @return [PBXFileReference] The new file reference.
+          #
+          def new_subproject(group, path, source_tree)
+            ref = new_file_reference(group, path, source_tree)
+            ref.include_in_index = nil
+
+            product_group_ref = group.project.new(PBXGroup)
+            product_group_ref.name = 'Products'
+            product_group_ref.source_tree = '<group>'
+
+            subproj = Project.open(path)
+            subproj.products_group.files.each do |product_reference|
+              container_proxy = group.project.new(PBXContainerItemProxy)
+              container_proxy.container_portal = ref.uuid
+              container_proxy.proxy_type = '2'
+              container_proxy.remote_global_id_string = product_reference.uuid
+              container_proxy.remote_info = 'Subproject'
+
+
+              reference_proxy = group.project.new(PBXReferenceProxy)
+              extension = File.extname(product_reference.path)[1..-1]
+              reference_proxy.file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
+              reference_proxy.path = product_reference.path
+              reference_proxy.remote_ref = container_proxy
+              reference_proxy.source_tree = 'BUILT_PRODUCTS_DIR'
+
+              product_group_ref << reference_proxy
+            end
+
+            attribute = PBXProject.references_by_keys_attributes.find {|attribute| attribute.name == :project_references }
+            project_reference = ObjectDictionary.new(attribute, group.project.root_object)
+            project_reference[:project_ref] = ref
+            project_reference[:product_group] = product_group_ref
+            group.project.root_object.project_references << project_reference
 
             ref
           end

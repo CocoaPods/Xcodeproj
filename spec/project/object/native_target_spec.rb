@@ -190,9 +190,10 @@ module ProjectSpecs
         end
 
         it "adds a dependency on a target in a subproject" do
-          subproject = Xcodeproj::Project.new('/other_project_dir/OtherProject.xcodeproj')
-          dependency_target = subproject.new_target(:static_library, 'Pods-SMCalloutView', :ios)
-          subproject_file_reference = @project.main_group.new_file(subproject.path)
+          path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+          subproject = Xcodeproj::Project.open(path)
+          dependency_target = subproject.targets.first
+          subproject_file_reference = @project.main_group.new_file(path)
           @target.add_dependency(dependency_target)
 
           @target.dependencies.count.should == 1
