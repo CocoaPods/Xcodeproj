@@ -77,6 +77,8 @@ module Xcodeproj
       'h'           => 'sourcecode.c.h',
       'm'           => 'sourcecode.c.objc',
       'markdown'    => 'text',
+      'mdimporter'  => 'wrapper.cfbundle',
+      'octest'      => 'wrapper.cfbundle',
       'pch'         => 'sourcecode.c.h',
       'plist'       => 'text.plist.xml',
       'sh'          => 'text.script.sh',
