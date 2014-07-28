@@ -116,7 +116,7 @@ module Xcodeproj
         result = {}
         each do |key, obj|
           if obj
-            plist_key = Object::NameHelper.convert_to_plist(key, nil)
+            plist_key = Object::CaseConverter.convert_to_plist(key, nil)
             result[plist_key] = obj.uuid
           end
         end
@@ -130,7 +130,7 @@ module Xcodeproj
         result = {}
         each do |key, obj|
           if obj
-            plist_key = Object::NameHelper.convert_to_plist(key, nil)
+            plist_key = Object::CaseConverter.convert_to_plist(key, nil)
             result[plist_key] = obj.to_tree_hash
           end
         end
@@ -170,7 +170,7 @@ module Xcodeproj
       #
       def normalize_key(key)
         if key.is_a?(String)
-          key = Object::NameHelper.convert_to_ruby(key)
+          key = Object::CaseConverter.convert_to_ruby(key)
         end
 
         unless allowed_keys.include?(key)

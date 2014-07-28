@@ -4,7 +4,7 @@ module Xcodeproj
       # Converts between camel case names used in the xcodeproj plist files
       # and the ruby symbols used to represent them.
       #
-      module NameHelper
+      module CaseConverter
         # @return [String] The plist equivalent of the given Ruby name.
         #
         # @param  [Symbol, String] name
@@ -15,7 +15,7 @@ module Xcodeproj
         #         `:lower` for camel case starting with a lower case letter.
         #
         # @example
-        #   NameHelper.convert_to_plist(:project_ref) #=> ProjectRef
+        #   CaseConverter.convert_to_plist(:project_ref) #=> ProjectRef
         #
         def self.convert_to_plist(name, type = nil)
           case name
@@ -38,7 +38,7 @@ module Xcodeproj
         #         The name to convert
         #
         # @example
-        #   NameHelper.convert_to_ruby('ProjectRef') #=> :project_ref
+        #   CaseConverter.convert_to_ruby('ProjectRef') #=> :project_ref
         #
         def self.convert_to_ruby(name)
           name.to_s.underscore.to_sym

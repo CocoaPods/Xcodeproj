@@ -466,7 +466,7 @@ module Xcodeproj
   end
 end
 
-require 'xcodeproj/project/name_helper'
+require 'xcodeproj/project/case_converter'
 require 'xcodeproj/project/object_attributes'
 require 'xcodeproj/project/object_dictionary'
 require 'xcodeproj/project/object_list'

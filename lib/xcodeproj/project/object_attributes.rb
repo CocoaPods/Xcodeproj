@@ -56,7 +56,7 @@ module Xcodeproj
         #   attribute.plist_name #=> projectRoot
         #
         def plist_name
-          NameHelper.convert_to_plist(name, :lower)
+          CaseConverter.convert_to_plist(name, :lower)
         end
 
         # @return [Array<Class>] the list of the classes accepted by the
