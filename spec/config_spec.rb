@@ -42,20 +42,6 @@ describe Xcodeproj::Config do
       config.libraries.to_a.should.be.equal %w[ xml2.2.7.3 ]
     end
 
-    it "doesn't parse a libraries flags containing the -library substring" do
-      hash = { 'OTHER_LDFLAGS' => '-finalize -prefinalized-library"' }
-      config = Xcodeproj::Config.new(hash)
-      config.libraries.to_a.should == []
-      config.to_hash.should == hash
-    end
-
-    it "can handle libraries specified as a separate argument" do
-      # see http://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
-      hash = { 'OTHER_LDFLAGS' => '-framework Foundation -l xml2.2.7.3' }
-      config = Xcodeproj::Config.new(hash)
-      config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
-    end
-
     it "can be serialized with #to_s" do
       @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework Foundation"
     end
@@ -194,7 +180,6 @@ describe Xcodeproj::Config do
       config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
       config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
     end
-
   end
 
   #---------------------------------------------------------------------------#

@@ -1,4 +1,5 @@
 require 'shellwords'
+require 'xcodeproj/config/other_linker_flags_decomposer'
 
 module Xcodeproj
 
@@ -149,19 +150,15 @@ module Xcodeproj
         # flags
         flags = @attributes['OTHER_LDFLAGS']
         return unless flags
+        flags_by_key = OtherLinkerFlagsDecomposer.decompose(flags)
 
         frameworks = flags.scan(/(?:\A|\s)-framework\s+([^\s]+)/).map { |m| m[0] }
         weak_frameworks = flags.scan(/(?:\A|\s)-weak_framework\s+([^\s]+)/).map { |m| m[0] }
         libraries  = flags.scan(/(?:\A|\s)-l ?([^\s]+)/).map { |m| m[0] }
-        @frameworks.merge frameworks
-        @weak_frameworks.merge weak_frameworks
-        @libraries.merge libraries
-
-        new_flags = flags.dup
-        frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
-        weak_frameworks.each {|f| new_flags.gsub!("-weak_framework #{f}", "") }
-        libraries.each  {|l| new_flags.gsub!("-l#{l}", ""); new_flags.gsub!("-l #{l}", "") }
-        @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
+        @frameworks.merge(flags_by_key[:frameworks])
+        @weak_frameworks.merge(flags_by_key[:weak_frameworks])
+        @libraries.merge(flags_by_key[:libraries])
+        @attributes['OTHER_LDFLAGS'] = flags_by_key[:other].join(' ')
       end
     end
     alias_method :<<, :merge!

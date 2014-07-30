@@ -2,8 +2,11 @@
 
 ## Master
 
-* `PlistHelper`: Now the `plutil` tool is used to save the files if available to
-  produce output consistent with Xcode.  
+* `PlistHelper`: Now the `plutil` tool is used to save the files if available
+  to produce output consistent with Xcode.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* `Config`: The config class now handles properly quotes in `OTHER_LDFLAGS`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * `PBXGroup`: Now file references to Xcode projects are properly handled and
