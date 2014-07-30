@@ -2,6 +2,7 @@ module Xcodeproj
   class Config
     module OtherLinkerFlagsDecomposer
       def self.decompose(flags)
+        flags
         result = {
           :frameworks => [],
           :weak_frameworks => [],
@@ -34,28 +35,13 @@ module Xcodeproj
         result = []
         quotes_accumulator = nil
 
-        candidates = flags.split(' ').map do |string|
+        flags.strip.shellsplit.map do |string|
           if string =~ /\A-l.+/
             ['-l', string[2..-1]]
           else
             string
           end
-        end
-
-        candidates.flatten.each do |candidate|
-          if quotes_accumulator
-            quotes_accumulator << ' ' << candidate
-            if quotes_accumulator.end_with?('"')
-              result << quotes_accumulator[0..-2]
-              quotes_accumulator = nil
-            end
-          elsif candidate.start_with?('"')
-            quotes_accumulator = candidate[1..-1]
-          else
-            result << candidate
-          end
-        end
-        result
+        end.flatten
       end
     end
   end

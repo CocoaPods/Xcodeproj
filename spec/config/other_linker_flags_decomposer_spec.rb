@@ -16,6 +16,16 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
       }
     end
 
+    it "detects frameworks specified with quotes" do
+      flags = '-framework "Foundation"'
+      @decomposer.decompose(flags).should == {
+        :frameworks => ['Foundation'],
+        :weak_frameworks => [],
+        :libraries => [],
+        :simple => [],
+      }
+    end
+
     it "detects weak frameworks" do
       flags = '-weak_framework Twitter'
       @decomposer.decompose(flags).should == {
