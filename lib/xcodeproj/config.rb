@@ -15,20 +15,11 @@ module Xcodeproj
     #
     attr_accessor :attributes
 
-    # @return [Set<String>] The list of the frameworks required by this
-    #         settings file.
+    # @return [Hash{Symbol => Set<String>}] The other linker flags by key.
+    #         Xcodeproj handles them in a dedicated way to prevent duplication
+    #         of the libraries and of the frameworks.
     #
-    attr_accessor :frameworks
-
-    # @return [Set<String>] The list of the *weak* frameworks required by
-    #         this settings file.
-    #
-    attr_accessor :weak_frameworks
-
-    # @return [Set<String>] The list of the libraries required by this
-    #         settings file.
-    #
-    attr_accessor :libraries
+    attr_accessor :other_linker_flags
 
     # @return [Array] The list of the configuration files included by this
     #         configuration file (`#include "SomeConfig"`).
@@ -41,7 +32,10 @@ module Xcodeproj
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
-      @frameworks, @weak_frameworks, @libraries = Set.new, Set.new, Set.new
+      @other_linker_flags = {}
+      [:simple, :frameworks, :weak_frameworks, :libraries].each do |key|
+        @other_linker_flags[key] = Set.new
+      end
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
@@ -53,11 +47,10 @@ module Xcodeproj
       other.respond_to?(:to_hash) && other.to_hash == self.to_hash
     end
 
-    #-------------------------------------------------------------------------#
-
     public
 
     # @!group Serialization
+    #-------------------------------------------------------------------------#
 
     # Sorts the internal data by setting name and serializes it in the xcconfig
     # format.
@@ -88,8 +81,8 @@ module Xcodeproj
     end
 
     # The hash representation of the xcconfig. The hash includes the
-    # frameworks, the weak frameworks and the libraries in the `Other Linker
-    # Flags` (`OTHER_LDFLAGS`).
+    # frameworks, the weak frameworks, the libraries and the simple other
+    # linker flags in the `Other Linker Flags` (`OTHER_LDFLAGS`).
     #
     # @note   All the values are sorted to have a consistent output in Ruby
     #         1.8.7.
@@ -98,16 +91,20 @@ module Xcodeproj
     #
     def to_hash(prefix = nil)
       list = []
-      if attributes['OTHER_LDFLAGS'] && !attributes['OTHER_LDFLAGS'].empty?
-        list << attributes['OTHER_LDFLAGS']
+      list += other_linker_flags[:simple].to_a.sort
+      modifiers = {
+        :frameworks => '-framework ',
+        :weak_frameworks => '-weak_framework ',
+        :libraries => '-l'
+      }
+      [:libraries, :frameworks, :weak_frameworks].each do |key|
+        modifier = modifiers[key]
+        list += other_linker_flags[key].to_a.sort.map { |l| %Q(#{modifier}#{l}) }
       end
-      list << libraries.to_a.sort.map { |l| %Q(-l#{l}) }
-      list << frameworks.to_a.sort.map { |f| %Q(-framework #{f}) }
-      list << weak_frameworks.to_a.sort.map { |f| %Q(-weak_framework #{f}) }
 
       result = attributes.dup
-      result['OTHER_LDFLAGS'] = list.flatten.join(' ')
-      result.delete('OTHER_LDFLAGS') if result['OTHER_LDFLAGS'].strip.empty?
+      result['OTHER_LDFLAGS'] = list.join(' ') unless list.empty?
+
       if prefix
         Hash[result.map {|k, v| [prefix + k, v]}]
       else
@@ -115,11 +112,31 @@ module Xcodeproj
       end
     end
 
-    #-------------------------------------------------------------------------#
+    # @return [Set<String>] The list of the frameworks required by this
+    #         settings file.
+    #
+    def frameworks
+      other_linker_flags[:frameworks]
+    end
+
+    # @return [Set<String>] The list of the *weak* frameworks required by
+    #         this settings file.
+    #
+    def weak_frameworks
+      other_linker_flags[:weak_frameworks]
+    end
+
+    # @return [Set<String>] The list of the libraries required by this
+    #         settings file.
+    #
+    def libraries
+      other_linker_flags[:libraries]
+    end
 
     public
 
     # @!group Merging
+    #-------------------------------------------------------------------------#
 
     # Merges the given xcconfig representation in the receiver.
     #
@@ -143,25 +160,17 @@ module Xcodeproj
     def merge!(xcconfig)
       if xcconfig.is_a? Config
         merge_attributes!(xcconfig.attributes)
-        @libraries.merge(xcconfig.libraries)
-        @frameworks.merge(xcconfig.frameworks)
-        @weak_frameworks.merge(xcconfig.weak_frameworks)
+        other_linker_flags.keys.each do |key|
+          other_linker_flags[key].merge(xcconfig.other_linker_flags[key])
+        end
       else
         merge_attributes!(xcconfig.to_hash)
-
-        # Parse frameworks and libraries. Then remove them from the linker
-        # flags
-        flags = @attributes['OTHER_LDFLAGS']
-        return unless flags
-        flags_by_key = OtherLinkerFlagsDecomposer.decompose(flags)
-
-        frameworks = flags.scan(/(?:\A|\s)-framework\s+([^\s]+)/).map { |m| m[0] }
-        weak_frameworks = flags.scan(/(?:\A|\s)-weak_framework\s+([^\s]+)/).map { |m| m[0] }
-        libraries  = flags.scan(/(?:\A|\s)-l ?([^\s]+)/).map { |m| m[0] }
-        @frameworks.merge(flags_by_key[:frameworks])
-        @weak_frameworks.merge(flags_by_key[:weak_frameworks])
-        @libraries.merge(flags_by_key[:libraries])
-        @attributes['OTHER_LDFLAGS'] = flags_by_key[:other].join(' ')
+        if flags = attributes.delete('OTHER_LDFLAGS')
+          flags_by_key = OtherLinkerFlagsDecomposer.decompose(flags)
+          other_linker_flags.keys.each do |key|
+            other_linker_flags[key].merge(flags_by_key[key])
+          end
+        end
       end
     end
     alias_method :<<, :merge!

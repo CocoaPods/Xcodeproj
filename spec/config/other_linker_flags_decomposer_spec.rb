@@ -12,7 +12,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => ['Foundation'],
         :weak_frameworks => [],
         :libraries => [],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -22,7 +22,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => ['Twitter'],
         :libraries => [],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -32,7 +32,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -42,7 +42,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -52,7 +52,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -62,7 +62,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
-        :other => [],
+        :simple => [],
       }
     end
 
@@ -72,7 +72,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
-        :other => ['-ObjC', '-fobjc-arc'],
+        :simple => ['-ObjC', '-fobjc-arc'],
       }
     end
 
@@ -82,7 +82,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
-        :other => ['-ObjC'],
+        :simple => ['-ObjC'],
       }
     end
 
@@ -92,7 +92,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
-        :other => ['-finalize', '-prefinalized-library'],
+        :simple => ['-finalize', '-prefinalized-library'],
       }
     end
 
@@ -109,7 +109,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
         :frameworks => ['Foundation'],
         :weak_frameworks => ['Twitter'],
         :libraries => ["xml2.2.7.3", "xml2.2.7.3", "Pods-AFNetworking iOS Example-AFNetworking", "Pods-AFNetworking iOS Example-AFNetworking"],
-        :other => ["-ObjC", "-fobjc-arc", "-finalize", "-prefinalized-library"],
+        :simple => ["-ObjC", "-fobjc-arc", "-finalize", "-prefinalized-library"],
       }
     end
   end

@@ -6,7 +6,7 @@ module Xcodeproj
           :frameworks => [],
           :weak_frameworks => [],
           :libraries => [],
-          :other => [],
+          :simple => [],
         }
 
         key = nil
@@ -23,7 +23,7 @@ module Xcodeproj
               result[key] << token
               key = nil
             else
-              result[:other] << token
+              result[:simple] << token
             end
           end
         end
