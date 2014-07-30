@@ -107,7 +107,7 @@ describe Xcodeproj::Config do
       @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
     end
 
-    it "appends the extensiono to the included files if needed" do
+    it "appends the extension to the included files if needed" do
       @config.includes = ['Somefile']
       @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
     end

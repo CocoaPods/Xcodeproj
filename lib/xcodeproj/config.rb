@@ -97,18 +97,21 @@ module Xcodeproj
     # @return [Hash] The hash representation
     #
     def to_hash(prefix = nil)
-      hash = @attributes.dup
-      flags = hash['OTHER_LDFLAGS'] || ''
-      flags = flags.dup.strip
-      flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
-      flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
-      flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_framework #{f}" }
-      hash['OTHER_LDFLAGS'] = flags.strip
-      hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
+      list = []
+      if attributes['OTHER_LDFLAGS'] && !attributes['OTHER_LDFLAGS'].empty?
+        list << attributes['OTHER_LDFLAGS']
+      end
+      list << libraries.to_a.sort.map { |l| %Q(-l#{l}) }
+      list << frameworks.to_a.sort.map { |f| %Q(-framework #{f}) }
+      list << weak_frameworks.to_a.sort.map { |f| %Q(-weak_framework #{f}) }
+
+      result = attributes.dup
+      result['OTHER_LDFLAGS'] = list.flatten.join(' ')
+      result.delete('OTHER_LDFLAGS') if result['OTHER_LDFLAGS'].strip.empty?
       if prefix
-        Hash[hash.map {|k, v| [prefix + k, v]}]
+        Hash[result.map {|k, v| [prefix + k, v]}]
       else
-        hash
+        result
       end
     end
 
