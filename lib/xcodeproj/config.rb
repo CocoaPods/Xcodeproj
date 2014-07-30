@@ -1,5 +1,5 @@
 require 'shellwords'
-require 'xcodeproj/config/other_linker_flags_decomposer'
+require 'xcodeproj/config/other_linker_flags_parser'
 
 module Xcodeproj
 
@@ -166,7 +166,7 @@ module Xcodeproj
       else
         merge_attributes!(xcconfig.to_hash)
         if flags = attributes.delete('OTHER_LDFLAGS')
-          flags_by_key = OtherLinkerFlagsDecomposer.decompose(flags)
+          flags_by_key = OtherLinkerFlagsParser.parse(flags)
           other_linker_flags.keys.each do |key|
             other_linker_flags[key].merge(flags_by_key[key])
           end

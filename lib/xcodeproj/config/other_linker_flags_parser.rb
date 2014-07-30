@@ -1,7 +1,14 @@
+require 'shellwords'
+
 module Xcodeproj
   class Config
-    module OtherLinkerFlagsDecomposer
-      def self.decompose(flags)
+    # Parses other linker flags values.
+    #
+    module OtherLinkerFlagsParser
+
+      #
+      #
+      def self.parse(flags)
         flags
         result = {
           :frameworks => [],

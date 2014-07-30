@@ -1,14 +1,14 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
+describe Xcodeproj::Config::OtherLinkerFlagsParser do
   before do
-    @decomposer = Xcodeproj::Config::OtherLinkerFlagsDecomposer
+    @parser = Xcodeproj::Config::OtherLinkerFlagsParser
   end
 
   describe "In general" do
     it "detects frameworks" do
       flags = '-framework Foundation'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => ['Foundation'],
         :weak_frameworks => [],
         :libraries => [],
@@ -18,7 +18,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects frameworks specified with quotes" do
       flags = '-framework "Foundation"'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => ['Foundation'],
         :weak_frameworks => [],
         :libraries => [],
@@ -28,7 +28,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects weak frameworks" do
       flags = '-weak_framework Twitter'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => ['Twitter'],
         :libraries => [],
@@ -38,7 +38,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects libraries" do
       flags = '-l xml2.2.7.3'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
@@ -48,7 +48,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects libraries specified without a space" do
       flags = '-lxml2.2.7.3'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
@@ -58,7 +58,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects libraries specified with quotes" do
       flags = %Q(-l "Pods-AFNetworking iOS Example-AFNetworking")
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
@@ -68,7 +68,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects libraries specified with quotes without a space" do
       flags = %Q(-l"Pods-AFNetworking iOS Example-AFNetworking")
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
@@ -78,7 +78,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "detects non categorized other linker flags" do
       flags = '-ObjC -fobjc-arc'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
@@ -88,7 +88,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "strips unnecessary whitespace" do
       flags = '  -ObjC  '
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
@@ -98,7 +98,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
 
     it "doesn't recognize as library flags including but not starting with the `-l` string" do
       flags = '-finalize -prefinalized-library'
-      @decomposer.decompose(flags).should == {
+      @parser.parse(flags).should == {
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
@@ -115,7 +115,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsDecomposer do
       flags << %q(-l"Pods-AFNetworking iOS Example-AFNetworking")
       flags << '-ObjC -fobjc-arc'
       flags << '-finalize -prefinalized-library'
-      @decomposer.decompose(flags.join(' ')).should == {
+      @parser.parse(flags.join(' ')).should == {
         :frameworks => ['Foundation'],
         :weak_frameworks => ['Twitter'],
         :libraries => ["xml2.2.7.3", "xml2.2.7.3", "Pods-AFNetworking iOS Example-AFNetworking", "Pods-AFNetworking iOS Example-AFNetworking"],
