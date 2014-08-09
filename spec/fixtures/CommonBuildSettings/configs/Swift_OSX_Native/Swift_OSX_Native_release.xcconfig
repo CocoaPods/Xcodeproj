@@ -1,5 +1,4 @@
-#include "Swift_OSX_Native_base.xcconfig"
-
+#include "Swift_OSX_Native/Swift_OSX_Native_base.xcconfig"
 COPY_PHASE_STRIP = YES
 DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 ENABLE_NS_ASSERTIONS = NO
