@@ -1,5 +1,4 @@
-#include "Objc_iOS_StaticLibrary_base.xcconfig"
-
+#include "Objc_iOS_StaticLibrary/Objc_iOS_StaticLibrary_base.xcconfig"
 COPY_PHASE_STRIP = YES
 ENABLE_NS_ASSERTIONS = NO
 MTL_ENABLE_DEBUG_INFO = NO
