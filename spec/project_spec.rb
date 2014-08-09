@@ -238,6 +238,14 @@ module ProjectSpecs
         Xcodeproj::Project::XCProjHelper.expects(:touch).never
         @project.save(@tmp_path)
       end
+
+      it "skips the xcproj touch if specified via an environment variable" do
+        @project.disable_xcproj = false
+        ENV['XCODEPROJ_DISABLE_XCPROJ'] = 'TRUE'
+        Xcodeproj::Project::XCProjHelper.expects(:touch).never
+        @project.save(@tmp_path)
+        ENV['XCODEPROJ_DISABLE_XCPROJ'] = nil
+      end
     end
 
     #-------------------------------------------------------------------------#

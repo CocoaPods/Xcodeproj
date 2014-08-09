@@ -132,9 +132,14 @@ module Xcodeproj
 
     alias :inspect :to_s
 
-    # @return [Bool] Whether the xcproj conversion should be disabled.
+    # @return [Bool] Whether the xcproj conversion should be disabled. The
+    #         conversion can be disable also via the
+    #         `XCODEPROJ_DISABLE_XCPROJ` environment variable.
     #
     attr_accessor :disable_xcproj
+    def disable_xcproj?
+      @disable_xcproj || ENV['XCODEPROJ_DISABLE_XCPROJ']
+    end
 
 
     public
@@ -303,7 +308,7 @@ module Xcodeproj
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj::PlistHelper.write(to_hash, file)
       fix_encoding(file)
-      XCProjHelper.touch(save_path) unless disable_xcproj
+      XCProjHelper.touch(save_path) unless disable_xcproj?
     end
 
     # Simple workaround to escape characters which are outside of ASCII
