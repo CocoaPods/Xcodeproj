@@ -632,7 +632,9 @@ module Xcodeproj
     #
     def add_build_configuration(name, type)
       build_configuration_list = root_object.build_configuration_list
-      unless build_configuration_list[name]
+      if build_configuration = build_configuration_list[name]
+        build_configuration
+      else
         build_configuration = new(XCBuildConfiguration)
         build_configuration.name = name
         common_settings = Constants::PROJECT_DEFAULT_BUILD_SETTINGS

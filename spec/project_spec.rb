@@ -467,6 +467,12 @@ module ProjectSpecs
           @project.build_configurations.map(&:name).grep('App Store').size.should == 1
         end
 
+        it "always returns the build configuration" do
+          result = @project.add_build_configuration('App Store', :release)
+          result.class.should == XCBuildConfiguration
+          result = @project.add_build_configuration('App Store', :release)
+          result.class.should == XCBuildConfiguration
+        end
       end
 
       it "can be sorted" do
