@@ -4,9 +4,7 @@ require 'open3'
 begin
   require 'libxml'
 rescue LoadError
-  Xcodeproj::UI.warn "Xcodeproj is using a fall back solution for parsing " \
-    "XML. To use a faster alternative install libxml:\n" \
-    "`$ gem install libxml-ruby`"
+  'Appease rubocop'
 end
 
 module Xcodeproj
