@@ -2,6 +2,7 @@ module Xcodeproj
   require 'colored'
 
   class Command
+    autoload :ConfigDump,  'xcodeproj/command/config_dump'
     autoload :TargetDiff,  'xcodeproj/command/target_diff'
     autoload :ProjectDiff, 'xcodeproj/command/project_diff'
     autoload :Show,        'xcodeproj/command/show'
@@ -56,7 +57,7 @@ module Xcodeproj
     end
 
     def self.banner
-      commands = ['target-diff', 'project-diff', 'show', 'sort']
+      commands = ['config-dump', 'target-diff', 'project-diff', 'show', 'sort']
       banner   = "To see help for the available commands run:\n\n"
       banner + commands.map { |cmd| "  * $ xcodeproj #{cmd.green} --help" }.join("\n")
     end
@@ -101,6 +102,7 @@ module Xcodeproj
       String.send(:define_method, :colorize) { |string, _| string } if argv.option('--no-color')
 
       command_class = case command_argument = argv.shift_argument
+                      when 'config-dump'  then ConfigDump
                       when 'target-diff'  then TargetDiff
                       when 'project-diff' then ProjectDiff
                       when 'show'         then Show
