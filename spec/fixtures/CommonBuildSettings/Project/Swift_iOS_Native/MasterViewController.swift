@@ -2,7 +2,7 @@
 //  MasterViewController.swift
 //  Swift_iOS_Native
 //
-//  Created by Marius Rackwitz on 20.07.14.
+//  Created by Marius Rackwitz on 10.08.14.
 //
 //
 
@@ -40,7 +40,7 @@ class MasterViewController: UITableViewController {
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 
-    // #pragma mark - Segues
+    // MARK: - Segues
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
@@ -50,7 +50,7 @@ class MasterViewController: UITableViewController {
         }
     }
 
-    // #pragma mark - Table View
+    // MARK: - Table View
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

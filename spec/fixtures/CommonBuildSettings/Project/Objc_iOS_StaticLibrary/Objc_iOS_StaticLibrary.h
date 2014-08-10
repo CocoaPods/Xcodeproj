@@ -2,7 +2,7 @@
 //  Objc_iOS_StaticLibrary.h
 //  Objc_iOS_StaticLibrary
 //
-//  Created by Marius Rackwitz on 20.07.14.
+//  Created by Marius Rackwitz on 10.08.14.
 //
 //
 
