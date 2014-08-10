@@ -2,15 +2,15 @@
 //  DetailViewController.swift
 //  Swift_iOS_Native
 //
-//  Created by Marius Rackwitz on 20.07.14.
+//  Created by Marius Rackwitz on 10.08.14.
 //
 //
 
 import UIKit
 
 class DetailViewController: UIViewController {
-
-    @IBOutlet var detailDescriptionLabel: UILabel
+                            
+    @IBOutlet weak var detailDescriptionLabel: UILabel!
 
 
     var detailItem: AnyObject? {
