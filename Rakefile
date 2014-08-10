@@ -57,11 +57,13 @@ begin
     PROJECT_PATH = 'Project/Project.xcodeproj'
 
     task :prepare do
+      verbose false
       cd 'spec/fixtures/CommonBuildSettings'
     end
 
     desc "Create a new empty project"
     task :new_project => [:prepare] do
+      verbose false
       require 'xcodeproj'
       title "Setup Boilerplate"
 
@@ -77,6 +79,7 @@ begin
 
     desc "Interactive walkthrough for creating fixture targets"
     task :targets => [:prepare] do
+      verbose false
       require 'xcodeproj'
 
       title "Create Targets"
@@ -124,6 +127,7 @@ begin
           raise "Language doesn't match." unless is_swift_present == is_swift_expected
 
           puts green("Target matches.")
+          puts
         rescue StandardError => e
           raise e if e.message == "Aborted by user."
           puts "#{red(e.message)} Try again."
@@ -136,6 +140,7 @@ begin
 
     desc "Dump the build settings of the fixture project to xcconfig files"
     task :dump => [:prepare] do
+      verbose false
       sh "../../../bin/xcodeproj config-dump Project/Project.xcodeproj configs"
     end
 
@@ -238,6 +243,8 @@ def confirm(message, decline_by_default=true)
   options[decline_by_default ? 1 : 0].upcase!
   print yellow("#{message}: [#{options.join('/')}] ")
   input = STDIN.gets.chomp
-  aborted = input == options[1].downcase || (input == '' && decline_by_default)
-  raise "Aborted by user." if aborted
+  if input == options[1].downcase || (input == '' && decline_by_default)
+    puts red("Aborted by user.")
+    exit 1
+  end
 end
