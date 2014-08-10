@@ -10,44 +10,24 @@ module ProjectHelperSpecs
     #
     # To update the fixtures, you can do the following:
     #
-    # 1. Open a new term and step into the fixtures directory
+    # 1. Open a new term and exec the following rake task.
     #
-    #    `cd spec/fixtures/CommonBuildSettings`
+    #    `rake common_build_settings:rebuild`
     #
-    # 2. Delete the existing project content
+    #    This will:
+    #      * Delete the existing project and its contents.
+    #      * Create a new Xcode Project.
+    #      * Give an interactive guide to create the needed targets
+    #      * Dump the build settings to xcconfig files
     #
-    #    `rm -rf Project/*`
-    #
-    # 3. Create a new Xcode Project named 'Project'
-    #
-    #    `bundle exec ruby -e "require 'xcodeproj'; Xcodeproj::Project.new('Project/Project.xcodeproj').save"`
-    #
-    # 4. Create *manually* the following targets:
-    #     * Objc_iOS_Native         - iOS > Master-Detail Application > Language: Objective-C
-    #     * Swift_iOS_Native        - iOS > Master-Detail Application > Language: Swift
-    #     * Objc_iOS_Framework      - iOS > Cocoa Touch Framework > Language: Objective-C
-    #     * Swift_iOS_Framework     - iOS > Cocoa Touch Framework > Language: Swift
-    #     * Objc_iOS_StaticLibrary  - iOS > Cocoa Touch Static Library
-    #     * Objc_OSX_Native         - OSX > Cocoa Application > Language: Objective-C
-    #     * Swift_OSX_Native        - OSX > Cocoa Application > Language: Swift
-    #     * Objc_OSX_Framework      - OSX > Cocoa Framework > Language: Objective-C
-    #     * Swift_OSX_Framework     - OSX > Cocoa Framework > Language: Swift
-    #     * Objc_OSX_StaticLibrary  - OSX > Library > Type: Static
-    #     * Objc_OSX_DynamicLibrary - OSX > Library > Type: Dynamic
-    #     * OSX_Bundle              - OSX > Bundle
-    #
-    # 5. Dump the build settings to xcconfig files
-    #
-    #    `xcconfig-dump --no-doc --no-group Project configs`
-    #
-    # 6. Add the files to git and commit
+    # 2. Add the files to git and commit
     #
     #    ```
     #    git add spec/fixtures/CommonBuildSettings
     #    git commit -m "[Fixtures] Updated CommonBuildSettings"
     #    ````
     #
-    # 7. Run specs and modify lib/xcodeproj/constants.rb until all tests succeed
+    # 3. Run specs and modify lib/xcodeproj/constants.rb until all tests succeed
     #
     #    `rake spec:single[spec/project/project_helper_integration_spec.rb]`
     #
