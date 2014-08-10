@@ -1,0 +1,3 @@
+#include "Swift_iOS_NativeTests/Swift_iOS_NativeTests_base.xcconfig"
+COPY_PHASE_STRIP = YES
+MTL_ENABLE_DEBUG_INFO = NO
