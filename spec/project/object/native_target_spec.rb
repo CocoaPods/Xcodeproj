@@ -451,8 +451,15 @@ module ProjectSpecs
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "returns the symbol type" do
-        @target.symbol_type.should == :static_library
+      describe "#symbol_type" do
+        it "returns the symbol type" do
+          @target.symbol_type.should == :static_library
+        end
+
+        it "returns nil if the product type is unknown" do
+          @target.stubs(:product_type => 'com.apple.product-type.new-stuff')
+          @target.symbol_type.should.be.nil?
+        end
       end
 
       it "adds a list of sources file to the target to the source build phase" do
