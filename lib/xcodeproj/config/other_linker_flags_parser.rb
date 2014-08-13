@@ -5,7 +5,6 @@ module Xcodeproj
     # Parses other linker flags values.
     #
     module OtherLinkerFlagsParser
-
       # @return [Hash{Symbol, Array[String]}] Splits the given
       #         other linker flags value by type.
       #
@@ -65,5 +64,3 @@ module Xcodeproj
     end
   end
 end
-
-

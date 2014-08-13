@@ -23,13 +23,13 @@ module Xcodeproj
             hash = hash.to_hash
           else
             raise TypeError, "The given `#{hash}`, must be a hash or " \
-              "respond to to_hash"
+              'respond to to_hash'
           end
         end
 
         unless path.is_a?(String) || path.is_a?(Pathname)
-            raise TypeError, "The given `#{path}`, must be a string or " \
-              "pathname"
+          raise TypeError, "The given `#{path}`, must be a string or " \
+            'pathname'
         end
         plist = CFPropertyList::List.new
         options = { :convert_unknown_to_string => true }
@@ -103,7 +103,7 @@ module Xcodeproj
       #         The path of the file.
       #
       def plutil_save(contents, path)
-        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, stdout, stderr|
+        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, _stdout, _stderr|
           stdin.puts(contents)
           stdin.close
         end

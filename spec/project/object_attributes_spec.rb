@@ -1,42 +1,40 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
-
   describe AbstractObjectAttribute do
     before do
       @attribute = AbstractObjectAttribute.new(:simple, :source_tree, PBXFileReference)
     end
 
-    it "returns its type" do
+    it 'returns its type' do
       @attribute.type.should == :simple
     end
 
-    it "returns its name" do
+    it 'returns its name' do
       @attribute.name.should == :source_tree
     end
 
-    it "returns its owner" do
+    it 'returns its owner' do
       @attribute.owner.should.equal?(PBXFileReference)
     end
 
-    it "returns its plist name" do
+    it 'returns its plist name' do
       @attribute.plist_name.should == 'sourceTree'
     end
 
-
-    it "returns its value for a given object" do
+    it 'returns its value for a given object' do
       file = @project.new(PBXFileReference)
       file.source_tree = 'A_ROOT'
       @attribute.get_value(file).should == 'A_ROOT'
     end
 
-    it "sets its value for a given object" do
+    it 'sets its value for a given object' do
       file = @project.new(PBXFileReference)
       @attribute.set_value(file, 'A_ROOT')
       file.source_tree.should == 'A_ROOT'
     end
 
-    it "sets its default value for a given object" do
+    it 'sets its default value for a given object' do
       @attribute.default_value = 'SAMPLE_ROOT'
       file = @project.new(PBXFileReference)
       file.source_tree.should.not == 'SAMPLE_ROOT'
@@ -44,13 +42,13 @@ module ProjectSpecs
       file.source_tree.should == 'SAMPLE_ROOT'
     end
 
-    it "validates a simple value" do
+    it 'validates a simple value' do
       @attribute.classes = [String]
       lambda { @attribute.validate_value('a string') }.should.not.raise
       lambda { @attribute.validate_value(['array']) }.should.raise
     end
 
-    it "validates an xcodeproj object ISA" do
+    it 'validates an xcodeproj object ISA' do
       attrb = AbstractObjectAttribute.new(:to_many, :children, PBXGroup)
       attrb.classes = [PBXFileReference, PBXGroup]
       file = @project.new(PBXFileReference)
@@ -59,8 +57,7 @@ module ProjectSpecs
       lambda { attrb.validate_value(target) }.should.raise
     end
 
-
-    describe "references by keys attributes" do
+    describe 'references by keys attributes' do
       before do
         @attribute = AbstractObjectAttribute.new(:references_by_keys, :project_references, PBXProject)
         @attribute.classes = [PBXFileReference, PBXGroup]
@@ -70,21 +67,21 @@ module ProjectSpecs
         }
       end
 
-      it "validates the key of an attribute which stores" do
+      it 'validates the key of an attribute which stores' do
         file = @project.new(PBXFileReference)
         should.raise do
           @attribute.validate_value_for_key(file, :not_allowed)
         end.message.should.include?('unsupported key')
       end
 
-      it "validates the ISA of the value" do
+      it 'validates the ISA of the value' do
         file = @project.new(PBXFileReference)
         should.raise do
           @attribute.validate_value_for_key(file, :product_group)
         end.message.should.include?('Type checking error')
       end
 
-      it "accepts a value" do
+      it 'accepts a value' do
         file = @project.new(PBXFileReference)
         should.not.raise do
           @attribute.validate_value_for_key(file, :project_ref)

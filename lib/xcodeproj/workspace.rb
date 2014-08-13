@@ -3,12 +3,10 @@ require 'rexml/document'
 require 'xcodeproj/workspace/file_reference'
 
 module Xcodeproj
-
   # Provides support for generating, reading and serializing Xcode Workspace
   # documents.
   #
   class Workspace
-
     # @return [Array<String>] the paths of the projects contained in the
     # @return [Array<FileReference>] the paths of the projects contained in the
     #         workspace.
@@ -33,11 +31,9 @@ module Xcodeproj
     # @return [Workspace] the generated workspace.
     #
     def self.new_from_xcworkspace(path)
-      begin
-        from_s(File.read(File.join(path, 'contents.xcworkspacedata')), File.expand_path(File.dirname(path)))
-      rescue Errno::ENOENT
-        new
-      end
+      from_s(File.read(File.join(path, 'contents.xcworkspacedata')), File.expand_path(File.dirname(path)))
+    rescue Errno::ENOENT
+      new
     end
 
     #-------------------------------------------------------------------------#
@@ -50,9 +46,9 @@ module Xcodeproj
     #
     # @return [Workspace] the generated workspace.
     #
-    def self.from_s(xml, workspace_path='')
+    def self.from_s(xml, workspace_path = '')
       document = REXML::Document.new(xml)
-      file_references = document.get_elements("/Workspace/FileRef").map do |node|
+      file_references = document.get_elements('/Workspace/FileRef').map do |node|
         FileReference.from_node(node)
       end
       instance = new(file_references)
@@ -92,7 +88,7 @@ module Xcodeproj
     #
     def to_s
       contents = file_references.map { |reference| file_reference_xml(reference) }
-      root_xml(contents.join(""))
+      root_xml(contents.join(''))
     end
 
     # Saves the workspace at the given `xcworkspace` path.
@@ -118,7 +114,7 @@ module Xcodeproj
     #
     # @return [void]
     #
-    def load_schemes workspace_dir_path
+    def load_schemes(workspace_dir_path)
       @file_references.each do |file_reference|
         project_full_path = file_reference.absolute_path(workspace_dir_path)
         load_schemes_from_project(project_full_path)
@@ -135,7 +131,7 @@ module Xcodeproj
     #
     # @return [void]
     #
-    def load_schemes_from_project project_full_path
+    def load_schemes_from_project(project_full_path)
       schemes = Xcodeproj::Project.schemes project_full_path
       schemes.each do |scheme_name|
         @schemes[scheme_name] = project_full_path
@@ -169,6 +165,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

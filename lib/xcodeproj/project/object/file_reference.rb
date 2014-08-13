@@ -3,11 +3,9 @@ require 'xcodeproj/project/object/helpers/groupable_helper'
 module Xcodeproj
   class Project
     module Object
-
       # This class represents a reference to a file in the file system.
       #
       class PBXFileReference < AbstractObject
-
         # @!group Attributes
 
         # @return [String] the name of the reference, often not present.
@@ -259,7 +257,7 @@ module Xcodeproj
         def proxy_containers
           project.objects.select do |object|
             object.isa == 'PBXContainerItemProxy' &&
-              object.container_portal == self.uuid
+              object.container_portal == uuid
           end
         end
 
@@ -320,7 +318,6 @@ module Xcodeproj
         end
 
         #---------------------------------------------------------------------#
-
       end
     end
   end

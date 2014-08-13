@@ -2,16 +2,16 @@ module Xcodeproj
   class Command
     class TargetDiff < Command
       def self.banner
-%{Shows the difference between two targets:
+        %(Shows the difference between two targets:
 
-    $ targets-diff [target 1] [target 2]
+            $ targets-diff [target 1] [target 2]
 
-      Only supports build source files atm.}
+              Only supports build source files atm.)
       end
 
       def self.options
         [
-          ["--project PATH", "The Xcode project document to use."],
+          ['--project PATH', 'The Xcode project document to use.'],
         ].concat(super)
       end
 
@@ -39,4 +39,3 @@ module Xcodeproj
     end
   end
 end
-

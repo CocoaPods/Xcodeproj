@@ -2,17 +2,17 @@ module Xcodeproj
   class Command
     class Show < Command
       def self.banner
-%{Shows an overview of a project in a YAML representation.'
+        %(Shows an overview of a project in a YAML representation.'
 
-    $ show [PROJECT]
+            $ show [PROJECT]
 
-      If no `PROJECT' is specified then the current work directory is searched
-      for one.}
+              If no `PROJECT' is specified then the current work directory is searched
+              for one.)
       end
 
       def self.options
         [
-          ["--format [hash|tree_hash|raw]", "YAML output format, optional"],
+          ['--format [hash|tree_hash|raw]', 'YAML output format, optional'],
         ].concat(super)
       end
 
@@ -47,10 +47,10 @@ module Xcodeproj
         pretty_print = xcodeproj.pretty_print
         sections = []
         pretty_print.each do |key, value|
-        section = key.green
+          section = key.green
           yaml = value.to_yaml
-          yaml.gsub!(/^---$/,'')
-          yaml.gsub!(/^-/,"\n-")
+          yaml.gsub!(/^---$/, '')
+          yaml.gsub!(/^-/, "\n-")
           section << yaml
           sections << section
         end
@@ -59,5 +59,3 @@ module Xcodeproj
     end
   end
 end
-
-

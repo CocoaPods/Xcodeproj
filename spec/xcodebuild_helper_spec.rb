@@ -13,7 +13,6 @@ iOS Simulator SDKs:
 DOC
 
 module Xcodeproj
-
   describe XcodebuildHelper do
 
     before do
@@ -23,16 +22,16 @@ module Xcodeproj
 
     #--------------------------------------------------------------------------------#
 
-    describe "In general" do
+    describe 'In general' do
       before do
         @helper.stubs(:xcodebuild_available?).returns(true)
       end
 
-      it "returns the last iOS SDK" do
+      it 'returns the last iOS SDK' do
         @helper.last_ios_sdk.should == '6.1'
       end
 
-      it "returns the last OS X SDK" do
+      it 'returns the last OS X SDK' do
         @helper.last_osx_sdk.should == '10.8'
       end
 
@@ -40,27 +39,27 @@ module Xcodeproj
 
     #--------------------------------------------------------------------------------#
 
-    describe "Private helpers" do
+    describe 'Private helpers' do
 
-      describe "#xcodebuild_available?" do
+      describe '#xcodebuild_available?' do
 
-        it "returns whether the xcodebuild command is available" do
+        it 'returns whether the xcodebuild command is available' do
           Process::Status.any_instance.expects(:exitstatus).returns(0)
           @helper.send(:xcodebuild_available?).should.be.true
         end
 
-        it "returns whether the xcodebuild command is available" do
+        it 'returns whether the xcodebuild command is available' do
           Process::Status.any_instance.expects(:exitstatus).returns(1)
           @helper.send(:xcodebuild_available?).should.be.false
         end
 
       end
 
-      describe "#parse_sdks_information" do
+      describe '#parse_sdks_information' do
 
-        it "parses the skds information returned by xcodebuild" do
+        it 'parses the skds information returned by xcodebuild' do
           result = @helper.send(:parse_sdks_information, SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
-          result.should == [["macosx", "10.7"], ["macosx", "10.8"], ["iphoneos", "6.1"]]
+          result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1']]
         end
 
       end

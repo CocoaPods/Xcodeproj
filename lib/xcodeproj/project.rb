@@ -7,7 +7,6 @@ require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/xcproj_helper'
 
 module Xcodeproj
-
   # This class represents a Xcode project document.
   #
   # It can be used to manipulate existing documents or even create new ones
@@ -40,7 +39,6 @@ module Xcodeproj
   # consistent state.
   #
   class Project
-
     include Object
 
     # @return [Pathname] the path of the project.
@@ -64,7 +62,7 @@ module Xcodeproj
         initialize_from_scratch
       end
       unless skip_initialization.is_a?(TrueClass) || skip_initialization.is_a?(FalseClass)
-        raise ArgumentError, "[Xcodeproj] Initialization parameter expected to " \
+        raise ArgumentError, '[Xcodeproj] Initialization parameter expected to ' \
           "be a boolean #{skip_initialization}"
       end
     end
@@ -130,7 +128,7 @@ module Xcodeproj
       "#<#{self.class}> path:`#{path}` UUID:`#{root_object.uuid}`"
     end
 
-    alias :inspect :to_s
+    alias_method :inspect, :to_s
 
     # @return [Bool] Whether the xcproj conversion should be disabled. The
     #         conversion can be disable also via the
@@ -140,7 +138,6 @@ module Xcodeproj
     def disable_xcproj?
       @disable_xcproj || ENV['XCODEPROJ_DISABLE_XCPROJ']
     end
-
 
     public
 
@@ -187,15 +184,14 @@ module Xcodeproj
         raise "[Xcodeproj] Unable to find a root object in #{pbxproj_path}."
       end
 
-      if (archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION)
+      if archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION
         raise '[Xcodeproj] Unknown archive version.'
       end
 
-      if (object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION)
+      if object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION
         raise '[Xcodeproj] Unknown object version.'
       end
     end
-
 
     public
 
@@ -342,7 +338,6 @@ module Xcodeproj
       File.open(filename, 'wb') { |file| file.write(output) }
     end
 
-
     public
 
     # @!group Creating objects
@@ -415,7 +410,6 @@ module Xcodeproj
       @generated_uuids += uniques
       @available_uuids += uniques
     end
-
 
     public
 
@@ -548,7 +542,6 @@ module Xcodeproj
       root_object.build_configuration_list.build_settings(name)
     end
 
-
     public
 
     # @!group Helpers
@@ -664,7 +657,6 @@ module Xcodeproj
       root_object.sort_recursively(options)
     end
 
-
     public
 
     # @!group Schemes
@@ -714,6 +706,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

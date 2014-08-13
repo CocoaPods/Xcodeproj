@@ -2,7 +2,6 @@ module Xcodeproj
   class Project
     module XCProjHelper
       class << self
-
         # @return [Bool] Whether the xcproj tool is available.
         #
         def available?
@@ -42,12 +41,11 @@ module Xcodeproj
         #
         def execute(command)
           output = `#{command} 2>&1`
-          success = $?.exitstatus.zero?
+          success = $CHILD_STATUS.exitstatus.zero?
           [success, output]
         end
 
         #---------------------------------------------------------------------#
-
       end
     end
   end

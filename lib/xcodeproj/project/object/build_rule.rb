@@ -1,11 +1,9 @@
 module Xcodeproj
   class Project
     module Object
-
       # This class represents a custom build rule of a Target.
       #
       class PBXBuildRule < AbstractObject
-
         # @!group Attributes
 
         # @return [String] the name of the rule.
@@ -54,7 +52,6 @@ module Xcodeproj
         #         `com.apple.compilers.proxy.script`
         #
         attribute :script, String
-
       end
     end
   end

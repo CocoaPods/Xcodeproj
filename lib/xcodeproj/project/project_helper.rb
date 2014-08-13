@@ -1,7 +1,6 @@
 module Xcodeproj
   class Project
     module ProjectHelper
-
       include Object
 
       # @!group Targets
@@ -36,7 +35,6 @@ module Xcodeproj
       # @return [PBXNativeTarget] the target.
       #
       def self.new_target(project, type, name, platform, deployment_target, product_group)
-
         # Target
         target = project.new(PBXNativeTarget)
         project.targets << target
@@ -114,7 +112,6 @@ module Xcodeproj
 
         target
       end
-
 
       # @!group Private Helpers
 
@@ -222,7 +219,6 @@ module Xcodeproj
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end

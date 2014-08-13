@@ -1,13 +1,11 @@
 require 'rexml/document'
 
 module Xcodeproj
-
   # This class represents a Scheme document represented by a ".xcscheme" file
   # usually stored in a xcuserdata or xcshareddata (for a shared scheme)
   # folder.
   #
   class XCScheme
-
     # @return [REXML::Document] the XML object that will be manipulated to save
     #         the scheme file after.
     #
@@ -76,7 +74,7 @@ module Xcodeproj
     #        Whether to build this target in the launch action. Often false for test targets.
     #
     def add_build_target(build_target, build_for_running = true)
-      if !@build_action_entries then
+      unless @build_action_entries then
         @build_action_entries = @build_action.add_element 'BuildActionEntries'
       end
 
@@ -166,7 +164,7 @@ module Xcodeproj
       to_folder = shared_data_dir(project_path)
       to_folder.mkpath
       to = to_folder + "#{scheme_name}.xcscheme"
-      from = self.user_data_dir(project_path, user) + "#{scheme_name}.xcscheme"
+      from = user_data_dir(project_path, user) + "#{scheme_name}.xcscheme"
       FileUtils.mv(from, to)
     end
 
@@ -245,26 +243,26 @@ module Xcodeproj
     class XML_Formatter < REXML::Formatters::Pretty
       def write_element(node, output)
         @indentation = 3
-        output << ' '*@level
+        output << ' ' * @level
         output << "<#{node.expanded_name}"
 
         @level += @indentation
         node.attributes.each_attribute do |attr|
           output << "\n"
-          output << ' '*@level
+          output << ' ' * @level
           output << attr.to_string.gsub(/=/, ' = ')
         end unless node.attributes.empty?
 
-        output << ">"
+        output << '>'
 
         output << "\n"
         node.children.each { |child|
-          next if child.kind_of?(REXML::Text) and child.to_s.strip.length == 0
+          next if child.is_a?(REXML::Text) and child.to_s.strip.length == 0
           write(child, output)
           output << "\n"
         }
         @level -= @indentation
-        output << ' '*@level
+        output << ' ' * @level
         output << "</#{node.expanded_name}>"
       end
     end
@@ -304,6 +302,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

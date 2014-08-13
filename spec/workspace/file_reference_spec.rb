@@ -13,8 +13,8 @@ module Xcodeproj
     end
 
     it 'can be initialized by the XML representation' do
-      node = REXML::Element.new("FileRef")
-      node.attributes['location'] = "group:project.xcodeproj"
+      node = REXML::Element.new('FileRef')
+      node.attributes['location'] = 'group:project.xcodeproj'
       result = Workspace::FileReference.from_node(node)
       result.should == @file
     end
@@ -32,13 +32,13 @@ module Xcodeproj
 
     it 'returns the absolute path for group types' do
       result = @file.absolute_path('/path/to/')
-      result.should == "/path/to/project.xcodeproj"
+      result.should == '/path/to/project.xcodeproj'
     end
 
     it 'returns the absolute path for container types' do
       @file.stubs(:type).returns('container')
       result = @file.absolute_path('/path/to/')
-      result.should == "/path/to/project.xcodeproj"
+      result.should == '/path/to/project.xcodeproj'
     end
 
     it 'returns the absolute path for absolute types' do

@@ -1,9 +1,7 @@
 module Xcodeproj
-
   # This modules groups all the constants known to Xcodeproj.
   #
   module Constants
-
     # @return [String] The last known iOS SDK (stable).
     #
     LAST_KNOWN_IOS_SDK = '7.1'
@@ -27,7 +25,7 @@ module Xcodeproj
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
-      'AbstractObject' => %w[
+      'AbstractObject' => %w(
         PBXBuildFile
         AbstractBuildPhase
         PBXBuildRule
@@ -39,32 +37,32 @@ module Xcodeproj
         PBXProject
         PBXTargetDependency
         PBXReferenceProxy
-      ],
+      ),
 
-      'AbstractBuildPhase' => %w[
+      'AbstractBuildPhase' => %w(
         PBXCopyFilesBuildPhase
         PBXResourcesBuildPhase
         PBXSourcesBuildPhase
         PBXFrameworksBuildPhase
         PBXHeadersBuildPhase
         PBXShellScriptBuildPhase
-      ],
+      ),
 
-      'AbstractTarget' => %w[
+      'AbstractTarget' => %w(
         PBXNativeTarget
         PBXAggregateTarget
         PBXLegacyTarget
-      ],
+      ),
 
-      'PBXGroup' => %w[
+      'PBXGroup' => %w(
         XCVersionGroup
         PBXVariantGroup
-      ]
+      )
     }.freeze
 
     # @return [Array] The list of the super classes for each ISA.
     #
-    ISAS_SUPER_CLASSES = %w[ AbstractObject AbstractBuildPhase PBXGroup ]
+    ISAS_SUPER_CLASSES = %w(AbstractObject AbstractBuildPhase PBXGroup)
 
     # @return [Hash] The known file types corresponding to each extension.
     #
@@ -122,24 +120,24 @@ module Xcodeproj
         'SKIP_INSTALL'                      => 'YES',
         'DSTROOT'                           => '/tmp/xcodeproj.dst',
         'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
-        'INSTALL_PATH'                      => "$(BUILT_PRODUCTS_DIR)",
+        'INSTALL_PATH'                      => '$(BUILT_PRODUCTS_DIR)',
         'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
       }.freeze,
       :debug => {
         'GCC_DYNAMIC_NO_PIC'                => 'NO',
-        'GCC_PREPROCESSOR_DEFINITIONS'      => ["DEBUG=1", "$(inherited)"],
+        'GCC_PREPROCESSOR_DEFINITIONS'      => ['DEBUG=1', '$(inherited)'],
         'GCC_SYMBOLS_PRIVATE_EXTERN'        => 'NO',
         'GCC_OPTIMIZATION_LEVEL'            => '0',
         'COPY_PHASE_STRIP'                  => 'NO',
       }.freeze,
       :release => {
-        'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
-        'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"],
+        'OTHER_CFLAGS'                      => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
+        'OTHER_CPLUSPLUSFLAGS'              => ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)'],
       }.freeze,
       :ios => {
         'IPHONEOS_DEPLOYMENT_TARGET'        => '4.3',
-        'PUBLIC_HEADERS_FOLDER_PATH'        => "$(TARGET_NAME)",
+        'PUBLIC_HEADERS_FOLDER_PATH'        => '$(TARGET_NAME)',
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       :osx => {
@@ -168,8 +166,8 @@ module Xcodeproj
     PROJECT_DEFAULT_BUILD_SETTINGS = {
       :all => {
         'ALWAYS_SEARCH_USER_PATHS'         => 'NO',
-        'CLANG_CXX_LANGUAGE_STANDARD'      => "gnu++0x",
-        'CLANG_CXX_LIBRARY'                => "libc++",
+        'CLANG_CXX_LANGUAGE_STANDARD'      => 'gnu++0x',
+        'CLANG_CXX_LIBRARY'                => 'libc++',
         'CLANG_ENABLE_OBJC_ARC'            => 'YES',
         'CLANG_WARN_BOOL_CONVERSION'       => 'YES',
         'CLANG_WARN_CONSTANT_CONVERSION'   => 'YES',
@@ -197,7 +195,7 @@ module Xcodeproj
         'COPY_PHASE_STRIP'                 => 'YES',
         'GCC_DYNAMIC_NO_PIC'               => 'NO',
         'GCC_OPTIMIZATION_LEVEL'           => '0',
-        'GCC_PREPROCESSOR_DEFINITIONS'     => ["DEBUG=1", "$(inherited)"],
+        'GCC_PREPROCESSOR_DEFINITIONS'     => ['DEBUG=1', '$(inherited)'],
         'GCC_SYMBOLS_PRIVATE_EXTERN'       => 'NO',
       }.freeze,
     }.freeze
@@ -209,7 +207,7 @@ module Xcodeproj
       :absolute_path      =>  '0',
       :products_directory => '16',
       :wrapper            =>  '1',
-      :resources          =>  '7', #default
+      :resources          =>  '7', # default
       :executables        =>  '6',
       :java_resources     => '15',
       :frameworks         => '10',
@@ -220,7 +218,6 @@ module Xcodeproj
 
     # @return [Hash] The extensions which are associated with header files.
     #
-    HEADER_FILES_EXTENSIONS = %w| .h .hh .hpp .ipp |.freeze
-
+    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp).freeze
   end
 end

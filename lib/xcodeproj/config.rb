@@ -2,12 +2,10 @@ require 'shellwords'
 require 'xcodeproj/config/other_linker_flags_parser'
 
 module Xcodeproj
-
   # This class holds the data for a Xcode build settings file (xcconfig) and
   # provides support for serialization.
   #
   class Config
-
     require 'set'
 
     # @return [Hash{String => String}] The attributes of the settings file
@@ -44,7 +42,7 @@ module Xcodeproj
     end
 
     def ==(other)
-      other.respond_to?(:to_hash) && other.to_hash == self.to_hash
+      other.respond_to?(:to_hash) && other.to_hash == to_hash
     end
 
     public
@@ -63,7 +61,7 @@ module Xcodeproj
     # @return [String] The serialized internal data.
     #
     def to_s(prefix = nil)
-      include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\""}
+      include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\"" }
       settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }
       [include_lines + settings].join("\n")
     end
@@ -107,7 +105,7 @@ module Xcodeproj
       result['OTHER_LDFLAGS'] = list.join(' ') unless list.empty?
 
       if prefix
-        Hash[result.map {|k, v| [prefix + k, v]}]
+        Hash[result.map { |k, v| [prefix + k, v] }]
       else
         result
       end
@@ -185,13 +183,13 @@ module Xcodeproj
     # @return [Config] the new xcconfig.
     #
     def merge(config)
-      self.dup.tap { |x| x.merge!(config) }
+      dup.tap { |x| x.merge!(config) }
     end
 
     # @return [Config] A copy of the receiver.
     #
     def dup
-      Xcodeproj::Config.new(self.to_hash.dup)
+      Xcodeproj::Config.new(to_hash.dup)
     end
 
     #-------------------------------------------------------------------------#
@@ -312,6 +310,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

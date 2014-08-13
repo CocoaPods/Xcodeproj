@@ -1,5 +1,4 @@
 module Xcodeproj
-
   require 'colored'
 
   class Command
@@ -33,16 +32,27 @@ module Xcodeproj
       def options
         options  = @command_class.options
         keys     = options.map(&:first)
-        key_size = keys.inject(0) { |size, key| key.size > size ? key.size : size }
+        key_size = keys.reduce(0) { |size, key| key.size > size ? key.size : size }
         options.map { |key, desc| "    #{key.ljust(key_size)}   #{desc}" }.join("\n")
       end
     end
 
     class ARGV < Array
-      def options;        select { |x| x.to_s[0,1] == '-' };   end
-      def arguments;      self - options;                      end
-      def option(name);   !!delete(name);                      end
-      def shift_argument; (arg = arguments[0]) && delete(arg); end
+      def options
+        select { |x| x.to_s[0, 1] == '-' }
+      end
+
+      def arguments
+        self - options
+      end
+
+      def option(name)
+        !!delete(name)
+      end
+
+      def shift_argument
+        (arg = arguments[0]) && delete(arg)
+      end
     end
 
     def self.banner
@@ -66,11 +76,11 @@ module Xcodeproj
       sub_command.run
 
     rescue Interrupt
-      puts "[!] Cancelled".red
-      #Config.instance.verbose? ? raise : exit(1)
+      puts '[!] Cancelled'.red
+      # Config.instance.verbose? ? raise : exit(1)
       exit(1)
 
-    rescue Exception => e
+    rescue => e
       puts e.message
       unless e.is_a?(Informative) || e.is_a?(Help)
         puts *e.backtrace
@@ -88,7 +98,7 @@ module Xcodeproj
 
       show_help = argv.option('--help')
 
-      String.send(:define_method, :colorize) { |string , _| string } if argv.option( '--no-color' )
+      String.send(:define_method, :colorize) { |string, _| string } if argv.option('--no-color')
 
       command_class = case command_argument = argv.shift_argument
       when 'target-diff'  then TargetDiff
@@ -134,4 +144,3 @@ module Xcodeproj
     end
   end
 end
-

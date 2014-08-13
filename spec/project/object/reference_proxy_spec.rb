@@ -6,7 +6,7 @@ module ProjectSpecs
       @proxy = @project.new(PBXReferenceProxy)
     end
 
-    it "returns whether it is a proxy" do
+    it 'returns whether it is a proxy' do
       @proxy.proxy?.should == true
     end
   end

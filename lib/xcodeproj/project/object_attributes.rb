@@ -1,7 +1,6 @@
 module Xcodeproj
   class Project
     module Object
-
       # This class represents an attribute of {AbstractObject} subclasses.
       # Attributes are created by the {AbstractObject} DSL methods and allow to
       # mirror the underlying attributes of the xcodeproj document model.
@@ -13,7 +12,6 @@ module Xcodeproj
       #       validated before serialization ?
       #
       class AbstractObjectAttribute
-
         require 'active_support/inflector'
 
         # @return [Symbol] the type of the attribute. It can be `:simple`,
@@ -103,7 +101,7 @@ module Xcodeproj
         #
         def set_value(object, new_value)
           if type == :to_many
-            raise "[Xcodeproj] Set value called for a to-many attribute"
+            raise '[Xcodeproj] Set value called for a to-many attribute'
           end
           object.send("#{name}=", new_value)
         end
@@ -158,8 +156,8 @@ module Xcodeproj
         #
         def validate_value_for_key(object, key)
           unless type == :references_by_keys
-            raise "[Xcodeproj] This method should be called only for " \
-              "attributes of type `references_by_keys`"
+            raise '[Xcodeproj] This method should be called only for ' \
+              'attributes of type `references_by_keys`'
           end
 
           unless classes_by_key.keys.include?(key)
@@ -191,7 +189,6 @@ module Xcodeproj
       end
 
       class AbstractObject
-
         # The {AbstractObject} DSL methods allow to specify with fidelity the
         # underlying model of the xcodeproj document format. {AbstractObject}
         # subclasses should specify their attributes through the following
@@ -208,7 +205,6 @@ module Xcodeproj
         # @note Attributes are typed and are validated at runtime.
         #
         class << self
-
           # @return [Array<AbstractObjectAttribute>] the attributes associated
           #   with the class.
           #

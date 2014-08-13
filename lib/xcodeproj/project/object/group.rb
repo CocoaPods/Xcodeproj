@@ -4,12 +4,10 @@ require 'xcodeproj/project/object/helpers/file_references_factory'
 module Xcodeproj
   class Project
     module Object
-
       # This class represents a group. A group can contain other groups
       # (PBXGroup) and file references (PBXFileReference).
       #
       class PBXGroup < AbstractObject
-
         # @!group Attributes
 
         # @return [ObjectList<PBXGroup, PBXFileReference>]
@@ -77,7 +75,6 @@ module Xcodeproj
         # @note   This is apparently no longer used by Xcode.
         #
         attribute :comments, String
-
 
         public
 
@@ -223,7 +220,7 @@ module Xcodeproj
         def new_reference(path, source_tree = :group)
           FileReferencesFactory.new_reference(self, path, source_tree)
         end
-        alias :new_file :new_reference
+        alias_method :new_file, :new_reference
 
         # Creates a file reference to a static library and adds it to the
         # group.
@@ -280,7 +277,7 @@ module Xcodeproj
         def clear
           children.objects.each(&:remove_from_project)
         end
-        alias :remove_children_recursively :clear
+        alias_method :remove_children_recursively, :clear
 
         # Traverses the children groups and finds the children with the given
         # path, optionally, creating any needed group. If the given path is
@@ -306,7 +303,7 @@ module Xcodeproj
           return self unless path
           path = path.split('/') unless path.is_a?(Array)
           child_name = path.shift
-          child = children.find{ |c| c.display_name == child_name }
+          child = children.find { |c| c.display_name == child_name }
           if child.nil?
             if should_create
               child = new_group(child_name)
@@ -351,7 +348,7 @@ module Xcodeproj
               if extname_x != extname_y
                 extname_x <=> extname_y
               else
-                File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+                File.basename(x.display_name, '.*') <=> File.basename(y.display_name, '.*')
               end
             else
               0
@@ -408,7 +405,7 @@ module Xcodeproj
               end
             end
 
-            result = File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+            result = File.basename(x.display_name, '.*') <=> File.basename(y.display_name, '.*')
             if result.zero?
               File.extname(x.display_name) <=> File.extname(y.display_name)
             else
@@ -423,13 +420,11 @@ module Xcodeproj
       # This class is used to gather localized files into one entry.
       #
       class PBXVariantGroup < PBXGroup
-
         # @!group Attributes
 
         # @return [String] the file type guessed by Xcode.
         #
         attribute :last_known_file_type, String
-
       end
 
       #-----------------------------------------------------------------------#
@@ -440,7 +435,6 @@ module Xcodeproj
       # Used to contain the different versions of a `xcdatamodel`.
       #
       class XCVersionGroup < PBXGroup
-
         # @!group Attributes
 
         # @return [PBXFileReference] the reference to the current version.
@@ -450,11 +444,9 @@ module Xcodeproj
         # @return [String] the type of the versioned resource.
         #
         attribute :version_group_type, String, 'wrapper.xcdatamodel'
-
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end

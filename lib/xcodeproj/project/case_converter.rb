@@ -23,11 +23,11 @@ module Xcodeproj
             'remoteGlobalIDString'
           else
             if type == :lower
-              cache = self.plist_cache[:lower] ||= {}
+              cache = plist_cache[:lower] ||= {}
               cache[name] ||= name.to_s.camelize(:lower)
             else
-              cache = self.plist_cache[:normal] ||= {}
-              cache[name] ||= name.to_s.camelize()
+              cache = plist_cache[:normal] ||= {}
+              cache[name] ||= name.to_s.camelize
             end
           end
         end

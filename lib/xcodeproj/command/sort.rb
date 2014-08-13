@@ -2,12 +2,12 @@ module Xcodeproj
   class Command
     class Sort < Command
       def self.banner
-%{Sorts the give project
+        %(Sorts the give project
 
-    $ sort [PROJECT]
+            $ sort [PROJECT]
 
-      If no `PROJECT' is specified then the current work directory is searched
-      for one.}
+              If no `PROJECT' is specified then the current work directory is searched
+              for one.)
       end
 
       def initialize(argv)
@@ -24,6 +24,3 @@ module Xcodeproj
     end
   end
 end
-
-
-

@@ -1,0 +1,14 @@
+inherit_from:
+ - .rubocop_todo.yml
+ - .rubocop-cocoapods.yml
+
+#- Xcodeproj ------------------------------------------------------------------
+
+AllCops:
+  Exclude:
+    - spec/fixtures/**/*
+    - lib/cocoapods-core/vendor/**/*
+
+FileName:
+  Exclude:
+    - lib/cocoapods-core.rb

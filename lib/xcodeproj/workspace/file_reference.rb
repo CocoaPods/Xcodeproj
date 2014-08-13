@@ -20,7 +20,7 @@ module Xcodeproj
       # @param [#to_s] path @see path
       # @param [#to_s] type @see type
       #
-      def initialize(path, type="group")
+      def initialize(path, type = 'group')
         @path = path.to_s
         @type = type.to_s
       end
@@ -53,7 +53,7 @@ module Xcodeproj
       # @return [REXML::Element] the XML representation of the file reference.
       #
       def to_node
-        REXML::Element.new("FileRef").tap do |element|
+        REXML::Element.new('FileRef').tap do |element|
           element.attributes['location'] = "#{type}:#{path}"
         end
       end
@@ -76,7 +76,7 @@ module Xcodeproj
         when 'absolute'
           File.expand_path(path)
         when 'developer'
-          raise "Developer workspace file reference type is not yet " \
+          raise 'Developer workspace file reference type is not yet ' \
             "#{self}"
         else
           raise "Unsupported workspace file reference type #{type}"

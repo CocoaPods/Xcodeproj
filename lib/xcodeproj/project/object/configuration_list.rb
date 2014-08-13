@@ -1,12 +1,10 @@
 module Xcodeproj
   class Project
     module Object
-
       # The primary purpose of this class is to maintain a collection of
       # related build configurations of a {PBXProject} or a {PBXNativeTarget}.
       #
       class XCConfigurationList < AbstractObject
-
         # @!group Attributes
 
         # @return [String] whether the default configuration is visible.
@@ -26,7 +24,6 @@ module Xcodeproj
         #         configurations of the target.
         #
         has_many :build_configurations, XCBuildConfiguration
-
 
         public
 
@@ -94,7 +91,6 @@ module Xcodeproj
         end
 
         #---------------------------------------------------------------------#
-
       end
     end
   end

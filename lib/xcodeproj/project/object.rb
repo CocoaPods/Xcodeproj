@@ -1,6 +1,5 @@
 module Xcodeproj
   class Project
-
     # This is the namespace in which all the classes that wrap the objects in
     # a Xcode project reside.
     #
@@ -16,7 +15,6 @@ module Xcodeproj
     #   end
     #
     module Object
-
       # @abstract
       #
       # This is the base class of all object types that can exist in a Xcode
@@ -34,7 +32,6 @@ module Xcodeproj
       # clients.
       #
       class AbstractObject
-
         # @!group AbstractObject
 
         # @return [String] the ISA of the class.
@@ -66,7 +63,7 @@ module Xcodeproj
           @isa = self.class.isa
           @referrers = []
           unless @isa.match(/^(PBX|XC)/)
-            raise "[Xcodeproj] Attempt to initialize an abstract class."
+            raise '[Xcodeproj] Attempt to initialize an abstract class.'
           end
         end
 
@@ -103,9 +100,9 @@ module Xcodeproj
         def remove_from_project
           project.objects_by_uuid.delete(uuid)
 
-          referrers.dup.each { |referrer|
+          referrers.dup.each do |referrer|
             referrer.remove_reference(self)
-          }
+          end
 
           to_one_attributes.each do |attrb|
             object = attrb.get_value(self)
@@ -139,12 +136,12 @@ module Xcodeproj
             isa.gsub(/^(PBX|XC)/, '')
           end
         end
-        alias :to_s :display_name
+        alias_method :to_s, :display_name
 
         # Sorts the to many attributes of the object according to the display
         # name.
         #
-        def sort(options = nil)
+        def sort(_options = nil)
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
             list.sort! do |x, y|
@@ -264,8 +261,8 @@ module Xcodeproj
           object_plist = objects_by_uuid_plist[uuid].dup
 
           unless object_plist['isa'] == isa
-          raise "[Xcodeproj] Attempt to initialize `#{isa}` from plist with " \
-            "different isa `#{object_plist}`"
+            raise "[Xcodeproj] Attempt to initialize `#{isa}` from plist with " \
+              "different isa `#{object_plist}`"
           end
           object_plist.delete('isa')
 
@@ -311,7 +308,7 @@ module Xcodeproj
             raise "[!] Xcodeproj doesn't know about the following " \
                   "attributes #{object_plist.inspect} for the '#{isa}' isa." \
                   "\nPlease file an issue: " \
-                  "https://github.com/CocoaPods/Xcodeproj/issues/new"
+                  'https://github.com/CocoaPods/Xcodeproj/issues/new'
           end
         end
 
@@ -341,14 +338,14 @@ module Xcodeproj
             UI.warn "`#{inspect}` attempted to initialize an object with " \
               "an unknown UUID. `#{uuid}` for attribute: " \
               "`#{attribute.name}`. This can be the result of a merge and  " \
-              "the unknown UUID is being discarded."
+              'the unknown UUID is being discarded.'
           end
           object
         rescue NameError
           attributes = objects_by_uuid_plist[uuid]
           raise "`#{isa}` attempted to initialize an object with unknown ISA "\
                 "`#{attributes['isa']}` from attributes: `#{attributes}`\n" \
-                "Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new"
+                'Please file an issue: https://github.com/CocoaPods/Xcodeproj/issues/new'
         end
 
         # Returns a cascade representation of the object with UUIDs.
@@ -376,7 +373,7 @@ module Xcodeproj
           end
 
           to_many_attributes.each do |attrb|
-          list = attrb.get_value(self)
+            list = attrb.get_value(self)
             plist[attrb.plist_name] = list.uuids
           end
 
@@ -435,7 +432,7 @@ module Xcodeproj
         def pretty_print
           if to_many_attributes.count == 1
             children = to_many_attributes.first.get_value(self)
-            {display_name => children.map(&:pretty_print)}
+            { display_name => children.map(&:pretty_print) }
           else
             display_name
           end
@@ -448,18 +445,18 @@ module Xcodeproj
         # @!group Object methods
 
         def ==(other)
-          other.is_a?(AbstractObject) && self.to_hash == other.to_hash
+          other.is_a?(AbstractObject) && to_hash == other.to_hash
         end
 
         def <=>(other)
-          self.uuid <=> other.uuid
+          uuid <=> other.uuid
         end
 
         def inspect
           optional = ''
-          optional << " name=`#{self.name}`" if respond_to?(:name) && self.name
-          optional << " path=`#{self.path}`" if respond_to?(:path) && self.path
-          "<#{self.isa}#{optional} UUID=`#{uuid}`>"
+          optional << " name=`#{name}`" if respond_to?(:name) && name
+          optional << " path=`#{path}`" if respond_to?(:path) && path
+          "<#{isa}#{optional} UUID=`#{uuid}`>"
         end
       end
     end
@@ -501,4 +498,3 @@ require 'xcodeproj/project/object/native_target'
 require 'xcodeproj/project/object/root_object'
 require 'xcodeproj/project/object/target_dependency'
 require 'xcodeproj/project/object/reference_proxy'
-

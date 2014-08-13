@@ -1,5 +1,4 @@
 module Xcodeproj
-
   class PlainInformative < StandardError
   end
 
@@ -21,7 +20,6 @@ module Xcodeproj
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
-
 
   # TODO: Delete me (compatibility with CocoaPods 0.33.1)
   def self.read_plist(path)

@@ -1,5 +1,4 @@
 module Xcodeproj
-
   # Computes the recursive diff of Hashes, Array and other objects.
   #
   # Useful to compare two projects. Inspired from
@@ -23,7 +22,6 @@ module Xcodeproj
   #
   #
   module Differ
-
     # Computes the recursive difference of two given values.
     #
     # @param  [Object] value_1
@@ -58,7 +56,7 @@ module Xcodeproj
       else
         method = :generic_diff
       end
-      self.send(method, value_1, value_2, options)
+      send(method, value_1, value_2, options)
     end
 
     # Optimized for reducing the noise from the tree hash of projects
@@ -209,7 +207,7 @@ module Xcodeproj
         when Hash
           clean_hash!(value, key)
         when Array
-          value.each { |entry| clean_hash!(entry, key) if entry.is_a?(Hash)}
+          value.each { |entry| clean_hash!(entry, key) if entry.is_a?(Hash) }
         end
       end
     end
@@ -237,7 +235,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end
-

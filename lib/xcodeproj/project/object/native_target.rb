@@ -1,9 +1,7 @@
 module Xcodeproj
   class Project
     module Object
-
       class AbstractTarget < AbstractObject
-
         # @!group Attributes
 
         # @return [String] The name of the Target.
@@ -31,7 +29,6 @@ module Xcodeproj
         #
         has_many :dependencies, PBXTargetDependency
 
-
         public
 
         # @!group Helpers
@@ -54,7 +51,7 @@ module Xcodeproj
         def resolved_build_setting(key)
           target_settings = build_configuration_list.get_setting(key)
           project_settings = project.build_configuration_list.get_setting(key)
-          target_settings.merge(project_settings) do |key, target_val, proj_val|
+          target_settings.merge(project_settings) do |_key, target_val, proj_val|
             target_val || proj_val
           end
         end
@@ -203,7 +200,7 @@ module Xcodeproj
               container_proxy.container_portal = project.root_object.uuid
             else
               subproject_reference = project.reference_for_path(target.project.path)
-              raise ArgumentError, "add_dependency got target that belongs to a project is not this project and is not a subproject of this project" unless subproject_reference
+              raise ArgumentError, 'add_dependency got target that belongs to a project is not this project and is not a subproject of this project' unless subproject_reference
               container_proxy.container_portal = subproject_reference.uuid
             end
             container_proxy.proxy_type = '1'
@@ -245,7 +242,6 @@ module Xcodeproj
           phase
         end
 
-
         public
 
         # @!group System frameworks
@@ -280,7 +276,7 @@ module Xcodeproj
               path_sdk_name = 'MacOSX'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
             else
-              raise "Unknown platform for target"
+              raise 'Unknown platform for target'
             end
 
             path = "Platforms/#{path_sdk_name}.platform/Developer/SDKs/#{path_sdk_name}#{path_sdk_version}.sdk/System/Library/Frameworks/#{name}.framework"
@@ -291,7 +287,7 @@ module Xcodeproj
             ref
           end
         end
-        alias :add_system_frameworks :add_system_framework
+        alias_method :add_system_frameworks, :add_system_framework
 
         # Adds a file reference for one or more system libraries to the project
         # if needed and adds them to the Frameworks build phases.
@@ -311,7 +307,7 @@ module Xcodeproj
             ref
           end
         end
-        alias :add_system_libraries :add_system_library
+        alias_method :add_system_libraries, :add_system_library
 
         public
 
@@ -329,7 +325,6 @@ module Xcodeproj
             }
           }
         end
-
       end
 
       #-----------------------------------------------------------------------#
@@ -337,7 +332,6 @@ module Xcodeproj
       # Represents a target handled by Xcode.
       #
       class PBXNativeTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [PBXBuildRule] the build rules of this target.
@@ -365,7 +359,6 @@ module Xcodeproj
         #
         has_many :build_phases, AbstractBuildPhase
 
-
         public
 
         # @!group Helpers
@@ -374,7 +367,7 @@ module Xcodeproj
         # @return [Symbol] The type of the target expressed as a symbol.
         #
         def symbol_type
-          pair = Constants::PRODUCT_TYPE_UTI.find { |key, value| value == product_type }
+          pair = Constants::PRODUCT_TYPE_UTI.find { |_key, value| value == product_type }
           return nil if pair.nil?
           pair.first
         end
@@ -397,7 +390,7 @@ module Xcodeproj
 
             extension = File.extname(file.path)
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
-            if (header_extensions.include?(extension))
+            if header_extensions.include?(extension)
               headers_build_phase.files << build_file
             else
               if compiler_flags && !compiler_flags.empty?
@@ -472,7 +465,7 @@ module Xcodeproj
         def frameworks_build_phase
           phase = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
           unless phase
-            phase= project.new(PBXFrameworksBuildPhase)
+            phase = project.new(PBXFrameworksBuildPhase)
             build_phases << phase
           end
           phase
@@ -493,7 +486,6 @@ module Xcodeproj
           phase
         end
 
-
         public
 
         # @!group AbstractObject Hooks
@@ -504,7 +496,7 @@ module Xcodeproj
         #
         # Build phases are not sorted as they order is relevant.
         #
-        def sort(options = nil)
+        def sort(_options = nil)
           attributes_to_sort = to_many_attributes.reject { |attr| attr.name == :build_phases }
           attributes_to_sort.each do |attrb|
             list = attrb.get_value(self)
@@ -522,7 +514,6 @@ module Xcodeproj
       # @todo Apparently it can't have build rules.
       #
       class PBXAggregateTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [PBXBuildRule] the build phases of the target.
@@ -531,8 +522,7 @@ module Xcodeproj
         #         PBXShellScriptBuildPhase can appear multiple times in a
         #         target.
         #
-        has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
-
+        has_many :build_phases, [PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase]
       end
 
       #-----------------------------------------------------------------------#
@@ -543,7 +533,6 @@ module Xcodeproj
       # present.
       #
       class PBXLegacyTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [String] e.g "Dir"
@@ -569,11 +558,9 @@ module Xcodeproj
         #         target.
         #
         has_many :build_phases, AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end

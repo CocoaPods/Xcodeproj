@@ -1,12 +1,11 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-def compare_elements a, b
+def compare_elements(a, b)
   a.attributes.should.be.equal b.attributes
   a.elements.count.should.be.equal b.elements.count
 end
 
 module ProjectSpecs
-
   describe Xcodeproj::XCScheme do
 
     before do
@@ -23,12 +22,12 @@ module ProjectSpecs
         @scheme.set_launch_target(app)
       end
 
-      it "indents declares the XML as Xcode" do
+      it 'indents declares the XML as Xcode' do
         @scheme.to_s.lines.first.chomp.should == '<?xml version="1.0" encoding="UTF-8"?>'
       end
 
       if RUBY_VERSION > '1.8.7'
-        it "indents the string representation as Xcode" do
+        it 'indents the string representation as Xcode' do
           require 'active_support/core_ext/string/strip.rb'
           @scheme.to_s[0..190].should == <<-DOC.strip_heredoc
           <?xml version="1.0" encoding="UTF-8"?>
@@ -43,7 +42,6 @@ module ProjectSpecs
       end
     end
 
-
     #-------------------------------------------------------------------------#
 
     describe 'Share a User Scheme' do
@@ -54,26 +52,25 @@ module ProjectSpecs
         project_path = File.join(temporary_directory, 'Cocoa Application.xcodeproj')
         FileUtils.cp_r fixture_path('Sample Project/Cocoa Application.xcodeproj'), temporary_directory
         FileUtils.rm_r File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')).should.be.false
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')).should.be.false
       end
-
 
       it 'When not exists a previous xcshareddata folder' do
         Xcodeproj::XCScheme.share_scheme(temporary_directory + 'Cocoa Application.xcodeproj', 'Cocoa ApplicationImporter', 'fabio')
 
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
       end
 
       it 'When already exists a previous xcshareddata folder' do
         Xcodeproj::XCScheme.share_scheme File.join(temporary_directory, 'Cocoa Application.xcodeproj'), 'Cocoa ApplicationImporter', 'fabio'
         Xcodeproj::XCScheme.share_scheme File.join(temporary_directory, 'Cocoa Application.xcodeproj'), 'iOS application', 'fabio'
 
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'iOS application.xcscheme')).should.be.true
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.true
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata', 'xcschemes', 'iOS application.xcscheme')).should.be.true
 
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
-        File.exists?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'iOS application.xcscheme')).should.be.false
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'Cocoa ApplicationImporter.xcscheme')).should.be.false
+        File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcuserdata', 'fabio.xcuserdatad', 'xcschemes', 'iOS application.xcscheme')).should.be.false
       end
 
     end
@@ -273,17 +270,17 @@ module ProjectSpecs
         it 'Scheme > ProfileAction > BuildableProductRunnable' do
           compare_elements @xml.root.elements['ProfileAction'] \
             .elements['BuildableProductRunnable'], \
-            @scheme.doc.root.elements['ProfileAction'] \
-            .elements['BuildableProductRunnable']
+                           @scheme.doc.root.elements['ProfileAction'] \
+                           .elements['BuildableProductRunnable']
         end
 
         it 'Scheme > ProfileAction > BuildableProductRunnable > BuildableReference' do
           compare_elements @xml.root.elements['ProfileAction'] \
             .elements['BuildableProductRunnable'] \
             .elements['BuildableReference'], \
-            @scheme.doc.root.elements['ProfileAction'] \
-            .elements['BuildableProductRunnable'] \
-            .elements['BuildableReference']
+                           @scheme.doc.root.elements['ProfileAction'] \
+                           .elements['BuildableProductRunnable'] \
+                           .elements['BuildableReference']
         end
 
         it 'Scheme > AnalyzeAction' do
@@ -460,13 +457,13 @@ module ProjectSpecs
         it 'Save as Shared Scheme' do
           result = @scheme.save_as(temporary_directory, 'iOS applicationTests', true)
           (result > 0).should.be.true
-          File.exists?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+          File.exist?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
 
         it 'Save as User Scheme' do
           result = @scheme.save_as(temporary_directory, 'iOS applicationTests', false)
           (result > 0).should.be.true
-          File.exists?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+          File.exist?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
 
       end
@@ -559,13 +556,13 @@ module ProjectSpecs
         it 'Save as Shared Scheme' do
           result = @scheme.save_as(temporary_directory, 'iOS applicationTests', true)
           (result > 0).should.be.true
-          File.exists?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+          File.exist?(File.join temporary_directory, 'xcshareddata', 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
 
         it 'Save as User Scheme' do
           result = @scheme.save_as(temporary_directory, 'iOS applicationTests', false)
           (result > 0).should.be.true
-          File.exists?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
+          File.exist?(File.join temporary_directory, 'xcuserdata', "#{ENV['USER']}.xcuserdatad", 'xcschemes', 'iOS applicationTests.xcscheme').should.be.true
         end
 
       end

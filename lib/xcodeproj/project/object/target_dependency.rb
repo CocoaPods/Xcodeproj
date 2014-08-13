@@ -1,11 +1,9 @@
 module Xcodeproj
   class Project
     module Object
-
       # Represents a dependency of a target on another one.
       #
       class PBXTargetDependency < AbstractObject
-
         # @!group Attributes
 
         # @return [PBXNativeTarget] the target that needs to be built to
@@ -28,7 +26,6 @@ module Xcodeproj
         #
         attribute :name, String
 
-
         public
 
         # @!group AbstractObject Hooks
@@ -47,7 +44,7 @@ module Xcodeproj
         #
         # @see AbstractObject#sort_recursively
         #
-        def sort_recursively(options = nil)
+        def sort_recursively(_options = nil)
         end
       end
     end

@@ -1,14 +1,12 @@
 module Xcodeproj
   class Project
     module Object
-
       # Apparently a proxy for a reference object which might belong another
       # project contained in the same workspace of the project document.
       #
       # This class is used for referencing the products of another project.
       #
       class PBXReferenceProxy < AbstractObject
-
         # @!group Attributes
 
         # @return [String] the path of the referenced filed.
@@ -46,9 +44,7 @@ module Xcodeproj
         end
 
         #---------------------------------------------------------------------#
-
       end
     end
   end
 end
-

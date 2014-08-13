@@ -1,9 +1,7 @@
 module Xcodeproj
-
   # Helper class which returns information from xcodebuild.
   #
   class XcodebuildHelper
-
     def initialize
       @needs_to_parse_sdks = true
     end
@@ -90,7 +88,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
-
 end

@@ -3,4 +3,3 @@ module Xcodeproj
   #
   VERSION = '0.18.0' unless defined? Xcodeproj::VERSION
 end
-

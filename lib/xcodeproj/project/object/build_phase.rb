@@ -1,13 +1,11 @@
 module Xcodeproj
   class Project
     module Object
-
       # @abstract
       #
       # This class is abstract and it doesn't appear in the project document.
       #
       class AbstractBuildPhase < AbstractObject
-
         # @!group Attributes
 
         # @return [ObjectList<PBXBuildFile>] the files processed by this build
@@ -128,8 +126,7 @@ module Xcodeproj
             remove_build_file(bf)
           end
         end
-        alias :clear_build_files :clear
-
+        alias_method :clear_build_files, :clear
       end
 
       #-----------------------------------------------------------------------#
@@ -140,7 +137,6 @@ module Xcodeproj
       # @note This phase can appear only once in a target.
       #
       class PBXHeadersBuildPhase < AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
@@ -151,7 +147,6 @@ module Xcodeproj
       # @note This phase can appear only once in a target.
       #
       class PBXSourcesBuildPhase < AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
@@ -162,7 +157,6 @@ module Xcodeproj
       # @note This phase can appear only once in a target.
       #
       class PBXFrameworksBuildPhase < AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
@@ -174,7 +168,6 @@ module Xcodeproj
       # @note This phase can appear only once in a target.
       #
       class PBXResourcesBuildPhase < AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
@@ -185,7 +178,6 @@ module Xcodeproj
       # @note This phase can appear multiple times in a target.
       #
       class PBXCopyFilesBuildPhase < AbstractBuildPhase
-
         # @!group Attributes
 
         # @return [String] the name of the build phase.
@@ -203,7 +195,6 @@ module Xcodeproj
         #         copied to.
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
-
       end
 
       #-----------------------------------------------------------------------#
@@ -213,7 +204,6 @@ module Xcodeproj
       # @note This phase can appear multiple times in a target.
       #
       class PBXShellScriptBuildPhase < AbstractBuildPhase
-
         # @!group Attributes
 
         # @return [String] the name of the build phase.
@@ -265,7 +255,6 @@ module Xcodeproj
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end
