@@ -375,6 +375,7 @@ module Xcodeproj
         #
         def symbol_type
           pair = Constants::PRODUCT_TYPE_UTI.find { |key, value| value == product_type }
+          return nil if pair.nil?
           pair.first
         end
 
