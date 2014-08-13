@@ -1,14 +1,11 @@
 require 'cfpropertylist'
 require 'open3'
 
-begin
-  require 'libxml'
-rescue LoadError
-  'Appease rubocop'
-end
-
 module Xcodeproj
   # Provides support for loading and serializing property list files.
+  #
+  # @note CFPropertyList will automatically pick up the `libxml` strategy or
+  #       other faster strategies, if their dependencies are available.
   #
   module PlistHelper
     class << self
