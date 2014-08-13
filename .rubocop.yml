@@ -1,6 +1,6 @@
 inherit_from:
  - .rubocop_todo.yml
- - .rubocop-cocoapods.yml
+ - .rubocop_cocoapods.yml
 
 #- Xcodeproj ------------------------------------------------------------------
 
