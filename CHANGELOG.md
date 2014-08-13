@@ -2,6 +2,11 @@
 
 ## Master
 
+* `Constants`: Support XCTest as product type and don't fail for
+  `PBXNativeTarget#symbol_type` on unknown product types.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#176](https://github.com/CocoaPods/Xcodeproj/pull/176)
+
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
   to produce output consistent with Xcode.  
   [Fabio Pelosin](https://github.com/irrationalfab)
