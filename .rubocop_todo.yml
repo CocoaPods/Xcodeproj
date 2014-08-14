@@ -9,10 +9,6 @@
 Style/BlockNesting:
   Max: 4
 
-# Offense count: 1
-Style/ClassAndModuleCamelCase:
-  Enabled: false
-
 # Offense count: 9
 # Configuration parameters: CountComments.
 Style/ClassLength:
