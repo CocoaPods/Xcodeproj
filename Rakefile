@@ -55,7 +55,6 @@ begin
     task :all do
       puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
       title 'Running the specs'
-      ENV['GENERATE_COVERAGE'] = 'true'
       sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
 
       Rake::Task['rubocop'].invoke if RUBY_VERSION >= '1.9.3'
