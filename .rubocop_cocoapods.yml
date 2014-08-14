@@ -1,10 +1,10 @@
 AllCops:
   Include:
-    - Rakefile
-    - Gemfile
+    - ./Rakefile
+    - ./Gemfile
     - ./*.gemspec
   Exclude:
-    - spec/fixtures/**/*
+    - ./spec/fixtures/**/*
 
 # At the moment not ready to be used
 # https://github.com/bbatsov/rubocop/issues/947
