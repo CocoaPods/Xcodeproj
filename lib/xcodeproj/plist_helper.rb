@@ -103,9 +103,10 @@ module Xcodeproj
       #         The path of the file.
       #
       def plutil_save(contents, path)
-        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, _stdout, _stderr|
+        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, stdout, _stderr|
           stdin.puts(contents)
           stdin.close
+          result = stdout.read # Make Ruby 1.8.7 wait
         end
       end
 

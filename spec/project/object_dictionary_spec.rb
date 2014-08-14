@@ -14,7 +14,8 @@ module ProjectSpecs
 
     describe 'In general' do
       it 'returns the list of the allowed keys' do
-        @dictionary.allowed_keys.should == [:project_ref, :product_group]
+        @dictionary.allowed_keys.map(&:to_s).sort.should ==
+          %w(product_group project_ref)
       end
     end
 
