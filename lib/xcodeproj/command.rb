@@ -83,7 +83,7 @@ module Xcodeproj
     rescue => e
       puts e.message
       unless e.is_a?(Informative) || e.is_a?(Help)
-        puts *e.backtrace
+        puts e.backtrace
       end
       exit 1
     end
@@ -101,11 +101,11 @@ module Xcodeproj
       String.send(:define_method, :colorize) { |string, _| string } if argv.option('--no-color')
 
       command_class = case command_argument = argv.shift_argument
-      when 'target-diff'  then TargetDiff
-      when 'project-diff' then ProjectDiff
-      when 'show'         then Show
-      when 'sort'         then Sort
-      end
+                      when 'target-diff'  then TargetDiff
+                      when 'project-diff' then ProjectDiff
+                      when 'show'         then Show
+                      when 'sort'         then Sort
+                      end
 
       if command_class.nil?
         raise Help.new(self, argv, command_argument)

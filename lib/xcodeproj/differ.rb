@@ -136,8 +136,8 @@ module Xcodeproj
           end
         end
 
-        new_objects_value_1 = new_objects_value_1 - matched_value_1
-        new_objects_value_2 = new_objects_value_2 - matched_value_2
+        new_objects_value_1 -= matched_value_1
+        new_objects_value_2 -= matched_value_2
       end
 
       if new_objects_value_1.empty? && new_objects_value_2.empty?

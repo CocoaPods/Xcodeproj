@@ -56,7 +56,6 @@ module ProjectSpecs
       end
 
       it 'clears itself informing objects that they have been removed from the list' do
-        before_count = @list.count
         before_ref_counts = {}
         objects = @list.objects
         objects.each { |obj| before_ref_counts[obj] = obj.referrers.count }

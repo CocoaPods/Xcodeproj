@@ -300,11 +300,12 @@ module Xcodeproj
         def add_system_library(names)
           Array(names).each do |name|
             path = "usr/lib/lib#{name}.dylib"
-            unless ref = project.frameworks_group.files.find { |ref| ref.path == path }
-              ref = project.frameworks_group.new_file(path, :sdk_root)
+            files = project.frameworks_group.files
+            unless reference = files.find { |ref| ref.path == path }
+              reference = project.frameworks_group.new_file(path, :sdk_root)
             end
-            frameworks_build_phase.add_file_reference(ref, true)
-            ref
+            frameworks_build_phase.add_file_reference(reference, true)
+            reference
           end
         end
         alias_method :add_system_libraries, :add_system_library

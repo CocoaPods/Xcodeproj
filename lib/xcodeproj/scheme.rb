@@ -44,7 +44,7 @@ module Xcodeproj
       @launch_action.attributes['ignoresPersistentStateOnLaunch'] = 'NO'
       @launch_action.attributes['debugDocumentVersioning'] = 'YES'
       @launch_action.attributes['allowLocationSimulation'] = 'YES'
-      additional_options = @launch_action.add_element 'AdditionalOptions'
+      @launch_action.add_element('AdditionalOptions')
 
       @profile_action = @scheme.add_element 'ProfileAction'
       @profile_action.attributes['shouldUseLaunchSchemeArgsEnv'] = 'YES'
@@ -74,7 +74,7 @@ module Xcodeproj
     #        Whether to build this target in the launch action. Often false for test targets.
     #
     def add_build_target(build_target, build_for_running = true)
-      unless @build_action_entries then
+      unless @build_action_entries
         @build_action_entries = @build_action.add_element 'BuildActionEntries'
       end
 
@@ -256,11 +256,11 @@ module Xcodeproj
         output << '>'
 
         output << "\n"
-        node.children.each { |child|
-          next if child.is_a?(REXML::Text) and child.to_s.strip.length == 0
+        node.children.each do |child|
+          next if child.is_a?(REXML::Text) && child.to_s.strip.length == 0
           write(child, output)
           output << "\n"
-        }
+        end
         @level -= @indentation
         output << ' ' * @level
         output << "</#{node.expanded_name}>"

@@ -23,13 +23,13 @@ module Xcodeproj
           #
           def new_reference(group, path, source_tree)
             ref = case File.extname(path).downcase
-            when '.xcdatamodeld'
-              ref = new_xcdatamodeld(group, path, source_tree)
-            when '.xcodeproj'
-              ref = new_subproject(group, path, source_tree)
-            else
-              ref = new_file_reference(group, path, source_tree)
-            end
+                  when '.xcdatamodeld'
+                    new_xcdatamodeld(group, path, source_tree)
+                  when '.xcodeproj'
+                    new_subproject(group, path, source_tree)
+                  else
+                    new_file_reference(group, path, source_tree)
+                  end
 
             configure_defaults_for_file_reference(ref)
             ref
@@ -136,8 +136,7 @@ module Xcodeproj
             if path.exist?
               path.children.each do |child_path|
                 if File.extname(child_path) == '.xcdatamodel'
-                  child_ref = new_file_reference(ref, child_path, :group)
-                  last_child_ref = child_ref
+                  new_file_reference(ref, child_path, :group)
                 elsif File.basename(child_path) == '.xccurrentversion'
                   full_path = path + File.basename(child_path)
                   xccurrentversion = Xcodeproj::PlistHelper.read(full_path)
@@ -199,7 +198,7 @@ module Xcodeproj
               product_group_ref << reference_proxy
             end
 
-            attribute = PBXProject.references_by_keys_attributes.find { |attribute| attribute.name == :project_references }
+            attribute = PBXProject.references_by_keys_attributes.find { |attrb| attrb.name == :project_references }
             project_reference = ObjectDictionary.new(attribute, group.project.root_object)
             project_reference[:project_ref] = ref
             project_reference[:product_group] = product_group_ref

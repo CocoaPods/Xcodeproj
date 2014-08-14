@@ -377,9 +377,7 @@ module Xcodeproj
     # @return [String] A UUID unique to the project.
     #
     def generate_uuid
-      while @available_uuids.empty?
-        generate_available_uuid_list
-      end
+      generate_available_uuid_list while @available_uuids.empty?
       @available_uuids.shift
     end
 

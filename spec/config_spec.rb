@@ -30,7 +30,7 @@ describe Xcodeproj::Config do
 
     it 'does not modifies the hash used for initialization' do
       original = @hash.dup
-      config = Xcodeproj::Config.new(@hash)
+      Xcodeproj::Config.new(@hash)
       @hash.should.be.equal original
     end
 

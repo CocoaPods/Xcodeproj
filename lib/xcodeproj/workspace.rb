@@ -122,7 +122,6 @@ module Xcodeproj
     end
 
     private
-    #-------------------------------------------------------------------------#
 
     # Load all schemes from project
     #

@@ -64,6 +64,9 @@ DotPosition:
 EachWithObject:
   Enabled: false
 
+Style/SpecialGlobalVars:
+  Enabled: false
+
 #- CocoaPods specs -----------------------------------------------------------#
 
 # Allow for `should.match /regexp/`.

@@ -60,8 +60,8 @@ module Xcodeproj
       #
       # @return [void]
       #
-      def +(objects)
-        perform_additions_operations(objects)
+      def +(other)
+        perform_additions_operations(other)
         super
       end
 

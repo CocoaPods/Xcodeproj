@@ -91,7 +91,8 @@ module ProjectSpecs
       @group.new_group('group1').new_group('1')
       @group.new_group('group2').new_group('2')
       groups = @group.recursive_children.map(&:display_name).sort
-      groups.should == ['1', '2', 'Abracadabra.h', 'Abracadabra.m', 'Banana.h', 'Banana.m', 'ZappMachine', 'group1', 'group2']    end
+      groups.should == ['1', '2', 'Abracadabra.h', 'Abracadabra.m', 'Banana.h', 'Banana.m', 'ZappMachine', 'group1', 'group2']
+    end
 
     it 'returns whether it is empty' do
       @group.should.not.be.empty

@@ -53,7 +53,7 @@ module Xcodeproj
 
         # Frameworks
         framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
-        framework_ref = target.add_system_framework(framework_name)
+        target.add_system_framework(framework_name)
 
         target
       end
@@ -98,7 +98,6 @@ module Xcodeproj
         debug_conf.build_settings = build_settings
         cl.build_configurations << release_conf
         cl.build_configurations << debug_conf
-        cl
         target.build_configuration_list = cl
 
         # Product

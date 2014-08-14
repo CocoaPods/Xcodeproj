@@ -49,7 +49,6 @@ module ProjectSpecs
       extend SpecHelper::TemporaryDirectory
 
       before do
-        project_path = File.join(temporary_directory, 'Cocoa Application.xcodeproj')
         FileUtils.cp_r fixture_path('Sample Project/Cocoa Application.xcodeproj'), temporary_directory
         FileUtils.rm_r File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')
         File.exist?(File.join(temporary_directory, 'Cocoa Application.xcodeproj', 'xcshareddata')).should.be.false

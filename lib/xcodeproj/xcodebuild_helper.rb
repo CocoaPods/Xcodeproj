@@ -73,8 +73,6 @@ module Xcodeproj
       `xcodebuild -showsdks 2>/dev/null`
     end
 
-    public
-
     #-------------------------------------------------------------------------#
 
     # @!group Singleton

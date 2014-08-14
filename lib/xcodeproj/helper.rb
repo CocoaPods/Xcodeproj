@@ -14,15 +14,16 @@ module Xcodeproj
       end
 
       # @return [Array<PBXBuildFile>] A list of source files (that will be
-      #   compiled) which are in ‘target 2’ but not in ‘target 1’. The list is
-      #   sorted by file path.
+      #         compiled) which are in ‘target 2’ but not in ‘target 1’. The
+      #         list is sorted by file path.
       #
       def new_source_build_files
-        @target2.source_build_phase.files.reject do |target2_build_file|
+        new = @target2.source_build_phase.files.reject do |target2_build_file|
           @target1.source_build_phase.files.any? do |target1_build_file|
             target1_build_file.file_ref.path == target2_build_file.file_ref.path
           end
-        end.sort_by { |build_file| build_file.file_ref.path }
+        end
+        new.sort_by { |build_file| build_file.file_ref.path }
       end
     end
   end

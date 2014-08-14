@@ -12,7 +12,6 @@ module Xcodeproj
       #         The other linker flags value.
       #
       def self.parse(flags)
-        flags
         result = {
           :frameworks => [],
           :weak_frameworks => [],
@@ -50,9 +49,6 @@ module Xcodeproj
       #         The other linker flags value.
       #
       def self.split(flags)
-        result = []
-        quotes_accumulator = nil
-
         flags.strip.shellsplit.map do |string|
           if string =~ /\A-l.+/
             ['-l', string[2..-1]]
