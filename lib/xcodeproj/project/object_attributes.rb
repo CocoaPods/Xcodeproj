@@ -320,6 +320,8 @@ module Xcodeproj
             end
           end
 
+          # rubocop:disable Style/PredicateName
+
           # Defines a new relationship to a single and synthesises the
           # corresponding methods.
           #
@@ -428,6 +430,8 @@ module Xcodeproj
               list
             end
           end
+
+          # rubocop:enable Style/PredicateName
 
           protected
 
