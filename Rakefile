@@ -58,7 +58,10 @@ begin
       ENV['GENERATE_COVERAGE'] = 'true'
       sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
 
-      Rake::Task['rubocop'].invoke if RUBY_VERSION >= '1.9.3'
+      # TODO: temporary solution
+      unless ENV['TRAVIS'] == 'true'
+        Rake::Task['rubocop'].invoke if RUBY_VERSION >= '1.9.3'
+      end
     end
 
     desc 'Automatically run specs'
