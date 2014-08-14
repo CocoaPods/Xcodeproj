@@ -58,7 +58,7 @@ begin
       ENV['GENERATE_COVERAGE'] = 'true'
       sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
 
-      Rake::Task['rubocop'].invoke
+      Rake::Task['rubocop'].invoke if RUBY_VERSION >= '1.9.3'
     end
 
     desc 'Automatically run specs'
@@ -77,19 +77,11 @@ begin
 
   task :default => :spec
 
-  # RuboCop
-  #---------------------------------------------------------------------------#
+  #-- RuboCop ----------------------------------------------------------------#
 
-  desc 'Checks code style'
-  task :rubocop do
-    if RUBY_VERSION >= '1.9.3'
-      require 'rubocop'
-      cli = RuboCop::CLI.new
-      result = cli.run
-      abort('RuboCop failed!') unless result == 0
-    else
-      puts '[!] Ruby > 1.9 is required to run style checks'
-    end
+  if RUBY_VERSION >= '1.9.3'
+    require 'rubocop/rake_task'
+    RuboCop::RakeTask.new
   end
 
 rescue LoadError
