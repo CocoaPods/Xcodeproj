@@ -2,16 +2,14 @@
 
 ## Master
 
-* `Constants`: Support XCTest as product type and don't fail for
-  `PBXNativeTarget#symbol_type` on unknown product types.  
-  [Marius Rackwitz](https://github.com/mrackwitz)
-  [Xcodeproj#176](https://github.com/CocoaPods/Xcodeproj/pull/176)
-
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
   to produce output consistent with Xcode.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
-* `Config`: The config class now handles properly quotes in `OTHER_LDFLAGS`.  
+* `Project`: Added support for adding file references to sub-projects.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* `Config`: The config class now properly handles quotes in `OTHER_LDFLAGS`.  
   [Fabio Pelosin](https://github.com/irrationalfab)
 
 * `PBXGroup`: Now file references to Xcode projects are properly handled and
@@ -19,6 +17,28 @@
   used to edit the attributes using it.
   [Fabio Pelosin](https://github.com/irrationalfab)
   [Xcodeproj#172](https://github.com/CocoaPods/Xcodeproj/pull/172)
+
+* `Constants`: Support XCTest as product type and don't fail for
+  `PBXNativeTarget#symbol_type` on unknown product types.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#176](https://github.com/CocoaPods/Xcodeproj/pull/176)
+
+* `Workspace`: Now a template is used to produce the same formatting of Xcode.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* `Project`: Improved validation of object attributes.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* `Project`: Completed support for dictionaries.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+* `Project`: Added possibility to disable `xcproj` via an environment variable.  
+  [Fabio Pelosin](https://github.com/irrationalfab)
+
+###### Bug Fixes
+
+* `Project`: Fixed reference counting issue when deleting sub-projects.
+
 
 ## 0.18.0
 
