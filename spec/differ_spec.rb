@@ -77,7 +77,7 @@ module Xcodeproj
         diff = Differ.array_diff(v1, v2, options)
         diff.should == {
           'v1' => [{ :key => 'value_1' }],
-          'v2' => [{ :key => 'value_2' }]
+          'v2' => [{ :key => 'value_2' }],
         }
       end
 
@@ -173,7 +173,7 @@ module Xcodeproj
             'displayName' => 'Main Group', 'isa' => 'PBXGroup', 'sourceTree' => '<group>',
             'children' => [
               { 'displayName' => 'A Group', 'isa' => 'PBXGroup', 'sourceTree' => '<group>', 'name' => 'Products', 'children' =>                [
-                { 'displayName' => 'file_1.m', 'isa' => 'PBXFileReference', 'path' => 'path/file_1.m' }
+                { 'displayName' => 'file_1.m', 'isa' => 'PBXFileReference', 'path' => 'path/file_1.m' },
               ]
             },
             ]
@@ -185,7 +185,7 @@ module Xcodeproj
             'displayName' => 'Main Group', 'isa' => 'PBXGroup', 'sourceTree' => '<group>',
             'children' => [
               { 'displayName' => 'A Group', 'isa' => 'PBXGroup', 'sourceTree' => '<group>', 'name' => 'Products', 'children' =>                [
-                { 'displayName' => 'file_1.m', 'isa' => 'PBXFileReference', 'path' => 'new_path/file_1.m' }
+                { 'displayName' => 'file_1.m', 'isa' => 'PBXFileReference', 'path' => 'new_path/file_1.m' },
               ]
             },
             ]
@@ -201,12 +201,12 @@ module Xcodeproj
                   'file_1.m' => {
                     'path' => {
                       'project_1' => 'path/file_1.m',
-                      'project_2' => 'new_path/file_1.m' }
-                  }
-                }
-              }
-            }
-          }
+                      'project_2' => 'new_path/file_1.m' },
+                  },
+                },
+              },
+            },
+          },
         }
       end
 
@@ -228,12 +228,12 @@ module Xcodeproj
       v1.recursive_diff(v2).should == {
         :changed => {
           'self'  => 'v1',
-          'other' => 'v2'
+          'other' => 'v2',
         },
         :addition => {
           'self'  => nil,
-          'other' => 'new_value'
-        }
+          'other' => 'new_value',
+        },
       }
     end
 

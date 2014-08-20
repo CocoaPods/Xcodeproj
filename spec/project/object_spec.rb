@@ -107,7 +107,7 @@ module ProjectSpecs
 
       before do
         @objects_by_uuid_plist = {
-          'uuid' => { 'name' => 'MyFile', 'isa' => 'PBXFileReference' }
+          'uuid' => { 'name' => 'MyFile', 'isa' => 'PBXFileReference' },
         }
         @object = PBXFileReference.new(@project, 'uuid')
       end
@@ -122,7 +122,7 @@ module ProjectSpecs
         uuid_group = 'group_uuid'
         objects_by_uuid_plist = {
           uuid_file  => { 'name' => 'MyFile', 'isa' => 'PBXFileReference' },
-          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' }
+          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' },
         }
 
         group = PBXGroup.new(@project, uuid_group)
@@ -135,7 +135,7 @@ module ProjectSpecs
         uuid_group = 'group_uuid'
         objects_by_uuid_plist = {
           uuid_file  => { 'name' => 'MyFile', 'isa' => 'PBXFileReference' },
-          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' }
+          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' },
         }
 
         file = PBXFileReference.new(@project, uuid_file)
@@ -152,7 +152,7 @@ module ProjectSpecs
         uuid_file  = 'file_uuid'
         uuid_group = 'group_uuid'
         objects_by_uuid_plist = {
-          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' }
+          uuid_group => { 'children' => [uuid_file], 'isa' => 'PBXGroup' },
         }
         STDERR.expects(:puts)
         group = PBXGroup.new(@project, uuid_group)
@@ -205,7 +205,7 @@ module ProjectSpecs
           'path' => 'Classes/file.m',
           'sourceTree' => '<group>',
           'lastKnownFileType' => 'sourcecode.c.objc',
-          'includeInIndex' => '1'
+          'includeInIndex' => '1',
         }
         children = @group.to_tree_hash['children'].map { |child| child['name'] || child['path'] }
         children.should == ['Products', 'Frameworks', 'file.m']
@@ -217,8 +217,8 @@ module ProjectSpecs
           'Main Group' => [
             { 'Products' => [] },
             { 'Frameworks' => [] },
-            'file.m'
-          ]
+            'file.m',
+          ],
         }
       end
 

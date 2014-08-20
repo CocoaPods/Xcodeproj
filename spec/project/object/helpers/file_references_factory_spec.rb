@@ -153,7 +153,7 @@ module ProjectSpecs
 
       it 'populates the children if the given path exists' do
         Pathname.any_instance.stubs(:exist?).returns(true)
-        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),])
+        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel')])
         ref = @factory.send(:new_xcdatamodeld, @group, 'Model.xcdatamodeld', :group)
         ref.children.count.should == 2
         ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']
@@ -163,7 +163,7 @@ module ProjectSpecs
 
       it 'sets the group as the source tree of the children' do
         Pathname.any_instance.stubs(:exist?).returns(true)
-        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel'),])
+        Pathname.any_instance.stubs(:children).returns([Pathname.new('Model.xcdatamodel'), Pathname.new('Model 2.xcdatamodel')])
         ref = @factory.send(:new_xcdatamodeld, @group, 'Model.xcdatamodeld', :group)
         ref.children.map(&:source_tree).uniq.should == ['<group>']
         ref.children.map(&:path).should == ['Model.xcdatamodel', 'Model 2.xcdatamodel']

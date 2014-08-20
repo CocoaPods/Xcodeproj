@@ -322,8 +322,8 @@ module Xcodeproj
           {
             display_name => {
               'Build Phases' => build_phases.map(&:pretty_print),
-              'Build Configurations' => build_configurations.map(&:pretty_print)
-            }
+              'Build Configurations' => build_configurations.map(&:pretty_print),
+            },
           }
         end
       end

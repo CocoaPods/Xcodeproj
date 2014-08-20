@@ -57,7 +57,7 @@ module Xcodeproj
       'PBXGroup' => %w(
         XCVersionGroup
         PBXVariantGroup
-      )
+      ),
     }.freeze
 
     # @return [Array] The list of the super classes for each ISA.
@@ -213,7 +213,7 @@ module Xcodeproj
       :frameworks         => '10',
       :shared_frameworks  => '11',
       :shared_support     => '12',
-      :plug_ins           => '13'
+      :plug_ins           => '13',
     }.freeze
 
     # @return [Hash] The extensions which are associated with header files.

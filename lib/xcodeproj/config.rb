@@ -93,12 +93,12 @@ module Xcodeproj
       modifiers = {
         :frameworks => '-framework',
         :weak_frameworks => '-weak_framework',
-        :libraries => '-l'
+        :libraries => '-l',
       }
       [:libraries, :frameworks, :weak_frameworks].each do |key|
         modifier = modifiers[key]
         sorted = other_linker_flags[key].to_a.sort
-        list += sorted.map { |l| %Q(#{modifier} "#{l}") }
+        list += sorted.map { |l| %(#{modifier} "#{l}") }
       end
 
       result = attributes.dup

@@ -374,7 +374,7 @@ module ProjectSpecs
         pretty_print = @target.pretty_print
         pretty_print['Pods']['Build Phases'].should == [
           { 'SourcesBuildPhase' => [] },
-          { 'FrameworksBuildPhase' => ['Foundation.framework'] }
+          { 'FrameworksBuildPhase' => ['Foundation.framework'] },
         ]
         build_configurations = pretty_print['Pods']['Build Configurations']
         build_configurations.map { |bf| bf.keys.first } .should == %w(Release Debug)

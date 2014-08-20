@@ -168,7 +168,7 @@ module Xcodeproj
           build_settings = {
             'PRODUCT_NAME' => '$(TARGET_NAME)',
             'WRAPPER_EXTENSION' => 'bundle',
-            'SKIP_INSTALL' => 'YES'
+            'SKIP_INSTALL' => 'YES',
           }
 
           if platform == :osx

@@ -63,7 +63,7 @@ module ProjectSpecs
         @attribute.classes = [PBXFileReference, PBXGroup]
         @attribute.classes_by_key = {
           :project_ref   => PBXFileReference,
-          :product_group => PBXGroup
+          :product_group => PBXGroup,
         }
       end
 

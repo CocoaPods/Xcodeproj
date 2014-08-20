@@ -28,7 +28,7 @@ module Xcodeproj
           PBXGroup,
           PBXVariantGroup,
           XCVersionGroup,
-          PBXReferenceProxy
+          PBXReferenceProxy,
         ]
 
         #---------------------------------------------------------------------#

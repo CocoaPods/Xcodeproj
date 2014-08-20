@@ -110,7 +110,7 @@ module ProjectSpecs
           'string' => 'string',
           'true_bool' => true,
           'false_bool' => false,
-          'array'  => ['string in an array', { 'a hash' => 'in an array' }]
+          'array'  => ['string in an array', { 'a hash' => 'in an array' }],
         }
         Xcodeproj::PlistHelper.write(hash, @plist)
         Xcodeproj::PlistHelper.read(@plist).should == hash

@@ -48,7 +48,7 @@ module ProjectSpecs
         @build_file.settings = {}
         @build_file.settings['COMPILER_FLAGS'] = '-Wno-format'
         @build_file.pretty_print.should == {
-          'Class.m' => { 'COMPILER_FLAGS' => '-Wno-format' }
+          'Class.m' => { 'COMPILER_FLAGS' => '-Wno-format' },
         }
       end
 

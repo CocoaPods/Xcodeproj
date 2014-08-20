@@ -73,7 +73,7 @@ describe Xcodeproj::Config do
       @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
       @config.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
     end
 
@@ -81,7 +81,7 @@ describe Xcodeproj::Config do
       @config << { 'HEADER_SEARCH_PATHS' => '/some/path' }
       @config.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
     end
 
@@ -90,7 +90,7 @@ describe Xcodeproj::Config do
       new.object_id.should.not == @config.object_id
       new.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
       @config.should == { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
     end
@@ -98,7 +98,7 @@ describe Xcodeproj::Config do
     it 'appends a value for the same key when merging' do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.should == {
-        'OTHER_LDFLAGS' => '-l "xml2.2.7.3" -framework "Foundation"'
+        'OTHER_LDFLAGS' => '-l "xml2.2.7.3" -framework "Foundation"',
       }
     end
 
@@ -118,7 +118,7 @@ describe Xcodeproj::Config do
       @config.save_as(temporary_directory + 'Pods.xcconfig')
       (temporary_directory + 'Pods.xcconfig').read.split("\n").sort.should == [
         'OTHER_LDFLAGS = -l "xml2.2.7.3" -framework "Foundation"',
-        'HEADER_SEARCH_PATHS = /some/path'
+        'HEADER_SEARCH_PATHS = /some/path',
       ].sort
     end
 
@@ -134,7 +134,7 @@ describe Xcodeproj::Config do
         'Key1' => 'Value1 Value2',
         'Key2' => 'Value3 Value4 Value5',
         'Key3' => 'Value6',
-        'Key4' => ''
+        'Key4' => '',
       }
     end
 

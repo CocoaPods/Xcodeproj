@@ -7,7 +7,7 @@ module ProjectSpecs
       attribute.classes = [PBXFileReference, PBXGroup]
       attribute.classes_by_key = {
         :project_ref   => PBXFileReference,
-        :product_group => PBXGroup
+        :product_group => PBXGroup,
       }
       @dictionary = Xcodeproj::Project::ObjectDictionary.new(attribute, @project.root_object)
     end
@@ -94,15 +94,15 @@ module ProjectSpecs
             'name' => 'A project',
             'path' => 'A path',
             'sourceTree' => 'SOURCE_ROOT',
-            'includeInIndex' => '1'
+            'includeInIndex' => '1',
           },
           'ProductGroup' => {
             'displayName' => 'Products',
             'isa' => 'PBXGroup',
             'sourceTree' => '<group>',
             'name' => 'Products',
-            'children' => []
-          }
+            'children' => [],
+          },
         }
       end
     end

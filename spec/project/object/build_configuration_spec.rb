@@ -38,10 +38,10 @@ module ProjectSpecs
         @configuration.pretty_print.should == {
           'Release' => {
             'Build Settings' => {
-              'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES'
+              'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES',
             },
-            'Base Configuration' => 'file.xcconfig'
-          }
+            'Base Configuration' => 'file.xcconfig',
+          },
         }
       end
 

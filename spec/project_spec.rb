@@ -273,7 +273,7 @@ module ProjectSpecs
         expected = {
           'isa'            => 'PBXFileReference',
           'sourceTree'     => 'SOURCE_ROOT',
-          'includeInIndex' => '1'
+          'includeInIndex' => '1',
         }
         obj.to_hash.should == expected
       end
@@ -309,7 +309,7 @@ module ProjectSpecs
           'Main Group',
           'Products',
           'Project',
-          'Release'
+          'Release',
         ]
         @project.objects.map(&:display_name).sort.should == expected
       end
@@ -409,8 +409,8 @@ module ProjectSpecs
         diff.should == {
           'rootObject' => { 'mainGroup' => { 'children' => {
             'project_2' => [
-              { 'displayName' => 'Pods', 'isa' => 'PBXGroup', 'sourceTree' => '<group>', 'name' => 'Pods', 'children' => [] }
-            ]
+              { 'displayName' => 'Pods', 'isa' => 'PBXGroup', 'sourceTree' => '<group>', 'name' => 'Pods', 'children' => [] },
+            ],
           } } } }
       end
 
@@ -420,10 +420,10 @@ module ProjectSpecs
         pretty_print.should == {
           'File References' => [
             { 'Products' => [] },
-            { 'Frameworks' => [] }
+            { 'Frameworks' => [] },
           ],
           'Targets' => [],
-          'Build Configurations' => []
+          'Build Configurations' => [],
         }
       end
     end

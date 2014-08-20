@@ -164,7 +164,7 @@ module Xcodeproj
 
       {
         options[:key_1] => value_1,
-        options[:key_2] => value_2
+        options[:key_2] => value_2,
       }
     end
 

@@ -97,7 +97,7 @@ module ProjectSpecs
         PBXFrameworksBuildPhase,
         PBXResourcesBuildPhase,
         PBXCopyFilesBuildPhase,
-        PBXShellScriptBuildPhase
+        PBXShellScriptBuildPhase,
       ]
       concrete_classes.each do |klass|
         (klass < AbstractBuildPhase).should.be.true
