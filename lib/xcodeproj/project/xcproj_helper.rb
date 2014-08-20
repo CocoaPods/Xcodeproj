@@ -41,7 +41,7 @@ module Xcodeproj
         #
         def execute(command)
           output = `#{command} 2>&1`
-          success = $CHILD_STATUS.exitstatus.zero?
+          success = $?.exitstatus.zero?
           [success, output]
         end
 
