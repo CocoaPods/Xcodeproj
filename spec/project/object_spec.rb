@@ -34,7 +34,7 @@ module ProjectSpecs
       it 'can remove itself from the project' do
         @object.remove_from_project
         @object.referrers.count.should == 0
-        @project.objects_by_uuid[@object.uuid].should.be.nil
+        @project.object_with_uuid(@object.uuid).should.be.nil
       end
 
       it 'removes the itself from referred objects' do
@@ -43,7 +43,7 @@ module ProjectSpecs
 
         group.remove_from_project
         file.referrers.count.should == 0
-        @project.objects_by_uuid[file.uuid].should.be.nil
+        @project.object_with_uuid(file.uuid).should.be.nil
       end
 
       it 'maintains the list of referrers' do
@@ -69,17 +69,17 @@ module ProjectSpecs
         uuid = 'uuid'
         f = PBXFileReference.new(@project, uuid)
         f.referrers.count.should == 0
-        @project.objects_by_uuid[uuid].should.be.nil
+        @project.object_with_uuid(uuid).should.be.nil
         f.add_referrer(group)
         f.referrers.count.should == 1
-        @project.objects_by_uuid[uuid].should == f
+        @project.object_with_uuid(uuid).should == f
       end
 
       it 'removes itself from the project objects when it has no referrers' do
         group = @object.referrers.first
         @object.remove_referrer(group)
         @object.referrers.count.should == 0
-        @project.objects_by_uuid[@object.uuid].should.be.nil
+        @project.object_with_uuid(@object.uuid).should.be.nil
       end
 
       it 'can remove any reference to another object' do

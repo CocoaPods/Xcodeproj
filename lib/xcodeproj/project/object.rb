@@ -98,7 +98,7 @@ module Xcodeproj
         # @return [void]
         #
         def remove_from_project
-          project.objects_by_uuid.delete(uuid)
+          project.objects.delete(self)
 
           referrers.dup.each do |referrer|
             referrer.remove_reference(self)
@@ -200,7 +200,7 @@ module Xcodeproj
         #
         def add_referrer(referrer)
           @referrers << referrer
-          @project.objects_by_uuid[uuid] = self
+          @project.objects << self
         end
 
         # Informs the object that another object stopped referencing it. If the
@@ -214,7 +214,7 @@ module Xcodeproj
         def remove_referrer(referrer)
           @referrers.delete(referrer)
           if @referrers.count == 0
-            @project.objects_by_uuid.delete(uuid)
+            @project.objects.delete(self)
           end
         end
 
@@ -334,7 +334,9 @@ module Xcodeproj
         # @visibility private
         #
         def object_with_uuid(uuid, objects_by_uuid_plist, attribute)
-          unless object = project.objects_by_uuid[uuid] || project.new_from_plist(uuid, objects_by_uuid_plist)
+          object = project.objects.find { |object| object.uuid == uuid }
+          object ||= project.new_from_plist(uuid, objects_by_uuid_plist)
+          unless object
             UI.warn "`#{inspect}` attempted to initialize an object with " \
               "an unknown UUID. `#{uuid}` for attribute: " \
               "`#{attribute.name}`. This can be the result of a merge and  " \

@@ -55,7 +55,7 @@ module Xcodeproj
     #
     def initialize(path, skip_initialization = false)
       @path = Pathname.new(path).expand_path
-      @objects_by_uuid = {}
+      @objects = []
       @generated_uuids = []
       @available_uuids = []
       unless skip_initialization
@@ -105,10 +105,9 @@ module Xcodeproj
     #
     attr_reader :object_version
 
-    # @return [Hash{String => AbstractObject}] A hash containing all the
-    #         objects of the project by UUID.
+    # @return [Array<AbstractObject>] all the objects of the project.
     #
-    attr_reader :objects_by_uuid
+    attr_reader :objects
 
     # @return [PBXProject] the root object of the project.
     #
@@ -414,16 +413,25 @@ module Xcodeproj
     # @!group Convenience accessors
     #-------------------------------------------------------------------------#
 
-    # @return [Array<AbstractObject>] all the objects of the project.
-    #
-    def objects
-      objects_by_uuid.values
-    end
-
     # @return [Array<String>] all the UUIDs of the project.
     #
+    # @note   In Xcodeproj objects might not have an assigned UUID until the
+    #         project is saved.
+    #
     def uuids
-      objects_by_uuid.keys
+      objects.map(&:uuid).compact
+    end
+
+    # @return [AbstractObject] The object with the given UUID.
+    #
+    # @param  [String] uuid
+    #         The UUID to search for.
+    #
+    # @note   In Xcodeproj objects might not have an assigned UUID until the
+    #         project is saved.
+    #
+    def object_with_uuid(uuid)
+      objects.find { |object| object.uuid == uuid }
     end
 
     # @return [Array<AbstractObject>] all the objects of the project with a

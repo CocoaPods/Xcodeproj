@@ -147,10 +147,10 @@ module ProjectSpecs
       @group.remove_children_recursively
       @group.children.count.should == 0
 
-      @project.objects_by_uuid[group1.uuid].should.nil?
-      @project.objects_by_uuid[group2.uuid].should.nil?
-      @project.objects_by_uuid[file1.uuid].should.nil?
-      @project.objects_by_uuid[file2.uuid].should.nil?
+      @project.object_with_uuid(group1.uuid).should.nil?
+      @project.object_with_uuid(group2.uuid).should.nil?
+      @project.object_with_uuid(file1.uuid).should.nil?
+      @project.object_with_uuid(file2.uuid).should.nil?
     end
 
     #----------------------------------------#
