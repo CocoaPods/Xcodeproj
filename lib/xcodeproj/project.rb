@@ -600,8 +600,8 @@ module Xcodeproj
     # Frameworks phase.
     #
     # @param  [Symbol] type
-    #         the type of target. Can be `:application`, `:dynamic_library` or
-    #         `:static_library`.
+    #         the type of target. Can be `:application`, `:framework`,
+    #         `:dynamic_library` or `:static_library`.
     #
     # @param  [String] name
     #         the name of the target product.
