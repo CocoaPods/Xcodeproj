@@ -121,7 +121,6 @@ module Xcodeproj
         'DSTROOT'                           => '/tmp/xcodeproj.dst',
         'ALWAYS_SEARCH_USER_PATHS'          => 'NO',
         'INSTALL_PATH'                      => '$(BUILT_PRODUCTS_DIR)',
-        'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
       }.freeze,
       :debug => {
