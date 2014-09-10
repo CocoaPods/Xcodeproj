@@ -83,7 +83,7 @@ begin
     RuboCop::RakeTask.new
   end
 
-rescue LoadError => e
+rescue LoadError, NameError => e
   $stderr.puts "\033[0;31m" \
     '[!] Some Rake tasks haven been disabled because the environment' \
     ' couldn’t be loaded. Be sure to run `rake bootstrap` first.' \
