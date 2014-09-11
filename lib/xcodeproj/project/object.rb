@@ -380,7 +380,7 @@ module Xcodeproj
 
           references_by_keys_attributes.each do |attrb|
             list = attrb.get_value(self)
-            plist[attrb.plist_name] = list.map { |dictionary| dictionary.to_hash }
+            plist[attrb.plist_name] = list.map(&:to_hash)
           end
 
           plist
@@ -416,12 +416,12 @@ module Xcodeproj
 
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
-            hash[attrb.plist_name] = list.map { |obj| obj.to_tree_hash }
+            hash[attrb.plist_name] = list.map(&:to_tree_hash)
           end
 
           references_by_keys_attributes.each do |attrb|
             list = attrb.get_value(self)
-            hash[attrb.plist_name] = list.map { |dictionary| dictionary.to_tree_hash }
+            hash[attrb.plist_name] = list.map(&:to_tree_hash)
           end
 
           hash

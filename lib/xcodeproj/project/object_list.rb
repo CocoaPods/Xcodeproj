@@ -36,7 +36,7 @@ module Xcodeproj
       #   the UUIDs of all the objects referenced by this list.
       #
       def uuids
-        map { |obj| obj.uuid }
+        map(&:uuid)
       end
 
       # @return [Array<AbstractObject>]

@@ -46,7 +46,7 @@ module Xcodeproj
         #         referenced by this build phase.
         #
         def files_references
-          files.map { |bf| bf.file_ref }
+          files.map(&:file_ref)
         end
 
         # @return [Array<String>] The display name of the build files.
