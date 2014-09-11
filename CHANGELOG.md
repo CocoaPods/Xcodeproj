@@ -4,18 +4,18 @@
 
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
   to produce output consistent with Xcode.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `Project`: Added support for adding file references to sub-projects.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `Config`: The config class now properly handles quotes in `OTHER_LDFLAGS`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `PBXGroup`: Now file references to Xcode projects are properly handled and
   setup. Also the `ObjectDictionary` class has been improved and now can be
   used to edit the attributes using it.
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
   [Xcodeproj#172](https://github.com/CocoaPods/Xcodeproj/pull/172)
 
 * `Constants`: Support XCTest as product type and don't fail for
@@ -24,16 +24,16 @@
   [Xcodeproj#176](https://github.com/CocoaPods/Xcodeproj/pull/176)
 
 * `Workspace`: Now a template is used to produce the same formatting of Xcode.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `Project`: Improved validation of object attributes.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `Project`: Completed support for dictionaries.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * `Project`: Added possibility to disable `xcproj` via an environment variable.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 ###### Bug Fixes
 
@@ -46,7 +46,7 @@
 
 * [PlistHelper] The native extension has been removed in favour of the usage of
   the `plutil` tool to read ASCII property list files.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
   [Xcodeproj#168](https://github.com/CocoaPods/Xcodeproj/pull/168)
   [Xcodeproj#167](https://github.com/CocoaPods/Xcodeproj/issues/167)
 
@@ -70,7 +70,7 @@
 
 * [Workspace] Added support for file references.  
   [Kyle Fuller](https://github.com/kylef)
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
   [Xcodeproj#105](https://github.com/CocoaPods/Xcodeproj/pull/150)
 
 ## 0.16.1
@@ -90,7 +90,7 @@
 ###### Breaking
 
 * [Constants] Disable errors on warnings for default build settings  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
 ## 0.15.3
@@ -107,7 +107,7 @@
 
 * [Constants] Temporarily reverting the changes to `OTHER_LDFLAGS` as the were
   creating issues in CocoaPods.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
 ## 0.15.0
@@ -121,7 +121,7 @@
 ###### Enhancements
 
 * [Constants] Bumped last know SDK versions.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
   [#141](https://github.com/CocoaPods/Xcodeproj/pull/141)
 
 * [Constants] Removed empty `OTHER_LDFLAGS` setting to match Xcode's behaviour.  
@@ -208,7 +208,7 @@
 
 * [AbstractTarget] Added default value for `default_configuration_name`
   attribute.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [XCConfigurationList] `common_resolved_build_setting` will now ignore nil
   values. This is an heuristic which might not closely match Xcode behaviour.
@@ -216,7 +216,7 @@
   the target level but it might actually differ in the build configurations.
   For example nothing prevents a target to build with the iOS sdk in one
   configuration and with the OS X in another.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
   [CocoaPods/CocoaPods#1462](https://github.com/CocoaPods/CocoaPods/issues/1462)
 
 
@@ -227,19 +227,19 @@
 * [AbstractTarget] The `#sdk` method now raises if the value is not the same
   across all the build configurations. This has been done to prevent clients
   from accidentally using arbitrary values.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 ###### Enhancements
 
 * [AbstractTarget] Added `#resolved_build_setting` and
   `#common_resolved_build_setting`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [XCConfigurationList] Added `#get_setting` and `#set_setting`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [Project] Added `#build_configuration_list`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
 ## 0.12.0
@@ -248,7 +248,7 @@
 
 * [PBXGroup] `#new_static_library` has been replaced by the more versatile
   `#new_product_ref_for_target`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [XCScheme] Overhauled interface to support multiple targets.  
   [Jason Prado](https://github.com/jasonprado)
@@ -256,7 +256,7 @@
 
 * [PBXGroup] renamed `#recursively_sort_by_type` to
   `#sort_recursively_by_type`.
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 ###### Enhancements
 
@@ -269,40 +269,40 @@
   behaviour is to add the frameworks in a subgroup according to the platform.
   The method will also honor the SDK version of the target if available
   (otherwise the last known version is used).
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [Project] The project can now recreate it schemes from scratch and optionally
   hide them.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * Added support for booleans in the C extension which handles Property list
   files.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * Improvements to the generation of new targets.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [Project] Added possibility to specify the position of groups while sorting.
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [PBXGroup] Now defaults to sorting by name.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [XCScheme] The string representation of schemes now closely matches Xcode
   behaviour.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [PBXGroup, PBXFileReference] Added `#parents`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [PBXGroup] Added `#recursive_children_groups`.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * [AbstractTarget] Add #sdk_version.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 * Added default build settings to new projects according to Xcode defaults.  
-  [Fabio Pelosin](https://github.com/irrationalfab)
+  [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
 ## 0.11.1
