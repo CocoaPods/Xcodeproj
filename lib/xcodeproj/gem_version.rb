@@ -1,5 +1,5 @@
 module Xcodeproj
   # The version of the xcodeproj gem.
   #
-  VERSION = '0.18.0' unless defined? Xcodeproj::VERSION
+  VERSION = '0.19.0' unless defined? Xcodeproj::VERSION
 end

@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.19.0
 
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
   to produce output consistent with Xcode.  
