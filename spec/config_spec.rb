@@ -98,7 +98,7 @@ describe Xcodeproj::Config do
     it 'appends a value for the same key when merging' do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.should == {
-        'OTHER_LDFLAGS' => '-l "xml2.2.7.3" -framework "Foundation"',
+        'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation"',
       }
     end
 
@@ -117,7 +117,7 @@ describe Xcodeproj::Config do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.save_as(temporary_directory + 'Pods.xcconfig')
       (temporary_directory + 'Pods.xcconfig').read.split("\n").sort.should == [
-        'OTHER_LDFLAGS = -l "xml2.2.7.3" -framework "Foundation"',
+        'OTHER_LDFLAGS = -l"xml2.2.7.3" -framework "Foundation"',
         'HEADER_SEARCH_PATHS = /some/path',
       ].sort
     end
