@@ -127,6 +127,28 @@ module ProjectSpecs
     it 'defaults the dstSubfolderSpec to the resources folder' do
       @build_phase.dst_subfolder_spec.should == '7'
     end
+
+    describe '#symbol_dst_subfolder_spec' do
+      it 'returns the matching value' do
+        @build_phase.symbol_dst_subfolder_spec.should == :resources
+      end
+
+      it 'returns nil if the key is unknown' do
+        @build_phase.dst_subfolder_spec = '42'
+        @build_phase.symbol_dst_subfolder_spec.should.be.nil
+      end
+    end
+
+    describe '#symbol_dst_subfolder_spec=' do
+      it 'accepts valid values' do
+        @build_phase.symbol_dst_subfolder_spec = :frameworks
+        @build_phase.symbol_dst_subfolder_spec.should == :frameworks
+      end
+
+      it 'raises if an invalid value is set by #symbol_dst_subfolder_spec=' do
+        lambda { @build_phase.symbol_dst_subfolder_spec = :watch_faces }.should.raise?(StandardError)
+      end
+    end
   end
 
   describe PBXShellScriptBuildPhase do
