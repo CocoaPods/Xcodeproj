@@ -180,6 +180,13 @@ describe Xcodeproj::Config do
       config.weak_frameworks.to_a.should.be.equal %w(Twitter)
       config.libraries.to_a.should.be.equal %w(xml2.2.7.3)
     end
+
+    it 'specifies libraries in the OTHER_LDFLAGS in a format compatible with libtool' do
+      hash = { 'OTHER_LDFLAGS' => '-lxml2.2.7.3' }
+      config = Xcodeproj::Config.new(hash)
+      config.to_hash['OTHER_LDFLAGS'].should.not == '-l "xml2.2.7.3"'
+      config.to_hash['OTHER_LDFLAGS'].should == '-l"xml2.2.7.3"'
+    end
   end
 
   #---------------------------------------------------------------------------#
