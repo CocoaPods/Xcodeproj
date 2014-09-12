@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## 0.19.1
+
+
+###### Bug Fixes
+
+* `Config`: Remove space after -l flag in other linker flags.  
+  [Fabio Pelosin](https://github.com/fabiopelosin)
+
+
 ## 0.19.0
 
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
