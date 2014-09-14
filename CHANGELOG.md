@@ -8,6 +8,18 @@
   [Marius Rackwitz](https://github.com/mrackwitz)
   [Xcodeproj#192](https://github.com/CocoaPods/Xcodeproj/pull/192)
 
+* `PBXContainerItemProxy`: Allow access to the proxied object.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
+
+
+###### Bug Fixes
+
+* `PBXNativeTarget`: Fixed the creation of target dependencies, which refer
+  to subprojects.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
+
 
 ## 0.19.4
 
