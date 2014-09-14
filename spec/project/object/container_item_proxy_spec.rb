@@ -44,5 +44,28 @@ module ProjectSpecs
       end
     end
 
+    describe '#proxied_object' do
+      before do
+        subproject_path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+        @subproject = Xcodeproj::Project.open(subproject_path)
+
+        path = fixture_path('Sample Project/ContainsSubproject/ContainsSubproject.xcodeproj')
+        @project = Xcodeproj::Project.open(path)
+      end
+
+      it 'returns the proxied object if it is contained in the current project' do
+        target = @project.targets.find { |t| t.name == 'ContainsSubprojectTests' }
+        @proxy = target.dependencies.first.target_proxy
+        proxied_object = @proxy.proxied_object
+        proxied_object.should == @project.targets.first
+      end
+
+      it 'returns the proxied object if it is contained in a subproject' do
+        @proxy = @project.targets.first.dependencies.first.target_proxy
+        proxied_object = @proxy.proxied_object
+        proxied_object.should == @subproject.targets.first
+      end
+    end
+
   end
 end
