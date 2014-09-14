@@ -216,6 +216,26 @@ module ProjectSpecs
           @target.dependencies.count.should == 1
         end
       end
+
+      describe '#dependency_for_target' do
+        before do
+          subproject_path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+          @subproject = Xcodeproj::Project.open(subproject_path)
+
+          project_path = fixture_path('Sample Project/ContainsSubproject/ContainsSubproject.xcodeproj')
+          @project = Xcodeproj::Project.open(project_path)
+        end
+
+        it 'returns the dependency for targets from the current project' do
+          @target = @project.targets.find { |t| t.name == 'ContainsSubprojectTests' }
+          @target.dependency_for_target(@project.targets.first).should == @target.dependencies.first
+        end
+
+        it 'returns the dependency for targets from a subproject' do
+          @target = @project.targets.first
+          @target.dependency_for_target(@subproject.targets.first).should == @target.dependencies.first
+        end
+      end
     end
 
     #----------------------------------------#

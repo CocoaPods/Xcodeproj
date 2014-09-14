@@ -215,6 +215,23 @@ module Xcodeproj
           end
         end
 
+        # Checks whether this target has a dependency on the given target.
+        #
+        # @param  [AbstractTarget] target
+        #         the target to search for.
+        #
+        # @return [PBXTargetDependency]
+        #
+        def dependency_for_target(target)
+          dependencies.find do |dep|
+            if dep.target_proxy.remote?
+              dep.target_proxy.remote_global_id_string == target.uuid
+            else
+              dep.target == target
+            end
+          end
+        end
+
         # Creates a new copy files build phase.
         #
         # @param  [String] name
