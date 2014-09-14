@@ -194,7 +194,7 @@ module Xcodeproj
         # @return [void]
         #
         def add_dependency(target)
-          unless dependencies.map(&:target).include?(target)
+          unless dependency_for_target(target)
             container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
             if target.project == project
               container_proxy.container_portal = project.root_object.uuid
@@ -208,7 +208,7 @@ module Xcodeproj
             container_proxy.remote_info = target.name
 
             dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
-            dependency.target = target
+            dependency.target = target if target.project == project
             dependency.target_proxy = container_proxy
 
             dependencies << dependency
