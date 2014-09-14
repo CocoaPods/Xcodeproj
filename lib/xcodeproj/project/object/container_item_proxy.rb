@@ -42,7 +42,7 @@ module Xcodeproj
 
         # @return [String] the type of the proxy.
         #
-        # @note   {PBXNativeTarget} is `1`.
+        # @note   @see {Constants::PROXY_TYPE.values} for valid values.
         #
         attribute :proxy_type, String
 

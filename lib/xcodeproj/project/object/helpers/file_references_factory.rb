@@ -184,7 +184,7 @@ module Xcodeproj
             subproj.products_group.files.each do |product_reference|
               container_proxy = group.project.new(PBXContainerItemProxy)
               container_proxy.container_portal = ref.uuid
-              container_proxy.proxy_type = '2'
+              container_proxy.proxy_type = Constants::PROXY_TYPES[:reference]
               container_proxy.remote_global_id_string = product_reference.uuid
               container_proxy.remote_info = 'Subproject'
 

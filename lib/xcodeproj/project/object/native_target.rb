@@ -203,7 +203,7 @@ module Xcodeproj
               raise ArgumentError, 'add_dependency got target that belongs to a project is not this project and is not a subproject of this project' unless subproject_reference
               container_proxy.container_portal = subproject_reference.uuid
             end
-            container_proxy.proxy_type = '1'
+            container_proxy.proxy_type = Constants::PROXY_TYPES[:native_target]
             container_proxy.remote_global_id_string = target.uuid
             container_proxy.remote_info = target.name
 

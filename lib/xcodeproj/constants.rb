@@ -216,6 +216,13 @@ module Xcodeproj
       :plug_ins           => '13',
     }.freeze
 
+    # @return [Hash] The corresponding numeric value of each proxy type for
+    #         PBXContainerItemProxy.
+    PROXY_TYPES = {
+      :native_target => '1',
+      :reference     => '2',
+    }.freeze
+
     # @return [Hash] The extensions which are associated with header files.
     #
     HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp).freeze
