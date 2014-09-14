@@ -65,6 +65,14 @@ module Xcodeproj
         #         the proxy.
         #
         attribute :remote_info, String
+
+        # Checks whether the reference points to a remote project.
+        #
+        # @return [Bool]
+        #
+        def remote?
+          project.root_object.uuid != container_portal
+        end
       end
     end
   end

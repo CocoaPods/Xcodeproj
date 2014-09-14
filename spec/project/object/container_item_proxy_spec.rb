@@ -28,5 +28,21 @@ module ProjectSpecs
       @proxy.remote_info.should == 'Pods'
     end
 
+    describe '#remote?' do
+      it 'returns false if the container is for the current project' do
+        @proxy.container_portal = @project.root_object.uuid
+        @proxy.remote?.should.be.false
+      end
+
+      it 'returns true if the container is for a subproject' do
+        path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+        subproject = Xcodeproj::Project.open(path)
+        @project.main_group.new_file(path)
+        @proxy.container_portal = subproject.root_object.uuid
+
+        @proxy.remote?.should.be.true
+      end
+    end
+
   end
 end
