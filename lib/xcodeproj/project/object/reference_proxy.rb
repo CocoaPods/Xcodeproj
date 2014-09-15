@@ -9,6 +9,10 @@ module Xcodeproj
       class PBXReferenceProxy < AbstractObject
         # @!group Attributes
 
+        # @return [String] the name of the reference.
+        #
+        attribute :name, String
+
         # @return [String] the path of the referenced filed.
         #
         attribute :path, String
