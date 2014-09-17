@@ -20,6 +20,11 @@
   [Marius Rackwitz](https://github.com/mrackwitz)
   [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
 
+* `PBXReferenceProxy`: Added the missing attribute name, which could appear when
+  external frameworks are referenced.
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#189](https://github.com/CocoaPods/Xcodeproj/pull/189)
+
 
 ## 0.19.4
 
