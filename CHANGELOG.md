@@ -1,7 +1,16 @@
 # Xcodeproj Changelog
 
-## 0.19.1
+## 0.19.2
 
+###### Bug Fixes
+
+* `PlistHelper`: Only try to use `plutil` if it's in the exact location where
+   we expect it to be on OS X, instead of relying on the user's `$PATH`.
+   [Eloy Durán](https://github.com/alloy)
+   [CocoaPods#2502](https://github.com/CocoaPods/CocoaPods/issues/2502)
+
+
+## 0.19.1
 
 ###### Bug Fixes
 

@@ -8,6 +8,8 @@ module Xcodeproj
   #       other faster strategies, if their dependencies are available.
   #
   module PlistHelper
+    PLUTIL_BIN = '/usr/bin/plutil'
+
     class << self
       # Serializes a hash as an XML property list file.
       #
@@ -91,7 +93,7 @@ module Xcodeproj
       # @note   This method was extracted to simplify testing.
       #
       def plutil_contents(path)
-        `#{plutil_bin} -convert xml1 "#{path}" -o -`
+        `#{PLUTIL_BIN} -convert xml1 "#{path}" -o -`
       end
 
       # Saves a property to an XML file via the plutil tool.
@@ -103,7 +105,7 @@ module Xcodeproj
       #         The path of the file.
       #
       def plutil_save(contents, path)
-        Open3.popen3("#{plutil_bin} -convert xml1 -o '#{path}' -") do |stdin, stdout, _stderr|
+        Open3.popen3("#{PLUTIL_BIN} -convert xml1 -o '#{path}' -") do |stdin, stdout, _stderr|
           stdin.puts(contents)
           stdin.close
           stdout.read # Make Ruby 1.8.7 wait
@@ -113,18 +115,8 @@ module Xcodeproj
       # @return [Bool] Whether the `plutil` tool is available.
       #
       def plutil_available?
-        !plutil_bin.nil?
-      end
-
-      # @return [String] The path of the `plutil` tool.
-      # @return [Nil] In case the plutil is not found.
-      #
-      def plutil_bin
-        unless @bin
-          bin = `which plutil`.strip
-          @bin = bin if $?.success?
-        end
-        @bin
+        @plutil_available = File.executable?(PLUTIL_BIN) if @plutil_available.nil?
+        @plutil_available
       end
     end
   end
