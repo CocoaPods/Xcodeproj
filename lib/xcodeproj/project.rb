@@ -686,6 +686,7 @@ module Xcodeproj
     def recreate_user_schemes(visible = true)
       schemes_dir = XCScheme.user_data_dir(path)
       FileUtils.rm_rf(schemes_dir)
+      FileUtils.mkdir_p(schemes_dir)
 
       xcschememanagement = {}
       xcschememanagement['SchemeUserState'] = {}
