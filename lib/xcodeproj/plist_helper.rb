@@ -53,6 +53,9 @@ module Xcodeproj
         unless File.exist?(path)
           raise ArgumentError, "The plist file at path `#{path}` doesn't exist."
         end
+        if File.readlines(path).any? { |l| l.match(/^<<<<<<</) }
+          raise ArgumentError, "The file `#{path}` is in a merge conflict"
+        end
         CoreFoundation.RubyHashPropertyListRead(path)
       end
     end

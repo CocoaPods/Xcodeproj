@@ -140,6 +140,13 @@ module ProjectSpecs
         attrb.default_value.should == '1'
         obj.to_hash.should == expected
       end
+
+      it 'recognizes merge conflicts' do
+        @path = @dir + 'ProjectInMergeConflict/ProjectInMergeConflict.xcodeproj'
+        lambda do
+          Xcodeproj::Project.open(@path)
+        end.should.raise(ArgumentError)
+      end
     end
 
     #-------------------------------------------------------------------------#
