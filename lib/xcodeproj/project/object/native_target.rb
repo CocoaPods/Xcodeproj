@@ -208,6 +208,7 @@ module Xcodeproj
             container_proxy.remote_info = target.name
 
             dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
+            dependency.name = target.name
             dependency.target = target if target.project == project
             dependency.target_proxy = container_proxy
 
