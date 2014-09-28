@@ -53,10 +53,22 @@ module Xcodeproj
         unless File.exist?(path)
           raise ArgumentError, "The plist file at path `#{path}` doesn't exist."
         end
-        if File.open(path).each_line.any? { |l| l.match(/^(<|=|>){7}/) }
+        if file_in_conflict?(path)
           raise ArgumentError, "The file `#{path}` is in a merge conflict"
         end
         CoreFoundation.RubyHashPropertyListRead(path)
+      end
+
+      # @return [Bool] Checks whether there are merge conflicts in the file.
+      #
+      # @param  [#to_s] path
+      #         The path of the file.
+      #
+      def file_in_conflict?(path)
+        file = File.open(path)
+        file.each_line.any? { |l| l.match(/^(<|=|>){7}/) }
+      ensure
+        file.close
       end
     end
   end
