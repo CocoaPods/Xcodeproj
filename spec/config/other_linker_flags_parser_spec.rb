@@ -13,6 +13,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => [],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -23,6 +24,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => [],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -33,6 +35,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => ['Twitter'],
         :libraries => [],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -43,6 +46,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -53,6 +57,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -63,6 +68,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -73,6 +79,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
         :simple => [],
+        :force_load => [],
       }
     end
 
@@ -83,6 +90,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => [],
         :simple => ['-ObjC', '-fobjc-arc'],
+        :force_load => [],
       }
     end
 
@@ -93,6 +101,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => [],
         :simple => ['-ObjC'],
+        :force_load => [],
       }
     end
 
@@ -103,6 +112,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => [],
         :libraries => [],
         :simple => ['-finalize', '-prefinalized-library'],
+        :force_load => [],
       }
     end
 
@@ -120,6 +130,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :weak_frameworks => ['Twitter'],
         :libraries => ['xml2.2.7.3', 'xml2.2.7.3', 'Pods-AFNetworking iOS Example-AFNetworking', 'Pods-AFNetworking iOS Example-AFNetworking'],
         :simple => ['-ObjC', '-fobjc-arc', '-finalize', '-prefinalized-library'],
+        :force_load => [],
       }
     end
   end

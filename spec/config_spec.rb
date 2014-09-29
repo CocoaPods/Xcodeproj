@@ -187,6 +187,23 @@ describe Xcodeproj::Config do
       config.to_hash['OTHER_LDFLAGS'].should.not == '-l "xml2.2.7.3"'
       config.to_hash['OTHER_LDFLAGS'].should == '-l"xml2.2.7.3"'
     end
+
+    it 'does not drop the -force_load argument in case of repeated use' do
+      config = Xcodeproj::Config.new
+      config.merge!('OTHER_LDFLAGS' => '-force_load a')
+      config.merge!('OTHER_LDFLAGS' => '-l"b"')
+      config.merge!('OTHER_LDFLAGS' => '-force_load c')
+      config.to_hash['OTHER_LDFLAGS'].should == '-l"b" -force_load a -force_load c'
+    end
+
+    it 'does not mix up the location of the -force_load argument' do
+      config = Xcodeproj::Config.new
+      config.merge!('OTHER_LDFLAGS' => '-ObjC')
+      config.merge!('OTHER_LDFLAGS' => '-force_load $(PODS_ROOT)/Intercom/Intercom/libIntercom.a')
+      config.merge!('OTHER_LDFLAGS' => '-l"Pods-GoogleAnalytics-iOS-SDK"')
+      config.merge!('OTHER_LDFLAGS' => '-l"Pods-Intercom"')
+      config.to_hash['OTHER_LDFLAGS'].should == '-ObjC -l"Pods-GoogleAnalytics-iOS-SDK" -l"Pods-Intercom" -force_load $(PODS_ROOT)/Intercom/Intercom/libIntercom.a'
+    end
   end
 
   #---------------------------------------------------------------------------#
