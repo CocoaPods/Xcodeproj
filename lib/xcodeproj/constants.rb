@@ -123,6 +123,7 @@ module Xcodeproj
         'INSTALL_PATH'                      => '$(BUILT_PRODUCTS_DIR)',
         'OTHER_LDFLAGS'                     => '',
         'COPY_PHASE_STRIP'                  => 'YES',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
       }.freeze,
       :debug => {
         'GCC_DYNAMIC_NO_PIC'                => 'NO',
