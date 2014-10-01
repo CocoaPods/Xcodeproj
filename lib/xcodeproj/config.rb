@@ -31,7 +31,7 @@ module Xcodeproj
       @attributes = {}
       @includes = []
       @other_linker_flags = {}
-      [:simple, :frameworks, :weak_frameworks, :libraries].each do |key|
+      [:simple, :frameworks, :weak_frameworks, :libraries, :force_load].each do |key|
         @other_linker_flags[key] = Set.new
       end
       merge!(extract_hash(xcconfig_hash_or_file))
@@ -94,11 +94,16 @@ module Xcodeproj
         :frameworks => '-framework ',
         :weak_frameworks => '-weak_framework ',
         :libraries => '-l',
+        :force_load => '-force_load',
       }
-      [:libraries, :frameworks, :weak_frameworks].each do |key|
+      [:libraries, :frameworks, :weak_frameworks, :force_load].each do |key|
         modifier = modifiers[key]
         sorted = other_linker_flags[key].to_a.sort
-        list += sorted.map { |l| %(#{modifier}"#{l}") }
+        if key == :force_load
+          list += sorted.map { |l| %(#{modifier} #{l}) }
+        else
+          list += sorted.map { |l| %(#{modifier}"#{l}") }
+        end
       end
 
       result = attributes.dup

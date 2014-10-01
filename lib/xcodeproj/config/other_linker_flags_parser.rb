@@ -17,6 +17,7 @@ module Xcodeproj
           :weak_frameworks => [],
           :libraries => [],
           :simple => [],
+          :force_load => [],
         }
 
         key = nil
@@ -28,6 +29,8 @@ module Xcodeproj
             key = :weak_frameworks
           when '-l'
             key = :libraries
+          when '-force_load'
+            key = :force_load
           else
             if key
               result[key] << token
