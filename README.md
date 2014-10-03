@@ -20,9 +20,9 @@ by performing the following command:
 
     $ [sudo] gem install xcodeproj
 
-To improve the performance of Xcodeproj it is possible to install [LibXML Ruby](http://xml4r.github.io/libxml-ruby/):
+To improve the performance of Xcodeproj it is possible to install [Nokogiri](http://nokogiri.org):
 
-    $ [sudo] gem install libxml-ruby
+    $ [sudo] gem install nokogiri
     
 To make Xcodeproj output projects in the same format of Xcode (deprecated ASCII Plists format) in order to reduce the SCM noise it is possible to install [xcproj](https://github.com/0xced/xcproj):
 

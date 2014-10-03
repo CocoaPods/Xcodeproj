@@ -1,11 +1,30 @@
-require 'cfpropertylist'
 require 'open3'
+
+require 'cfpropertylist'
+# By default, the CFPropertyList gem will try to use the libxml-ruby backend,
+# but this gem is causing segfaults and thus we don’t want that. Instead we try
+# to use the Nokogiri backend, because that also has libxml bindings and does
+# not lead to these segfaults.
+#
+# See https://github.com/CocoaPods/CocoaPods/issues/2483.
+#
+begin
+  require 'cfpropertylist/rbNokogiriParser'
+  def CFPropertyList.xml_parser_interface
+    CFPropertyList::NokogiriXMLParser
+  end
+rescue LoadError
+  require 'cfpropertylist/rbREXMLParser'
+  def CFPropertyList.xml_parser_interface
+    CFPropertyList::ReXMLParser
+  end
+end
 
 module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
-  # @note CFPropertyList will automatically pick up the `libxml` strategy or
-  #       other faster strategies, if their dependencies are available.
+  # @note We force CFPropertyList to automatically pick up the `nokogiri`
+  #       strategy or fallback to `REXML` if unavailable.
   #
   module PlistHelper
     PLUTIL_BIN = '/usr/bin/plutil'
