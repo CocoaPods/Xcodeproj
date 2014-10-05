@@ -84,8 +84,8 @@ module Xcodeproj
             CoreFoundation.CFShow(error)
             raise "Unable to read plist data!"
           elsif CoreFoundation.CFGetTypeID(plist) != CoreFoundation.CFDictionaryGetTypeID()
-          raise "Expected a plist with a dictionary root object!"
-        end
+            raise "Expected a plist with a dictionary root object!"
+          end
         ensure
           CoreFoundation.CFReadStreamClose(stream)
         end
@@ -128,15 +128,6 @@ module Xcodeproj
           @image ||= Fiddle.dlopen('/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation')
         end
 
-        def self.CFShow(ref)
-          function = Fiddle::Function.new(
-            image['CFShow'],
-            [CFTypeRef],
-            Fiddle::TYPE_VOID
-          )
-          function.call(ref)
-        end
-
         # C Ruby's free() function
         def self.free_function
           Fiddle::Function.new(Fiddle::RUBY_FREE, [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOID)
@@ -153,250 +144,130 @@ module Xcodeproj
           ref
         end
 
+        def self.function(symbol, parameter_types, return_type)
+          symbol = symbol.to_s
+          create_function = symbol.include?('Create')
+          function_cache_key = "@__#{symbol}__"
+
+          define_singleton_method(symbol) do |*args|
+            # Implement Ruby method calling semantics regarding method signature.
+            unless args.size == parameter_types.size
+              raise ArgumentError, "wrong number of arguments (#{args.size} for #{parameter_types.size})"
+            end
+
+            # Get cached function or cache a new function instance.
+            unless function = instance_variable_get(function_cache_key)
+              function = Fiddle::Function.new(image[symbol.to_s], parameter_types, return_type)
+              instance_variable_set(function_cache_key, function)
+            end
+
+            result = function.call(*args)
+            create_function ? CFAutoRelease(result) : result
+          end
+        end
+
         # Actual function wrappers
 
-        def self.CFDictionaryApplyFunction(dictionary, applier, context)
-          function = Fiddle::Function.new(
-            image['CFDictionaryApplyFunction'],
-            [CFTypeRef, FunctionPointer, Fiddle::TYPE_VOIDP],
-            Fiddle::TYPE_VOID
-          )
-          function.call(dictionary, applier, context)
-        end
+        function :CFShow,
+                 [CFTypeRef],
+                 Fiddle::TYPE_VOID
 
-        def self.CFWriteStreamCreateWithFile(allocator, url)
-          function = Fiddle::Function.new(
-            image['CFWriteStreamCreateWithFile'],
-            [CFTypeRef, CFTypeRef],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, url))
-        end
+        function :CFDictionaryApplyFunction,
+                 [CFTypeRef, FunctionPointer, Fiddle::TYPE_VOIDP],
+                 Fiddle::TYPE_VOID
 
-        def self.CFWriteStreamOpen(stream)
-          function = Fiddle::Function.new(
-            image['CFWriteStreamOpen'],
-            [CFTypeRef],
-            Boolean
-          )
-          function.call(stream)
-        end
+        function :CFWriteStreamCreateWithFile,
+                 [CFTypeRef, CFTypeRef],
+                 CFTypeRef
 
-        def self.CFWriteStreamClose(stream)
-          function = Fiddle::Function.new(
-            image['CFWriteStreamClose'],
-            [CFTypeRef],
-            Fiddle::TYPE_VOID
-          )
-          function.call(stream)
-        end
+        function :CFWriteStreamOpen,
+                 [CFTypeRef],
+                 Boolean
 
-        def self.CFReadStreamCreateWithFile(allocator, url)
-          function = Fiddle::Function.new(
-            image['CFReadStreamCreateWithFile'],
-            [CFTypeRef, CFTypeRef],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, url))
-        end
+        function :CFWriteStreamClose,
+                 [CFTypeRef],
+                 Fiddle::TYPE_VOID
 
-        def self.CFReadStreamOpen(stream)
-          function = Fiddle::Function.new(
-            image['CFReadStreamOpen'],
-            [CFTypeRef],
-            Boolean
-          )
-          function.call(stream)
-        end
+        function :CFReadStreamCreateWithFile,
+                 [CFTypeRef, CFTypeRef],
+                 CFTypeRef
 
-        def self.CFReadStreamClose(stream)
-          function = Fiddle::Function.new(
-            image['CFReadStreamClose'],
-            [CFTypeRef],
-            Fiddle::TYPE_VOID
-          )
-          function.call(stream)
-          end
+        function :CFReadStreamOpen,
+                 [CFTypeRef],
+                 Boolean
 
-        def self.CFPropertyListWrite(plist, stream, format, options, error_ptr)
-          function = Fiddle::Function.new(
-            image['CFPropertyListWrite'],
-            [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFOptionFlags, CFTypeRefPointer],
-            CFIndex
-          )
-          function.call(plist, stream, format, options, error_ptr)
-        end
+        function :CFReadStreamClose,
+                 [CFTypeRef],
+                 Fiddle::TYPE_VOID
 
-        def self.CFURLCreateFromFileSystemRepresentation(allocator, buffer, buffer_length, directory)
-          function = Fiddle::Function.new(
-            image['CFURLCreateFromFileSystemRepresentation'],
-            [CFTypeRef, UInt8Pointer, CFIndex, Boolean],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, buffer, buffer_length, directory))
-          end
+        function :CFPropertyListWrite,
+                 [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFOptionFlags, CFTypeRefPointer],
+                 CFIndex
 
-        def self.CFPropertyListCreateWithStream(allocator, stream, stream_length, options, format_ptr, error_ptr)
-          function = Fiddle::Function.new(
-            image['CFPropertyListCreateWithStream'],
-            [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer],
-            CFTypeRef
-          )
-          function.call(allocator, stream, stream_length, options, format_ptr, error_ptr)
-        end
+        function :CFURLCreateFromFileSystemRepresentation,
+                 [CFTypeRef, UInt8Pointer, CFIndex, Boolean],
+                 CFTypeRef
 
-        def self.CFArrayGetCount(array)
-          function = Fiddle::Function.new(
-            image['CFArrayGetCount'],
-            [CFTypeRef],
-            CFIndex
-          )
-          function.call(array)
-        end
+        function :CFPropertyListCreateWithStream,
+                 [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer],
+                 CFTypeRef
 
-        def self.CFArrayGetValueAtIndex(array, index)
-          function = Fiddle::Function.new(
-            image['CFArrayGetValueAtIndex'],
-            [CFTypeRef, CFIndex],
-            CFTypeRef
-          )
-          function.call(array, index)
-        end
+        function :CFArrayGetCount,
+                 [CFTypeRef],
+                 CFIndex
 
-        def self.CFGetTypeID(ref)
-          function = Fiddle::Function.new(
-            image['CFGetTypeID'],
-            [CFTypeRef],
-            CFTypeID
-          )
-          function.call(ref)
-        end
+        function :CFArrayGetValueAtIndex,
+                 [CFTypeRef, CFIndex],
+                 CFTypeRef
 
-        def self.CFDictionaryGetTypeID()
-          function = Fiddle::Function.new(
-            image['CFDictionaryGetTypeID'],
-            [],
-            CFTypeID
-          )
-          function.call
-        end
+        function :CFGetTypeID,
+                 [CFTypeRef],
+                 CFTypeID
 
-        def self.CFStringGetTypeID()
-          function = Fiddle::Function.new(
-            image['CFStringGetTypeID'],
-            [],
-            CFTypeID
-          )
-          function.call
-        end
+        function :CFDictionaryGetTypeID, [], CFTypeID
+        function :CFStringGetTypeID, [], CFTypeID
+        function :CFArrayGetTypeID, [], CFTypeID
+        function :CFBooleanGetTypeID, [], CFTypeID
 
-        def self.CFArrayGetTypeID()
-          function = Fiddle::Function.new(
-            image['CFArrayGetTypeID'],
-            [],
-            CFTypeID
-          )
-          function.call
-        end
+        function :CFStringCreateExternalRepresentation,
+                 [CFTypeRef, CFTypeRef, CFStringEncoding, UInt8],
+                 CFTypeRef
 
-        def self.CFBooleanGetTypeID()
-          function = Fiddle::Function.new(
-            image['CFBooleanGetTypeID'],
-            [],
-            CFTypeID
-          )
-          function.call
-        end
+        function :CFStringCreateWithCString,
+                 [CFTypeRef, CharPointer, CFStringEncoding],
+                 CFTypeRef
 
-        def self.CFStringCreateExternalRepresentation(allocator, string, encoding, replacement)
-          function = Fiddle::Function.new(
-            image['CFStringCreateExternalRepresentation'],
-            [CFTypeRef, CFTypeRef, CFStringEncoding, UInt8],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, string, encoding, replacement))
-        end
+        function :CFDataGetLength,
+                 [CFTypeRef],
+                 CFIndex
 
-        def self.CFStringCreateWithCString(allocator, cstr, encoding)
-          function = Fiddle::Function.new(
-            image['CFStringCreateWithCString'],
-            [CFTypeRef, CharPointer, CFStringEncoding],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, cstr, encoding))
-        end
+        function :CFDataGetBytePtr,
+                 [CFTypeRef],
+                 Fiddle::TYPE_VOIDP
 
-        def self.CFDataGetLength(data)
-          function = Fiddle::Function.new(
-            image['CFDataGetLength'],
-            [CFTypeRef],
-            CFIndex
-          )
-          function.call(data)
-        end
+        function :CFDictionaryCreateMutable,
+                 [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
+                 CFTypeRef
 
-        def self.CFDataGetBytePtr(data)
-          function = Fiddle::Function.new(
-            image['CFDataGetBytePtr'],
-            [CFTypeRef],
-            Fiddle::TYPE_VOIDP
-          )
-          function.call(data)
-        end
+        function :CFDictionaryAddValue,
+                 [CFTypeRef, CFTypeRef, CFTypeRef],
+                 Fiddle::TYPE_VOIDP
 
-        def self.CFDictionaryCreateMutable(allocator, capacity, key_callbacks, value_callbacks)
-          function = Fiddle::Function.new(
-            image['CFDictionaryCreateMutable'],
-            [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, capacity, key_callbacks, value_callbacks))
-        end
+        function :CFArrayCreateMutable,
+                 [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP],
+                 CFTypeRef
 
-        def self.CFDictionaryAddValue(dictionary, key, value)
-          function = Fiddle::Function.new(
-            image['CFDictionaryAddValue'],
-            [CFTypeRef, CFTypeRef, CFTypeRef],
-            Fiddle::TYPE_VOIDP
-          )
-          function.call(dictionary, key, value)
-        end
+        function :CFArrayAppendValue,
+                 [CFTypeRef, CFTypeRef],
+                 Fiddle::TYPE_VOIDP
 
-        def self.CFArrayCreateMutable(allocator, capacity, callbacks)
-          function = Fiddle::Function.new(
-            image['CFArrayCreateMutable'],
-            [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(allocator, capacity, capacity))
-        end
+        function :CFCopyDescription,
+                 [CFTypeRef],
+                 CFTypeRef
 
-        def self.CFArrayAppendValue(array, element)
-          function = Fiddle::Function.new(
-            image['CFArrayAppendValue'],
-            [CFTypeRef, CFTypeRef],
-            Fiddle::TYPE_VOIDP
-          )
-          function.call(array, element)
-        end
-
-        def self.CFCopyDescription(ref)
-          function = Fiddle::Function.new(
-            image['CFCopyDescription'],
-            [CFTypeRef],
-            CFTypeRef
-          )
-          CFAutoRelease(function.call(ref))
-        end
-
-        def self.CFBooleanGetValue(boolean)
-          function = Fiddle::Function.new(
-            image['CFBooleanGetValue'],
-            [CFTypeRef],
-            Boolean
-          )
-          function.call(boolean)
-        end
+        function :CFBooleanGetValue,
+                 [CFTypeRef],
+                 Boolean
 
         # Custom convenience wrappers
 
