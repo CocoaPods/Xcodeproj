@@ -19,16 +19,6 @@ module ProjectSpecs
         result.keys.should.include?('archiveVersion')
       end
 
-      it 'raises if unable to convert an ASCII plist file' do
-        dir = 'Sample Project/Cocoa Application.xcodeproj/'
-        path = fixture_path(dir + 'project.pbxproj')
-        Xcodeproj::PlistHelper.expects(:plutil_available?).returns(false)
-
-        should.raise RuntimeError do
-          Xcodeproj::PlistHelper.read(path)
-        end.message.should.match /Unable to convert the .* plist file to XML/
-      end
-
       it 'writes an XML plist file' do
         hash = { 'archiveVersion' => '1.0' }
         Xcodeproj::PlistHelper.write(hash, @plist)
@@ -37,17 +27,16 @@ module ProjectSpecs
         @plist.read.should.include('?xml')
       end
 
-      if Xcodeproj::PlistHelper.send(:plutil_available?)
-        it 'reads an ASCII plist file' do
-          dir = 'Sample Project/Cocoa Application.xcodeproj/'
-          path = fixture_path(dir + 'project.pbxproj')
-          result = Xcodeproj::PlistHelper.read(path)
-          result.keys.should.include?('archiveVersion')
-        end
+      it 'reads an ASCII plist file' do
+        dir = 'Sample Project/Cocoa Application.xcodeproj/'
+        path = fixture_path(dir + 'project.pbxproj')
+        result = Xcodeproj::PlistHelper.read(path)
+        result.keys.should.include?('archiveVersion')
+      end
 
-        it 'uses the `plutil` tool to save a file if available to be consistent with Xcode' do
-          # rubocop:disable Style/Tab
-          output = <<-PLIST
+      it 'saves a plist file to be consistent with Xcode' do
+        # rubocop:disable Style/Tab
+        output = <<-PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -56,15 +45,14 @@ module ProjectSpecs
 	<string>1.0</string>
 </dict>
 </plist>
-          PLIST
-          # rubocop:enable Style/Tab
+        PLIST
+        # rubocop:enable Style/Tab
 
-          hash = { 'archiveVersion' => '1.0' }
-          Xcodeproj::PlistHelper.write(hash, @plist)
-          @plist.read.should == output
-        end
-
+        hash = { 'archiveVersion' => '1.0' }
+        Xcodeproj::PlistHelper.write(hash, @plist)
+        @plist.read.should == output
       end
+
     end
 
     #-------------------------------------------------------------------------#
@@ -116,11 +104,57 @@ module ProjectSpecs
         Xcodeproj::PlistHelper.read(@plist).should == hash
       end
 
+      it "coerces values to strings if it is a disallowed type" do
+        Xcodeproj::PlistHelper.write({ '1' => 1, 'symbol' => :symbol }, @plist)
+        Xcodeproj::PlistHelper.read(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
+      end
+
       it 'handles unicode characters in paths and strings' do
         plist = @plist.to_s + 'øµ'
         Xcodeproj::PlistHelper.write({ 'café' => 'før yoµ' }, plist)
         Xcodeproj::PlistHelper.read(plist).should == { 'café' => 'før yoµ' }
       end
+
+      it "raises if a plist contains any other object type as value than string, dictionary, and array" do
+        @plist.open('w') do |f|
+          f.write <<-EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>uhoh</key>
+  <integer>42</integer>
+</dict>
+</plist>
+EOS
+        end
+        lambda { Xcodeproj::PlistHelper.read(@plist) }.should.raise TypeError
+      end
+
+      it "raises if a plist array value contains any other object type than string, or dictionary" do
+        @plist.open('w') do |f|
+          f.write <<-EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>uhoh</key>
+  <array>
+    <integer>42</integer>
+  </array>
+</dict>
+</plist>
+EOS
+        end
+        lambda { Xcodeproj::PlistHelper.read(@plist) }.should.raise TypeError
+      end
+
+      it "raises if for whatever reason the value could not be converted to a CFTypeRef" do
+        lambda do
+          Xcodeproj::PlistHelper.write({ "invalid" => "\xCA" }, @plist)
+        end.should.raise TypeError
+      end
+
     end
   end
 end
