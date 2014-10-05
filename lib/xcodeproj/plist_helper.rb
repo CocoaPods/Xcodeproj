@@ -42,7 +42,14 @@ module Xcodeproj
         end
         begin
           plist = CoreFoundation.RubyHashToCFDictionary(hash)
-          CoreFoundation.CFPropertyListWriteToStream(plist, stream)
+
+          error_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, CoreFoundation.free_function)
+          result = CoreFoundation.CFPropertyListWrite(plist, stream, CoreFoundation::KCFPropertyListXMLFormat_v1_0, 0, error_ptr)
+          if result == 0
+            error = CoreFoundation.CFAutoRelease(error_ptr.ptr)
+            CoreFoundation.CFShow(error)
+            raise "Unable to write plist data!"
+          end
         ensure
           CoreFoundation.CFWriteStreamClose(stream)
         end
@@ -63,16 +70,25 @@ module Xcodeproj
         end
 
         url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(path)
-        data = CoreFoundation.CFURLCreateDataAndPropertiesFromResource(url)
-        plist = CoreFoundation.CFPropertyListCreateFromXMLData(data)
-        unless CoreFoundation.CFGetTypeID(plist) == CoreFoundation.CFDictionaryGetTypeID()
+        stream = CoreFoundation.CFReadStreamCreateWithFile(url)
+        unless CoreFoundation.CFReadStreamOpen(stream) == CoreFoundation::TRUE
+          raise "Unable to open stream!"
+        end
+        plist = nil
+        begin
+          error_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, CoreFoundation.free_function)
+          plist = CoreFoundation.CFPropertyListCreateWithStream(stream, 0, CoreFoundation::KCFPropertyListImmutable, Fiddle::NULL, error_ptr)
+          if plist.null?
+            error = CoreFoundation.CFAutoRelease(error_ptr.ptr)
+            CoreFoundation.CFShow(error)
+            raise "Unable to read plist data!"
+          elsif CoreFoundation.CFGetTypeID(plist) != CoreFoundation.CFDictionaryGetTypeID()
           raise "Expected a plist with a dictionary root object!"
         end
-
-        #require 'pp'
-        result = CoreFoundation.CFDictionaryToRubyHash(plist)
-        #pp result
-        result
+        ensure
+          CoreFoundation.CFReadStreamClose(stream)
+        end
+        CoreFoundation.CFDictionaryToRubyHash(plist)
       end
 
       private
@@ -91,9 +107,12 @@ module Xcodeproj
 
         CFPropertyListFormat = Fiddle::TYPE_INT
         KCFPropertyListXMLFormat_v1_0 = 100
+        CFPropertyListFormatPointer = Fiddle::TYPE_VOIDP
 
         UInt32 = -Fiddle::TYPE_INT
         UInt8 = -Fiddle::TYPE_CHAR
+
+        CFOptionFlags = UInt32
 
         CFStringEncoding = UInt32
         KCFStringEncodingUTF8 = 0x08000100
@@ -162,21 +181,40 @@ module Xcodeproj
           function.call(stream)
         end
 
-        # TODO will be deprecated
-        def self.CFPropertyListWriteToStream(plist, stream)
+        def self.CFReadStreamCreateWithFile(url)
           function = Fiddle::Function.new(
-            image['CFPropertyListWriteToStream'],
-            [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFTypeRefPointer],
+            image['CFReadStreamCreateWithFile'],
+            [CFTypeRef, CFTypeRef],
+            CFTypeRef
+          )
+          CFAutoRelease(function.call(Fiddle::NULL, url))
+        end
+
+        def self.CFReadStreamOpen(stream)
+          function = Fiddle::Function.new(
+            image['CFReadStreamOpen'],
+            [CFTypeRef],
+            Boolean
+          )
+          function.call(stream)
+        end
+
+        def self.CFReadStreamClose(stream)
+          function = Fiddle::Function.new(
+            image['CFReadStreamClose'],
+            [CFTypeRef],
+            Fiddle::TYPE_VOID
+          )
+          function.call(stream)
+          end
+
+        def self.CFPropertyListWrite(plist, stream, format, options, error_ptr)
+          function = Fiddle::Function.new(
+            image['CFPropertyListWrite'],
+            [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFOptionFlags, CFTypeRefPointer],
             CFIndex
           )
-          error_string_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
-          result = function.call(plist, stream, KCFPropertyListXMLFormat_v1_0, error_string_ptr)
-          if result == 0
-            error_string = CFAutoRelease(error_string_ptr.ptr)
-            CFShow(error_string)
-            raise "Unable to write plist data!"
-          end
-          result
+          function.call(plist, stream, format, options, error_ptr)
         end
 
         def self.CFURLCreateFromFileSystemRepresentation(path)
@@ -186,40 +224,15 @@ module Xcodeproj
             CFTypeRef
           )
           CFAutoRelease(function.call(Fiddle::NULL, path, path.bytesize, FALSE))
-        end
-
-        # NOTE: Has been deprecated since 10.9
-        def self.CFURLCreateDataAndPropertiesFromResource(url)
-          function = Fiddle::Function.new(
-            image['CFURLCreateDataAndPropertiesFromResource'],
-            [CFTypeRef, CFTypeRef, CFTypeRefPointer, CFTypeRefPointer, CFTypeRef, SInt32Pointer],
-            Boolean
-          )
-          data_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
-          error_code_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INT, free_function)
-          success = function.call(Fiddle::NULL, url, data_ptr, Fiddle::NULL, Fiddle::NULL, error_code_ptr)
-          if success == TRUE
-            CFAutoRelease(data_ptr.ptr)
-          else
-            raise "Unable to read data. Error: #{error_code_ptr[0]}"
           end
-        end
 
-        # NOTE: Will be deprecated soon
-        def self.CFPropertyListCreateFromXMLData(data)
+        def self.CFPropertyListCreateWithStream(stream, stream_length, options, format_ptr, error_ptr)
           function = Fiddle::Function.new(
-            image['CFPropertyListCreateFromXMLData'],
-            [CFTypeRef, CFTypeRef, CFPropertyListMutabilityOptions, CFTypeRefPointer],
+            image['CFPropertyListCreateWithStream'],
+            [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer],
             CFTypeRef
           )
-          error_string_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
-          plist = CFAutoRelease(function.call(Fiddle::NULL, data, KCFPropertyListImmutable, error_string_ptr))
-          error_string = CFAutoRelease(error_string_ptr.ptr)
-          unless error_string.null?
-            CFShow(error_string)
-            raise "Unable to read plist data!"
-          end
-          plist
+          function.call(Fiddle::NULL, stream, stream_length, options, format_ptr, error_ptr)
         end
 
         def self.CFDictionaryApplyFunction(dictionary, &callback)
