@@ -97,7 +97,7 @@ module ProjectSpecs
         Xcodeproj::PlistHelper.read(@plist).should == hash
       end
 
-      it "coerces values to strings if it is a disallowed type" do
+      it 'coerces values to strings if it is a disallowed type' do
         Xcodeproj::PlistHelper.write({ '1' => 1, 'symbol' => :symbol }, @plist)
         Xcodeproj::PlistHelper.read(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
       end
@@ -108,7 +108,7 @@ module ProjectSpecs
         Xcodeproj::PlistHelper.read(plist).should == { 'café' => 'før yoµ' }
       end
 
-      it "raises if a plist contains any other object type as value than string, dictionary, and array" do
+      it 'raises if a plist contains any other object type as value than string, dictionary, and array' do
         @plist.open('w') do |f|
           f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -124,7 +124,7 @@ EOS
         lambda { Xcodeproj::PlistHelper.read(@plist) }.should.raise TypeError
       end
 
-      it "raises if a plist array value contains any other object type than string, or dictionary" do
+      it 'raises if a plist array value contains any other object type than string, or dictionary' do
         @plist.open('w') do |f|
           f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -142,9 +142,9 @@ EOS
         lambda { Xcodeproj::PlistHelper.read(@plist) }.should.raise TypeError
       end
 
-      it "raises if for whatever reason the value could not be converted to a CFTypeRef" do
+      it 'raises if for whatever reason the value could not be converted to a CFTypeRef' do
         lambda do
-          Xcodeproj::PlistHelper.write({ "invalid" => "\xCA" }, @plist)
+          Xcodeproj::PlistHelper.write({ 'invalid' => "\xCA" }, @plist)
         end.should.raise TypeError
       end
 

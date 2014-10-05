@@ -55,6 +55,9 @@ end
 module CoreFoundation
   PATH = '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
 
+  # rubocop:disable Style/MethodName
+  # rubocop:disable Style/VariableName
+
   # @!group Ruby hash as property list (de)serialization
   #---------------------------------------------------------------------------#
 
@@ -65,7 +68,7 @@ module CoreFoundation
                                                   FALSE)
     stream = CFWriteStreamCreateWithFile(NULL, url)
     unless CFWriteStreamOpen(stream) == TRUE
-      raise IOError, "Unable to open stream."
+      raise IOError, 'Unable to open stream.'
     end
 
     plist = RubyHashToCFDictionary(hash)
@@ -92,7 +95,7 @@ module CoreFoundation
                                                   FALSE)
     stream = CFReadStreamCreateWithFile(NULL, url)
     unless CFReadStreamOpen(stream) == TRUE
-      raise IOError, "Unable to open stream."
+      raise IOError, 'Unable to open stream.'
     end
 
     error_ptr = CFTypeRefPointer()
@@ -108,7 +111,7 @@ module CoreFoundation
       description = CFCopyDescription(error_ptr.ptr)
       raise IOError, "Unable to read plist data: #{description}"
     elsif CFGetTypeID(plist) != CFDictionaryGetTypeID()
-      raise TypeError, "Expected a plist with a dictionary root object."
+      raise TypeError, 'Expected a plist with a dictionary root object.'
     end
 
     CFDictionaryToRubyHash(plist)
@@ -116,6 +119,8 @@ module CoreFoundation
 
   # @!group Types
   #---------------------------------------------------------------------------#
+
+  # rubocop:disable Style/ConstantName
 
   NULL = Fiddle::NULL
 
@@ -149,6 +154,8 @@ module CoreFoundation
 
   CFStringEncoding = UInt32
   KCFStringEncodingUTF8 = 0x08000100
+
+  # rubocop:enable Style/ConstantName
 
   private
 
@@ -277,7 +284,9 @@ module CoreFoundation
   #
   def self.CFTypeRefPointer
     pointer = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
-    def pointer.ptr; CFAutoRelease(super); end
+    def pointer.ptr
+      CFAutoRelease(super)
+    end
     pointer
   end
 
@@ -324,7 +333,7 @@ module CoreFoundation
                                                 KCFStringEncodingUTF8,
                                                 0)
     if data.null?
-      raise TypeError, "Unable to convert CFStringRef."
+      raise TypeError, 'Unable to convert CFStringRef.'
     end
     bytes_ptr = CFDataGetBytePtr(data)
     result = bytes_ptr.to_str(CFDataGetLength(data))
@@ -370,7 +379,7 @@ module CoreFoundation
              end
     if result.null?
       raise TypeError, "Unable to convert Ruby value `#{value.inspect}' " \
-                       "into a CFTypeRef."
+                       'into a CFTypeRef.'
     end
     result
   end
@@ -406,5 +415,7 @@ module CoreFoundation
   def self.RubyBooleanToCFBoolean(value)
     value ? CFBooleanTrue() : CFBooleanFalse()
   end
-end
 
+  # rubocop:enable Style/MethodName
+  # rubocop:enable Style/VariableName
+end
