@@ -99,16 +99,31 @@ module Xcodeproj
 end
 
 module CoreFoundation
+  PATH = '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
+
+  # @!group Types
+  #---------------------------------------------------------------------------#
+
   Void = Fiddle::TYPE_VOID
   VoidPointer = Fiddle::TYPE_VOIDP
+  FunctionPointer = VoidPointer
 
-  CFTypeRef = VoidPointer
-  CFTypeRefPointer = VoidPointer
+  UInt32 = -Fiddle::TYPE_INT
+  UInt8 = -Fiddle::TYPE_CHAR
+
   SInt32Pointer = VoidPointer
   UInt8Pointer = VoidPointer
   CharPointer = VoidPointer
+
+  Boolean = Fiddle::TYPE_CHAR
+  TRUE = 1
+  FALSE = 0
+
+  CFTypeRef = VoidPointer
+  CFTypeRefPointer = VoidPointer
   CFIndex = Fiddle::TYPE_LONG
   CFTypeID = -Fiddle::TYPE_LONG
+  CFOptionFlags = UInt32
 
   CFPropertyListMutabilityOptions = Fiddle::TYPE_INT
   KCFPropertyListImmutable = 0
@@ -117,54 +132,41 @@ module CoreFoundation
   KCFPropertyListXMLFormat_v1_0 = 100
   CFPropertyListFormatPointer = VoidPointer
 
-  UInt32 = -Fiddle::TYPE_INT
-  UInt8 = -Fiddle::TYPE_CHAR
-
-  CFOptionFlags = UInt32
-
   CFStringEncoding = UInt32
   KCFStringEncodingUTF8 = 0x08000100
 
-  Boolean = Fiddle::TYPE_CHAR
-  TRUE = 1
-  FALSE = 0
+  private
 
-  FunctionPointer = VoidPointer
+  # @!group Helpers
+  #---------------------------------------------------------------------------#
 
   def self.image
-    @image ||= Fiddle.dlopen('/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation')
+    @image ||= Fiddle.dlopen(PATH)
   end
 
-  # C Ruby's free() function
   def self.free_function
-    Fiddle::Function.new(Fiddle::RUBY_FREE, [VoidPointer], Void)
+    @ruby_free ||= Fiddle::Function.new(Fiddle::RUBY_FREE, [VoidPointer], Void)
   end
 
   def self.CFRelease_function
-    Fiddle::Function.new(image['CFRelease'], [CFTypeRef], Void)
+    @CFRelease ||= Fiddle::Function.new(image['CFRelease'], [CFTypeRef], Void)
   end
 
-  # Made up function that assigns `CFRelease` as the function that should be
-  # used to free the memory once Ruby's GC deems the object out of scope.
-  def self.CFAutoRelease(ref)
-    ref.free = CFRelease_function() unless ref.null?
-    ref
-  end
-
-  def self.function(symbol, parameter_types, return_type)
+  def self.extern(symbol, parameter_types, return_type)
     symbol = symbol.to_s
     create_function = symbol.include?('Create')
     function_cache_key = "@__#{symbol}__"
 
     define_singleton_method(symbol) do |*args|
-      # Implement Ruby method calling semantics regarding method signature.
       unless args.size == parameter_types.size
-        raise ArgumentError, "wrong number of arguments (#{args.size} for #{parameter_types.size})"
+        raise ArgumentError, "wrong number of arguments (#{args.size} for " \
+                             "#{parameter_types.size})"
       end
 
-      # Get cached function or cache a new function instance.
       unless function = instance_variable_get(function_cache_key)
-        function = Fiddle::Function.new(image[symbol.to_s], parameter_types, return_type)
+        function = Fiddle::Function.new(image[symbol.to_s],
+                                        parameter_types,
+                                        return_type)
         instance_variable_set(function_cache_key, function)
       end
 
@@ -173,102 +175,132 @@ module CoreFoundation
     end
   end
 
-  # Object description
-  function :CFShow, [CFTypeRef], Void
-  function :CFCopyDescription, [CFTypeRef], CFTypeRef
+  public
 
-  # CFStream
-  function :CFWriteStreamCreateWithFile, [CFTypeRef, CFTypeRef], CFTypeRef
-  function :CFWriteStreamOpen, [CFTypeRef], Boolean
-  function :CFWriteStreamClose, [CFTypeRef], Void
-  function :CFReadStreamCreateWithFile, [CFTypeRef, CFTypeRef], CFTypeRef
-  function :CFReadStreamOpen, [CFTypeRef], Boolean
-  function :CFReadStreamClose, [CFTypeRef], Void
+  # @!group CoreFoundation function definitions
+  #---------------------------------------------------------------------------#
 
-  # CFURL
-  function :CFURLCreateFromFileSystemRepresentation, [CFTypeRef, UInt8Pointer, CFIndex, Boolean], CFTypeRef
-
-  # CFPropertyList
-  function :CFPropertyListWrite, [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFOptionFlags, CFTypeRefPointer], CFIndex
-  function :CFPropertyListCreateWithStream, [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer], CFTypeRef
+  # CFTypeRef description
+  extern :CFShow, [CFTypeRef], Void
+  extern :CFCopyDescription, [CFTypeRef], CFTypeRef
 
   # CFType reflection
-  function :CFGetTypeID, [CFTypeRef], CFTypeID
-  function :CFDictionaryGetTypeID, [], CFTypeID
-  function :CFStringGetTypeID, [], CFTypeID
-  function :CFArrayGetTypeID, [], CFTypeID
-  function :CFBooleanGetTypeID, [], CFTypeID
+  extern :CFGetTypeID, [CFTypeRef], CFTypeID
+  extern :CFDictionaryGetTypeID, [], CFTypeID
+  extern :CFStringGetTypeID, [], CFTypeID
+  extern :CFArrayGetTypeID, [], CFTypeID
+  extern :CFBooleanGetTypeID, [], CFTypeID
+
+  # CFStream
+  extern :CFWriteStreamCreateWithFile, [CFTypeRef, CFTypeRef], CFTypeRef
+  extern :CFWriteStreamOpen, [CFTypeRef], Boolean
+  extern :CFWriteStreamClose, [CFTypeRef], Void
+  extern :CFReadStreamCreateWithFile, [CFTypeRef, CFTypeRef], CFTypeRef
+  extern :CFReadStreamOpen, [CFTypeRef], Boolean
+  extern :CFReadStreamClose, [CFTypeRef], Void
+
+  # CFURL
+  extern :CFURLCreateFromFileSystemRepresentation, [CFTypeRef, UInt8Pointer, CFIndex, Boolean], CFTypeRef
+
+  # CFPropertyList
+  extern :CFPropertyListWrite, [CFTypeRef, CFTypeRef, CFPropertyListFormat, CFOptionFlags, CFTypeRefPointer], CFIndex
+  extern :CFPropertyListCreateWithStream, [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer], CFTypeRef
 
   # CFString
-  function :CFStringCreateExternalRepresentation, [CFTypeRef, CFTypeRef, CFStringEncoding, UInt8], CFTypeRef
-  function :CFStringCreateWithCString, [CFTypeRef, CharPointer, CFStringEncoding], CFTypeRef
+  extern :CFStringCreateExternalRepresentation, [CFTypeRef, CFTypeRef, CFStringEncoding, UInt8], CFTypeRef
+  extern :CFStringCreateWithCString, [CFTypeRef, CharPointer, CFStringEncoding], CFTypeRef
 
   # CFData
-  function :CFDataGetLength, [CFTypeRef], CFIndex
-  function :CFDataGetBytePtr, [CFTypeRef], VoidPointer
+  extern :CFDataGetLength, [CFTypeRef], CFIndex
+  extern :CFDataGetBytePtr, [CFTypeRef], VoidPointer
 
   # CFDictionary
-  function :CFDictionaryCreateMutable, [CFTypeRef, CFIndex, VoidPointer, VoidPointer], CFTypeRef
-  function :CFDictionaryAddValue, [CFTypeRef, CFTypeRef, CFTypeRef], VoidPointer
-  function :CFDictionaryApplyFunction, [CFTypeRef, FunctionPointer, VoidPointer], Void
+  extern :CFDictionaryCreateMutable, [CFTypeRef, CFIndex, VoidPointer, VoidPointer], CFTypeRef
+  extern :CFDictionaryAddValue, [CFTypeRef, CFTypeRef, CFTypeRef], VoidPointer
+  extern :CFDictionaryApplyFunction, [CFTypeRef, FunctionPointer, VoidPointer], Void
 
   # CFArray
-  function :CFArrayCreateMutable, [CFTypeRef, CFIndex, VoidPointer], CFTypeRef
-  function :CFArrayAppendValue, [CFTypeRef, CFTypeRef], VoidPointer
-  function :CFArrayGetCount, [CFTypeRef], CFIndex
-  function :CFArrayGetValueAtIndex, [CFTypeRef, CFIndex], CFTypeRef
+  extern :CFArrayCreateMutable, [CFTypeRef, CFIndex, VoidPointer], CFTypeRef
+  extern :CFArrayAppendValue, [CFTypeRef, CFTypeRef], VoidPointer
+  extern :CFArrayGetCount, [CFTypeRef], CFIndex
+  extern :CFArrayGetValueAtIndex, [CFTypeRef, CFIndex], CFTypeRef
 
   # CFBoolean
-  function :CFBooleanGetValue, [CFTypeRef], Boolean
+  extern :CFBooleanGetValue, [CFTypeRef], Boolean
 
-  # Custom convenience wrappers
+  # @!group Custom convenience functions
+  #---------------------------------------------------------------------------#
+
+  def self.CFBooleanTrue
+    @CFBooleanTrue ||= Fiddle::Pointer.new(image['kCFBooleanTrue']).ptr
+  end
+
+  def self.CFBooleanFalse
+    @CFBooleanFalse ||= Fiddle::Pointer.new(image['kCFBooleanFalse']).ptr
+  end
+
+  def self.CFTypeArrayCallBacks
+    @CFTypeArrayCallBacks ||= image['kCFTypeArrayCallBacks']
+  end
+
+  def self.CFTypeDictionaryKeyCallBacks
+    @CFTypeDictionaryKeyCallBacks ||= image['kCFTypeDictionaryKeyCallBacks']
+  end
+
+  def self.CFTypeDictionaryValueCallBacks
+    @CFTypeDictionaryValueCallBacks ||= image['kCFTypeDictionaryValueCallBacks']
+  end
+
+  def self.CFAutoRelease(cf_type_reference)
+    cf_type_reference.free = CFRelease_function() unless cf_type_reference.null?
+    cf_type_reference
+  end
 
   def self.CFDictionaryApplyBlock(dictionary, &applier)
-    raise "Callback block required!" if applier.nil?
     param_types = [CFTypeRef, CFTypeRef, VoidPointer]
     closure = Fiddle::Closure::BlockCaller.new(Void, param_types, &applier)
     closure_function = Fiddle::Function.new(closure, param_types, Void)
     CFDictionaryApplyFunction(dictionary, closure_function, Fiddle::NULL)
   end
 
-  # TODO Couldn't figure out how to pass a CFRange struct by reference to the
-  #      real `CFArrayApplyFunction` function, so cheating by implementing our
-  #      own version.
   def self.CFArrayApplyBlock(array)
-    raise "Callback block required!" unless block_given?
     CFArrayGetCount(array).times do |index|
       yield CFArrayGetValueAtIndex(array, index)
     end
   end
 
-  # CFTypeRef to Ruby conversions
+  # @!group CFTypeRef to Ruby value conversion
+  #---------------------------------------------------------------------------#
 
-  def self.CFTypeRefToRubyValue(ref)
-    case CFGetTypeID(ref)
+  def self.CFTypeRefToRubyValue(cf_type_reference)
+    case CFGetTypeID(cf_type_reference)
     when CFStringGetTypeID()
-      CFStringToRubyString(ref)
+      CFStringToRubyString(cf_type_reference)
     when CFDictionaryGetTypeID()
-      CFDictionaryToRubyHash(ref)
+      CFDictionaryToRubyHash(cf_type_reference)
     when CFArrayGetTypeID()
-      CFArrayToRubyArray(ref)
+      CFArrayToRubyArray(cf_type_reference)
     when CFBooleanGetTypeID()
-      CFBooleanToRubyBoolean(ref)
+      CFBooleanToRubyBoolean(cf_type_reference)
     else
-      description = CFStringToRubyString(CFCopyDescription(ref))
+      description = CFStringToRubyString(CFCopyDescription(cf_type_reference))
       raise TypeError, "Unknown type: #{description}"
     end
   end
 
   # TODO Does Pointer#to_str actually copy the data as expected?
   def self.CFStringToRubyString(string)
-    data = CFStringCreateExternalRepresentation(Fiddle::NULL, string, KCFStringEncodingUTF8, 0)
+    data = CFStringCreateExternalRepresentation(Fiddle::NULL,
+                                                string,
+                                                KCFStringEncodingUTF8,
+                                                0)
     if data.null?
       raise "Unable to convert string!"
     end
     bytes_ptr = CFDataGetBytePtr(data)
-    s = bytes_ptr.to_str(CFDataGetLength(data))
-    s.force_encoding(Encoding::UTF_8)
-    s
+    result = bytes_ptr.to_str(CFDataGetLength(data))
+    result.force_encoding(Encoding::UTF_8)
+    result
   end
 
   def self.CFDictionaryToRubyHash(dictionary)
@@ -291,7 +323,8 @@ module CoreFoundation
     CFBooleanGetValue(boolean) == TRUE
   end
 
-  # Ruby to CFTypeRef conversions
+  # @!group Ruby value to CFTypeRef conversion
+  #---------------------------------------------------------------------------#
 
   def self.RubyValueToCFTypeRef(value)
     result = case value
@@ -307,27 +340,33 @@ module CoreFoundation
                RubyStringToCFString(value.to_s)
              end
     if result.null?
-      raise TypeError, "Unable to convert Ruby value `#{value.inspect}' into a CFTypeRef."
+      raise TypeError, "Unable to convert Ruby value `#{value.inspect}' " \
+                       "into a CFTypeRef."
     end
     result
   end
 
   def self.RubyStringToCFString(string)
-    CFStringCreateWithCString(Fiddle::NULL, Fiddle::Pointer[string], KCFStringEncodingUTF8)
+    CFStringCreateWithCString(Fiddle::NULL,
+                              Fiddle::Pointer[string],
+                              KCFStringEncodingUTF8)
   end
 
   def self.RubyHashToCFDictionary(hash)
-    dictionary = CFDictionaryCreateMutable(Fiddle::NULL, 0, image['kCFTypeDictionaryKeyCallBacks'], image['kCFTypeDictionaryValueCallBacks'])
+    result = CFDictionaryCreateMutable(Fiddle::NULL,
+                                       0,
+                                       CFTypeDictionaryKeyCallBacks(),
+                                       CFTypeDictionaryValueCallBacks())
     hash.each do |key, value|
       key = RubyStringToCFString(key.to_s)
       value = RubyValueToCFTypeRef(value)
-      CFDictionaryAddValue(dictionary, key, value)
+      CFDictionaryAddValue(result, key, value)
     end
-    dictionary
+    result
   end
 
   def self.RubyArrayToCFArray(array)
-    result = CFArrayCreateMutable(Fiddle::NULL, 0, image['kCFTypeArrayCallBacks'])
+    result = CFArrayCreateMutable(Fiddle::NULL, 0, CFTypeArrayCallBacks())
     array.each do |element|
       element = RubyValueToCFTypeRef(element)
       CFArrayAppendValue(result, element)
@@ -335,12 +374,7 @@ module CoreFoundation
     result
   end
 
-  # Ah yeah, CFBoolean, it's not a CFNumber, it’s not a CFTypeRef. The
-  # only way to get them easily is by using the constants, so load their
-  # addresses as pointers and dereference them.
   def self.RubyBooleanToCFBoolean(value)
-    Fiddle::Pointer.new(value ? image['kCFBooleanTrue'] : image['kCFBooleanFalse']).ptr
+    value ? CFBooleanTrue() : CFBooleanFalse()
   end
 end
-
-
