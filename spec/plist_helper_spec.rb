@@ -12,13 +12,6 @@ module ProjectSpecs
     describe 'In general' do
       extend SpecHelper::TemporaryDirectory
 
-      it 'reads an XML plist file' do
-        dir = 'Sample Project/Cocoa Application.xml.xcodeproj/'
-        path = fixture_path(dir + 'project.pbxproj')
-        result = Xcodeproj::PlistHelper.read(path)
-        result.keys.should.include?('archiveVersion')
-      end
-
       it 'writes an XML plist file' do
         hash = { 'archiveVersion' => '1.0' }
         Xcodeproj::PlistHelper.write(hash, @plist)

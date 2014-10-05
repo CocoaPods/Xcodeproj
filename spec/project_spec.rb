@@ -100,11 +100,7 @@ module ProjectSpecs
 
       before do
         @dir = Pathname(fixture_path('Sample Project'))
-        if Xcodeproj::PlistHelper.send(:plutil_available?)
-          @path = @dir + 'Cocoa Application.xcodeproj'
-        else
-          @path = @dir + 'Cocoa Application.xml.xcodeproj'
-        end
+        @path = @dir + 'Cocoa Application.xcodeproj'
         @project = Xcodeproj::Project.open(@path)
       end
 
@@ -154,11 +150,7 @@ module ProjectSpecs
 
       before do
         @dir = Pathname(fixture_path('Sample Project'))
-        if Xcodeproj::PlistHelper.send(:plutil_available?)
-          @path = @dir + 'Cocoa Application.xcodeproj'
-        else
-          @path = @dir + 'Cocoa Application.xml.xcodeproj'
-        end
+        @path = @dir + 'Cocoa Application.xcodeproj'
         @project = Xcodeproj::Project.open(@path)
         @project.disable_xcproj = true
         @tmp_path = temporary_directory + 'Pods.xcodeproj'
