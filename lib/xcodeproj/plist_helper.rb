@@ -1,14 +1,6 @@
 require 'fiddle'
 
 module Xcodeproj
-  def self.read_plist(path)
-    PlistHelper.read(path)
-  end
-
-  def self.write_plist(hash, path)
-    PlistHelper.write(hash, path)
-  end
-
   # Provides support for loading and serializing property list files.
   #
   module PlistHelper
@@ -36,29 +28,10 @@ module Xcodeproj
         end
         path = path.to_s
 
-        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(Fiddle::NULL, path, path.bytesize, CoreFoundation::FALSE)
-        stream = CoreFoundation.CFWriteStreamCreateWithFile(Fiddle::NULL, url)
-        unless CoreFoundation.CFWriteStreamOpen(stream) == CoreFoundation::TRUE
-          raise "Unable to open stream!"
-        end
-        begin
-          plist = CoreFoundation.RubyHashToCFDictionary(hash)
-
-          error_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, CoreFoundation.free_function)
-          result = CoreFoundation.CFPropertyListWrite(plist, stream, CoreFoundation::KCFPropertyListXMLFormat_v1_0, 0, error_ptr)
-          if result == 0
-            error = CoreFoundation.CFAutoRelease(error_ptr.ptr)
-            CoreFoundation.CFShow(error)
-            raise "Unable to write plist data!"
-          end
-        ensure
-          CoreFoundation.CFWriteStreamClose(stream)
-        end
-
-        true
+        CoreFoundation.RubyHashPropertyListWrite(hash, path)
       end
 
-      # @return [String] Returns the native objects loaded from a property list
+      # @return [Hash] Returns the native objects loaded from a property list
       #         file.
       #
       # @param  [#to_s] path
@@ -69,40 +42,82 @@ module Xcodeproj
         unless File.exist?(path)
           raise ArgumentError, "The plist file at path `#{path}` doesn't exist."
         end
-
-        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(Fiddle::NULL, path, path.bytesize, CoreFoundation::FALSE)
-        stream = CoreFoundation.CFReadStreamCreateWithFile(Fiddle::NULL, url)
-        unless CoreFoundation.CFReadStreamOpen(stream) == CoreFoundation::TRUE
-          raise "Unable to open stream!"
-        end
-        plist = nil
-        begin
-          error_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, CoreFoundation.free_function)
-          plist = CoreFoundation.CFPropertyListCreateWithStream(Fiddle::NULL, stream, 0, CoreFoundation::KCFPropertyListImmutable, Fiddle::NULL, error_ptr)
-          if plist.null?
-            error = CoreFoundation.CFAutoRelease(error_ptr.ptr)
-            CoreFoundation.CFShow(error)
-            raise "Unable to read plist data!"
-          elsif CoreFoundation.CFGetTypeID(plist) != CoreFoundation.CFDictionaryGetTypeID()
-            raise "Expected a plist with a dictionary root object!"
-          end
-        ensure
-          CoreFoundation.CFReadStreamClose(stream)
-        end
-        CoreFoundation.CFDictionaryToRubyHash(plist)
+        CoreFoundation.RubyHashPropertyListRead(path)
       end
-
-      private
-
     end
   end
 end
 
+# This module provides an interface to the CoreFoundation OS X framework.
+# Specifically it bridges the functions required to be able to read and write
+# property lists.
+#
 module CoreFoundation
   PATH = '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
 
+  # @!group Ruby hash as property list (de)serialization
+  #---------------------------------------------------------------------------#
+
+  def self.RubyHashPropertyListWrite(hash, path)
+    url = CFURLCreateFromFileSystemRepresentation(NULL,
+                                                  path,
+                                                  path.bytesize,
+                                                  FALSE)
+    stream = CFWriteStreamCreateWithFile(NULL, url)
+    unless CFWriteStreamOpen(stream) == TRUE
+      raise IOError, "Unable to open stream."
+    end
+
+    plist = RubyHashToCFDictionary(hash)
+
+    error_ptr = CFTypeRefPointer()
+    result = CFPropertyListWrite(plist,
+                                 stream,
+                                 KCFPropertyListXMLFormat_v1_0,
+                                 0,
+                                 error_ptr)
+    CFWriteStreamClose(stream)
+
+    if result == 0
+      description = CFCopyDescription(error_ptr.ptr)
+      raise IOError, "Unable to write plist data: #{description}"
+    end
+    result
+  end
+
+  def self.RubyHashPropertyListRead(path)
+    url = CFURLCreateFromFileSystemRepresentation(NULL,
+                                                  path,
+                                                  path.bytesize,
+                                                  FALSE)
+    stream = CFReadStreamCreateWithFile(NULL, url)
+    unless CFReadStreamOpen(stream) == TRUE
+      raise IOError, "Unable to open stream."
+    end
+
+    error_ptr = CFTypeRefPointer()
+    plist = CFPropertyListCreateWithStream(NULL,
+                                           stream,
+                                           0,
+                                           KCFPropertyListImmutable,
+                                           NULL,
+                                           error_ptr)
+    CFReadStreamClose(stream)
+
+    if plist.null?
+      description = CFCopyDescription(error_ptr.ptr)
+      raise IOError, "Unable to read plist data: #{description}"
+    elsif CFGetTypeID(plist) != CFDictionaryGetTypeID()
+      raise TypeError, "Expected a plist with a dictionary root object."
+    end
+
+    CFDictionaryToRubyHash(plist)
+  end
+
   # @!group Types
   #---------------------------------------------------------------------------#
+
+  NULL = Fiddle::NULL
 
   Void = Fiddle::TYPE_VOID
   VoidPointer = Fiddle::TYPE_VOIDP
@@ -157,6 +172,7 @@ module CoreFoundation
     create_function = symbol.include?('Create')
     function_cache_key = "@__#{symbol}__"
 
+    # Define a singleton method on the CoreFoundation module.
     define_singleton_method(symbol) do |*args|
       unless args.size == parameter_types.size
         raise ArgumentError, "wrong number of arguments (#{args.size} for " \
@@ -172,6 +188,11 @@ module CoreFoundation
 
       result = function.call(*args)
       create_function ? CFAutoRelease(result) : result
+    end
+
+    # Define a convenience method that can be used after including the module.
+    define_method(symbol) do |*args|
+      CoreFoundation.send(symbol, *args)
     end
   end
 
@@ -251,6 +272,15 @@ module CoreFoundation
     @CFTypeDictionaryValueCallBacks ||= image['kCFTypeDictionaryValueCallBacks']
   end
 
+  # This pointer will assign `CFRelease` as the free function when
+  # dereferencing the pointer.
+  #
+  def self.CFTypeRefPointer
+    pointer = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
+    def pointer.ptr; CFAutoRelease(super); end
+    pointer
+  end
+
   def self.CFAutoRelease(cf_type_reference)
     cf_type_reference.free = CFRelease_function() unless cf_type_reference.null?
     cf_type_reference
@@ -260,7 +290,7 @@ module CoreFoundation
     param_types = [CFTypeRef, CFTypeRef, VoidPointer]
     closure = Fiddle::Closure::BlockCaller.new(Void, param_types, &applier)
     closure_function = Fiddle::Function.new(closure, param_types, Void)
-    CFDictionaryApplyFunction(dictionary, closure_function, Fiddle::NULL)
+    CFDictionaryApplyFunction(dictionary, closure_function, NULL)
   end
 
   def self.CFArrayApplyBlock(array)
@@ -288,14 +318,13 @@ module CoreFoundation
     end
   end
 
-  # TODO Does Pointer#to_str actually copy the data as expected?
   def self.CFStringToRubyString(string)
-    data = CFStringCreateExternalRepresentation(Fiddle::NULL,
+    data = CFStringCreateExternalRepresentation(NULL,
                                                 string,
                                                 KCFStringEncodingUTF8,
                                                 0)
     if data.null?
-      raise "Unable to convert string!"
+      raise TypeError, "Unable to convert CFStringRef."
     end
     bytes_ptr = CFDataGetBytePtr(data)
     result = bytes_ptr.to_str(CFDataGetLength(data))
@@ -347,13 +376,13 @@ module CoreFoundation
   end
 
   def self.RubyStringToCFString(string)
-    CFStringCreateWithCString(Fiddle::NULL,
+    CFStringCreateWithCString(NULL,
                               Fiddle::Pointer[string],
                               KCFStringEncodingUTF8)
   end
 
   def self.RubyHashToCFDictionary(hash)
-    result = CFDictionaryCreateMutable(Fiddle::NULL,
+    result = CFDictionaryCreateMutable(NULL,
                                        0,
                                        CFTypeDictionaryKeyCallBacks(),
                                        CFTypeDictionaryValueCallBacks())
@@ -366,7 +395,7 @@ module CoreFoundation
   end
 
   def self.RubyArrayToCFArray(array)
-    result = CFArrayCreateMutable(Fiddle::NULL, 0, CFTypeArrayCallBacks())
+    result = CFArrayCreateMutable(NULL, 0, CFTypeArrayCallBacks())
     array.each do |element|
       element = RubyValueToCFTypeRef(element)
       CFArrayAppendValue(result, element)
@@ -378,3 +407,4 @@ module CoreFoundation
     value ? CFBooleanTrue() : CFBooleanFalse()
   end
 end
+
