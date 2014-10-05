@@ -34,9 +34,10 @@ module Xcodeproj
         unless path.is_a?(String) || path.is_a?(Pathname)
           raise TypeError, "The given `#{path}` must be a string or 'pathname'."
         end
+        path = path.to_s
 
-        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(path.to_s)
-        stream = CoreFoundation.CFWriteStreamCreateWithFile(url)
+        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(Fiddle::NULL, path, path.bytesize, CoreFoundation::FALSE)
+        stream = CoreFoundation.CFWriteStreamCreateWithFile(Fiddle::NULL, url)
         unless CoreFoundation.CFWriteStreamOpen(stream) == CoreFoundation::TRUE
           raise "Unable to open stream!"
         end
@@ -69,15 +70,15 @@ module Xcodeproj
           raise ArgumentError, "The plist file at path `#{path}` doesn't exist."
         end
 
-        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(path)
-        stream = CoreFoundation.CFReadStreamCreateWithFile(url)
+        url = CoreFoundation.CFURLCreateFromFileSystemRepresentation(Fiddle::NULL, path, path.bytesize, CoreFoundation::FALSE)
+        stream = CoreFoundation.CFReadStreamCreateWithFile(Fiddle::NULL, url)
         unless CoreFoundation.CFReadStreamOpen(stream) == CoreFoundation::TRUE
           raise "Unable to open stream!"
         end
         plist = nil
         begin
           error_ptr = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, CoreFoundation.free_function)
-          plist = CoreFoundation.CFPropertyListCreateWithStream(stream, 0, CoreFoundation::KCFPropertyListImmutable, Fiddle::NULL, error_ptr)
+          plist = CoreFoundation.CFPropertyListCreateWithStream(Fiddle::NULL, stream, 0, CoreFoundation::KCFPropertyListImmutable, Fiddle::NULL, error_ptr)
           if plist.null?
             error = CoreFoundation.CFAutoRelease(error_ptr.ptr)
             CoreFoundation.CFShow(error)
@@ -154,13 +155,22 @@ module Xcodeproj
 
         # Actual function wrappers
 
-        def self.CFWriteStreamCreateWithFile(url)
+        def self.CFDictionaryApplyFunction(dictionary, applier, context)
+          function = Fiddle::Function.new(
+            image['CFDictionaryApplyFunction'],
+            [CFTypeRef, FunctionPointer, Fiddle::TYPE_VOIDP],
+            Fiddle::TYPE_VOID
+          )
+          function.call(dictionary, applier, context)
+        end
+
+        def self.CFWriteStreamCreateWithFile(allocator, url)
           function = Fiddle::Function.new(
             image['CFWriteStreamCreateWithFile'],
             [CFTypeRef, CFTypeRef],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, url))
+          CFAutoRelease(function.call(allocator, url))
         end
 
         def self.CFWriteStreamOpen(stream)
@@ -181,13 +191,13 @@ module Xcodeproj
           function.call(stream)
         end
 
-        def self.CFReadStreamCreateWithFile(url)
+        def self.CFReadStreamCreateWithFile(allocator, url)
           function = Fiddle::Function.new(
             image['CFReadStreamCreateWithFile'],
             [CFTypeRef, CFTypeRef],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, url))
+          CFAutoRelease(function.call(allocator, url))
         end
 
         def self.CFReadStreamOpen(stream)
@@ -217,37 +227,22 @@ module Xcodeproj
           function.call(plist, stream, format, options, error_ptr)
         end
 
-        def self.CFURLCreateFromFileSystemRepresentation(path)
+        def self.CFURLCreateFromFileSystemRepresentation(allocator, buffer, buffer_length, directory)
           function = Fiddle::Function.new(
             image['CFURLCreateFromFileSystemRepresentation'],
             [CFTypeRef, UInt8Pointer, CFIndex, Boolean],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, path, path.bytesize, FALSE))
+          CFAutoRelease(function.call(allocator, buffer, buffer_length, directory))
           end
 
-        def self.CFPropertyListCreateWithStream(stream, stream_length, options, format_ptr, error_ptr)
+        def self.CFPropertyListCreateWithStream(allocator, stream, stream_length, options, format_ptr, error_ptr)
           function = Fiddle::Function.new(
             image['CFPropertyListCreateWithStream'],
             [CFTypeRef, CFTypeRef, CFIndex, CFOptionFlags, CFPropertyListFormatPointer, CFTypeRefPointer],
             CFTypeRef
           )
-          function.call(Fiddle::NULL, stream, stream_length, options, format_ptr, error_ptr)
-        end
-
-        def self.CFDictionaryApplyFunction(dictionary, &callback)
-          raise "Callback block required!" if callback.nil?
-
-          param_types = [CFTypeRef, CFTypeRef, Fiddle::TYPE_VOIDP]
-          callback_closure = Fiddle::Closure::BlockCaller.new(Fiddle::TYPE_VOID, param_types, &callback)
-          callback_function = Fiddle::Function.new(callback_closure, param_types, Fiddle::TYPE_VOID)
-
-          function = Fiddle::Function.new(
-            image['CFDictionaryApplyFunction'],
-            [CFTypeRef, FunctionPointer, Fiddle::TYPE_VOIDP],
-            Fiddle::TYPE_VOID
-          )
-          function.call(dictionary, callback_function, Fiddle::NULL)
+          function.call(allocator, stream, stream_length, options, format_ptr, error_ptr)
         end
 
         def self.CFArrayGetCount(array)
@@ -266,16 +261,6 @@ module Xcodeproj
             CFTypeRef
           )
           function.call(array, index)
-        end
-
-        # TODO Couldn't figure out how to pass a CFRange struct by reference to the
-        #      real `CFArrayApplyFunction` function, so cheating by implementing our
-        #      own version.
-        def self.CFArrayApplyFunction(array)
-          raise "Callback block required!" unless block_given?
-          CFArrayGetCount(array).times do |index|
-            yield CFArrayGetValueAtIndex(array, index)
-          end
         end
 
         def self.CFGetTypeID(ref)
@@ -323,22 +308,22 @@ module Xcodeproj
           function.call
         end
 
-        def self.CFStringCreateExternalRepresentation(string, encoding, replacement)
+        def self.CFStringCreateExternalRepresentation(allocator, string, encoding, replacement)
           function = Fiddle::Function.new(
             image['CFStringCreateExternalRepresentation'],
             [CFTypeRef, CFTypeRef, CFStringEncoding, UInt8],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, string, encoding, replacement))
+          CFAutoRelease(function.call(allocator, string, encoding, replacement))
         end
 
-        def self.CFStringCreateWithCString(cstr, encoding)
+        def self.CFStringCreateWithCString(allocator, cstr, encoding)
           function = Fiddle::Function.new(
             image['CFStringCreateWithCString'],
             [CFTypeRef, CharPointer, CFStringEncoding],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, cstr, encoding))
+          CFAutoRelease(function.call(allocator, cstr, encoding))
         end
 
         def self.CFDataGetLength(data)
@@ -359,13 +344,13 @@ module Xcodeproj
           function.call(data)
         end
 
-        def self.CFDictionaryCreateMutable
+        def self.CFDictionaryCreateMutable(allocator, capacity, key_callbacks, value_callbacks)
           function = Fiddle::Function.new(
             image['CFDictionaryCreateMutable'],
             [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, 0, image['kCFTypeDictionaryKeyCallBacks'], image['kCFTypeDictionaryValueCallBacks']))
+          CFAutoRelease(function.call(allocator, capacity, key_callbacks, value_callbacks))
         end
 
         def self.CFDictionaryAddValue(dictionary, key, value)
@@ -377,13 +362,13 @@ module Xcodeproj
           function.call(dictionary, key, value)
         end
 
-        def self.CFArrayCreateMutable
+        def self.CFArrayCreateMutable(allocator, capacity, callbacks)
           function = Fiddle::Function.new(
             image['CFArrayCreateMutable'],
             [CFTypeRef, CFIndex, Fiddle::TYPE_VOIDP],
             CFTypeRef
           )
-          CFAutoRelease(function.call(Fiddle::NULL, 0, image['kCFTypeArrayCallBacks']))
+          CFAutoRelease(function.call(allocator, capacity, capacity))
         end
 
         def self.CFArrayAppendValue(array, element)
@@ -413,6 +398,26 @@ module Xcodeproj
           function.call(boolean)
         end
 
+        # Custom convenience wrappers
+
+        def self.CFDictionaryApplyBlock(dictionary, &applier)
+          raise "Callback block required!" if applier.nil?
+          param_types = [CFTypeRef, CFTypeRef, Fiddle::TYPE_VOIDP]
+          closure = Fiddle::Closure::BlockCaller.new(Fiddle::TYPE_VOID, param_types, &applier)
+          closure_function = Fiddle::Function.new(closure, param_types, Fiddle::TYPE_VOID)
+          CFDictionaryApplyFunction(dictionary, closure_function, Fiddle::NULL)
+        end
+
+        # TODO Couldn't figure out how to pass a CFRange struct by reference to the
+        #      real `CFArrayApplyFunction` function, so cheating by implementing our
+        #      own version.
+        def self.CFArrayApplyBlock(array)
+          raise "Callback block required!" unless block_given?
+          CFArrayGetCount(array).times do |index|
+            yield CFArrayGetValueAtIndex(array, index)
+          end
+        end
+
         # CFTypeRef to Ruby conversions
 
         def self.CFTypeRefToRubyValue(ref)
@@ -433,7 +438,7 @@ module Xcodeproj
 
         # TODO Does Pointer#to_str actually copy the data as expected?
         def self.CFStringToRubyString(string)
-          data = CFStringCreateExternalRepresentation(string, KCFStringEncodingUTF8, 0)
+          data = CFStringCreateExternalRepresentation(Fiddle::NULL, string, KCFStringEncodingUTF8, 0)
           if data.null?
             raise "Unable to convert string!"
           end
@@ -445,7 +450,7 @@ module Xcodeproj
 
         def self.CFDictionaryToRubyHash(dictionary)
           result = {}
-          CFDictionaryApplyFunction(dictionary) do |key, value|
+          CFDictionaryApplyBlock(dictionary) do |key, value|
             result[CFStringToRubyString(key)] = CFTypeRefToRubyValue(value)
           end
           result
@@ -453,7 +458,7 @@ module Xcodeproj
 
         def self.CFArrayToRubyArray(array)
           result = []
-          CFArrayApplyFunction(array) do |element|
+          CFArrayApplyBlock(array) do |element|
             result << CFTypeRefToRubyValue(element)
           end
           result
@@ -485,11 +490,11 @@ module Xcodeproj
         end
 
         def self.RubyStringToCFString(string)
-          CFStringCreateWithCString(Fiddle::Pointer[string], KCFStringEncodingUTF8)
+          CFStringCreateWithCString(Fiddle::NULL, Fiddle::Pointer[string], KCFStringEncodingUTF8)
         end
 
         def self.RubyHashToCFDictionary(hash)
-          dictionary = CFDictionaryCreateMutable()
+          dictionary = CFDictionaryCreateMutable(Fiddle::NULL, 0, image['kCFTypeDictionaryKeyCallBacks'], image['kCFTypeDictionaryValueCallBacks'])
           hash.each do |key, value|
             key = RubyStringToCFString(key.to_s)
             value = RubyValueToCFTypeRef(value)
@@ -499,7 +504,7 @@ module Xcodeproj
         end
 
         def self.RubyArrayToCFArray(array)
-          result = CFArrayCreateMutable()
+          result = CFArrayCreateMutable(Fiddle::NULL, 0, image['kCFTypeArrayCallBacks'])
           array.each do |element|
             element = RubyValueToCFTypeRef(element)
             CFArrayAppendValue(result, element)
