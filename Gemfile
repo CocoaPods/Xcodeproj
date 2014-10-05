@@ -14,10 +14,6 @@ group :development do
     gem 'simplecov'
     gem 'rubocop'
   end
-
-  if RUBY_PLATFORM.include?('darwin')
-    gem 'libxml-ruby'
-  end
 end
 
 group :debugging do
