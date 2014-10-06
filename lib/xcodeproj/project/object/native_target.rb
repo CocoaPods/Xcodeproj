@@ -279,9 +279,9 @@ module Xcodeproj
               raise 'Unknown platform for target'
             end
 
-            path = "Platforms/#{path_sdk_name}.platform/Developer/SDKs/#{path_sdk_name}#{path_sdk_version}.sdk/System/Library/Frameworks/#{name}.framework"
+            path = "System/Library/Frameworks/#{name}.framework"
             unless ref = group.find_file_by_path(path)
-              ref = group.new_file(path, :developer_dir)
+              ref = group.new_file(path, :sdk_root)
             end
             frameworks_build_phase.add_file_reference(ref, true)
             ref
