@@ -283,22 +283,8 @@ module ProjectSpecs
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/QuartzCore.framework'
-          file.source_tree.should == 'DEVELOPER_DIR'
-        end
-
-        it 'uses the sdk version of the target' do
-          @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos6.0')
-          @target.add_system_framework('QuartzCore')
-          file = @project['Frameworks/iOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == '6.0'
-        end
-
-        it 'uses the last known SDK version if none is specified in the target' do
-          @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
-          @target.add_system_framework('QuartzCore')
-          file = @project['Frameworks/iOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+          file.path.should == 'System/Library/Frameworks/QuartzCore.framework'
+          file.source_tree.should == 'SDKROOT'
         end
 
         it "doesn't duplicate references to a frameworks if one already exists" do
