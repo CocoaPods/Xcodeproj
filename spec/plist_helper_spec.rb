@@ -3,7 +3,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 module ProjectSpecs
-  describe Xcodeproj::PlistHelper do
+  describe 'Xcodeproj::PlistHelper' do
 
     before do
       @plist = temporary_directory + 'plist'
