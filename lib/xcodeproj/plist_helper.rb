@@ -1,6 +1,16 @@
 require 'fiddle'
 
 module Xcodeproj
+  # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
+  def self.read_plist(path)
+    PlistHelper.read(path)
+  end
+
+  # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
+  def self.write_plist(hash, path)
+    PlistHelper.write(hash, path)
+  end
+
   # Provides support for loading and serializing property list files.
   #
   module PlistHelper
