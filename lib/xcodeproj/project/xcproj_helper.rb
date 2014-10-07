@@ -37,7 +37,7 @@ module Xcodeproj
       # @!group Private Helpers
       #---------------------------------------------------------------------#
 
-      def self.stfu
+      def self.silence_stderr
         begin
           orig_stderr = $stderr.clone
           $stderr.reopen File.new('/dev/null', 'w')
@@ -55,7 +55,7 @@ module Xcodeproj
         public
 
         def initialize(path)
-          XCProjHelper.stfu do
+          XCProjHelper.silence_stderr do
             CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
             CoreFoundation.XCInitializeCoreIfNeeded(1)
           end
