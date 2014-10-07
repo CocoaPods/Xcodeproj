@@ -1,13 +1,30 @@
 # Xcodeproj Changelog
 
+## 0.19.3
+
+###### Bug Fixes
+
+* `PlistHelper`: Drop usage of the `CFPropertyList` gem and `plutil` and replace
+  it with a version that uses the native `CFPropertyList` APIs from the OS X
+  `CoreFoundation` framework, like the previous C extension did. Except this
+  time we use Ruby's Fiddle API (MRI >= 1.9.3) to interface with it instead of
+  the need to compile a C extension.  
+  This release still includes a prebuilt version of the C extension for Ruby
+  1.8.7 support (OS X 10.8.x), but this will soon be dropped completely.  
+  [Eloy Durán](https://github.com/alloy)
+  [CocoaPods#2483](https://github.com/CocoaPods/CocoaPods/issues/2483)
+  [Xcodeproj#198](https://github.com/CocoaPods/Xcodeproj/issues/198)
+  [Xcodeproj#200](https://github.com/CocoaPods/Xcodeproj/pull/200)
+
+
 ## 0.19.2
 
 ###### Bug Fixes
 
 * `PlistHelper`: Only try to use `plutil` if it's in the exact location where
-   we expect it to be on OS X, instead of relying on the user's `$PATH`.
-   [Eloy Durán](https://github.com/alloy)
-   [CocoaPods#2502](https://github.com/CocoaPods/CocoaPods/issues/2502)
+  we expect it to be on OS X, instead of relying on the user's `$PATH`.
+  [Eloy Durán](https://github.com/alloy)
+  [CocoaPods#2502](https://github.com/CocoaPods/CocoaPods/issues/2502)
 
 
 ## 0.19.1

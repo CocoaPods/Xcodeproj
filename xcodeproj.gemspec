@@ -16,14 +16,13 @@ Gem::Specification.new do |s|
     support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
   ).strip.gsub(/\s+/, ' ')
 
-  s.files         = %w{ README.md LICENSE } + Dir["lib/**/*.rb"]
+  s.files         = %w{ README.md LICENSE ext/xcodeproj/xcodeproj_ext.bundle } + Dir["lib/**/*.rb"]
 
   s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ lib }
 
-  s.add_runtime_dependency 'activesupport',  '~> 3.0'
-  s.add_runtime_dependency 'colored',        '~> 1.2'
-  s.add_runtime_dependency 'CFPropertyList', '~> 2.2'
+  s.add_runtime_dependency 'activesupport', '~> 3.0'
+  s.add_runtime_dependency 'colored',       '~> 1.2'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
