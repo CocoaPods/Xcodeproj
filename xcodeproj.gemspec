@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
     support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
   ).strip.gsub(/\s+/, ' ')
 
-  s.files         = %w{ README.md LICENSE } + Dir["lib/**/*.rb"]
+  s.files         = %w{ README.md LICENSE ext/xcodeproj/xcodeproj_ext.bundle } + Dir["lib/**/*.rb"]
 
   s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ lib }
