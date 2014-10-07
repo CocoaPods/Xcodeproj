@@ -1,4 +1,5 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require 'xcodeproj/plist_helper'
 
 module ProjectSpecs
   describe Xcodeproj::Project::XCProjHelper do
@@ -13,11 +14,11 @@ module ProjectSpecs
         Process::Status.any_instance.expects(:exitstatus).returns(0)
         @helper.should.be.available
       end
+      @fixture = fixture_path('Sample Project/Cocoa Application.xcodeproj/project.pbxproj')
 
-      it 'reports that xcproj is not available' do
-        Process::Status.any_instance.expects(:exitstatus).returns(1)
-        @helper.should.not.be.available
-      end
+      dir = File.join(SpecHelper.temporary_directory, 'Cocoa Application.xcodeproj')
+      FileUtils.mkdir_p(dir)
+      @output = File.join(dir, 'project.pbxproj')
     end
 
     #-------------------------------------------------------------------------#
@@ -27,21 +28,14 @@ module ProjectSpecs
         @helper.stubs(:available?).returns(true)
       end
 
-      it 'touches the project with the given path' do
-        @helper.expects(:execute).with("xcproj --project \"/project_path\" touch").returns(true, '')
-        @helper.touch('/project_path')
-      end
+      it 'touches the project at the given path' do
+        hash = Xcodeproj.read_plist(@fixture)
+        Xcodeproj.write_plist(hash, @output)
 
-      it 'prints a warning if the execution was not successful' do
-        @helper.expects(:execute).with("xcproj --project \"/project_path\" touch").returns([true, ''])
-        Xcodeproj::UI.expects(:warn).never
-        @helper.touch('/project_path')
-      end
+        result = @helper.touch(@output)
 
-      it 'prints a warning if the execution was not successful' do
-        @helper.expects(:execute).with("xcproj --project \"/project_path\" touch").returns([false, ''])
-        Xcodeproj::UI.expects(:warn).once
-        @helper.touch('/project_path')
+        result.should == 1
+        File.open(@fixture).read.should == File.open(@output).read
       end
     end
 
