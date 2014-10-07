@@ -206,11 +206,6 @@ module CoreFoundation
       result = function.call(*args)
       create_function ? CFAutoRelease(result) : result
     end
-
-    # Define a convenience method that can be used after including the module.
-    define_method(symbol) do |*args|
-      CoreFoundation.send(symbol, *args)
-    end
   end
 
   public
