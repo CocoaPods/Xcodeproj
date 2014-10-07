@@ -10,7 +10,7 @@
   time we use Ruby's Fiddle API (MRI >= 1.9.3) to interface with it instead of
   the need to compile a C extension.  
   This release still includes a prebuilt version of the C extension for Ruby
-  1.8.7 support (OS X 10.8.x), but this will soon be dropped completely.
+  1.8.7 support (OS X 10.8.x), but this will soon be dropped completely.  
   [Eloy Durán](https://github.com/alloy)
   [CocoaPods#2483](https://github.com/CocoaPods/CocoaPods/issues/2483)
   [Xcodeproj#198](https://github.com/CocoaPods/Xcodeproj/issues/198)
