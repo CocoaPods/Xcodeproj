@@ -83,7 +83,7 @@ module Xcodeproj
           @objc_class ||= CoreFoundation.objc_getClass('PBXProject')
         end
 
-        XCODE_PATH = Pathname.new('/Applications/Xcode.app/Contents')
+        XCODE_PATH = Pathname.new(`xcode-select -p`).join('../..')
 
         def self.image
           Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTFoundation.framework/DVTFoundation').to_s)
