@@ -62,6 +62,11 @@ end
 # Specifically it bridges the functions required to be able to read and write
 # property lists.
 #
+# Everything in here should be considered an implementation detail and thus is
+# not further documented.
+#
+# @todo Move this out into its own gem.
+#
 module CoreFoundation
   PATH = '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
 
@@ -197,7 +202,7 @@ module CoreFoundation
       end
 
       unless function = instance_variable_get(function_cache_key)
-        function = Fiddle::Function.new(image[symbol.to_s],
+        function = Fiddle::Function.new(image[symbol],
                                         parameter_types,
                                         return_type)
         instance_variable_set(function_cache_key, function)
