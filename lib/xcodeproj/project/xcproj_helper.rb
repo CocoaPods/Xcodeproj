@@ -7,13 +7,13 @@ module Xcodeproj
         # @return [Bool] Whether the xcproj tool is available.
         #
         def available?
-          true
+          PBXProject.image != nil
         end
 
         # Touches the project at the given path if the xcproj tool is
         # available.
         #
-        # @return [void]
+        # @return [boolean]
         #
         def touch(path)
           if available?
@@ -29,6 +29,11 @@ module Xcodeproj
             end
           project = PBXProject.new(path)
           project.writeToFileSystemProjectFile
+            project = PBXProject.new(path)
+            project.writeToFileSystemProjectFile == 1
+          else
+            false
+          end
         end
       end
 
@@ -86,10 +91,14 @@ module Xcodeproj
         XCODE_PATH = Pathname.new(`xcrun xcode-select -p`.strip).dirname
 
         def self.image
-          Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTFoundation.framework/DVTFoundation').to_s)
-          Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl').to_s)
-          Fiddle.dlopen(XCODE_PATH.join('Frameworks/IDEFoundation.framework/IDEFoundation').to_s)
-          @image ||= Fiddle.dlopen(XCODE_PATH.join('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core').to_s)
+          begin
+            Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTFoundation.framework/DVTFoundation').to_s)
+            Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl').to_s)
+            Fiddle.dlopen(XCODE_PATH.join('Frameworks/IDEFoundation.framework/IDEFoundation').to_s)
+            @image ||= Fiddle.dlopen(XCODE_PATH.join('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core').to_s)
+          rescue Fiddle::DLError
+            nil
+          end
         end
 
         def self.extern(symbol, parameter_types, return_type)
