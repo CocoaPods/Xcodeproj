@@ -42,6 +42,7 @@ module ProjectSpecs
         # rubocop:enable Style/Tab
 
         hash = { 'archiveVersion' => '1.0' }
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Xcodeproj.write_plist(hash, @plist)
         @plist.read.should == output
       end
