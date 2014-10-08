@@ -1,6 +1,6 @@
 begin
   require 'xcodeproj/plist_helper'
-rescue LoadError
+rescue LoadError, NameError
   require 'rbconfig'
   if RUBY_VERSION == '1.8.7' && RbConfig::CONFIG['prefix'] =~ %r{^/System/Library/Frameworks/Ruby.framework/}
     $:.unshift(File.expand_path('../../../ext', __FILE__))
