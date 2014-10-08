@@ -134,7 +134,6 @@ module ProjectSpecs
         @dir = Pathname(fixture_path('Sample Project'))
         @path = @dir + 'Cocoa Application.xcodeproj'
         @project = Xcodeproj::Project.open(@path)
-        @project.disable_xcproj = true
         @tmp_path = temporary_directory + 'Pods.xcodeproj'
       end
 
@@ -182,13 +181,14 @@ module ProjectSpecs
 
       it 'can open a project and save it without altering any information' do
         plist = Xcodeproj.read_plist(@path + 'project.pbxproj')
-        @project.disable_xcproj = true
         @project.save(@tmp_path)
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
         Xcodeproj.read_plist(project_file).should == plist
       end
 
       it 'escapes non ASCII characters in the project' do
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
+
         file_ref = @project.new_file('わくわく')
         file_ref.name = 'わくわく'
         file_ref = @project.new_file('Cédric')
@@ -201,25 +201,6 @@ module ProjectSpecs
         contents.should.include('C&#233;dric')
       end
 
-      it 'uses xcproj to convert the project to match Xcode output' do
-        @project.disable_xcproj = false
-        Xcodeproj::Project::XCProjHelper.expects(:touch).with(@tmp_path)
-        @project.save(@tmp_path)
-      end
-
-      it 'skips the xcproj to convert the project to match Xcode output' do
-        @project.disable_xcproj = true
-        Xcodeproj::Project::XCProjHelper.expects(:touch).never
-        @project.save(@tmp_path)
-      end
-
-      it 'skips the xcproj touch if specified via an environment variable' do
-        @project.disable_xcproj = false
-        ENV['XCODEPROJ_DISABLE_XCPROJ'] = 'TRUE'
-        Xcodeproj::Project::XCProjHelper.expects(:touch).never
-        @project.save(@tmp_path)
-        ENV['XCODEPROJ_DISABLE_XCPROJ'] = nil
-      end
     end
 
     #-------------------------------------------------------------------------#

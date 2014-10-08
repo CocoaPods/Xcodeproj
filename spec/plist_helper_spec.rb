@@ -13,6 +13,7 @@ module ProjectSpecs
 
       it 'writes an XML plist file' do
         hash = { 'archiveVersion' => '1.0' }
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Xcodeproj.write_plist(hash, @plist)
         result = Xcodeproj.read_plist(@plist)
         result.should == hash
@@ -154,5 +155,41 @@ EOS
         end.should.raise IOError
       end
     end
+
+    #-------------------------------------------------------------------------#
+
+    describe 'Xcode equivalency' do
+      extend SpecHelper::TemporaryDirectory
+
+      def setup_fixture(name)
+        fixture_path("Sample Project/#{name}/project.pbxproj")
+      end
+
+      def setup_temporary(name)
+        dir = File.join(SpecHelper.temporary_directory, name)
+        FileUtils.mkdir_p(dir)
+        File.join(dir, 'project.pbxproj')
+      end
+
+      def touch_project(name)
+        fixture = setup_fixture(name)
+        temporary = setup_temporary(name)
+
+        hash = Xcodeproj.read_plist(fixture)
+        Xcodeproj.write_plist(hash, temporary)
+
+        File.open(fixture).read.should == File.open(temporary).read
+      end
+
+      it 'touches the project at the given path' do
+        touch_project('Cocoa Application.xcodeproj')
+      end
+
+      it 'retains emoji when touching a project' do
+        touch_project('Emoji.xcodeproj')
+      end
+
+    end
+
   end
 end

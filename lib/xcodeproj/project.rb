@@ -4,7 +4,6 @@ require 'securerandom'
 
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
-require 'xcodeproj/project/xcproj_helper'
 require 'xcodeproj/plist_helper'
 
 module Xcodeproj
@@ -156,6 +155,7 @@ module Xcodeproj
 
     alias_method :inspect, :to_s
 
+<<<<<<< HEAD
     # @return [Boolean] Whether the `xcproj` conversion should be disabled. The
     #         conversion can also be disabled via the `XCODEPROJ_DISABLE_XCPROJ`
     #         environment variable.
@@ -165,6 +165,8 @@ module Xcodeproj
       @disable_xcproj || ENV['XCODEPROJ_DISABLE_XCPROJ']
     end
 
+=======
+>>>>>>> 74e6190... Directly write ASCII plists using DevToolsCore.
     public
 
     # @!group Initialization
@@ -329,7 +331,6 @@ module Xcodeproj
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
       fix_encoding(file)
-      XCProjHelper.touch(save_path) unless disable_xcproj?
     end
 
     # Simple workaround to escape characters which are outside of ASCII
