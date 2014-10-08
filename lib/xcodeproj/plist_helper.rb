@@ -571,14 +571,18 @@ module DevToolsCore
 
   XCODE_PATH = Pathname.new(`xcrun xcode-select -p`.strip).dirname
 
-  def self.load_xcode_frameworks
-    Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTFoundation.framework/DVTFoundation').to_s)
-    Fiddle.dlopen(XCODE_PATH.join('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl').to_s)
-    Fiddle.dlopen(XCODE_PATH.join('Frameworks/IDEFoundation.framework/IDEFoundation').to_s)
-    Fiddle.dlopen(XCODE_PATH.join('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core').to_s)
-
+  def self.load_xcode_framework(framework)
+    Fiddle.dlopen(XCODE_PATH.join(framework).to_s)
     rescue Fiddle::DLError
       nil
+  end
+
+  def self.load_xcode_frameworks
+    load_xcode_framework('SharedFrameworks/DVTFoundation.framework/DVTFoundation')
+    load_xcode_framework('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl')
+    load_xcode_framework('SharedFrameworks/CSServiceClient.framework/CSServiceClient')
+    load_xcode_framework('Frameworks/IDEFoundation.framework/IDEFoundation')
+    load_xcode_framework('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core')
   end
 
   class CFDictionary < NSObject
