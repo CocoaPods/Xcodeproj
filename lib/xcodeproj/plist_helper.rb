@@ -1,4 +1,5 @@
 require 'fiddle'
+require 'dl'
 
 module Xcodeproj
   # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
@@ -58,6 +59,29 @@ module Xcodeproj
   end
 end
 
+# Define compatibility with older Fiddle implementation in Ruby 1.9.3.
+#
+# @!visibility private
+#
+module Fiddle
+  SIZEOF_INTPTR_T = DL::SIZEOF_VOIDP unless defined?(SIZEOF_INTPTR_T)
+  NULL = DL::NULL unless defined?(NULL)
+
+  unless respond_to?(:dlopen)
+    def self.dlopen(library)
+      DL.dlopen(library)
+    end
+  end
+
+  class Function
+    unless public_method_defined?(:to_i)
+      def to_i
+        @ptr.to_i
+      end
+    end
+  end
+end
+
 # This module provides an interface to the CoreFoundation OS X framework.
 # Specifically it bridges the functions required to be able to read and write
 # property lists.
@@ -66,6 +90,8 @@ end
 # not further documented.
 #
 # @todo Move this out into its own gem.
+#
+# @!visibility private
 #
 module CoreFoundation
   PATH = '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'
@@ -182,7 +208,7 @@ module CoreFoundation
   end
 
   def self.free_function
-    @ruby_free ||= Fiddle::Function.new(Fiddle::RUBY_FREE, [VoidPointer], Void)
+    @free_function ||= Fiddle::Function.new(DL::Handle.new['free'], [VoidPointer], Void)
   end
 
   def self.CFRelease_function
