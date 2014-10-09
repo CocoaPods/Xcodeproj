@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## 0.19.4
+
+###### Bug Fixes
+
+* `PlistHelper`: Add support for Ruby 1.9.3's implementation of `Fiddle`.  
+  [Eloy Durán](https://github.com/alloy)
+  [Xcodeproj#206](https://github.com/CocoaPods/Xcodeproj/issues/206)
+
+
 ## 0.19.3
 
 ###### Bug Fixes
