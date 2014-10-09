@@ -78,12 +78,20 @@ module Xcodeproj
       end
 
       def ruby_hash_write_xcode(hash, path)
-        plist = DevToolsCore::CFDictionary.new(CoreFoundation.RubyHashToCFDictionary(hash))
-        data = DevToolsCore::NSData.new(plist.plistDescriptionUTF8Data)
-        data.writeToFileAtomically(path)
+        success = true
 
-        project = DevToolsCore::PBXProject.new(path)
-        project.writeToFileSystemProjectFile
+        begin
+          plist = DevToolsCore::CFDictionary.new(CoreFoundation.RubyHashToCFDictionary(hash))
+          data = DevToolsCore::NSData.new(plist.plistDescriptionUTF8Data)
+          success &= data.writeToFileAtomically(path)
+
+          project = DevToolsCore::PBXProject.new(path)
+          success &= project.writeToFileSystemProjectFile
+        rescue Fiddle::DLError
+          success = false
+        end
+
+        CoreFoundation.RubyHashPropertyListWrite(hash, path) unless success
       end
     end
   end
@@ -602,10 +610,13 @@ module DevToolsCore
     end
 
     def plistDescriptionUTF8Data
+      selector = 'plistDescriptionUTF8Data'
+      return nil unless NSObject.respondsToSelector(@dictionary, selector)
+
       plistDescriptionUTF8Data = CFDictionary.objc_msgSend([])
       plistDescriptionUTF8Data.call(
         @dictionary,
-        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('plistDescriptionUTF8Data')))
+        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)))
     end
 
     def self.image
@@ -621,12 +632,15 @@ module DevToolsCore
     end
 
     def writeToFileAtomically(path)
-      writeToFileAtomically = NSData.objc_msgSend([CoreFoundation::VoidPointer, CoreFoundation::Boolean])
+      selector = 'writeToFile:atomically:'
+      return false unless NSObject.respondsToSelector(@data, selector)
+
+      writeToFileAtomically = NSData.objc_msgSend([CoreFoundation::VoidPointer, CoreFoundation::Boolean], CoreFoundation::Boolean)
       writeToFileAtomically.call(
         @data,
-        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('writeToFile:atomically:')),
+        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
         CoreFoundation.RubyStringToCFString(path),
-        1)
+        1) == CoreFoundation::TRUE ? true : false
     end
   end
 
