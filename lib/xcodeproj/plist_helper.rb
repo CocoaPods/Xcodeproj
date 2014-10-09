@@ -644,7 +644,7 @@ module DevToolsCore
         CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('writeToFileSystemProjectFile:userFile:checkNeedsRevert:')),
         1,
         0,
-        0)
+        1)
     end
 
     private
