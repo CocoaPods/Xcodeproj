@@ -559,6 +559,15 @@ module DevToolsCore
       Fiddle::Function.new(image['objc_msgSend'], arguments, return_type)
     end
 
+    def self.respondsToSelector(instance, sel)
+      selector = CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(sel))
+      respondsToSelector = objc_msgSend([CoreFoundation::CharPointer], CoreFoundation::Boolean)
+      respondsToSelector.call(
+        instance,
+        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('respondsToSelector:')),
+        selector) == 1 ? true : false
+    end
+
     Class = CoreFoundation::VoidPointer
     ID = CoreFoundation::VoidPointer
     SEL = CoreFoundation::VoidPointer
@@ -630,21 +639,28 @@ module DevToolsCore
         CoreFoundation.XCInitializeCoreIfNeeded(1)
       end
 
-      projectWithFile = PBXProject.objc_msgSend([CoreFoundation::VoidPointer])
-      @project = projectWithFile.call(
-        PBXProject.objc_class,
-        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('projectWithFile:')),
-        CoreFoundation.RubyStringToCFString(path))
+      selector = 'projectWithFile:'
+
+      if NSObject.respondsToSelector(PBXProject.objc_class, selector)
+        projectWithFile = PBXProject.objc_msgSend([CoreFoundation::VoidPointer])
+        @project = projectWithFile.call(
+          PBXProject.objc_class,
+          CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
+          CoreFoundation.RubyStringToCFString(path))
+      end
     end
 
     def writeToFileSystemProjectFile
+      selector = 'writeToFileSystemProjectFile:userFile:checkNeedsRevert:'
+      return unless NSObject.respondsToSelector(@project, selector)
+
       writeToFile = PBXProject.objc_msgSend([CoreFoundation::Boolean, CoreFoundation::Boolean, CoreFoundation::Boolean], CoreFoundation::Boolean)
       writeToFile.call(
         @project,
-        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('writeToFileSystemProjectFile:userFile:checkNeedsRevert:')),
+        CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
         1,
         0,
-        1)
+        1) == CoreFoundation::TRUE ? true : false
     end
 
     private
