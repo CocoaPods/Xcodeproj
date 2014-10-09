@@ -570,10 +570,11 @@ module DevToolsCore
     def self.respondsToSelector(instance, sel)
       selector = CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(sel))
       respondsToSelector = objc_msgSend([CoreFoundation::CharPointer], CoreFoundation::Boolean)
-      respondsToSelector.call(
+      result = respondsToSelector.call(
         instance,
         CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString('respondsToSelector:')),
-        selector) == 1 ? true : false
+        selector)
+      result == CoreFoundation::TRUE ? true : false
     end
 
     Class = CoreFoundation::VoidPointer
@@ -636,11 +637,12 @@ module DevToolsCore
       return false unless NSObject.respondsToSelector(@data, selector)
 
       writeToFileAtomically = NSData.objc_msgSend([CoreFoundation::VoidPointer, CoreFoundation::Boolean], CoreFoundation::Boolean)
-      writeToFileAtomically.call(
+      result = writeToFileAtomically.call(
         @data,
         CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
         CoreFoundation.RubyStringToCFString(path),
-        1) == CoreFoundation::TRUE ? true : false
+        1)
+      result == CoreFoundation::TRUE ? true : false
     end
   end
 
@@ -669,12 +671,13 @@ module DevToolsCore
       return unless NSObject.respondsToSelector(@project, selector)
 
       writeToFile = PBXProject.objc_msgSend([CoreFoundation::Boolean, CoreFoundation::Boolean, CoreFoundation::Boolean], CoreFoundation::Boolean)
-      writeToFile.call(
+      result = writeToFile.call(
         @project,
         CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
         1,
         0,
-        1) == CoreFoundation::TRUE ? true : false
+        1)
+      result == CoreFoundation::TRUE ? true : false
     end
 
     private
