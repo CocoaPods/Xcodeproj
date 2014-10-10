@@ -122,6 +122,16 @@ describe Xcodeproj::Config do
       ].sort
     end
 
+    it 'does not rewrite the config file if contents have not changed' do
+      fname = temporary_directory + 'Pods.xcconfig'
+      @config.save_as(fname)
+      mtime = File.mtime(fname)
+      sleep(1)
+
+      @config.save_as(fname)
+      File.mtime(fname).should == mtime
+    end
+
     it 'contains file path refs to all included xcconfigs' do
       config = Xcodeproj::Config.new(fixture_path('include.xcconfig'))
       config.includes.size.should.be.equal 1

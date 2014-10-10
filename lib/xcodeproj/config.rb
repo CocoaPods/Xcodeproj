@@ -75,6 +75,10 @@ module Xcodeproj
     # @return [void]
     #
     def save_as(pathname, prefix = nil)
+      if File.exist?(pathname)
+        return unless Config.new(pathname).to_yaml != to_yaml
+      end
+
       pathname.open('w') { |file| file << to_s(prefix) }
     end
 
