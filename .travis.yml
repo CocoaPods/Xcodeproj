@@ -5,6 +5,7 @@ language: ruby
 cache: bundler
 rvm:
   - system
+  - 1.9.3
     # Disabled due to travis bug failing to install this ruby
     #  - 2.0.0-p247 # OS X 10.9.0 - 10.9.2
   - 2.0.0-p451 # OS X 10.9.3 - 10.9.4
