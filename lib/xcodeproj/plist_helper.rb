@@ -1,5 +1,4 @@
 require 'fiddle'
-require 'dl' if RUBY_VERSION == '1.9.3'
 
 module Xcodeproj
   # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
@@ -61,14 +60,28 @@ end
 
 # Define compatibility with older Fiddle implementation in Ruby 1.9.3.
 #
+# @todo: Soon we will drop support for any Ruby < 2 and this should be removed.
+#
 # @!visibility private
 #
 module Fiddle
-  SIZEOF_INTPTR_T = DL::SIZEOF_VOIDP unless defined?(SIZEOF_INTPTR_T)
-  NULL = DL::NULL unless defined?(NULL)
-  Handle = DL::Handle unless defined?(Handle)
+  unless defined?(NULL)
+    require 'dl'
+    NULL = DL::NULL
+  end
+
+  unless defined?(SIZEOF_INTPTR_T)
+    require 'dl'
+    SIZEOF_INTPTR_T = DL::SIZEOF_VOIDP
+  end
+
+  unless defined?(Handle)
+    require 'dl'
+    Handle = DL::Handle
+  end
 
   unless respond_to?(:dlopen)
+    require 'dl'
     def self.dlopen(library)
       DL.dlopen(library)
     end
