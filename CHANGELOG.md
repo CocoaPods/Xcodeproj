@@ -8,6 +8,10 @@
   [Eloy Durán](https://github.com/alloy)
   [Xcodeproj#206](https://github.com/CocoaPods/Xcodeproj/issues/206)
 
+* Stop re-writing config files if they have not changed.  
+  [Kyle Fuller](https://github.com/kylef)
+  [Boris Bügling](https://github.com/neonichu)
+
 
 ## 0.19.3
 
