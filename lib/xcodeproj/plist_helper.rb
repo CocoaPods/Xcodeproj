@@ -37,6 +37,7 @@ module Xcodeproj
           raise TypeError, "The given `#{path}` must be a string or 'pathname'."
         end
         path = path.to_s
+        raise IOError, 'Empty path.' if path == ''
 
         CoreFoundation.RubyHashPropertyListWrite(hash, path)
       end
