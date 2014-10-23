@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+###### Enhancements
+
+* `Project`: Recognize merge conflicts and raise a helpful error.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#192](https://github.com/CocoaPods/Xcodeproj/pull/192)
+
+
 ## 0.19.4
 
 ###### Bug Fixes
