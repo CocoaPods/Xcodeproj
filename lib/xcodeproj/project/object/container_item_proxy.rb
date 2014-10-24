@@ -42,7 +42,7 @@ module Xcodeproj
 
         # @return [String] the type of the proxy.
         #
-        # @note   {PBXNativeTarget} is `1`.
+        # @note   @see {Constants::PROXY_TYPE.values} for valid values.
         #
         attribute :proxy_type, String
 
@@ -65,6 +65,28 @@ module Xcodeproj
         #         the proxy.
         #
         attribute :remote_info, String
+
+        # Checks whether the reference points to a remote project.
+        #
+        # @return [Bool]
+        #
+        def remote?
+          project.root_object.uuid != container_portal
+        end
+
+        # Get the proxied object
+        #
+        # @return [AbstractObject]
+        #
+        def proxied_object
+          if remote?
+            container_portal_file_ref = project.objects_by_uuid[container_portal]
+            container_portal_object = Project.open(container_portal_file_ref.real_path)
+          else
+            container_portal_object = project
+          end
+          container_portal_object.objects_by_uuid[remote_global_id_string]
+        end
       end
     end
   end

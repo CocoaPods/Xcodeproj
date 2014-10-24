@@ -194,7 +194,7 @@ module Xcodeproj
         # @return [void]
         #
         def add_dependency(target)
-          unless dependencies.map(&:target).include?(target)
+          unless dependency_for_target(target)
             container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
             if target.project == project
               container_proxy.container_portal = project.root_object.uuid
@@ -203,15 +203,33 @@ module Xcodeproj
               raise ArgumentError, 'add_dependency got target that belongs to a project is not this project and is not a subproject of this project' unless subproject_reference
               container_proxy.container_portal = subproject_reference.uuid
             end
-            container_proxy.proxy_type = '1'
+            container_proxy.proxy_type = Constants::PROXY_TYPES[:native_target]
             container_proxy.remote_global_id_string = target.uuid
             container_proxy.remote_info = target.name
 
             dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
-            dependency.target = target
+            dependency.name = target.name
+            dependency.target = target if target.project == project
             dependency.target_proxy = container_proxy
 
             dependencies << dependency
+          end
+        end
+
+        # Checks whether this target has a dependency on the given target.
+        #
+        # @param  [AbstractTarget] target
+        #         the target to search for.
+        #
+        # @return [PBXTargetDependency]
+        #
+        def dependency_for_target(target)
+          dependencies.find do |dep|
+            if dep.target_proxy.remote?
+              dep.target_proxy.remote_global_id_string == target.uuid
+            else
+              dep.target == target
+            end
           end
         end
 

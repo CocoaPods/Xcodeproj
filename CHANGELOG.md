@@ -8,6 +8,18 @@
   [Marius Rackwitz](https://github.com/mrackwitz)
   [Xcodeproj#192](https://github.com/CocoaPods/Xcodeproj/pull/192)
 
+* `PBXContainerItemProxy`: Allow access to the proxied object.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
+
+
+###### Bug Fixes
+
+* `PBXNativeTarget`: Fixed the creation of target dependencies, which refer
+  to subprojects.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
+
 
 ## 0.19.4
 
@@ -130,6 +142,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
   [Xcodeproj#105](https://github.com/CocoaPods/Xcodeproj/pull/150)
 
+
 ## 0.16.1
 
 ###### Minor Enhancements
@@ -141,6 +154,7 @@
 
 * [Xcodeproj::Project#reference_for_path] Support for string parameter.  
   [jlj](https://github.com/jlj)
+
 
 ## 0.16.0
 
@@ -438,6 +452,7 @@
 * Build configurations are now deeply copied.
   [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1322),
 
+
 ## 0.10.0
 
 ###### Breaking
@@ -511,4 +526,3 @@
 ###### Bug Fixes
 
 * The file type of the frameworks file references has be corrected.
-
