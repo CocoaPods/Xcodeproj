@@ -442,19 +442,7 @@ module Xcodeproj
         # @return [PBXHeadersBuildPhase] the headers build phase.
         #
         def headers_build_phase
-          unless @headers_build_phase
-            headers_build_phase = build_phases.find { |bp| bp.class == PBXHeadersBuildPhase }
-            unless headers_build_phase
-              # Working around a bug in Xcode 4.2 betas, remove this once the
-              # Xcode bug is fixed:
-              # https://github.com/alloy/cocoapods/issues/13
-              # phase = copy_header_phase || headers_build_phases.first
-              headers_build_phase = project.new(PBXHeadersBuildPhase)
-              build_phases << headers_build_phase
-            end
-            @headers_build_phase = headers_build_phase
-          end
-          @headers_build_phase
+          find_or_create_build_phase_by_class(PBXHeadersBuildPhase)
         end
 
         # Finds or creates the source build phase of the target.
@@ -464,15 +452,7 @@ module Xcodeproj
         # @return [PBXSourcesBuildPhase] the source build phase.
         #
         def source_build_phase
-          unless @source_build_phase
-            source_build_phase = build_phases.find { |bp| bp.class == PBXSourcesBuildPhase }
-            unless source_build_phase
-              source_build_phase = project.new(PBXSourcesBuildPhase)
-              build_phases << source_build_phase
-            end
-            @source_build_phase = source_build_phase
-          end
-          @source_build_phase
+          find_or_create_build_phase_by_class(PBXSourcesBuildPhase)
         end
 
         # Finds or creates the frameworks build phase of the target.
@@ -482,12 +462,7 @@ module Xcodeproj
         # @return [PBXFrameworksBuildPhase] the frameworks build phase.
         #
         def frameworks_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
-          unless phase
-            phase = project.new(PBXFrameworksBuildPhase)
-            build_phases << phase
-          end
-          phase
+          find_or_create_build_phase_by_class(PBXFrameworksBuildPhase)
         end
 
         # Finds or creates the resources build phase of the target.
@@ -497,12 +472,27 @@ module Xcodeproj
         # @return [PBXResourcesBuildPhase] the resources build phase.
         #
         def resources_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
-          unless phase
-            phase = project.new(PBXResourcesBuildPhase)
-            build_phases << phase
+          find_or_create_build_phase_by_class(PBXResourcesBuildPhase)
+        end
+
+        private
+
+        # @!group Internal Helpers
+        #--------------------------------------#
+
+        # Find or create a build phase by a given class
+        #
+        # @param [Class] phase_class the class of the build phase to find or create.
+        #
+        # @return [AbstractBuildPhase] the build phase whose class match the given phase_class.
+        #
+        def find_or_create_build_phase_by_class(phase_class)
+          @phases ||= {}
+          unless phase_class < AbstractBuildPhase
+            raise ArgumentError, "#{phase_class} must be a subclass of #{AbstractBuildPhase.class}"
           end
-          phase
+          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } \
+            || project.new(phase_class).tap { |bp| build_phases << bp }
         end
 
         public
