@@ -13,6 +13,19 @@
   [Xcodeproj#178](https://github.com/CocoaPods/Xcodeproj/pull/178)
 
 
+###### Minor Enhancements
+
+* `PBXCopyFilesBuildPhase`: Add a convenience method `symbol_dst_subfolder_spec`
+  to set the destination subfolder specification by a symbol.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#187](https://github.com/CocoaPods/Xcodeproj/pull/187)
+
+* `PBXNativeTarget`: Return newly created build files by `add_file_references`
+  and yield each one to allow direct modification of its settigs.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#187](https://github.com/CocoaPods/Xcodeproj/pull/187)
+
+
 ###### Bug Fixes
 
 * `PBXNativeTarget`: Fixed the creation of target dependencies, which refer
