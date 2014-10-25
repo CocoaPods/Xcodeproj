@@ -482,7 +482,7 @@ module ProjectSpecs
         end
       end
 
-      it 'adds a list of sources file to the target to the source build phase' do
+      it 'adds a list of source files to the target to the source build phase' do
         ref = @project.main_group.new_file('Class.m')
         @target.add_file_references([ref], '-fobjc-arc')
         build_files = @target.source_build_phase.files
@@ -491,7 +491,7 @@ module ProjectSpecs
         build_files.first.settings.should == { 'COMPILER_FLAGS' => '-fobjc-arc' }
       end
 
-      it 'adds a list of headers file to the target header build phases' do
+      it 'adds a list of header files to the target header build phases' do
         ref = @project.main_group.new_file('Class.h')
         @target.add_file_references([ref], '-fobjc-arc')
         build_files = @target.headers_build_phase.files
