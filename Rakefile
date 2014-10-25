@@ -59,7 +59,7 @@ begin
       title 'Running the specs'
       sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
 
-      Rake::Task['rubocop'].invoke if RUBY_VERSION >= '1.9.3'
+      Rake::Task['rubocop'].invoke
     end
 
     desc 'Automatically run specs'
@@ -80,11 +80,9 @@ begin
 
   #-- RuboCop ----------------------------------------------------------------#
 
-  if RUBY_VERSION >= '1.9.3'
-    require 'rubocop/rake_task'
-    RuboCop::RakeTask.new(:rubocop) do |task|
-      task.patterns = ['lib', 'spec']
-    end
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new(:rubocop) do |task|
+    task.patterns = ['lib', 'spec']
   end
 
 rescue LoadError, NameError => e

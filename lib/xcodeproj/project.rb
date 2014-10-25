@@ -5,6 +5,7 @@ require 'securerandom'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/xcproj_helper'
+require 'xcodeproj/plist_helper'
 
 module Xcodeproj
   # This class represents a Xcode project document.
