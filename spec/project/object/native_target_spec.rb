@@ -206,7 +206,7 @@ module ProjectSpecs
           # Regression test: Ensure that we can open the modified project
           # without attempting to initialize an object with an unknown UUID
           Xcodeproj::UI.stubs(:warn).never
-          temp_path = temporary_directory + 'ProjectWithTargetDependencyToSubproject'
+          temp_path = temporary_directory + 'ProjectWithTargetDependencyToSubproject.xcodeproj'
           @project.save(temp_path)
           Xcodeproj::Project.open(temp_path)
         end
