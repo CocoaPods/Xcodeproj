@@ -21,5 +21,3 @@ module Xcodeproj
   autoload :XCScheme,         'xcodeproj/scheme'
   autoload :XcodebuildHelper, 'xcodeproj/xcodebuild_helper'
 end
-
-require 'xcodeproj/ext'

@@ -2,6 +2,13 @@
 
 ## Master
 
+###### Breaking
+
+* Support for Ruby < 2.0.0 has been dropped. Xcodeproj now depends on
+  Ruby 2.0.0 or greater.  
+  [Kyle Fuller](https://github.com/kylef)
+
+
 ###### Enhancements
 
 * `Project`: Recognize merge conflicts and raise a helpful error.  

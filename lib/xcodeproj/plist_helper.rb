@@ -74,44 +74,6 @@ module Xcodeproj
   end
 end
 
-# Define compatibility with older Fiddle implementation in Ruby 1.9.3.
-#
-# @todo: Soon we will drop support for any Ruby < 2 and this should be removed.
-#
-# @!visibility private
-#
-module Fiddle
-  unless defined?(NULL)
-    require 'dl'
-    NULL = DL::NULL
-  end
-
-  unless defined?(SIZEOF_INTPTR_T)
-    require 'dl'
-    SIZEOF_INTPTR_T = DL::SIZEOF_VOIDP
-  end
-
-  unless defined?(Handle)
-    require 'dl'
-    Handle = DL::Handle
-  end
-
-  unless respond_to?(:dlopen)
-    require 'dl'
-    def self.dlopen(library)
-      DL.dlopen(library)
-    end
-  end
-
-  class Function
-    unless public_method_defined?(:to_i)
-      def to_i
-        @ptr.to_i
-      end
-    end
-  end
-end
-
 # This module provides an interface to the CoreFoundation OS X framework.
 # Specifically it bridges the functions required to be able to read and write
 # property lists.

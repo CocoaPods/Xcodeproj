@@ -9,11 +9,9 @@ group :development do
   gem 'mocha-on-bacon'
   gem 'prettybacon'
 
-  if RUBY_VERSION >= '1.9.3'
-    gem 'codeclimate-test-reporter', :require => nil
-    gem 'simplecov'
-    gem 'rubocop'
-  end
+  gem 'codeclimate-test-reporter', :require => nil
+  gem 'simplecov'
+  gem 'rubocop'
 end
 
 group :debugging do
