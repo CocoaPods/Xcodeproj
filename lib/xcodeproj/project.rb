@@ -122,7 +122,7 @@ module Xcodeproj
     #       determine wether or not the data contents of two `Project` instances
     #       are completely equal.
     #
-    #       To simply determine wether or not two `Project` instances refer to
+    #       To simply determine wether or not two {Project} instances refer to
     #       the same projects on disk, use the {#shallow_eql?} method instead.
     #
     # @param  [#to_hash] other the object to compare.
@@ -133,7 +133,7 @@ module Xcodeproj
       other.respond_to?(:to_hash) && to_hash == other.to_hash
     end
 
-    # A fast way to see if two `Project` instances refer to the same projects on
+    # A fast way to see if two {Project} instances refer to the same projects on
     # disk. Use this over {#==} when you do not need to compare the full data.
     #
     # @return [Boolean] whether or not the two `Project` instances refer to the
@@ -152,7 +152,7 @@ module Xcodeproj
 
     alias_method :inspect, :to_s
 
-    # @return [Boolean] Whether the xcproj conversion should be disabled. The
+    # @return [Boolean] Whether the `xcproj` conversion should be disabled. The
     #         conversion can also be disabled via the `XCODEPROJ_DISABLE_XCPROJ`
     #         environment variable.
     #

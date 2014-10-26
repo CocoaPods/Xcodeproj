@@ -19,7 +19,9 @@ module Xcodeproj
             command = "xcproj --project \"#{path}\" touch"
             success, output = execute(command)
             unless success
-              message = "xcproj failed to touch the project. Check whether you installation of xcproj is functional.\n\n"
+              message = "The `xcproj` tool has failed to touch the project. " \
+                        "Check whether your installation of `xcproj` is " \
+                        "functional.\n\n"
               message << command << "\n"
               message << output
               UI.warn(message)
