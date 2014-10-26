@@ -482,7 +482,7 @@ module ProjectSpecs
         end
       end
 
-      it 'adds a list of sources file to the target to the source build phase' do
+      it 'adds a list of source files to the target to the source build phase' do
         ref = @project.main_group.new_file('Class.m')
         @target.add_file_references([ref], '-fobjc-arc')
         build_files = @target.source_build_phase.files
@@ -491,13 +491,29 @@ module ProjectSpecs
         build_files.first.settings.should == { 'COMPILER_FLAGS' => '-fobjc-arc' }
       end
 
-      it 'adds a list of headers file to the target header build phases' do
+      it 'adds a list of header files to the target header build phases' do
         ref = @project.main_group.new_file('Class.h')
         @target.add_file_references([ref], '-fobjc-arc')
         build_files = @target.headers_build_phase.files
         build_files.count.should == 1
         build_files.first.file_ref.path.should == 'Class.h'
         build_files.first.settings.should.be.nil
+      end
+
+      it 'returns a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        new_build_files = @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        new_build_files.should == build_files
+      end
+
+      it 'yields a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        build_files = @target.add_file_references([ref], '-fobjc-arc') do |build_file|
+          build_file.should.be.an.instance_of?(PBXBuildFile)
+          build_file.settings = { 'ATTRIBUTES' => ['Public'] }
+        end
+        build_files.first.settings.should == { 'ATTRIBUTES' => ['Public'] }
       end
 
       it 'adds a list of resources to the resources build phase' do

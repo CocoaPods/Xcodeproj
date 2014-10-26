@@ -195,6 +195,31 @@ module Xcodeproj
         #         copied to.
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
+
+        # Alias method for #dst_subfolder_spec=, which accepts symbol values
+        # instead of numeric string values.
+        #
+        # @param [Symbol] value
+        #        one of `COPY_FILES_BUILD_PHASE_DESTINATIONS.keys`
+        #
+        # @raise [StandardError] if value is not a valid known key
+        #
+        def symbol_dst_subfolder_spec=(value)
+          numeric_value = Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[value]
+          raise "[Xcodeproj] Value checking error: got `#{value.inspect}` for" \
+              ' attribute: dst_subfolder_spec' if numeric_value.nil?
+          self.dst_subfolder_spec = numeric_value
+        end
+
+        # Alias method for #dst_subfolder_spec, which returns symbol values
+        # instead of numeric string values.
+        #
+        # @return [Symbol]
+        #
+        def symbol_dst_subfolder_spec
+          key = Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.find { |_, num| num == dst_subfolder_spec }
+          key ? key.first : nil
+        end
       end
 
       #-----------------------------------------------------------------------#
