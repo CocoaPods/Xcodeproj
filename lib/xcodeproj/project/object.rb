@@ -471,14 +471,10 @@ require 'xcodeproj/project/object_list'
 
 # Required because some classes have cyclical references to each other.
 #
-# In ruby 1.8.7 the hash are not sorted so it is necessary to use an array to
-# preserve the proper loading order of the various super classes.
-#
 # @todo I'm sure that there is a method to achieve the same result which
 # doesn't present the risk of some rubist laughing at me :-)
 #
-Xcodeproj::Constants::ISAS_SUPER_CLASSES.each do |superclass_name|
-  isas = Xcodeproj::Constants::KNOWN_ISAS[superclass_name]
+Xcodeproj::Constants::KNOWN_ISAS.each do |superclass_name, isas|
   superklass = Xcodeproj::Project::Object.const_get(superclass_name)
   isas.each do |isa|
     c = Class.new(superklass)

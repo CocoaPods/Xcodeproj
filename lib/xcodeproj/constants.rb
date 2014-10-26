@@ -37,6 +37,7 @@ module Xcodeproj
         PBXProject
         PBXTargetDependency
         PBXReferenceProxy
+        AbstractTarget
       ),
 
       'AbstractBuildPhase' => %w(
@@ -59,10 +60,6 @@ module Xcodeproj
         PBXVariantGroup
       ),
     }.freeze
-
-    # @return [Array] The list of the super classes for each ISA.
-    #
-    ISAS_SUPER_CLASSES = %w(AbstractObject AbstractBuildPhase PBXGroup)
 
     # @return [Hash] The known file types corresponding to each extension.
     #
