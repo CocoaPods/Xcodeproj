@@ -2,7 +2,7 @@
 //  Objc_iOS_StaticLibrary.h
 //  Objc_iOS_StaticLibrary
 //
-//  Created by Marius Rackwitz on 10.08.14.
+//  Created by Kyle Fuller on 27/10/2014.
 //
 //
 

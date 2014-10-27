@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  Objc_OSX_Native
 //
-//  Created by Marius Rackwitz on 10.08.14.
+//  Created by Kyle Fuller on 27/10/2014.
 //
 //
 
@@ -10,12 +10,10 @@
 
 @interface AppDelegate ()
 
-@property (weak) IBOutlet NSWindow *window;
-
 @end
 
 @implementation AppDelegate
-            
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
 }

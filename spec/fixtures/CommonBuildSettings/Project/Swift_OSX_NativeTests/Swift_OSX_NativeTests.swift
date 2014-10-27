@@ -2,7 +2,7 @@
 //  Swift_OSX_NativeTests.swift
 //  Swift_OSX_NativeTests
 //
-//  Created by Marius Rackwitz on 10.08.14.
+//  Created by Kyle Fuller on 27/10/2014.
 //
 //
 

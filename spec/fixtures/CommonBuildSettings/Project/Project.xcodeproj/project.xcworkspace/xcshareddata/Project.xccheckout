@@ -11,12 +11,12 @@
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D</key>
-		<string>https://github.com/CocoaPods/Xcodeproj.git</string>
+		<string>https://github.com/mrackwitz/Xcodeproj</string>
 		<key>9F9800D332981B4632368512DE7ED0F103520D36</key>
-		<string>https://github.com/CocoaPods/Rainforest.git</string>
+		<string>https://github.com/CocoaPods/Rainforest</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>spec/fixtures/CommonBuildSettings/Project/Project.xcodeproj/project.xcworkspace</string>
+	<string>spec/fixtures/CommonBuildSettings/Project/Project.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D</key>
@@ -25,7 +25,7 @@
 		<string>../../../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/CocoaPods/Xcodeproj.git</string>
+	<string>https://github.com/mrackwitz/Xcodeproj</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
