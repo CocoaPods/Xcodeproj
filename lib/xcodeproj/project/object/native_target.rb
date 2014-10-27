@@ -196,7 +196,7 @@ module Xcodeproj
         def add_dependency(target)
           unless dependency_for_target(target)
             container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
-            if target.project.shallow_eql?(project)
+            if target.project == project
               container_proxy.container_portal = project.root_object.uuid
             else
               subproject_reference = project.reference_for_path(target.project.path)
@@ -209,7 +209,7 @@ module Xcodeproj
 
             dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
             dependency.name = target.name
-            dependency.target = target if target.project.shallow_eql?(project)
+            dependency.target = target if target.project == project
             dependency.target_proxy = container_proxy
 
             dependencies << dependency
