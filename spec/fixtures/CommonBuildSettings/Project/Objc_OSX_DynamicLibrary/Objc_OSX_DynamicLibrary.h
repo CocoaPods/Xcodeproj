@@ -2,7 +2,7 @@
 //  Objc_OSX_DynamicLibrary.h
 //  Objc_OSX_DynamicLibrary
 //
-//  Created by Marius Rackwitz on 10.08.14.
+//  Created by Kyle Fuller on 27/10/2014.
 //
 //
 
