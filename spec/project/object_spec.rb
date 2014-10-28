@@ -19,7 +19,7 @@ module ProjectSpecs
       end
 
       it 'returns the project' do
-        @object.project.should == @project
+        @object.project.should.eql @project
       end
 
       it 'returns its UUID' do

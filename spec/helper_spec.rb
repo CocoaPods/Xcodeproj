@@ -13,7 +13,7 @@ module ProjectSpecs
     end
 
     it 'initalizes with a project and the targets to diff' do
-      @differ.project.should == @project
+      @differ.project.should.eql @project
       @differ.target1.should == @target1
       @differ.target2.should == @target2
     end

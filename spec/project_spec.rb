@@ -166,13 +166,13 @@ module ProjectSpecs
       it 'saves the project to the default path' do
         @project.save(@tmp_path)
         new_instance = Xcodeproj::Project.open(@path)
-        new_instance.should == @project
+        new_instance.should.eql @project
       end
 
       it 'saves the project to the given path' do
         @project.save(@tmp_path)
         new_instance = Xcodeproj::Project.open(@tmp_path)
-        new_instance.should == @project
+        new_instance.should.eql @project
       end
 
       it 'can save a project after removing a subproject' do

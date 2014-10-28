@@ -1,5 +1,25 @@
 # Xcodeproj Changelog
 
+## 0.20.1
+
+###### Minor Enhancements
+
+* `Project` Make `#==` a fast shallow comparison method, which operates only on
+  its root object UUID and its path on disk. For full data comparisons, use the
+  `#eql?` method instead.
+  [Eloy Durán](https://github.com/alloy)
+  [Xcodeproj#216](https://github.com/CocoaPods/Xcodeproj/pull/216)
+
+* `NativeTarget` Make adding a target dependency O(1) constant speed.  
+  [Eloy Durán](https://github.com/alloy)
+  [Xcodeproj#216](https://github.com/CocoaPods/Xcodeproj/pull/216)
+
+* `Object` Cache an object's plist name, which is used very often during project
+  generation.  
+  [Eloy Durán](https://github.com/alloy)
+  [Xcodeproj#216](https://github.com/CocoaPods/Xcodeproj/pull/216)
+
+
 ## 0.20.0
 
 ###### Breaking
