@@ -4,11 +4,12 @@ os:
 language: ruby
 cache: bundler
 rvm:
+  # OS X 10.9.5-10.10.0 (2.0.0-p481)
   - system
-    # Disabled due to travis bug failing to install this ruby
-    #  - 2.0.0-p247 # OS X 10.9.0 - 10.9.2
-  - 2.0.0-p451 # OS X 10.9.3 - 10.9.4
-  - 2.0.0-p481 # OS X 10.9.5
+  # OS X 10.9.3-10.9.4
+  - 2.0.0-p451
+  # OS X 10.9.0-10.9.2
+  - 2.0.0-p247
 
 before_install:
   # There is a bug in travis. When using system ruby, bundler is not installed
