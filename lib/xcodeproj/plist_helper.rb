@@ -310,10 +310,13 @@ module CoreFoundation
   # This pointer will assign `CFRelease` as the free function when
   # dereferencing the pointer.
   #
+  # @note This means that the object will *not* be released if it's not
+  #       dereferenced, but that would be a leak anyways, so be sure to do so.
+  #
   def self.CFTypeRefPointer
     pointer = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INTPTR_T, free_function)
     def pointer.ptr
-      CFAutoRelease(super)
+      ::CoreFoundation.CFAutoRelease(super)
     end
     pointer
   end

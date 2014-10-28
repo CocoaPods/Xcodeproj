@@ -6,7 +6,7 @@
 
 * `Project` Make `#==` a fast shallow comparison method, which operates only on
   its root object UUID and its path on disk. For full data comparisons, use the
-  `#eql?` method instead.
+  `#eql?` method instead.  
   [Eloy Durán](https://github.com/alloy)
   [Xcodeproj#216](https://github.com/CocoaPods/Xcodeproj/pull/216)
 
@@ -18,6 +18,15 @@
   generation.  
   [Eloy Durán](https://github.com/alloy)
   [Xcodeproj#216](https://github.com/CocoaPods/Xcodeproj/pull/216)
+
+###### Bug Fixes
+
+* `CoreFoundation` Hopefully fix a Ruby constant lookup issue. We have been
+  unable to reproduce this, but since more than one person has reported it,
+  we're including this fix in the hope it fixes this esoteric issue.  
+  [Eloy Durán](https://github.com/alloy)
+  [CocoaPods#2632](https://github.com/CocoaPods/CocoaPods/issues/2632)
+  [CocoaPods#2739](https://github.com/CocoaPods/CocoaPods/issues/2739)
 
 
 ## 0.20.0
