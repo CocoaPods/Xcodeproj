@@ -47,6 +47,7 @@ GEM
     prettybacon (0.0.2)
       bacon (~> 1.2)
     rainbow (2.0.0)
+    rake (10.3.2)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
@@ -79,6 +80,7 @@ DEPENDENCIES
   mocha
   mocha-on-bacon
   prettybacon
+  rake
   rubocop
   simplecov
   xcodeproj!
