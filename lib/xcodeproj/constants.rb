@@ -182,7 +182,6 @@ module Xcodeproj
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
       }.freeze,
       [:ios, :application] => {
-        'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
       }.freeze,
