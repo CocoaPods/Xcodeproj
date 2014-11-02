@@ -111,19 +111,32 @@ module ProjectSpecs
         t2.sdk_version.should == '10.8'
       end
 
-      it 'returns the deployment target specified in its build configuration' do
-        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
-        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
-        @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
-        @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+      describe 'returns the deployment target specified in its build configuration' do
+        it 'works for iOS' do
+          @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
+        end
+
+        it 'works for OSX' do
+          @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+        end
       end
 
-      it 'returns the deployment target' do
-        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', '4.3')
-        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', '10.7')
-        mac_target = @project.new_target(:static_library, 'Pods', :ios)
-        mac_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
-        mac_target.deployment_target.should == '4.3'
+      describe 'returns the deployment target of the project build configuration' do
+        it 'works for iOS' do
+          @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', '4.3')
+          ios_target = @project.new_target(:static_library, 'Pods', :ios)
+          ios_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
+          ios_target.deployment_target.should == '4.3'
+        end
+
+        it 'works for OSX' do
+          @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', '10.7')
+          osx_target = @project.new_target(:static_library, 'Pods', :osx)
+          osx_target.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil
+          osx_target.deployment_target.should == '10.7'
+        end
       end
 
       it 'returns the build configuration' do
