@@ -114,12 +114,12 @@ module ProjectSpecs
       describe 'returns the deployment target specified in its build configuration' do
         it 'works for iOS' do
           @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
-          @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
+          @project.new_target(:static_library, 'Pods', :ios, '4.3').deployment_target.should == '4.3'
         end
 
         it 'works for OSX' do
           @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
-          @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+          @project.new_target(:static_library, 'Pods', :osx, '10.7').deployment_target.should == '10.7'
         end
       end
 
