@@ -62,12 +62,12 @@ module ProjectSpecs
 
       it 'returns the build settings for an application by default' do
         settings = @helper.common_build_settings(:release, :ios, nil, nil)
-        settings['ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME'].should == 'LaunchImage'
+        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
       end
 
       it 'returns the build settings for an application' do
         settings = @helper.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
-        settings['ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME'].should == 'LaunchImage'
+        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
       end
 
       it 'returns the build settings for a bundle' do
