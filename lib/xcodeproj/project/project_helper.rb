@@ -170,8 +170,9 @@ module Xcodeproj
       #         the deployment target for the platform.
       #
       # @param  [Symbol] target_product_type
-      #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`
-      #         or `Constants::PRODUCT_TYPE_UTI.keys`.
+      #         the product type of the target, can be any of
+      #         `Constants::PRODUCT_TYPE_UTI.values`
+      #         or `Constants::PRODUCT_TYPE_UTI.keys`. Default is :application.
       #
       # @param  [Symbol] language
       #         the primary language of the target, can be `:objc` or `:swift`.
@@ -179,7 +180,7 @@ module Xcodeproj
       # @return [Hash] The common build settings
       #
       def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
-        target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_,v| v == target_product_type } || [target_product_type])[0]
+        target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_,v| v == target_product_type } || [target_product_type || :application])[0]
         common_settings = Constants::COMMON_BUILD_SETTINGS
 
         # Use intersecting settings for all key sets as base
