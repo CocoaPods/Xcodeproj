@@ -70,7 +70,7 @@ module ProjectSpecs
         settings['ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME'].should == 'LaunchImage'
       end
 
-      it 'returns the build settings for an application' do
+      it 'returns the build settings for a bundle' do
         settings = @helper.common_build_settings(:release, :osx, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
         settings['COMBINE_HIDPI_IMAGES'].should == 'YES'
       end
