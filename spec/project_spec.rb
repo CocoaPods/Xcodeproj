@@ -73,25 +73,6 @@ module ProjectSpecs
         @project['Frameworks'].class.should == PBXGroup
       end
 
-      it 'it should have DNS_BLOCK_ASSERTIONS=1 flag in Release configuration' do
-        target = @project.new_target(:static_library, 'Pods', :ios)
-        target.build_configuration_list.should.not.be.nil
-
-        # Release
-        build_settings = target.build_configuration_list.build_settings('Release')
-        build_settings['OTHER_CFLAGS'].should.include('-DNS_BLOCK_ASSERTIONS=1')
-        build_settings['OTHER_CPLUSPLUSFLAGS'].should.include('-DNS_BLOCK_ASSERTIONS=1')
-
-        # Debug
-        build_settings = target.build_configuration_list.build_settings('Debug')
-        unless build_settings['OTHER_CFLAGS'].nil?
-          build_settings['OTHER_CFLAGS'].should.not.include('-DNS_BLOCK_ASSERTIONS=1')
-        end
-        unless build_settings['OTHER_CPLUSPLUSFLAGS'].nil?
-          build_settings['OTHER_CPLUSPLUSFLAGS'].should.not.include('-DNS_BLOCK_ASSERTIONS=1')
-        end
-
-      end
     end
 
     #-------------------------------------------------------------------------#
