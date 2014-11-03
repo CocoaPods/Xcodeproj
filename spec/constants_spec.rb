@@ -15,7 +15,7 @@ describe Xcodeproj::Constants do
     end
 
     it 'has values which are all frozen' do
-      subject.select { |_,v| !v.frozen? }.keys.should.be.empty
+      subject.select { |_, v| !v.frozen? }.keys.should.be.empty
     end
   end
 end

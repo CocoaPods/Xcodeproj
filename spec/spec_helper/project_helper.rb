@@ -2,13 +2,12 @@ require 'colored'
 
 module SpecHelper
   module ProjectHelper
-
     # Keys which are excluded from comparison
-    EXCLUDED_KEYS = [
-        'INFOPLIST_FILE',
-        'MACOSX_DEPLOYMENT_TARGET',
-        'IPHONEOS_DEPLOYMENT_TARGET',
-    ].freeze
+    EXCLUDED_KEYS = %w(
+      INFOPLIST_FILE
+      MACOSX_DEPLOYMENT_TARGET
+      IPHONEOS_DEPLOYMENT_TARGET
+    ).freeze
 
     # Generates test cases to compare two settings hashes.
     #
@@ -24,8 +23,8 @@ module SpecHelper
     def compare_settings(produced, expected, params)
       it 'should match build settings' do
         # Find faulty settings in different categories
-        missing_settings    = expected.keys.select { |k| produced[k] == nil }
-        unexpected_settings = produced.keys.select { |k| expected[k] == nil }
+        missing_settings    = expected.keys.select { |k| produced[k].nil? }
+        unexpected_settings = produced.keys.select { |k| expected[k].nil? }
         wrong_settings      = (expected.keys - missing_settings).select do |k|
           produced_setting = produced[k]
           produced_setting = produced_setting.join(' ') if produced_setting.respond_to? :join
@@ -37,21 +36,21 @@ module SpecHelper
         description << "Doesn't match build settings for #{params.to_s.bold}"
 
         if wrong_settings.count > 0
-          description << "Wrong build settings:"
+          description << 'Wrong build settings:'
           description += wrong_settings.map { |s| "* #{s.yellow} is #{produced[s].red}, but should be #{expected[s].green}" }
-          description << ""
+          description << ''
         end
 
         if missing_settings.count > 0
-          description << "Missing build settings:"
+          description << 'Missing build settings:'
           description << missing_settings.map { |s| "* #{s.red}" }
-          description << ""
+          description << ''
         end
 
         if unexpected_settings.count > 0
-          description << "Unexpected additional build settings:"
+          description << 'Unexpected additional build settings:'
           description += unexpected_settings.map { |s| "* #{s.green}" }
-          description << ""
+          description << ''
         end
 
         # Expect
@@ -84,7 +83,7 @@ module SpecHelper
       settings = apply_exclusions(settings, EXCLUDED_KEYS)
       settings = apply_exclusions(settings, Xcodeproj::Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type != :base ? type : :all])
 
-      return settings
+      settings
     end
 
     # @!group Helper
@@ -103,19 +102,15 @@ module SpecHelper
     #         the filtered build settings
     #
     def apply_exclusions(settings, exclusions)
-      settings.reject { |k,_| exclusions.include?(k) }
+      settings.reject { |k, _| exclusions.include?(k) }
     end
-
   end
 end
 
-
 class Bacon::Context
-
   def define(values)
-    values.each do |key,value|
+    values.each do |key, value|
       class<<self; self end.send(:define_method, key) { value }
     end
   end
-
 end
