@@ -51,13 +51,11 @@ module ProjectSpecs
 
     describe 'AbstractObject Hooks' do
 
-      unless RUBY_VERSION < '1.9'
-        it 'can be sorted' do
-          @configuration.name = 'Release'
-          @configuration.build_settings = { 'KEY_B' => 'B', 'KEY_A' => 'A' }
-          @configuration.sort
-          @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
-        end
+      it 'can be sorted' do
+        @configuration.name = 'Release'
+        @configuration.build_settings = { 'KEY_B' => 'B', 'KEY_A' => 'A' }
+        @configuration.sort
+        @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
       end
 
     end
