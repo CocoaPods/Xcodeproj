@@ -46,5 +46,12 @@ module Xcodeproj
       result = @file.absolute_path('/path/to/')
       result.should == File.expand_path(@file.path)
     end
+
+    it 'escapes XML entities' do
+      file = Workspace::FileReference.new('"&\'><.xcodeproj', 'group')
+      result = file.to_node
+      result.class.should == REXML::Element
+      result.to_s.should == "<FileRef location='group:&quot;&amp;&apos;&gt;&lt;.xcodeproj'/>"
+    end
   end
 end
