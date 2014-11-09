@@ -54,7 +54,7 @@ module Xcodeproj
       #
       def to_node
         REXML::Element.new('FileRef').tap do |element|
-          element.attributes['location'] = "#{type}:#{path}"
+          element.add_attribute('location', "#{type}:#{path}")
         end
       end
 
