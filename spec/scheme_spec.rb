@@ -268,7 +268,7 @@ module ProjectSpecs
           compare_elements @xml.root.elements['ProfileAction'] \
             .elements['BuildableProductRunnable'], \
                            @scheme.doc.root.elements['ProfileAction'] \
-                           .elements['BuildableProductRunnable']
+            .elements['BuildableProductRunnable']
         end
 
         it 'Scheme > ProfileAction > BuildableProductRunnable > BuildableReference' do
@@ -276,8 +276,8 @@ module ProjectSpecs
             .elements['BuildableProductRunnable'] \
             .elements['BuildableReference'], \
                            @scheme.doc.root.elements['ProfileAction'] \
-                           .elements['BuildableProductRunnable'] \
-                           .elements['BuildableReference']
+            .elements['BuildableProductRunnable'] \
+            .elements['BuildableReference']
         end
 
         it 'Scheme > AnalyzeAction' do

@@ -89,8 +89,10 @@ module Xcodeproj
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
-          if    sdk.include? 'iphoneos' then :ios
-          elsif sdk.include? 'macosx'   then :osx
+          if sdk.include? 'iphoneos'
+            :ios
+          elsif sdk.include? 'macosx'
+            :osx
           end
         end
 
