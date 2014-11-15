@@ -1,11 +1,14 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.20.2
 
-###### Bug Fixes
-`FileReference` Fixes an issue that caused project names containing `"`, `'`, `&`, `<` or `>` to produce a workspace that Xcode could not open.
-[Hugo Tunius](https://github.com/K0nserv)
-[CocoaPods#2807](https://github.com/CocoaPods/CocoaPods/issues/2807)
+##### Bug Fixes
+
+* `FileReference` Fixes an issue that caused project names containing
+  `"`, `'`, `&`, `<` or `>` to produce a workspace that Xcode could not open.  
+  [Hugo Tunius](https://github.com/K0nserv)
+  [CocoaPods#2807](https://github.com/CocoaPods/CocoaPods/issues/2807)
+
 
 ## 0.20.1
 
