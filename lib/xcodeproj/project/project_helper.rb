@@ -192,7 +192,7 @@ module Xcodeproj
 
         # Match further common settings by key sets
         keys = [type, platform, target_product_type, language].compact
-        key_combinations = (1..keys.length).map { |n| keys.combination(n).to_a }.reduce([], :+)
+        key_combinations = (1..keys.length).flat_map { |n| keys.combination(n).to_a }
         key_combinations.each do |key_combination|
           settings.merge!(deep_dup(common_settings[key_combination] || {}))
         end

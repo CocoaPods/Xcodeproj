@@ -110,7 +110,7 @@ end
 class Bacon::Context
   def define(values)
     values.each do |key, value|
-      class<<self; self end.send(:define_method, key) { value }
+      define_singleton_method(key) { value }
     end
   end
 end
