@@ -129,7 +129,6 @@ begin
           puts green("Target matches.")
           puts
         rescue StandardError => e
-          raise e if e.message == "Aborted by user."
           puts "#{red(e.message)} Try again."
           retry
         end
