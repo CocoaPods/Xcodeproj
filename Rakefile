@@ -116,10 +116,10 @@ begin
           raise "Platform doesn't match." unless target.platform_name == attributes[:platform]
           raise "Type doesn't match."     unless target.symbol_type   == attributes[:type]
 
-          debug_config= target.build_configurations.find { |c| c.name = 'Debug' }
+          debug_config = target.build_configurations.find { |c| c.name == 'Debug' }
           raise "Debug configuration is missing" if debug_config.nil?
 
-          release_config = target.build_configurations.find { |c| c.name = 'Release' }
+          release_config = target.build_configurations.find { |c| c.name == 'Release' }
           raise "Release configuration is missing" if release_config.nil?
 
           is_swift_present  = debug_config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] != nil
