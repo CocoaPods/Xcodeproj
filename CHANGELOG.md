@@ -1,5 +1,44 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Breaking
+
+* `Constants` The build settings match now those from Xcode 6.1.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Kyle Fuller](https://github.com/kylef)
+  [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/166)
+
+
+##### Enhancements
+
+* `ProjectHelper` The `::common_build_settings` method supports now a new
+  parameter `language` to select the language used in the target. Acceptable
+  options are either `:objc` or `:swift`.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/166)
+
+* `ProjectHelper` Supports to create framework targets for iOS & OSX with the
+  correct build settings.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/164)
+
+* `Commands` Xcodeproj CLI has a new command `config-dump`, which allows to
+  read the build settings from all configurations of all targets of a given
+  Xcode project and serialize them to .xcconfig files.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/166)
+
+
+##### Development Enhancements
+
+* `Rakefile` Brings a set of new tasks to interactively generate fixture targets
+  for all target configurations supported by Xcode to update the xcconfig
+  fixtures used for the new specs, which check the build settings constants.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/166)
+
+
 ## 0.20.2
 
 ##### Bug Fixes
@@ -196,6 +235,7 @@
 * [Workspace] Fixed adding a project to a workspace.
   [Alessandro Orrù](https://github.com/alessandroorru)
   [Xcodeproj#155](https://github.com/CocoaPods/Xcodeproj/pull/155)
+
 
 ## 0.17.0
 

@@ -25,5 +25,7 @@ module ProjectSpecs
       extend SpecHelper::Project
       instance_eval(&block)
     end
+
+    Bacon::ErrorLog.gsub!(/^.*spec\/spec_helper.*\n/, '')
   end
 end

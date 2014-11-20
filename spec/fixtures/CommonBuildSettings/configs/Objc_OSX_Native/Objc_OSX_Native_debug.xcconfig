@@ -1,0 +1,4 @@
+#include "Objc_OSX_Native/Objc_OSX_Native_base.xcconfig"
+COPY_PHASE_STRIP = NO
+GCC_PREPROCESSOR_DEFINITIONS = ["DEBUG=1", "$(inherited)"]
+MTL_ENABLE_DEBUG_INFO = YES

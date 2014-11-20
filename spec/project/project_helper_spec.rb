@@ -62,15 +62,15 @@ module ProjectSpecs
 
       it 'returns the build settings for an application by default' do
         settings = @helper.common_build_settings(:release, :ios, nil, nil)
-        settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)']
+        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
       end
 
       it 'returns the build settings for an application' do
         settings = @helper.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
-        settings['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', '$(inherited)']
+        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
       end
 
-      it 'returns the build settings for an application' do
+      it 'returns the build settings for a bundle' do
         settings = @helper.common_build_settings(:release, :osx, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
         settings['COMBINE_HIDPI_IMAGES'].should == 'YES'
       end
@@ -80,8 +80,8 @@ module ProjectSpecs
         settings_2 = @helper.common_build_settings(:release, :ios, nil, nil)
 
         settings_1.object_id.should.not == settings_2.object_id
-        settings_1['OTHER_CFLAGS'].object_id.should.not == settings_2['OTHER_CFLAGS'].object_id
-        settings_1['OTHER_CFLAGS'][1].object_id.should.not == settings_2['OTHER_CFLAGS'][1].object_id
+        settings_1['SDKROOT'].object_id.should.not == settings_2['SDKROOT'].object_id
+        settings_1['SDKROOT'][1].object_id.should.not == settings_2['SDKROOT'][1].object_id
       end
     end
 

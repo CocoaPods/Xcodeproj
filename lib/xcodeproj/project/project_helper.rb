@@ -20,8 +20,8 @@ module Xcodeproj
       #         the project to which the target should be added.
       #
       # @param  [Symbol] type
-      #         the type of target. Can be `:application`, `:dynamic_library` or
-      #         `:static_library`.
+      #         the type of target. Can be `:application`, `:dynamic_library`,
+      #         `framework` or `:static_library`.
       #
       # @param  [String] name
       #         the name of the target product.
@@ -32,6 +32,10 @@ module Xcodeproj
       # @param  [String] deployment_target
       #         the deployment target for the platform.
       #
+      # @param  [PBXGroup] product_group
+      #         the product group, where to add to a file reference of the
+      #         created target.
+      #
       # @return [PBXNativeTarget] the target.
       #
       def self.new_target(project, type, name, platform, deployment_target, product_group)
@@ -41,7 +45,7 @@ module Xcodeproj
         target.name = name
         target.product_name = name
         target.product_type = Constants::PRODUCT_TYPE_UTI[type]
-        target.build_configuration_list = configuration_list(project, platform, deployment_target)
+        target.build_configuration_list = configuration_list(project, platform, deployment_target, type)
 
         # Product
         product = product_group.new_product_ref_for_target(name, type)
@@ -73,6 +77,10 @@ module Xcodeproj
       #
       # @param  [Symbol] platform
       #         the platform of the resources bundle. Can be `:ios` or `:osx`.
+      #
+      # @param  [PBXGroup] product_group
+      #         the product group, where to add to a file reference of the
+      #         created target.
       #
       # @return [PBXNativeTarget] the target.
       #
@@ -128,20 +136,24 @@ module Xcodeproj
       # @param  [String] deployment_target
       #         the deployment target for the platform.
       #
+      # @param  [Symbol] target_product_type
+      #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`
+      #         or `Constants::PRODUCT_TYPE_UTI.keys`.
+      #
       # @return [XCConfigurationList] the generated configuration list.
       #
-      def self.configuration_list(project, platform, deployment_target = nil)
+      def self.configuration_list(project, platform, deployment_target = nil, target_product_type)
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
 
         release_conf = project.new(XCBuildConfiguration)
         release_conf.name = 'Release'
-        release_conf.build_settings = common_build_settings(:release, platform, deployment_target)
+        release_conf.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type)
 
         debug_conf = project.new(XCBuildConfiguration)
         debug_conf.name = 'Debug'
-        debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target)
+        debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target, target_product_type)
 
         cl.build_configurations << release_conf
         cl.build_configurations << debug_conf
@@ -161,38 +173,39 @@ module Xcodeproj
       # @param  [String] deployment_target
       #         the deployment target for the platform.
       #
+      # @param  [Symbol] target_product_type
+      #         the product type of the target, can be any of
+      #         `Constants::PRODUCT_TYPE_UTI.values`
+      #         or `Constants::PRODUCT_TYPE_UTI.keys`. Default is :application.
+      #
+      # @param  [Symbol] language
+      #         the primary language of the target, can be `:objc` or `:swift`.
+      #
       # @return [Hash] The common build settings
       #
-      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil)
-        if target_product_type == Constants::PRODUCT_TYPE_UTI[:bundle]
-          build_settings = {
-            'PRODUCT_NAME' => '$(TARGET_NAME)',
-            'WRAPPER_EXTENSION' => 'bundle',
-            'SKIP_INSTALL' => 'YES',
-          }
+      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
+        target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_, v| v == target_product_type } || [target_product_type || :application])[0]
+        common_settings = Constants::COMMON_BUILD_SETTINGS
 
-          if platform == :osx
-            build_settings['COMBINE_HIDPI_IMAGES'] = 'YES'
-            build_settings['SDKROOT'] = 'macosx'
-          else
-            build_settings['SDKROOT'] = 'iphoneos'
-          end
-          build_settings
-        else
-          common_settings = Constants::COMMON_BUILD_SETTINGS
-          settings = deep_dup(common_settings[:all])
-          settings.merge!(deep_dup(common_settings[type]))
-          settings.merge!(deep_dup(common_settings[platform]))
-          settings.merge!(deep_dup(common_settings[[platform, type]]))
-          if deployment_target
-            if platform == :ios
-              settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-            elsif platform == :osx
-              settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
-            end
-          end
-          settings
+        # Use intersecting settings for all key sets as base
+        settings = deep_dup(common_settings[:all])
+
+        # Match further common settings by key sets
+        keys = [type, platform, target_product_type, language].compact
+        key_combinations = (1..keys.length).flat_map { |n| keys.combination(n).to_a }
+        key_combinations.each do |key_combination|
+          settings.merge!(deep_dup(common_settings[key_combination] || {}))
         end
+
+        if deployment_target
+          if platform == :ios
+            settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+          elsif platform == :osx
+            settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+          end
+        end
+
+        settings
       end
 
       # Creates a deep copy of the given object

@@ -8,6 +8,25 @@ module Xcodeproj
   class Config
     require 'set'
 
+    KEY_VALUE_PATTERN = /
+      (
+        [^=]+       # Any char, but not an assignment operator (non-greedy)
+        (?:         # One or multiple conditional subscripts
+          \[
+          [^\]]*    # The subscript key
+          (?:
+            =       # The subscript comparison operator
+            [^\]]*  # The subscript value
+          )?
+          \]
+        )*
+      )
+      \s+           # Whitespaces after the key (needed because subscripts
+                    # always end with ']')
+      =             # The assignment operator
+      (.*)          # The value
+    /x
+
     # @return [Hash{String => String}] The attributes of the settings file
     #         excluding frameworks, weak_framework and libraries.
     #
@@ -294,8 +313,9 @@ module Xcodeproj
     #         entry is the value.
     #
     def extract_key_value(line)
-      key, value = line.split('=', 2)
-      if key && value
+      match = line.match(KEY_VALUE_PATTERN)
+      if match
+        key, value = match[1], match[2]
         [key.strip, value.strip]
       else
         []

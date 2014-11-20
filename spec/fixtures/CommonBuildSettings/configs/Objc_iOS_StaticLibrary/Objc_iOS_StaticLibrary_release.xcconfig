@@ -1,0 +1,3 @@
+#include "Objc_iOS_StaticLibrary/Objc_iOS_StaticLibrary_base.xcconfig"
+COPY_PHASE_STRIP = YES
+MTL_ENABLE_DEBUG_INFO = NO

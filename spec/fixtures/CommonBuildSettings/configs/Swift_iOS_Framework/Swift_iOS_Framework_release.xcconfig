@@ -1,0 +1,3 @@
+#include "Swift_iOS_Framework/Swift_iOS_Framework_base.xcconfig"
+COPY_PHASE_STRIP = YES
+MTL_ENABLE_DEBUG_INFO = NO
