@@ -250,7 +250,7 @@ module Xcodeproj
         node.attributes.each_attribute do |attr|
           output << "\n"
           output << ' ' * @level
-          output << attr.to_string.gsub(/=/, ' = ')
+          output << attr.to_string.sub(/=/, ' = ')
         end unless node.attributes.empty?
 
         output << '>'
