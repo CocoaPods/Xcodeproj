@@ -9,8 +9,8 @@ module ProjectSpecs
 
     describe 'In general' do
 
-      it 'return the objects by UUID hash' do
-        @project.objects_by_uuid.should.not.be.nil
+      it 'return the objects' do
+        @project.objects.should.not.be.empty?
       end
 
       it 'returns the root object' do
@@ -42,9 +42,8 @@ module ProjectSpecs
         @project.root_object.referrers.should == [@project]
       end
 
-      it 'includes the root object in the objects by UUID hash' do
-        uuid = @project.root_object.uuid
-        @project.objects_by_uuid[uuid].should.not.be.nil
+      it 'includes the root object in the objects list' do
+        @project.objects.should.include(@project.root_object)
       end
 
       it 'initializes the root object main group' do
@@ -175,7 +174,7 @@ module ProjectSpecs
           'E5FBB3501635ED36009E96B0', # PBXReferenceProxy links to E5FBB34F1635ED36009E96B0
         ]
 
-        subproject_file_reference = @project.objects_by_uuid['E5FBB3451635ED35009E96B0']
+        subproject_file_reference = @project.object_with_uuid('E5FBB3451635ED35009E96B0')
         subproject_file_reference.remove_from_project
         @project.save(@tmp_path)
 
@@ -239,13 +238,13 @@ module ProjectSpecs
       it "doesn't add an object to the objects tree until an object references it" do
         obj = @project.new(PBXFileReference)
         obj.path = 'some/file.m'
-        @project.objects_by_uuid[obj.uuid].should.nil?
+        @project.object_with_uuid(obj.uuid).should.nil?
       end
 
       it 'adds an object to the objects tree once an object references it' do
         obj = @project.new(PBXFileReference)
         @project.main_group << obj
-        @project.objects_by_uuid[obj.uuid].should == obj
+        @project.object_with_uuid(obj.uuid).should == obj
       end
 
       it 'initializes new objects (not created form a plist) with the default values' do
@@ -416,7 +415,7 @@ module ProjectSpecs
         group = @project.new_group('NewGroup')
         group.isa.should == 'PBXGroup'
         group.name.should == 'NewGroup'
-        @project.objects_by_uuid[group.uuid].should.not.be.nil
+        @project.object_with_uuid(group.uuid).should.not.be.nil
         @project.main_group.children.should.include group
       end
 
@@ -424,7 +423,7 @@ module ProjectSpecs
         file = @project.new_file('Classes/Test.h')
         file.isa.should == 'PBXFileReference'
         file.display_name.should == 'Test.h'
-        @project.objects_by_uuid[file.uuid].should.not.be.nil
+        @project.object_with_uuid(file.uuid).should.not.be.nil
         @project.main_group.children.should.include file
       end
 

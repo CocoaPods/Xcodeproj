@@ -120,11 +120,11 @@ module ProjectSpecs
 
       it 'removes the proxy related objects when removing the file reference' do
         @file.remove_from_project
-        @project.objects_by_uuid[@file_proxy.uuid].should.nil?
-        @project.objects_by_uuid[@file_container.uuid].should.nil?
-        @project.objects_by_uuid[@target_container.uuid].should.nil?
-        @project.objects_by_uuid[@target_dependency.uuid].should.nil?
-        @project.objects_by_uuid[@group.uuid].should.nil?
+        @project.object_with_uuid(@file_proxy.uuid).should.nil?
+        @project.object_with_uuid(@file_container.uuid).should.nil?
+        @project.object_with_uuid(@target_container.uuid).should.nil?
+        @project.object_with_uuid(@target_dependency.uuid).should.nil?
+        @project.object_with_uuid(@group.uuid).should.nil?
         @project.root_object.project_references.should.not.include @project_reference
         @target.dependencies.should.be.empty
       end

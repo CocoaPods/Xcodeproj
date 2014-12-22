@@ -49,15 +49,16 @@ module Xcodeproj
         # @return [String] apparently the UUID of the represented
         #         object.
         #
-        # @note   If the object is in another project the UUID would not be
-        #         present in the {Project#objects_by_uuid} hash. For this
-        #         reason this is not an `has_one` attribute. It is assumes that
-        #         if the object belongs to the project at least another object
-        #         should be retaining it. This assumption is reasonable because
-        #         this is a proxy class.
+        # @note   If the object is in another project the UUID will not be
+        #         found in the project. For this reason this is not an
+        #         `has_one` attribute. It is assumes that if the object belongs
+        #         to the project at least another object should be retaining
+        #         it. This assumption is reasonable because this is a proxy
+        #         class.
         #
-        #         If this assumption is incorrect, there could be loss of
-        #         information opening and saving an existing project.
+        #         If this assumption is incorrect, however, there could be loss
+        #         of information just by opening and saving an existing
+        #         project.
         #
         attribute :remote_global_id_string, String
 
