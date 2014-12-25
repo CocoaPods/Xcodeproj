@@ -1,9 +1,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 describe Xcodeproj::Config do
-
   describe 'In general' do
-
     extend SpecHelper::TemporaryDirectory
 
     before do
@@ -231,13 +229,11 @@ describe Xcodeproj::Config do
   #---------------------------------------------------------------------------#
 
   describe 'Private helpers' do
-
     before do
       @config = Xcodeproj::Config.new
     end
 
     describe '#normalized_xcconfig_path' do
-
       it 'appends the extension if needed' do
         normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
         normalized_path.should == 'path/file.xcconfig'
@@ -247,11 +243,8 @@ describe Xcodeproj::Config do
         normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
         normalized_path.should == 'path/file.xcconfig'
       end
-
     end
-
   end
 
   #---------------------------------------------------------------------------#
-
 end

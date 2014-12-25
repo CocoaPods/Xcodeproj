@@ -2,7 +2,6 @@ require File.expand_path('../../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::Object::GroupableHelper do
-
     before do
       @helper = GroupableHelper
     end
@@ -10,13 +9,11 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'In general' do
-
       before do
         @group = @project.new_group('Parent')
       end
 
       describe '::parent' do
-
         it 'returns the parent' do
           @helper.parent(@group).should == @project.main_group
         end
@@ -42,7 +39,6 @@ module ProjectSpecs
             @helper.parent(new_group)
           end.message.should.match /multiple parents/
         end
-
       end
 
       it 'returns the parents of the object' do
@@ -62,13 +58,11 @@ module ProjectSpecs
         child = @group.new_group('Child')
         @helper.hierarchy_path(child).should == '/Parent/Child'
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::main_group' do
-
       it 'returns that an object is the main group' do
         @helper.main_group?(@project.main_group).should.be.true
       end
@@ -76,13 +70,11 @@ module ProjectSpecs
       it 'returns that an object is not the main group' do
         @helper.main_group?(@project.new_group('Classes')).should.be.false
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::move' do
-
       before do
         @group = @project.new_group('Parent')
       end
@@ -118,13 +110,11 @@ module ProjectSpecs
           @helper.move(@group, @group)
         end.message.should.match /Attempt to move .* to itself/
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::real_path' do
-
       before do
         @group = @project.new_group('Parent')
       end
@@ -134,13 +124,11 @@ module ProjectSpecs
         @group.path = 'Classes'
         @helper.real_path(@group).should == Pathname.new('/project_dir/Classes')
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::source_tree_real_path' do
-
       before do
         @group = @project.new_group('Parent')
       end
@@ -178,7 +166,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::set_source_tree' do
-
       it 'sets the source tree for the given object' do
         @group = @project.new_group('Parent')
         @helper.set_source_tree(@group, :absolute)
@@ -189,7 +176,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::set_path_with_source_tree' do
-
       before do
         @group = @project.new_group('Parent')
       end
@@ -250,13 +236,11 @@ module ProjectSpecs
         new_group.source_tree.should == '<group>'
         new_group.path.should == 'project_dir/Parent/Classes'
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::normalize_source_tree' do
-
       it 'converts the symbol representation of a source tree' do
         value = @helper.send(:normalize_source_tree, :group)
         value.should == '<group>'
@@ -278,10 +262,8 @@ module ProjectSpecs
           @helper.send(:normalize_source_tree, nil)
         end.message.should.match /Unrecognized source tree option/
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

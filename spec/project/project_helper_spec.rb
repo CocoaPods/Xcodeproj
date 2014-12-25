@@ -2,7 +2,6 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::ProjectHelper do
-
     before do
       @helper = Xcodeproj::Project::ProjectHelper
     end
@@ -10,7 +9,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Targets' do
-
       it 'creates a new target' do
         target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
         target.name.should == 'Pods'
@@ -53,13 +51,11 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Frameworks' do
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::common_build_settings' do
-
       it 'returns the build settings for an application by default' do
         settings = @helper.common_build_settings(:release, :ios, nil, nil)
         settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
@@ -88,7 +84,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe '::deep_dup' do
-
       it 'creates a copy of a given object' do
         object = 'String'
         copy = @helper.deep_dup(object)
@@ -111,10 +106,8 @@ module ProjectSpecs
         object.object_id.should.not == copy.object_id
         object.values[1].object_id.should.not == copy.values.object_id[1]
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

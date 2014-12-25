@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXProject do
-
     before do
       @project.new_target(:static, 'Pods', :ios)
       @root_object = @project.root_object
@@ -53,6 +52,5 @@ module ProjectSpecs
       @root_object.project_root = 'some/path'
       @root_object.project_root.should == 'some/path'
     end
-
   end
 end

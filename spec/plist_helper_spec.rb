@@ -4,7 +4,6 @@ require File.expand_path('../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe 'Xcodeproj::PlistHelper' do
-
     before do
       @plist = temporary_directory + 'plist'
     end
@@ -45,7 +44,6 @@ module ProjectSpecs
         Xcodeproj.write_plist(hash, @plist)
         @plist.read.should == output
       end
-
     end
 
     #-------------------------------------------------------------------------#
@@ -153,7 +151,6 @@ EOS
           Xcodeproj.write_plist({}, '')
         end.should.raise IOError
       end
-
     end
   end
 end

@@ -2,13 +2,11 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe XCBuildConfiguration do
-
     before do
       @configuration = @project.new(XCBuildConfiguration)
     end
 
     describe 'In general' do
-
       it 'returns its name' do
         @configuration.name = 'Release'
         @configuration.name.should == 'Release'
@@ -28,7 +26,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'AbstractObject Hooks' do
-
       it 'returns the pretty print representation' do
         @configuration.name = 'Release'
         @configuration.build_settings = { 'GCC_PRECOMPILE_PREFIX_HEADER' => 'YES' }
@@ -44,23 +41,19 @@ module ProjectSpecs
           },
         }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'AbstractObject Hooks' do
-
       it 'can be sorted' do
         @configuration.name = 'Release'
         @configuration.build_settings = { 'KEY_B' => 'B', 'KEY_A' => 'A' }
         @configuration.sort
         @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

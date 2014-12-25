@@ -2,7 +2,6 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::XCProjHelper do
-
     before do
       @helper = Xcodeproj::Project::XCProjHelper
     end
@@ -10,7 +9,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::available?' do
-
       it 'reports that xcproj is available' do
         Process::Status.any_instance.expects(:exitstatus).returns(0)
         @helper.should.be.available
@@ -25,7 +23,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::touch' do
-
       before do
         @helper.stubs(:available?).returns(true)
       end
@@ -46,10 +43,8 @@ module ProjectSpecs
         Xcodeproj::UI.expects(:warn).once
         @helper.touch('/project_path')
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

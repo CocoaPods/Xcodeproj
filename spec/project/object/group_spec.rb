@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe 'Xcodeproj::Project::Object::PBXGroup' do
-
     before do
       @group = @project.new_group('Parent')
       @group.new_reference('Abracadabra.h')
@@ -46,7 +45,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe '#set_path' do
-
       it 'sets the path according to the source tree' do
         @group.source_tree = '<group>'
         @group.set_path('/project_dir/Classes')
@@ -60,7 +58,6 @@ module ProjectSpecs
         @group.path.should.be.nil
         @group.source_tree.should == '<group>'
       end
-
     end
 
     #----------------------------------------#
@@ -117,7 +114,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '#new_group' do
-
       it 'creates a new group' do
         group = @group.new_group('Classes')
         group.parent.should == @group
@@ -133,7 +129,6 @@ module ProjectSpecs
         group.source_tree.should == '<group>'
         group.path.should == 'classes'
       end
-
     end
 
     #-------------------------------------------------------------------------#
@@ -156,7 +151,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe '#sort_by_type' do
-
       before do
         @group = @project.new_group('test')
       end
@@ -241,9 +235,7 @@ module ProjectSpecs
     end
 
     describe 'AbstractObject Hooks' do
-
       describe '#sort' do
-
         before do
           @group = @project.new_group('test')
         end
@@ -299,12 +291,9 @@ module ProjectSpecs
           @group.sort(:groups_position => :below)
           @group.children.map(&:display_name).should == %w(A.h A.m B.h B.m A)
         end
-
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

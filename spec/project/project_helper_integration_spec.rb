@@ -4,7 +4,6 @@ require 'active_support/core_ext'
 
 module ProjectHelperSpecs
   describe Xcodeproj::Project::ProjectHelper do
-
     #
     # These specs run `Xcodeproj::Project::ProjectHelper::common_build_settings`
     # against the xcconfig files in spec/fixtures/CommonBuildSettings/configs
@@ -78,7 +77,6 @@ module ProjectHelperSpecs
     end
 
     describe '::common_build_settings' do
-
       describe 'on platform OSX' do
         define :platform => :osx
 
@@ -167,9 +165,7 @@ module ProjectHelperSpecs
             behaves_like target_from_fixtures 'Swift_iOS_Native'
           end
         end
-
       end
-
     end
   end
 end

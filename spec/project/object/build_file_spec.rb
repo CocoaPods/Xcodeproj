@@ -2,13 +2,11 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXBuildFile do
-
     before do
       @build_file = @project.new(PBXBuildFile)
     end
 
     describe 'In general' do
-
       it "doesn't provide default file settings" do
         @build_file.settings.should.be.nil
       end
@@ -26,13 +24,11 @@ module ProjectSpecs
         lambda { @build_file.file_ref = @project.new(PBXVariantGroup) }.should.not.raise
         lambda { @build_file.file_ref = @project.new(XCVersionGroup) }.should.not.raise
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'AbstractObject Hooks' do
-
       it 'returns the display name of the file reference if one is available' do
         file_ref = @project.new_file('Class.m')
         @build_file.file_ref = file_ref
@@ -51,10 +47,8 @@ module ProjectSpecs
           'Class.m' => { 'COMPILER_FLAGS' => '-Wno-format' },
         }
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

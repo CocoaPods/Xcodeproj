@@ -2,7 +2,6 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe CaseConverter do
-
     it 'converts a name to the plist format' do
       result = CaseConverter.convert_to_plist(:project_ref)
       result.should == 'ProjectRef'

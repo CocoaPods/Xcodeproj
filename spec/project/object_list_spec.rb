@@ -2,9 +2,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::ObjectList do
-
     describe 'In general' do
-
       before do
         @list = @project.main_group.children
       end
@@ -100,7 +98,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Notification enabled methods' do
-
       before do
         @sut = @project.main_group.children
         @sut << @project.new(PBXFileReference)
@@ -115,6 +112,5 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

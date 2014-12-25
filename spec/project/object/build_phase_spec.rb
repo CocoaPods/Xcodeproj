@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe AbstractBuildPhase do
-
     before do
       # Can't initialize AbstractBuildPhase directly
       @build_phase = @project.new(PBXCopyFilesBuildPhase)
@@ -11,7 +10,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe '#add_file_reference' do
-
       it 'can add a file reference to its build files' do
         file = @project.new_file('some/file')
         @build_phase.add_file_reference(file)
@@ -24,7 +22,6 @@ module ProjectSpecs
         @build_phase.add_file_reference(file, true)
         @build_phase.files_references.should == [file]
       end
-
     end
 
     #----------------------------------------#
@@ -111,7 +108,6 @@ module ProjectSpecs
   end
 
   describe PBXCopyFilesBuildPhase do
-
     before do
       @build_phase = @project.new(PBXCopyFilesBuildPhase)
     end
@@ -152,7 +148,6 @@ module ProjectSpecs
   end
 
   describe PBXShellScriptBuildPhase do
-
     before do
       @build_phase = @project.new(PBXShellScriptBuildPhase)
     end

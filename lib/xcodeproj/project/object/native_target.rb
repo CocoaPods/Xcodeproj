@@ -285,7 +285,6 @@ module Xcodeproj
         #
         def add_system_framework(names)
           Array(names).each do |name|
-
             case platform_name
             when :ios
               group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')

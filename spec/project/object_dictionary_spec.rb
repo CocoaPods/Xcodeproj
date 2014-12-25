@@ -106,6 +106,5 @@ module ProjectSpecs
         }
       end
     end
-
   end
 end

@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXTargetDependency do
-
     before do
       @target_dependency = @project.new(PBXTargetDependency)
     end
@@ -44,7 +43,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe '#display_name' do
-
       it 'returns the name if set' do
         @target_dependency.name = 'Pods'
         @target_dependency.display_name.should == 'Pods'
@@ -61,10 +59,8 @@ module ProjectSpecs
         @target_dependency.target_proxy = proxy
         @target_dependency.display_name.should == 'Pods'
       end
-
     end
 
     #----------------------------------------#
-
   end
 end

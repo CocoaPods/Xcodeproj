@@ -16,7 +16,6 @@ DOC
 
 module Xcodeproj
   describe XcodebuildHelper do
-
     before do
       @helper = XcodebuildHelper.new
       @helper.stubs(:xcodebuild_sdks).returns(SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
@@ -36,15 +35,12 @@ module Xcodeproj
       it 'returns the last OS X SDK' do
         @helper.last_osx_sdk.should == '10.8'
       end
-
     end
 
     #--------------------------------------------------------------------------------#
 
     describe 'Private helpers' do
-
       describe '#xcodebuild_available?' do
-
         it 'returns whether the xcodebuild command is available' do
           Process::Status.any_instance.expects(:exitstatus).returns(0)
           @helper.send(:xcodebuild_available?).should.be.true
@@ -54,20 +50,16 @@ module Xcodeproj
           Process::Status.any_instance.expects(:exitstatus).returns(1)
           @helper.send(:xcodebuild_available?).should.be.false
         end
-
       end
 
       describe '#parse_sdks_information' do
-
         it 'parses the skds information returned by xcodebuild' do
           result = @helper.send(:parse_sdks_information, SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
           result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1']]
         end
-
       end
     end
 
     #--------------------------------------------------------------------------------#
-
   end
 end

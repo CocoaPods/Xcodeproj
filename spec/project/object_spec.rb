@@ -2,9 +2,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe AbstractObject do
-
     describe 'In general' do
-
       before do
         @object = @project.new_file('Classes/file.m')
         @object.name = 'AnObject'
@@ -104,7 +102,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Concerning plist serialization' do
-
       before do
         @objects_by_uuid_plist = {
           'uuid' => { 'name' => 'MyFile', 'isa' => 'PBXFileReference' },
@@ -191,7 +188,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Alternative representations' do
-
       before do
         @file = @project.new_file('Classes/file.m')
         @group = @project.main_group
@@ -221,13 +217,11 @@ module ProjectSpecs
           ],
         }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'Concerning attributes' do
-
       class PBXTestClass < AbstractObject
         attribute :value,   String
         has_one :file,  Xcodeproj::Project::Object::PBXFileReference
@@ -290,6 +284,5 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

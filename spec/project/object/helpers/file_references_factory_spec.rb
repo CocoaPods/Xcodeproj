@@ -2,7 +2,6 @@ require File.expand_path('../../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::Object::FileReferencesFactory do
-
     before do
       @factory = FileReferencesFactory
       @group = @project.new_group('Classes')
@@ -11,7 +10,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::new_reference' do
-
       it 'creates a new reference and adds it to the given group' do
         ref = @factory.new_reference(@group, 'Classes/File.m', :group)
         @group.children.should.include?(ref)
@@ -27,13 +25,11 @@ module ProjectSpecs
         ref.name.should == 'Awesome.framework'
         ref.include_in_index.should.be.nil
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::new_static_library' do
-
       before do
         @ref = @factory.new_product_ref_for_target(@group, 'Pods', :static_library)
       end
@@ -61,13 +57,11 @@ module ProjectSpecs
         @ref.last_known_file_type.should.be.nil
         @ref.explicit_file_type.should == 'archive.ar'
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::new_bundle' do
-
       it 'creates a new resources bundle' do
         ref = @factory.new_bundle(@group, 'Resources')
         ref.isa.should == 'PBXFileReference'
@@ -101,7 +95,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::new_file_reference' do
-
       it 'creates a new file reference and adds it to the given group' do
         ref = @factory.send(:new_file_reference, @group, 'Classes/File.m', :group)
         ref.isa.should == 'PBXFileReference'
@@ -120,13 +113,11 @@ module ProjectSpecs
         ref = @factory.send(:new_file_reference, @group, '/project_dir/File.m', :group)
         ref.last_known_file_type.should == 'sourcecode.c.objc'
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '::new_xcdatamodeld' do
-
       it 'creates a new XCVersionGroup and adds it to the given group' do
         ref = @factory.send(:new_xcdatamodeld, @group, 'Model.xcdatamodeld', :group)
         ref.isa.should == 'XCVersionGroup'
@@ -179,7 +170,6 @@ module ProjectSpecs
         ref.current_version.source_tree.should == '<group>'
         @group.children.should.include(ref)
       end
-
     end
 
     #-------------------------------------------------------------------------#
@@ -246,7 +236,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '::configure_defaults_for_file_reference' do
-
       it "doesn't set the name if its path relative to the source tree doesn't include directories" do
         ref = @project.new(PBXFileReference)
         ref.path = 'File.m'
@@ -267,10 +256,8 @@ module ProjectSpecs
         @factory.send(:configure_defaults_for_file_reference, ref)
         ref.include_in_index.should.be.nil
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

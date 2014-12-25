@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXBuildRule do
-
     before do
       @rule = @project.new(PBXBuildRule)
     end
@@ -39,6 +38,5 @@ module ProjectSpecs
       @rule.script = 'echo "BABY COOL"'
       @rule.script.should == 'echo "BABY COOL"'
     end
-
   end
 end

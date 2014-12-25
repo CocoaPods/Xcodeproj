@@ -3,7 +3,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 module ProjectSpecs
   describe AbstractTarget do
     describe 'In general' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
@@ -17,13 +16,11 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe 'Helpers' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
       describe '#common_resolved_build_setting' do
-
         it 'returns the resolved build setting for the given key as indicated in the target build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', nil)
           @target.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
@@ -41,13 +38,11 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('ARCHS', 'arm64')
           @target.resolved_build_setting('ARCHS').should == { 'Release' => 'arm64', 'Debug' => 'arm64' }
         end
-
       end
 
       #----------------------------------------#
 
       describe '#common_resolved_build_setting' do
-
         it 'returns the common resolved build setting for the given key as indicated in the target build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', nil)
           @target.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
@@ -74,9 +69,7 @@ module ProjectSpecs
           should.not.raise do
             @target.common_resolved_build_setting('ARCHS')
           end
-
         end
-
       end
 
       #----------------------------------------#
@@ -148,7 +141,6 @@ module ProjectSpecs
       #----------------------------------------#
 
       describe '#add_build_configuration' do
-
         it 'adds a new build configuration' do
           @target.add_build_configuration('App Store', :release)
           @target.build_configurations.map(&:name).sort.should == ['App Store', 'Debug', 'Release']
@@ -170,7 +162,6 @@ module ProjectSpecs
           conf_2 = @target.add_build_configuration('App Store', :release)
           conf_1.object_id.should == conf_2.object_id
         end
-
       end
 
       #----------------------------------------#
@@ -180,7 +171,6 @@ module ProjectSpecs
       end
 
       describe '#add_dependency' do
-
         extend SpecHelper::TemporaryDirectory
 
         it 'adds a dependency on another target' do
@@ -274,7 +264,6 @@ module ProjectSpecs
         :copy_files_build_phases   => PBXCopyFilesBuildPhase,
         :shell_script_build_phases => PBXShellScriptBuildPhase,
       }.each do |association_method, klass|
-
         it "returns an empty #{klass.isa}" do
           phase = @target.send(association_method)
           if phase.is_a? Array
@@ -310,7 +299,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe 'System frameworks' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
         @target.frameworks_build_phase.clear
@@ -318,7 +306,6 @@ module ProjectSpecs
       end
 
       describe '#add_system_framework' do
-
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
@@ -367,7 +354,6 @@ module ProjectSpecs
       #----------------------------------------#
 
       describe '#add_system_library' do
-
         it 'adds a file reference for a system framework, to the Frameworks group' do
           @target.add_system_library('xml')
           file = @project['Frameworks'].files.first
@@ -398,13 +384,11 @@ module ProjectSpecs
           names.should == ['libz.dylib', 'libxml.dylib']
         end
       end
-
     end
 
     #----------------------------------------#
 
     describe 'AbstractObject Hooks' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
@@ -424,9 +408,7 @@ module ProjectSpecs
   #---------------------------------------------------------------------------#
 
   describe PBXNativeTarget do
-
     describe 'In general' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
@@ -451,7 +433,6 @@ module ProjectSpecs
       end
 
       describe '#sort' do
-
         it 'can be sorted' do
           dep_2 = @project.new_target(:static_library, 'Dep_2', :ios)
           dep_1 = @project.new_target(:static_library, 'Dep_1', :ios)
@@ -474,7 +455,6 @@ module ProjectSpecs
     #----------------------------------------#
 
     describe 'Helpers' do
-
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
       end
@@ -532,9 +512,7 @@ module ProjectSpecs
         build_files.first.file_ref.path.should == 'Image.png'
         build_files.first.settings.should.be.nil
       end
-
     end
-
   end
 
   #---------------------------------------------------------------------------#

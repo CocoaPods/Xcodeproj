@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project::Object::PBXFileReference do
-
     before do
       @file = @project.new_file('File.m')
     end

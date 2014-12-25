@@ -9,9 +9,7 @@ end
 
 module Xcodeproj
   describe Differ do
-
     describe 'Hashes' do
-
       it 'returns the nil if the hashes are equal' do
         v1 = { :add => 'add' }
         diff = Differ.hash_diff(v1, v1, options)
@@ -57,7 +55,6 @@ module Xcodeproj
     #-------------------------------------------------------------------------#
 
     describe 'Arrays' do
-
       it 'returns the nil if the arrays are equal' do
         v1 = [1, 2, 3]
         diff = Differ.array_diff(v1, v1, options)
@@ -80,13 +77,11 @@ module Xcodeproj
           'v2' => [{ :key => 'value_2' }],
         }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'Generic diff' do
-
       it 'returns nil as the diff of two equal objects' do
         v1 = 'String'
         v2 = 'String'
@@ -107,13 +102,11 @@ module Xcodeproj
         diff = Differ.generic_diff(v1, v2, options)
         diff.should == { 'v1' => ['String_1'], 'v2' => 'String_2' }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'Cleaning' do
-
       it 'cleans an hash from the given key' do
         hash = { :key => 'v1', :delete => 'v2' }
         Differ.clean_hash!(hash, :delete)
@@ -126,13 +119,11 @@ module Xcodeproj
         clean.should == { :key => 'v1' }
         hash.should == { :key => 'v1', :delete => 'v2' }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '#diff' do
-
       it 'returns nil as the diff of two equal objects' do
         v1 = { :key => ['String'] }
         v2 = { :key => ['String'] }
@@ -160,13 +151,11 @@ module Xcodeproj
         diff = Differ.diff(v1, v2, options)
         diff.should == { 'v1' => 'value_1', 'v2' => 'value_2' }
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe '#project_diff' do
-
       it 'provides a succint diff of a project' do
         project_1 = {
           'mainGroup' => {
@@ -209,18 +198,15 @@ module Xcodeproj
           },
         }
       end
-
     end
 
     #-------------------------------------------------------------------------#
-
   end
 
   #-------------------------------------------------------------------------#
 
   # TODO: delete
   describe Hash do
-
     it 'returns the recursive diff with another hash' do
       v1 = { :common => 'value', :changed => 'v1' }
       v2 = { :common => 'value', :changed => 'v2', :addition => 'new_value' }
@@ -236,6 +222,5 @@ module Xcodeproj
         },
       }
     end
-
   end
 end

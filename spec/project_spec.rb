@@ -4,11 +4,9 @@ require File.expand_path('../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project do
-
     #-------------------------------------------------------------------------#
 
     describe 'In general' do
-
       it 'return the objects by UUID hash' do
         @project.objects_by_uuid.should.not.be.nil
       end
@@ -21,7 +19,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Initialization from scratch' do
-
       it 'expands the provided path' do
         project = Xcodeproj::Project.new('foo.xcodeproj')
         project.path.should == Pathname.new('./foo.xcodeproj').expand_path
@@ -72,13 +69,11 @@ module ProjectSpecs
       it 'adds the frameworks group' do
         @project['Frameworks'].class.should == PBXGroup
       end
-
     end
 
     #-------------------------------------------------------------------------#
 
     describe 'Initialization from a file' do
-
       before do
         @dir = Pathname(fixture_path('Sample Project'))
         @path = @dir + 'Cocoa Application.xcodeproj'
@@ -133,7 +128,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe '#Save' do
-
       extend SpecHelper::TemporaryDirectory
 
       before do
@@ -231,7 +225,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Object creation' do
-
       it 'creates a new object' do
         @project.new(PBXFileReference).class.should == PBXFileReference
       end
@@ -411,7 +404,6 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Helpers for creating new objects' do
-
       it 'adds a new group' do
         group = @project.new_group('NewGroup')
         group.isa.should == 'PBXGroup'
@@ -443,7 +435,6 @@ module ProjectSpecs
       #----------------------------------------#
 
       describe '#add_build_configuration' do
-
         it 'adds a new build configuration' do
           @project.add_build_configuration('App Store', :release)
           @project.build_configurations.map(&:name).sort.should == ['App Store', 'Debug', 'Release']
@@ -476,7 +467,6 @@ module ProjectSpecs
         @project.targets.map(&:name).should == %w(A B)
         @project.build_configurations.map(&:name).should == %w(A B Debug Release)
       end
-
     end
 
     #-------------------------------------------------------------------------#
@@ -493,7 +483,6 @@ module ProjectSpecs
       end
 
       describe '#recreate_user_schemes' do
-
         it 'can recreate the user schemes' do
           sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
           sut.new_target(:application, 'Xcode', :ios)
@@ -517,6 +506,5 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

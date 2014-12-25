@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe PBXContainerItemProxy do
-
     before do
       @proxy = @project.new(PBXContainerItemProxy)
     end
@@ -66,6 +65,5 @@ module ProjectSpecs
         proxied_object.should == @subproject.targets.first
       end
     end
-
   end
 end

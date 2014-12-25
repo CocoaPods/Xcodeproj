@@ -2,7 +2,6 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe XCBuildConfiguration do
-
     before do
       @configuration_list = @project.new(XCConfigurationList)
     end
@@ -61,6 +60,5 @@ module ProjectSpecs
       @configuration_list.set_setting('CLANG_ENABLE_OBJC_ARC', 'YES')
       @configuration_list.get_setting('CLANG_ENABLE_OBJC_ARC').should == { 'Debug' => 'YES', 'Release' => 'YES' }
     end
-
   end
 end
