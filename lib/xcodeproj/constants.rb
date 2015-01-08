@@ -95,6 +95,7 @@ module Xcodeproj
       :static_library   => 'com.apple.product-type.library.static',
       :bundle           => 'com.apple.product-type.bundle',
       :unit_test_bundle => 'com.apple.product-type.bundle.unit-test',
+      :app_extension    => 'com.apple.product-type.app-extension',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
