@@ -155,18 +155,6 @@ module Xcodeproj
 
     alias_method :inspect, :to_s
 
-<<<<<<< HEAD
-    # @return [Boolean] Whether the `xcproj` conversion should be disabled. The
-    #         conversion can also be disabled via the `XCODEPROJ_DISABLE_XCPROJ`
-    #         environment variable.
-    #
-    attr_accessor :disable_xcproj
-    def disable_xcproj?
-      @disable_xcproj || ENV['XCODEPROJ_DISABLE_XCPROJ']
-    end
-
-=======
->>>>>>> 74e6190... Directly write ASCII plists using DevToolsCore.
     public
 
     # @!group Initialization
