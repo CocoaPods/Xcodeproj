@@ -159,6 +159,45 @@ EOS
 
     #-------------------------------------------------------------------------#
 
+    describe 'Xcode frameworks resilience' do
+      extend SpecHelper::TemporaryDirectory
+
+      def read_sample
+        dir = 'Sample Project/Cocoa Application.xcodeproj/'
+        path = fixture_path(dir + 'project.pbxproj')
+        Xcodeproj.read_plist(path)
+      end
+
+      def write_temp_file_and_compare(sample)
+        temp_file = File.join(SpecHelper.temporary_directory, 'out.pbxproj')
+        Xcodeproj.write_plist(sample, temp_file)
+        result = Xcodeproj.read_plist(temp_file)
+
+        sample.should == result
+        File.new(temp_file).read.start_with?('<?xml').should == true
+      end
+
+      it 'will fallback to XML encoding if Xcode functions cannot be found' do
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(Fiddle::Handle.new)
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if Xcode methods return errors' do
+        DevToolsCore::NSData.any_instance.stubs(:writeToFileAtomically).returns(false)
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if Xcode classes cannot be found' do
+        DevToolsCore::NSObject.stubs(:objc_class).returns(nil)
+
+        write_temp_file_and_compare(read_sample)
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
     describe 'Xcode equivalency' do
       extend SpecHelper::TemporaryDirectory
 
@@ -189,8 +228,6 @@ EOS
       it 'retains emoji when touching a project' do
         touch_project('Emoji.xcodeproj')
       end
-
     end
-
   end
 end

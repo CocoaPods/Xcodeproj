@@ -200,7 +200,6 @@ module ProjectSpecs
         contents.should.not.include('Cédric')
         contents.should.include('C&#233;dric')
       end
-
     end
 
     #-------------------------------------------------------------------------#
