@@ -1,5 +1,17 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* `Project` The `new_target` method now creates build configurations
+  corresponding to all configurations of the project, not just Debug
+  and Release.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#228](https://github.com/CocoaPods/Xcodeproj/issues/228)
+  [CocoaPods#3055](https://github.com/CocoaPods/CocoaPods/issues/3055)
+
+
 ## 0.21.0
 
 ##### Breaking

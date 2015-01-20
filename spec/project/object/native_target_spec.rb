@@ -15,6 +15,18 @@ module ProjectSpecs
 
     #----------------------------------------#
 
+    describe 'Creation' do
+      it 'inherits build configurations from the project similar to Xcode' do
+        @project.add_build_configuration('App Store', :release)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
+
+        @project.build_configurations.map(&:name).sort.should == \
+          @target.build_configurations.map(&:name).sort
+      end
+    end
+
+    #----------------------------------------#
+
     describe 'Helpers' do
       before do
         @target = @project.new_target(:static_library, 'Pods', :ios)
