@@ -27,6 +27,15 @@ module ProjectSpecs
         target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXSourcesBuildPhase)
       end
 
+      it 'uses default build settings for Release and Debug configurations' do
+        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
+        debug_settings = @helper.common_build_settings(:debug, :ios, '6.0', :static_library)
+        release_settings = @helper.common_build_settings(:release, :ios, '6.0', :static_library)
+
+        target.build_settings('Debug').should == debug_settings
+        target.build_settings('Release').should == release_settings
+      end
+
       it 'creates a new resources bundle' do
         target = @helper.new_resources_bundle(@project, 'Pods', :ios, @project.products_group)
         target.name.should == 'Pods'
