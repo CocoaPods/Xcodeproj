@@ -11,6 +11,11 @@
   [Xcodeproj#228](https://github.com/CocoaPods/Xcodeproj/issues/228)
   [CocoaPods#3055](https://github.com/CocoaPods/CocoaPods/issues/3055)
 
+* Use `#sub` instead of `#gsub` to remove spaces near first `=` when
+  generating scheme files.  
+  [Almas Sapargali](http://github.com/almassapargali)
+  [Xcodeproj##225](https://github.com/CocoaPods/Xcodeproj/pull/#225)
+
 
 ## 0.21.0
 
