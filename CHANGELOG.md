@@ -14,7 +14,7 @@
 * Use `#sub` instead of `#gsub` to remove spaces near first `=` when
   generating scheme files.  
   [Almas Sapargali](http://github.com/almassapargali)
-  [Xcodeproj##225](https://github.com/CocoaPods/Xcodeproj/pull/#225)
+  [Xcodeproj#225](https://github.com/CocoaPods/Xcodeproj/pull/225)
 
 
 ## 0.21.0
