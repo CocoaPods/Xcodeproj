@@ -23,14 +23,12 @@ module Xcodeproj
       # @param  [#to_s] path
       #         The path of the file.
       #
-      def write(hash, path)
-        unless hash.is_a?(Hash)
-          if hash.respond_to?(:to_hash)
-            hash = hash.to_hash
-          else
-            raise TypeError, "The given `#{hash.inspect}` must be a hash or " \
-                             "respond to #to_hash'."
-          end
+      def write(possible_hash, path)
+        if possible_hash.respond_to?(:to_hash)
+          hash = possible_hash.to_hash
+        else
+          raise TypeError, "The given `#{possible_hash.inspect}` must respond " \
+                            "to #to_hash'."
         end
 
         unless path.is_a?(String) || path.is_a?(Pathname)
