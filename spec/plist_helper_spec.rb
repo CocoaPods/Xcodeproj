@@ -162,10 +162,23 @@ EOS
     describe 'Xcode frameworks resilience' do
       extend SpecHelper::TemporaryDirectory
 
+      after do
+        if @original_xcode_path
+          DevToolsCore.send(:remove_const, :XCODE_PATH)
+          DevToolsCore.const_set(:XCODE_PATH, @original_xcode_path)
+        end
+      end
+
       def read_sample
         dir = 'Sample Project/Cocoa Application.xcodeproj/'
         path = fixture_path(dir + 'project.pbxproj')
         Xcodeproj.read_plist(path)
+      end
+
+      def stub_xcode_path(stubbed_path)
+        @original_xcode_path = DevToolsCore::XCODE_PATH
+        DevToolsCore.send(:remove_const, :XCODE_PATH)
+        DevToolsCore.const_set(:XCODE_PATH, stubbed_path)
       end
 
       def write_temp_file_and_compare(sample)
@@ -175,6 +188,19 @@ EOS
 
         sample.should == result
         File.new(temp_file).read.start_with?('<?xml').should == true
+      end
+
+      it 'will fallback to XML encoding if Xcode is not installed' do
+        # Simulate this by calling `xcrun` with a non-existing tool
+        stub_xcode_path(Pathname.new(`xcrun lol 2>/dev/null`))
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if the user has not agreed to the Xcode license' do
+        stub_xcode_path(Pathname.new('Agreeing to the Xcode/iOS license requires admin privileges, please re-run as root via sudo.'))
+
+        write_temp_file_and_compare(read_sample)
       end
 
       it 'will fallback to XML encoding if Xcode functions cannot be found' do
