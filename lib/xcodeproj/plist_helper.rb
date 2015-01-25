@@ -77,6 +77,14 @@ module Xcodeproj
         file.close
       end
 
+      # Serializes a hash as an ASCII plist, using Xcode.
+      #
+      # @param  [Hash] hash
+      #         The hash to store.
+      #
+      # @param  [String] path
+      #         The path of the file.
+      #
       def ruby_hash_write_xcode(hash, path)
         path = File.expand_path(path)
         success = true
