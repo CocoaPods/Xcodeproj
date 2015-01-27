@@ -163,6 +163,7 @@ module Xcodeproj
 
           new_config = project.new(XCBuildConfiguration)
           new_config.name = configuration.name
+          new_config.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type)
           cl.build_configurations << new_config
         end
 

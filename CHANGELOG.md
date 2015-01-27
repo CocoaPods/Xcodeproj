@@ -1,5 +1,12 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Include common build settings on custom build configurations.  
+  [Kyle Fuller](https://github.com/kylef)
+
 ## 0.21.1
 
 ##### Bug Fixes
