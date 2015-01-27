@@ -23,6 +23,14 @@ module ProjectSpecs
         @project.build_configurations.map(&:name).sort.should == \
           @target.build_configurations.map(&:name).sort
       end
+
+      it 'uses default Release build configuration build settings for custom build configurations when adding a target' do
+        @project.add_build_configuration('App Store', :release)
+        target = @project.new_target(:static_library, 'Pods', :ios, '9.0', @project.products_group)
+
+        release_settings = Xcodeproj::Project::ProjectHelper.common_build_settings(:release, :ios, '9.0', :static_library)
+        target.build_settings('App Store').should == release_settings
+      end
     end
 
     #----------------------------------------#
