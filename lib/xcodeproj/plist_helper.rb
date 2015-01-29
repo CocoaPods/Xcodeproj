@@ -172,6 +172,15 @@ module CoreFoundation
   TRUE = 1
   FALSE = 0
 
+  SINT64_MAX = 2**63 - 1
+  SINT64_MIN = -SINT64_MAX - 1
+
+  SIZEOF_SINT64 = 8
+  SIZEOF_FLOAT64 = 8
+
+  SINT64_PACK_TEMPLATE = 'q'
+  FLOAT64_PACK_TEMPLATE = 'd'
+
   CFTypeRef = VoidPointer
   CFTypeRefPointer = VoidPointer
   CFIndex = Fiddle::TYPE_LONG
@@ -187,6 +196,10 @@ module CoreFoundation
 
   CFStringEncoding = UInt32
   KCFStringEncodingUTF8 = 0x08000100
+
+  CFNumberType = Fiddle::TYPE_INT
+  KCFNumberSInt64Type = 4
+  KCFNumberFloat64Type = 6
 
   # rubocop:enable Style/ConstantName
 
@@ -246,6 +259,7 @@ module CoreFoundation
   extern :CFStringGetTypeID, [], CFTypeID
   extern :CFArrayGetTypeID, [], CFTypeID
   extern :CFBooleanGetTypeID, [], CFTypeID
+  extern :CFNumberGetTypeID, [], CFTypeID
 
   # CFStream
   extern :CFWriteStreamCreateWithFile, [CFTypeRef, CFTypeRef], CFTypeRef
@@ -283,6 +297,11 @@ module CoreFoundation
 
   # CFBoolean
   extern :CFBooleanGetValue, [CFTypeRef], Boolean
+
+  # CFNumber
+  extern :CFNumberIsFloatType, [CFTypeRef], Boolean
+  extern :CFNumberGetValue, [CFTypeRef, CFNumberType, VoidPointer], Boolean
+  extern :CFNumberCreate,  [CFTypeRef, CFNumberType, VoidPointer], CFTypeRef
 
   # @!group Custom convenience functions
   #---------------------------------------------------------------------------#
@@ -352,6 +371,8 @@ module CoreFoundation
       CFArrayToRubyArray(cf_type_reference)
     when CFBooleanGetTypeID()
       CFBooleanToRubyBoolean(cf_type_reference)
+    when CFNumberGetTypeID()
+      CFNumberToRubyNumber(cf_type_reference)
     else
       description = CFStringToRubyString(CFCopyDescription(cf_type_reference))
       raise TypeError, "Unknown type: #{description}"
@@ -392,6 +413,21 @@ module CoreFoundation
     CFBooleanGetValue(boolean) == TRUE
   end
 
+  def self.CFNumberToRubyNumber(number)
+    if CFNumberIsFloatType(number) == FALSE
+      value_type = KCFNumberSInt64Type
+      pack_template = SINT64_PACK_TEMPLATE
+      size = SIZEOF_SINT64
+    else
+      value_type = KCFNumberFloat64Type
+      pack_template = FLOAT64_PACK_TEMPLATE
+      size = SIZEOF_FLOAT64
+    end
+    ptr = Fiddle::Pointer.malloc(size)
+    CFNumberGetValue(number, value_type, ptr)
+    ptr.to_str.unpack(pack_template).first
+  end
+
   # @!group Ruby value to CFTypeRef conversion
   #---------------------------------------------------------------------------#
 
@@ -405,6 +441,8 @@ module CoreFoundation
                RubyArrayToCFArray(value)
              when true, false
                RubyBooleanToCFBoolean(value)
+             when Numeric
+               RubyNumberToCFNumber(value)
              else
                RubyStringToCFString(value.to_s)
              end
@@ -441,6 +479,21 @@ module CoreFoundation
       CFArrayAppendValue(result, element)
     end
     result
+  end
+
+  def self.RubyNumberToCFNumber(value)
+    case value
+    when Float
+      value_type = KCFNumberFloat64Type
+      pack_template = FLOAT64_PACK_TEMPLATE
+    when SINT64_MIN..SINT64_MAX
+      value_type = KCFNumberSInt64Type
+      pack_template = SINT64_PACK_TEMPLATE
+    else # the value is too big to be stored in a CFNumber so store it as a CFString
+      return RubyStringToCFString(value.to_s)
+    end
+    ptr = Fiddle::Pointer.to_ptr([value].pack(pack_template))
+    CFNumberCreate(NULL, value_type, ptr)
   end
 
   def self.RubyBooleanToCFBoolean(value)
