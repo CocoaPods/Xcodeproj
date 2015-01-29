@@ -2,6 +2,11 @@
 
 ## Master
 
+##### Enhancements
+
+* `PlistHelper`: Add support for plist files with numbers (`real`, `integer`).  
+  [Vincent Isambart](https://github.com/vincentisambart)
+
 #### Bug Fixes
 
 * Use the correct value for `COPY_PHASE_STRIP` when creating build
