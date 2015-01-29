@@ -233,13 +233,13 @@ module Xcodeproj
         'GCC_WARN_UNUSED_VARIABLE'           => 'YES',
       },
       :release => {
-        'COPY_PHASE_STRIP'                   => 'NO',
+        'COPY_PHASE_STRIP'                   => 'YES',
         'ENABLE_NS_ASSERTIONS'               => 'NO',
         'VALIDATE_PRODUCT'                   => 'YES',
       }.freeze,
       :debug => {
         'ONLY_ACTIVE_ARCH'                   => 'YES',
-        'COPY_PHASE_STRIP'                   => 'YES',
+        'COPY_PHASE_STRIP'                   => 'NO',
         'GCC_DYNAMIC_NO_PIC'                 => 'NO',
         'GCC_OPTIMIZATION_LEVEL'             => '0',
         'GCC_PREPROCESSOR_DEFINITIONS'       => ['DEBUG=1', '$(inherited)'],
