@@ -1,5 +1,12 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* `PlistHelper`: Add support for plist files with numbers (`real`, `integer`).
+  [Vincent Isambart](https://github.com/vincentisambart)
+
 ## 0.21.2
 
 ##### Bug Fixes
