@@ -83,12 +83,14 @@ module ProjectSpecs
         Xcodeproj.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
       end
 
-      it 'allows hashes, strings, booleans, and arrays of hashes and strings as values' do
+      it 'allows hashes, strings, booleans, numbers, and arrays of hashes and strings as values' do
         hash = {
           'hash'   => { 'a hash' => 'in a hash' },
           'string' => 'string',
           'true_bool' => true,
           'false_bool' => false,
+          'integer' => 42,
+          'float' => 0.5,
           'array'  => ['string in an array', { 'a hash' => 'in an array' }],
         }
         Xcodeproj.write_plist(hash, @plist)
@@ -96,8 +98,8 @@ module ProjectSpecs
       end
 
       it 'coerces values to strings if it is a disallowed type' do
-        Xcodeproj.write_plist({ '1' => 1, 'symbol' => :symbol }, @plist)
-        Xcodeproj.read_plist(@plist).should == { '1' => '1', 'symbol' => 'symbol' }
+        Xcodeproj.write_plist({ '1' => 9_999_999_999_999_999_999_999_999, 'symbol' => :symbol }, @plist)
+        Xcodeproj.read_plist(@plist).should == { '1' => '9999999999999999999999999', 'symbol' => 'symbol' }
       end
 
       it 'handles unicode characters in paths and strings' do
@@ -106,7 +108,7 @@ module ProjectSpecs
         Xcodeproj.read_plist(plist).should == { 'café' => 'før yoµ' }
       end
 
-      it 'raises if a plist contains any other object type as value than string, dictionary, and array' do
+      it 'raises if a plist contains any non-supported object type' do
         @plist.open('w') do |f|
           f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -114,7 +116,7 @@ module ProjectSpecs
 <plist version="1.0">
 <dict>
   <key>uhoh</key>
-  <integer>42</integer>
+  <date>2004-03-03T01:02:03Z</date>
 </dict>
 </plist>
 EOS
@@ -122,7 +124,7 @@ EOS
         lambda { Xcodeproj.read_plist(@plist) }.should.raise TypeError
       end
 
-      it 'raises if a plist array value contains any other object type than string, or dictionary' do
+      it 'raises if a plist array value contains any non-supported object type' do
         @plist.open('w') do |f|
           f.write <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
@@ -131,7 +133,7 @@ EOS
 <dict>
   <key>uhoh</key>
   <array>
-    <integer>42</integer>
+    <date>2004-03-03T01:02:03Z</date>
   </array>
 </dict>
 </plist>
