@@ -89,8 +89,8 @@ module ProjectSpecs
         hash = {
           'hash'   => { 'a hash' => 'in a hash' },
           'string' => 'string',
-          'true_bool' => true,
-          'false_bool' => false,
+          'true_bool' => '1',
+          'false_bool' => '0',
           'integer' => 42,
           'float' => 0.5,
           'array'  => ['string in an array', { 'a hash' => 'in an array' }],
