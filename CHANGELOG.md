@@ -4,6 +4,13 @@
 
 ##### Enhancements
 
+* Use the `DVTFoundation.framework` of Xcode to serialize projects as ASCII
+  plists. This makes the optional installation of `xcproj` unnecessary to
+  retain the project file format.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#199](https://github.com/CocoaPods/Xcodeproj/issues/199)
+  [Xcodeproj#203](https://github.com/CocoaPods/Xcodeproj/issues/203)
+
 * `PlistHelper`: Add support for plist files with numbers (`real`, `integer`).  
   [Vincent Isambart](https://github.com/vincentisambart)
 

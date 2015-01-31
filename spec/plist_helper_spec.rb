@@ -13,6 +13,7 @@ module ProjectSpecs
 
       it 'writes an XML plist file' do
         hash = { 'archiveVersion' => '1.0' }
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Xcodeproj.write_plist(hash, @plist)
         result = Xcodeproj.read_plist(@plist)
         result.should == hash
@@ -41,6 +42,7 @@ module ProjectSpecs
         # rubocop:enable Style/Tab
 
         hash = { 'archiveVersion' => '1.0' }
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Xcodeproj.write_plist(hash, @plist)
         @plist.read.should == output
       end
@@ -87,8 +89,8 @@ module ProjectSpecs
         hash = {
           'hash'   => { 'a hash' => 'in a hash' },
           'string' => 'string',
-          'true_bool' => true,
-          'false_bool' => false,
+          'true_bool' => '1',
+          'false_bool' => '0',
           'integer' => 42,
           'float' => 0.5,
           'array'  => ['string in an array', { 'a hash' => 'in an array' }],
@@ -152,6 +154,105 @@ EOS
         lambda do
           Xcodeproj.write_plist({}, '')
         end.should.raise IOError
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe 'Xcode frameworks resilience' do
+      extend SpecHelper::TemporaryDirectory
+
+      after do
+        if @original_xcode_path
+          DevToolsCore.send(:remove_const, :XCODE_PATH)
+          DevToolsCore.const_set(:XCODE_PATH, @original_xcode_path)
+        end
+      end
+
+      def read_sample
+        dir = 'Sample Project/Cocoa Application.xcodeproj/'
+        path = fixture_path(dir + 'project.pbxproj')
+        Xcodeproj.read_plist(path)
+      end
+
+      def stub_xcode_path(stubbed_path)
+        @original_xcode_path = DevToolsCore::XCODE_PATH
+        DevToolsCore.send(:remove_const, :XCODE_PATH)
+        DevToolsCore.const_set(:XCODE_PATH, stubbed_path)
+      end
+
+      def write_temp_file_and_compare(sample)
+        temp_file = File.join(SpecHelper.temporary_directory, 'out.pbxproj')
+        Xcodeproj.write_plist(sample, temp_file)
+        result = Xcodeproj.read_plist(temp_file)
+
+        sample.should == result
+        File.new(temp_file).read.start_with?('<?xml').should == true
+      end
+
+      it 'will fallback to XML encoding if Xcode is not installed' do
+        # Simulate this by calling `xcrun` with a non-existing tool
+        stub_xcode_path(Pathname.new(`xcrun lol 2>/dev/null`))
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if the user has not agreed to the Xcode license' do
+        stub_xcode_path(Pathname.new('Agreeing to the Xcode/iOS license requires admin privileges, please re-run as root via sudo.'))
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if Xcode functions cannot be found' do
+        DevToolsCore.stubs(:load_xcode_frameworks).returns(Fiddle::Handle.new)
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if Xcode methods return errors' do
+        DevToolsCore::NSData.any_instance.stubs(:writeToFileAtomically).returns(false)
+
+        write_temp_file_and_compare(read_sample)
+      end
+
+      it 'will fallback to XML encoding if Xcode classes cannot be found' do
+        DevToolsCore::NSObject.stubs(:objc_class).returns(nil)
+
+        write_temp_file_and_compare(read_sample)
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe 'Xcode equivalency' do
+      extend SpecHelper::TemporaryDirectory
+
+      def setup_fixture(name)
+        fixture_path("Sample Project/#{name}/project.pbxproj")
+      end
+
+      def setup_temporary(name)
+        dir = File.join(SpecHelper.temporary_directory, name)
+        FileUtils.mkdir_p(dir)
+        File.join(dir, 'project.pbxproj')
+      end
+
+      def touch_project(name)
+        fixture = setup_fixture(name)
+        temporary = setup_temporary(name)
+
+        hash = Xcodeproj.read_plist(fixture)
+        Xcodeproj.write_plist(hash, temporary)
+
+        File.open(fixture).read.should == File.open(temporary).read
+      end
+
+      it 'touches the project at the given path' do
+        touch_project('Cocoa Application.xcodeproj')
+      end
+
+      it 'retains emoji when touching a project' do
+        touch_project('Emoji.xcodeproj')
       end
     end
   end

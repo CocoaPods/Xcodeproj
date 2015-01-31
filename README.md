@@ -20,10 +20,6 @@ by performing the following command:
 
     $ [sudo] gem install xcodeproj
 
-To make Xcodeproj output projects in the same format of Xcode (deprecated ASCII Plists format) in order to reduce the SCM noise it is possible to install [xcproj](https://github.com/0xced/xcproj):
-
-    $ brew install xcproj
-
 ## Collaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
