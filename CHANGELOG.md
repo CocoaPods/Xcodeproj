@@ -1,5 +1,15 @@
 # Xcodeproj Changelog
 
+## Master
+
+#### Bug Fixes
+
+* Use the correct value for `COPY_PHASE_STRIP` when creating build
+  configurations.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [#3062](https://github.com/CocoaPods/CocoaPods/issues/3062)
+
+
 ## 0.21.2
 
 ##### Bug Fixes
