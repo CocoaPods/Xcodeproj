@@ -412,7 +412,7 @@ module Xcodeproj
 
             extension = File.extname(file.path)
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
-            if header_extensions.include?(extension)
+            if header_extensions.include?(extension.downcase)
               headers_build_phase.files << build_file
             else
               if compiler_flags && !compiler_flags.empty?
