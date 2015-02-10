@@ -272,6 +272,6 @@ module Xcodeproj
 
     # @return [Hash] The extensions which are associated with header files.
     #
-    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp).freeze
+    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp .H).freeze
   end
 end
