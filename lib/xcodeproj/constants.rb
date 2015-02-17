@@ -96,6 +96,8 @@ module Xcodeproj
       :bundle           => 'com.apple.product-type.bundle',
       :unit_test_bundle => 'com.apple.product-type.bundle.unit-test',
       :app_extension    => 'com.apple.product-type.app-extension',
+      :watch_app        => 'com.apple.product-type.application.watchapp',
+      :watch_extension  => 'com.apple.product-type.watchkit-extension',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
