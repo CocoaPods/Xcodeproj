@@ -272,7 +272,7 @@ module Xcodeproj
       :reference     => '2',
     }.freeze
 
-    # @return [Hash] The extensions which are associated with header files.
+    # @return [Array] The extensions which are associated with header files.
     #
     HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp).freeze
   end
