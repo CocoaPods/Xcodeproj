@@ -508,6 +508,15 @@ module ProjectSpecs
         build_files.first.settings.should.be.nil
       end
 
+      it 'adds a list of header files with capitalized .H extension to the target header build phases' do
+        ref = @project.main_group.new_file('CLASS.H')
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        build_files.count.should == 1
+        build_files.first.file_ref.path.should == 'CLASS.H'
+        build_files.first.settings.should.be.nil
+      end
+
       it 'returns a list of header files to the target header build phases' do
         ref = @project.main_group.new_file('Class.h')
         new_build_files = @target.add_file_references([ref], '-fobjc-arc')

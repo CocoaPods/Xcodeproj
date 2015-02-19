@@ -410,7 +410,7 @@ module Xcodeproj
             build_file = project.new(PBXBuildFile)
             build_file.file_ref = file
 
-            extension = File.extname(file.path)
+            extension = File.extname(file.path).downcase
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
             if header_extensions.include?(extension)
               headers_build_phase.files << build_file
