@@ -64,7 +64,7 @@ module ProjectSpecs
       end
 
       it "raises if the given path doesn't exist" do
-        lambda { Xcodeproj.read_plist('doesnotexist') }.should.raise ArgumentError
+        lambda { Xcodeproj.read_plist('doesnotexist') }.should.raise Xcodeproj::Informative
       end
 
       it 'coerces the given hash to a Hash' do

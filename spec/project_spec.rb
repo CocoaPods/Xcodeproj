@@ -121,7 +121,7 @@ module ProjectSpecs
         @path = @dir + 'ProjectInMergeConflict/ProjectInMergeConflict.xcodeproj'
         lambda do
           Xcodeproj::Project.open(@path)
-        end.should.raise(ArgumentError)
+        end.should.raise(Xcodeproj::Informative)
       end
     end
 
