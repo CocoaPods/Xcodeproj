@@ -53,10 +53,10 @@ module Xcodeproj
       def read(path)
         path = path.to_s
         unless File.exist?(path)
-          raise ArgumentError, "The plist file at path `#{path}` doesn't exist."
+          raise Informative, "The plist file at path `#{path}` doesn't exist."
         end
         if file_in_conflict?(path)
-          raise ArgumentError, "The file `#{path}` is in a merge conflict"
+          raise Informative, "The file `#{path}` is in a merge conflict."
         end
         CoreFoundation.RubyHashPropertyListRead(path)
       end
