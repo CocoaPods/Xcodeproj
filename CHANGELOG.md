@@ -21,6 +21,10 @@
   [Marius Rackwitz](https://github.com/mrackwitz)
   [#3062](https://github.com/CocoaPods/CocoaPods/issues/3062)
 
+* handle .H header files as headers and remove from the compile
+  sources build phase.  
+  [banjun](https://github.com/banjun)
+  [Xcodeproj#239](https://github.com/CocoaPods/Xcodeproj/pull/239)
 
 ## 0.21.2
 
