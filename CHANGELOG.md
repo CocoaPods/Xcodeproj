@@ -14,6 +14,10 @@
 * `PlistHelper`: Add support for plist files with numbers (`real`, `integer`).  
   [Vincent Isambart](https://github.com/vincentisambart)
 
+* `ProjectHelper`: Allow to specify the primary language of the target.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#244](https://github.com/CocoaPods/Xcodeproj/pull/244)
+
 #### Bug Fixes
 
 * Use the correct value for `COPY_PHASE_STRIP` when creating build

@@ -36,16 +36,19 @@ module Xcodeproj
       #         the product group, where to add to a file reference of the
       #         created target.
       #
+      # @param  [Symbol] language
+      #         the primary language of the target, can be `:objc` or `:swift`.
+      #
       # @return [PBXNativeTarget] the target.
       #
-      def self.new_target(project, type, name, platform, deployment_target, product_group)
+      def self.new_target(project, type, name, platform, deployment_target, product_group, language)
         # Target
         target = project.new(PBXNativeTarget)
         project.targets << target
         target.name = name
         target.product_name = name
         target.product_type = Constants::PRODUCT_TYPE_UTI[type]
-        target.build_configuration_list = configuration_list(project, platform, deployment_target, type)
+        target.build_configuration_list = configuration_list(project, platform, deployment_target, type, language)
 
         # Product
         product = product_group.new_product_ref_for_target(name, type)
@@ -140,20 +143,23 @@ module Xcodeproj
       #         the product type of the target, can be any of `Constants::PRODUCT_TYPE_UTI.values`
       #         or `Constants::PRODUCT_TYPE_UTI.keys`.
       #
+      # @param  [Symbol] language
+      #         the primary language of the target, can be `:objc` or `:swift`.
+      #
       # @return [XCConfigurationList] the generated configuration list.
       #
-      def self.configuration_list(project, platform, deployment_target = nil, target_product_type)
+      def self.configuration_list(project, platform, deployment_target = nil, target_product_type, language)
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
 
         release_conf = project.new(XCBuildConfiguration)
         release_conf.name = 'Release'
-        release_conf.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type)
+        release_conf.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type, language)
 
         debug_conf = project.new(XCBuildConfiguration)
         debug_conf.name = 'Debug'
-        debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target, target_product_type)
+        debug_conf.build_settings = common_build_settings(:debug, platform, deployment_target, target_product_type, language)
 
         cl.build_configurations << release_conf
         cl.build_configurations << debug_conf
@@ -163,7 +169,7 @@ module Xcodeproj
 
           new_config = project.new(XCBuildConfiguration)
           new_config.name = configuration.name
-          new_config.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type)
+          new_config.build_settings = common_build_settings(:release, platform, deployment_target, target_product_type, language)
           cl.build_configurations << new_config
         end
 
