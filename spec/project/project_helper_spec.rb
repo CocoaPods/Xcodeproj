@@ -10,7 +10,7 @@ module ProjectSpecs
 
     describe 'Targets' do
       it 'creates a new target' do
-        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
+        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group, :objc)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.library.static'
 
@@ -28,7 +28,7 @@ module ProjectSpecs
       end
 
       it 'uses default build settings for Release and Debug configurations' do
-        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group)
+        target = @helper.new_target(@project, :static_library, 'Pods', :ios, '6.0', @project.products_group, :objc)
         debug_settings = @helper.common_build_settings(:debug, :ios, '6.0', :static_library)
         release_settings = @helper.common_build_settings(:release, :ios, '6.0', :static_library)
 

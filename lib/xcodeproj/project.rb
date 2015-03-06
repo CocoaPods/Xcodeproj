@@ -601,11 +601,14 @@ module Xcodeproj
     # @param  [String] deployment_target
     #         the deployment target for the platform.
     #
+    # @param  [Symbol] language
+    #         the primary language of the target, can be `:objc` or `:swift`.
+    #
     # @return [PBXNativeTarget] the target.
     #
-    def new_target(type, name, platform, deployment_target = nil, product_group = nil)
+    def new_target(type, name, platform, deployment_target = nil, product_group = nil, language = nil)
       product_group ||= products_group
-      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group)
+      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group, language)
     end
 
     # Creates a new resource bundles target and adds it to the project.
