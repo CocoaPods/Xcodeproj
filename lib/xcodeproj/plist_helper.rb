@@ -1,4 +1,5 @@
 require 'fiddle'
+require 'pathname'
 
 module Xcodeproj
   # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
