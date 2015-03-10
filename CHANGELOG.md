@@ -8,6 +8,13 @@
   [Marius Rackwitz](https://github.com/mrackwitz)
   [Xcodeproj#244](https://github.com/CocoaPods/Xcodeproj/pull/244)
 
+#### Bug Fixes
+
+* Depend on pathname so components such as PlistHelper can be used directly.  
+  [#243](https://github.com/CocoaPods/Xcodeproj/issues/243)
+  [Vincent Isambart](https://github.com/vincentisambart)
+  [Kyle Fuller](https://github.com/kylef)
+
 
 ## 0.22.0
 

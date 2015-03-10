@@ -1,4 +1,6 @@
 module Xcodeproj
+  require 'pathname'
+
   class PlainInformative < StandardError
   end
 
