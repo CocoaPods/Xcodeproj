@@ -289,7 +289,7 @@ module Xcodeproj
             when :ios
               group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')
               path_sdk_name = 'iPhoneOS'
-              path_sdk_version = sdk_version || Constants::LAST_KNOWN_IOS_SDK
+              path_sdk_version = ''
             when :osx
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
