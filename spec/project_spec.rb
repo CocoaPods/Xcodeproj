@@ -491,13 +491,13 @@ module ProjectSpecs
       extend SpecHelper::TemporaryDirectory
 
       def setup_fixture(name)
-        fixture_path("Sample Project/#{name}")
+        Pathname.new(fixture_path("Sample Project/#{name}"))
       end
 
       def setup_temporary(name)
         dir = File.join(SpecHelper.temporary_directory, name)
         FileUtils.mkdir_p(dir)
-        dir
+        Pathname.new(dir)
       end
 
       def touch_project(name)
@@ -507,9 +507,7 @@ module ProjectSpecs
         project = Xcodeproj::Project.open(fixture)
         project.save(temporary)
 
-        fixture = File.join(fixture, '/project.pbxproj')
-        temporary = File.join(temporary, '/project.pbxproj')
-        File.open(fixture).read.should == File.open(temporary).read
+        (fixture + 'project.pbxproj').read.should == (temporary + 'project.pbxproj').read
       end
 
       it 'touches the project at the given path' do
