@@ -86,7 +86,7 @@ module Xcodeproj
         output = ''
         input = File.open(filename, 'rb') { |file| file.read }
         input.unpack('U*').each do |codepoint|
-          if codepoint > 127
+          if codepoint > 127 # ASCII is 7-bit, so 0-127 are valid characters
             output << "&##{codepoint};"
           else
             output << codepoint.chr
