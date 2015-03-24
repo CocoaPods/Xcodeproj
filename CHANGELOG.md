@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+#### Bug Fixes
+
+* Do not apply `fix_encoding` workaround when writing ASCII plists. 
+  [CocoaPods#3298](https://github.com/CocoaPods/CocoaPods/issues/3298)
+  [Boris Bügling](https://github.com/neonichu)
+
+
 ## 0.23.0
 
 ##### Enhancements
