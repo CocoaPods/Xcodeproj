@@ -317,38 +317,6 @@ module Xcodeproj
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
-      fix_encoding(file)
-    end
-
-    # Simple workaround to escape characters which are outside of ASCII
-    # character-encoding. Relies on the fact that there are no XML characters
-    # which would need to be escaped.
-    #
-    # @note   This is necessary because Xcode (4.6 currently) uses the MacRoman
-    #         encoding unless the `// !$*UTF8*$!` magic comment is present. It
-    #         is not possible to serialize a plist using the NeXTSTEP format
-    #         without access to the private classes of Xcode and that comment
-    #         is not compatible with the XML format. For the complete
-    #         discussion see CocoaPods/CocoaPods#926.
-    #
-    #
-    # @note   Sadly this hack is not sufficient for supporting Emoji.
-    #
-    # @param  [String, Pathname] The path of the file which needs to be fixed.
-    #
-    # @return [void]
-    #
-    def fix_encoding(filename)
-      output = ''
-      input = File.open(filename, 'rb') { |file| file.read }
-      input.unpack('U*').each do |codepoint|
-        if codepoint > 127
-          output << "&##{codepoint};"
-        else
-          output << codepoint.chr
-        end
-      end
-      File.open(filename, 'wb') { |file| file.write(output) }
     end
 
     public
