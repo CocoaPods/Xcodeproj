@@ -486,5 +486,41 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
+
+    describe 'Xcode equivalency' do
+      extend SpecHelper::TemporaryDirectory
+
+      def setup_fixture(name)
+        fixture_path("Sample Project/#{name}")
+      end
+
+      def setup_temporary(name)
+        dir = File.join(SpecHelper.temporary_directory, name)
+        FileUtils.mkdir_p(dir)
+        dir
+      end
+
+      def touch_project(name)
+        fixture = setup_fixture(name)
+        temporary = setup_temporary(name)
+
+        project = Xcodeproj::Project.open(fixture)
+        project.save(temporary)
+
+        fixture = File.join(fixture, '/project.pbxproj')
+        temporary = File.join(temporary, '/project.pbxproj')
+        File.open(fixture).read.should == File.open(temporary).read
+      end
+
+      it 'touches the project at the given path' do
+        touch_project('Cocoa Application.xcodeproj')
+      end
+
+      it 'retains emoji when touching a project' do
+        touch_project('Emoji.xcodeproj')
+      end
+    end
+
+    #-------------------------------------------------------------------------#
   end
 end
