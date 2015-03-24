@@ -4,11 +4,11 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '7.1'
+    LAST_KNOWN_IOS_SDK = '8.2'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK  = '10.9'
+    LAST_KNOWN_OSX_SDK  = '10.10'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -16,11 +16,11 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION  = 46
+    LAST_KNOWN_OBJECT_VERSION  = 47
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0510'
+    LAST_UPGRADE_CHECK  = '0630'
 
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
