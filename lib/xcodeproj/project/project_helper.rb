@@ -64,7 +64,60 @@ module Xcodeproj
 
         target
       end
+      #-----------------------------------------------------------------------#
 
+      # Duplicates a target and adds it to the project.
+      # @param  [Project] project
+      #         the project from which the target should be duplicated.
+      #
+      # @param  [klass] src_target
+      #         the target or the name of the target to duplicate
+      #
+      #
+      # @param  [String] dst_target_name
+      #         the name of the duplicated target.
+      #
+      #
+      # @return [PBXNativeTarget] the target.
+      #
+      def self.duplicate_target(project, src_target, dst_target_name)
+        if src_target.is_a?(String)
+          possible_targets = project.targets.select { |target| target.name.eql?(src_target) }
+          return nil if possible_targets.count == 0
+          # Currently only select the first one
+          target_to_duplicate = possible_targets.first
+        else
+          target_to_duplicate = src_target
+
+        end
+        # New Target
+        new_target = project.new(PBXNativeTarget)
+        project.targets << new_target
+
+        new_target.name = dst_target_name
+        new_target.product_name = dst_target_name
+        new_target.product_type = target_to_duplicate.product_type
+
+        # Configuration
+        new_configuration_list = project.new(XCConfigurationList)
+        new_configuration_list.default_configuration_is_visible = target_to_duplicate.build_configuration_list.default_configuration_is_visible
+        new_configuration_list.default_configuration_name = target_to_duplicate.build_configuration_list.default_configuration_name
+        new_configuration_list.build_configurations.push(*target_to_duplicate.build_configuration_list.build_configurations)
+
+        new_target.build_configuration_list = new_configuration_list
+
+        # Build phases
+        target_to_duplicate.build_phases.each do |build_phase|
+          new_phase = project.new(build_phase.class)
+
+          build_phase.files_references.each do |file_ref|
+            new_phase.add_file_reference(file_ref)
+          end
+
+          new_target.build_phases << new_phase
+        end
+        new_target
+      end
       # Creates a new resource bundles target and adds it to the project.
       #
       # The target is configured for the given platform and its file reference it

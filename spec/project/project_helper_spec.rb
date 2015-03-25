@@ -63,8 +63,42 @@ module ProjectSpecs
 
         target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXResourcesBuildPhase PBXSourcesBuildPhase)
       end
-    end
 
+      it 'duplicates a target from a target instance' do
+        path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+        project = Xcodeproj::Project.open(path)
+
+        base_target = project.targets.first
+        dup_target = @helper.duplicate_target(project, base_target, 'ReferencedProject-dup')
+
+        dup_target.name.should == 'ReferencedProject-dup'
+
+        # Configuration
+        dup_target.build_configuration_list.build_configurations.count.should == base_target.build_configuration_list.build_configurations.count
+
+        dup_target.build_configuration_list.build_configurations.each do |build_config|
+          base_target.build_configuration_list.build_configurations.map(&:name).should.include build_config.name
+        end
+
+        # Build phases
+        dup_target.build_phases.count.should == base_target.build_phases.count
+        dup_target.build_phases.each_index do |index|
+          base_phase = base_target.build_phases[index]
+          dup_phase = dup_target.build_phases[index]
+
+          dup_phase.files_references.each do |file_ref|
+            base_phase.files_references.should.include file_ref
+          end
+        end
+      end
+
+      it 'should return nil when it does not found the target to duplicate' do
+        path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+        project = Xcodeproj::Project.open(path)
+        dup_target = @helper.duplicate_target(project, 'Hello', 'ReferencedProject-dup')
+        dup_target.should.be.nil
+      end
+    end
     #-------------------------------------------------------------------------#
 
     describe 'Frameworks' do
