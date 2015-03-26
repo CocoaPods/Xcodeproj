@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xcodeproj (0.23.0)
+    xcodeproj (0.23.1)
       activesupport (>= 3)
       colored (~> 1.2)
 
