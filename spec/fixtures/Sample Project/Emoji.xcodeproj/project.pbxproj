@@ -32,6 +32,7 @@
 		806F6FCA17EFAF47001051EE /* libiOS staticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 806F6FB617EFAF46001051EE /* libiOS staticLibrary.a */; };
 		806F6FD017EFAF47001051EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 806F6FCE17EFAF47001051EE /* InfoPlist.strings */; };
 		806F6FD217EFAF47001051EE /* iOS_staticLibraryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 806F6FD117EFAF47001051EE /* iOS_staticLibraryTests.m */; };
+		A167CE581AC1A60F00F867E6 /* ⾞⻋.swift in Sources */ = {isa = PBXBuildFile; fileRef = A167CE571AC1A60E00F867E6 /* ⾞⻋.swift */; };
 		A1CFC16619E48F59004D3230 /* 🍷.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CFC16519E48F59004D3230 /* 🍷.swift */; };
 		E525239116245A900012E2BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E525239016245A900012E2BA /* Cocoa.framework */; };
 		E525239B16245A900012E2BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E525239916245A900012E2BA /* InfoPlist.strings */; };
@@ -311,6 +312,7 @@
 		806F6FCD17EFAF47001051EE /* iOS staticLibraryTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iOS staticLibraryTests-Info.plist"; sourceTree = "<group>"; };
 		806F6FCF17EFAF47001051EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		806F6FD117EFAF47001051EE /* iOS_staticLibraryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOS_staticLibraryTests.m; sourceTree = "<group>"; };
+		A167CE571AC1A60E00F867E6 /* ⾞⻋.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "⾞⻋.swift"; sourceTree = "<group>"; };
 		A1CFC16519E48F59004D3230 /* 🍷.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "🍷.swift"; sourceTree = "<group>"; };
 		E525238C16245A900012E2BA /* Cocoa Application.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa Application.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E525239016245A900012E2BA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -748,6 +750,7 @@
 			children = (
 				E5FBB3451635ED35009E96B0 /* ReferencedProject.xcodeproj */,
 				A1CFC16519E48F59004D3230 /* 🍷.swift */,
+				A167CE571AC1A60E00F867E6 /* ⾞⻋.swift */,
 				E5FBB2D016357C16009E96B0 /* sample.xcconfig */,
 				E52523AB16245A910012E2BA /* CPDocument.xcdatamodeld */,
 				E5D464AB163578AC006A4730 /* Tools_version.xcdatamodeld */,
@@ -1721,7 +1724,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CP;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					806F6FC217EFAF47001051EE = {
@@ -2207,6 +2210,7 @@
 				E52523A416245A900012E2BA /* CPDocument.m in Sources */,
 				E52523AD16245A910012E2BA /* CPDocument.xcdatamodeld in Sources */,
 				E5D464AD163578AC006A4730 /* Tools_version.xcdatamodeld in Sources */,
+				A167CE581AC1A60F00F867E6 /* ⾞⻋.swift in Sources */,
 				E5D464B0163578C7006A4730 /* Deployment_target.xcdatamodeld in Sources */,
 				A1CFC16619E48F59004D3230 /* 🍷.swift in Sources */,
 				E5D464B416357954006A4730 /* Version_identifier.xcdatamodeld in Sources */,
