@@ -81,15 +81,15 @@ module Xcodeproj
       # @return [PBXNativeTarget] the target.
       #
       def self.duplicate_target(project, src_target, dst_target_name)
-        if src_target.is_a?(String)
-          possible_targets = project.targets.select { |target| target.name.eql?(src_target) }
-          return nil if possible_targets.count == 0
+        if src_target.is_a?(PBXNativeTarget)
+          target_to_duplicate = src_target
+        else
+          possible_targets = project.targets.select { |target| target.name.eql?(src_target.to_s) }
+          raise Informative, "No target found for name #{src_target.to_s}" if possible_targets.count == 0
           # Currently only select the first one
           target_to_duplicate = possible_targets.first
-        else
-          target_to_duplicate = src_target
-
         end
+
         # New Target
         new_target = project.new(PBXNativeTarget)
         project.targets << new_target

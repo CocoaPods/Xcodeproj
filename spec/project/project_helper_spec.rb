@@ -92,11 +92,10 @@ module ProjectSpecs
         end
       end
 
-      it 'should return nil when it does not found the target to duplicate' do
+      it 'should raise an errorwhen it does not found the target to duplicate' do
         path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
         project = Xcodeproj::Project.open(path)
-        dup_target = @helper.duplicate_target(project, 'Hello', 'ReferencedProject-dup')
-        dup_target.should.be.nil
+        lambda { @helper.duplicate_target(project, 'Hello', 'ReferencedProject-dup') }.should.raise Xcodeproj::Informative
       end
     end
     #-------------------------------------------------------------------------#
