@@ -110,7 +110,7 @@ module Xcodeproj
       buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(test_target)
     end
 
-    # Sets a runnable target target to be the target of the launch action of the scheme.
+    # Sets a runnable target to be the target of the launch action of the scheme.
     #
     # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
     #        A target used by scheme in the launch step.
