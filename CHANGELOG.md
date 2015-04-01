@@ -4,6 +4,11 @@
 
 #### Bug Fixes
 
+* Save xcconfig files also if only the includes where modified by fixing the
+  equality method implementation.  
+  [Brian Partridge](https://github.com/brianpartridge)
+  [Xcodeproj#255](https://github.com/CocoaPods/Xcodeproj/pull/255)
+
 * Do not apply `fix_encoding` workaround when writing ASCII plists.  
   [Boris Bügling](https://github.com/neonichu)
   [CocoaPods#3298](https://github.com/CocoaPods/CocoaPods/issues/3298)
