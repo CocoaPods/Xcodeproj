@@ -61,7 +61,7 @@ module Xcodeproj
     end
 
     def ==(other)
-      other.respond_to?(:to_hash) && other.to_hash == to_hash
+      other.attributes == attributes && other.other_linker_flags == other_linker_flags && other.includes == includes
     end
 
     public

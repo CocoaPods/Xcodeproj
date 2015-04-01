@@ -12,18 +12,39 @@ describe Xcodeproj::Config do
 
     it 'can be created with hash' do
       config = Xcodeproj::Config.new(@hash)
-      config.should.be.equal @hash
+      config.to_hash.should.be.equal @hash
     end
 
     it 'can be created with file path' do
       config = Xcodeproj::Config.new(@config_fixture)
-      config.should.be.equal @hash
+      config.to_hash.should.be.equal @hash
     end
 
     it 'can be created with File instance' do
       xcconfig_file = File.new(@config_fixture)
       xcconfig = Xcodeproj::Config.new(xcconfig_file)
-      xcconfig.should.be.equal @hash
+      xcconfig.to_hash.should.be.equal @hash
+    end
+
+    it 'does not equal if attributes change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.attributes['SOME_KEY'] = 'SOME_VALUE'
+      other_config.should.not == @config
+    end
+
+    it 'does not equal if other linker flags change change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.other_linker_flags[:simple].add '--some-option'
+      other_config.should.not == @config
+    end
+
+    it 'does not equal if includes change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.includes.push 'Somefile'
+      other_config.should.not == @config
     end
 
     it 'does not modifies the hash used for initialization' do
@@ -69,7 +90,7 @@ describe Xcodeproj::Config do
 
     it 'merges another config hash in place' do
       @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
-      @config.should == {
+      @config.to_hash.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
         'HEADER_SEARCH_PATHS' => '/some/path',
       }
@@ -77,7 +98,7 @@ describe Xcodeproj::Config do
 
     it 'merges another config hash in place with the `<<` shortcut' do
       @config << { 'HEADER_SEARCH_PATHS' => '/some/path' }
-      @config.should == {
+      @config.to_hash.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
         'HEADER_SEARCH_PATHS' => '/some/path',
       }
@@ -86,16 +107,16 @@ describe Xcodeproj::Config do
     it 'merges another hash in a new one' do
       new = @config.merge('HEADER_SEARCH_PATHS' => '/some/path')
       new.object_id.should.not == @config.object_id
-      new.should == {
+      new.to_hash.should == {
         'OTHER_LDFLAGS' => '-framework "Foundation"',
         'HEADER_SEARCH_PATHS' => '/some/path',
       }
-      @config.should == { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
+      @config.to_hash.should == { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
     end
 
     it 'appends a value for the same key when merging' do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
-      @config.should == {
+      @config.to_hash.should == {
         'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation"',
       }
     end
@@ -143,7 +164,7 @@ describe Xcodeproj::Config do
 
     it 'can be created from multiline file' do
       config = Xcodeproj::Config.new(fixture_path('sample.xcconfig'))
-      config.should == {
+      config.to_hash.should == {
         'Key1' => 'Value1 Value2',
         'Key2' => 'Value3 Value4 Value5',
         'Key3' => 'Value6',
@@ -153,12 +174,12 @@ describe Xcodeproj::Config do
 
     it 'can be created from file with comments inside' do
       config = Xcodeproj::Config.new(fixture_path('with-comments.xcconfig'))
-      config.should == { 'Key' => 'Value' }
+      config.to_hash.should == { 'Key' => 'Value' }
     end
 
     it 'can be created from file with subscripts' do
       config = Xcodeproj::Config.new(fixture_path('subscript.xcconfig'))
-      config.should == {
+      config.to_hash.should == {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
       }
     end
