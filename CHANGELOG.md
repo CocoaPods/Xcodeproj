@@ -5,8 +5,8 @@
 #### Bug Fixes
 
 * Do not apply `fix_encoding` workaround when writing ASCII plists.  
-  [CocoaPods#3298](https://github.com/CocoaPods/CocoaPods/issues/3298)
   [Boris Bügling](https://github.com/neonichu)
+  [CocoaPods#3298](https://github.com/CocoaPods/CocoaPods/issues/3298)
 
 
 ## 0.23.0
@@ -20,9 +20,9 @@
 #### Bug Fixes
 
 * Depend on pathname so components such as PlistHelper can be used directly.  
-  [#243](https://github.com/CocoaPods/Xcodeproj/issues/243)
   [Vincent Isambart](https://github.com/vincentisambart)
   [Kyle Fuller](https://github.com/kylef)
+  [#243](https://github.com/CocoaPods/Xcodeproj/issues/243)
 
 
 ## 0.22.0
