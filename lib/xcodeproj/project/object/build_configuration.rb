@@ -23,6 +23,17 @@ module Xcodeproj
 
         public
 
+        # Duplicate the build configuration
+        # @return [XCBuildConfiguration] A duplicate instance
+        def deep_dup
+          dup = Project.new(XCBuildConfiguration)
+
+          dup.name = self.name
+          dup.build_settings = self.build_settings
+          dup.base_configuration_reference = self.base_configuration_reference
+
+          dup
+        end
         # @!group AbstractObject Hooks
         #---------------------------------------------------------------------#
 

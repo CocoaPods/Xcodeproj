@@ -40,6 +40,13 @@ module Xcodeproj
 
         public
 
+        def deep_dup
+          dup = Project.new(self.class)
+          self.files_references.each do |file_ref|
+            dup.add_file_reference(file_ref)
+          end
+          dup
+        end
         # @!group Helpers
 
         # @return [Array<PBXFileReference>] the list of all the files
