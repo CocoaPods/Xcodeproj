@@ -311,8 +311,8 @@ module ProjectSpecs
       end
 
       it 'returns the targets' do
-        target = @project.new_target(:static_library, 'Pods', :ios).product_reference
-        @project.products.should.include?(target)
+        target = @project.new_target(:static_library, 'Pods', :ios)
+        @project.targets.should.include?(target)
       end
 
       it 'returns the products group' do
