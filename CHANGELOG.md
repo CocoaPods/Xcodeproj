@@ -2,6 +2,14 @@
 
 ## Master
 
+##### Enhancements
+
+* Return a list of project targets including only native targets by
+  `native_targets`.  
+  [Marc Boquet](https://github.com/apalancat)
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#256](https://github.com/CocoaPods/Xcodeproj/pull/256)
+
 #### Bug Fixes
 
 * Save xcconfig files also if only the includes where modified by fixing the
