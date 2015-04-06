@@ -148,7 +148,7 @@ module Xcodeproj
       #
       # @return [XCConfigurationList] the generated configuration list.
       #
-      def self.configuration_list(project, platform = nil, deployment_target = nil, target_product_type, language)
+      def self.configuration_list(project, platform = nil, deployment_target = nil, target_product_type = nil, language = nil)
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
