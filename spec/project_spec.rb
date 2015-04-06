@@ -412,6 +412,13 @@ module ProjectSpecs
         target.product_type.should == 'com.apple.product-type.bundle'
       end
 
+      it 'creates a new aggregate target' do
+        native_target = @project.new_target(:static_library, 'BananaLib', :ios, '6.0')
+        aggregate_target = @project.new_aggregate_target('Pods', [native_target])
+        aggregate_target.name.should == 'Pods'
+        aggregate_target.dependencies.first.target.should == native_target
+      end
+
       #----------------------------------------#
 
       describe '#add_build_configuration' do

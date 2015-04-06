@@ -123,6 +123,26 @@ module Xcodeproj
         target
       end
 
+      # Creates a new aggregate target and adds it to the project.
+      #
+      # The target is configured for the given platform.
+      #
+      # @param  [Project] project
+      #         the project to which the target should be added.
+      #
+      # @param  [String] name
+      #         the name of the aggregate target.
+      #
+      # @return [PBXAggregateTarget] the target.
+      #
+      def self.new_aggregate_target(project, name)
+        target = project.new(PBXAggregateTarget)
+        project.targets << target
+        target.name = name
+        target.build_configuration_list = configuration_list(project)
+        target
+      end
+
       # @!group Private Helpers
 
       #-----------------------------------------------------------------------#

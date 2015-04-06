@@ -607,6 +607,31 @@ module Xcodeproj
       ProjectHelper.new_resources_bundle(self, name, platform, product_group)
     end
 
+    # Creates a new target and adds it to the project.
+    #
+    # The target is configured for the given platform and its file reference it
+    # is added to the {products_group}.
+    #
+    # The target is pre-populated with common build settings, and the
+    # appropriate Framework according to the platform is added to to its
+    # Frameworks phase.
+    #
+    # @param  [String] name
+    #         the name of the target.
+    #
+    # @param  [Array<AbstractTarget>] target_dependencies
+    #         targets, which should be added as dependencies.
+    #
+    # @return [PBXNativeTarget] the target.
+    #
+    def new_aggregate_target(name, target_dependencies = [])
+      ProjectHelper.new_aggregate_target(self, name).tap do |aggregate_target|
+        target_dependencies.each do |dep|
+          aggregate_target.add_dependency(dep)
+        end
+      end
+    end
+
     # Adds a new build configuration to the project and populates its with
     # default settings according to the provided type.
     #
