@@ -480,8 +480,8 @@ module Xcodeproj
     #         project excluding aggregate targets.
     #
     def native_targets
-      root_object.targets.reject do |target|
-        target.is_a? PBXAggregateTarget
+      root_object.targets.select do |target|
+        target.is_a? PBXNativeTarget
       end
     end
 

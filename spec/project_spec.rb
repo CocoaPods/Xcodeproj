@@ -317,10 +317,11 @@ module ProjectSpecs
 
       it 'returns the native targets' do
         native_target = @project.new_target(:static_library, 'Pods', :ios)
-        aggregate_target = @project.new_aggregate_target('Trees')
+        @project.new_aggregate_target('Trees')
+        @project.targets << @project.new(PBXLegacyTarget)
         native_targets = @project.native_targets
         native_targets.should.include?(native_target)
-        native_targets.should.not.include?(aggregate_target)
+        native_targets.count.should == 1
       end
 
       it 'returns the products group' do
