@@ -315,6 +315,14 @@ module ProjectSpecs
         @project.targets.should.include?(target)
       end
 
+      it 'returns the native targets' do
+        native_target = @project.new_target(:static_library, 'Pods', :ios)
+        aggregate_target = @project.new_aggregate_target('Trees')
+        native_targets = @project.native_targets
+        native_targets.should.include?(native_target)
+        native_targets.should.not.include?(aggregate_target)
+      end
+
       it 'returns the products group' do
         g = @project.products_group
         g.class.should == PBXGroup
