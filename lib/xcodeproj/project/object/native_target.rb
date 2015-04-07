@@ -175,14 +175,14 @@ module Xcodeproj
         #         the copy files build phases of the target.
         #
         def copy_files_build_phases
-          build_phases.select { |bp| bp.class == PBXCopyFilesBuildPhase }
+          build_phases.grep(PBXCopyFilesBuildPhase)
         end
 
         # @return [Array<PBXShellScriptBuildPhase>]
         #         the copy files build phases of the target.
         #
         def shell_script_build_phases
-          build_phases.select { |bp| bp.class == PBXShellScriptBuildPhase }
+          build_phases.grep(PBXShellScriptBuildPhase)
         end
 
         # Adds a dependency on the given target.

@@ -149,7 +149,7 @@ module Xcodeproj
         #         children.
         #
         def files
-          children.select { |obj| obj.class == PBXFileReference }
+          children.grep(PBXFileReference)
         end
 
         # @return [PBXFileReference] The file references whose path (regardless
@@ -162,6 +162,7 @@ module Xcodeproj
         # @return [Array<PBXGroup>] the groups in the group children.
         #
         def groups
+          # Don't grep / is_a? as this would include child classes.
           children.select { |obj| obj.class == PBXGroup }
         end
 
@@ -169,7 +170,7 @@ module Xcodeproj
         #         children.
         #
         def version_groups
-          children.select { |obj| obj.class == XCVersionGroup }
+          children.grep(XCVersionGroup)
         end
 
         # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
