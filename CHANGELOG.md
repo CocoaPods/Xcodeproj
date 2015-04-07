@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## 0.23.1
+## Master
 
 #### Bug Fixes
 
@@ -8,6 +8,11 @@
   equality method implementation.  
   [Brian Partridge](https://github.com/brianpartridge)
   [Xcodeproj#255](https://github.com/CocoaPods/Xcodeproj/pull/255)
+
+
+## 0.23.1
+
+#### Bug Fixes
 
 * Do not apply `fix_encoding` workaround when writing ASCII plists.  
   [Boris Bügling](https://github.com/neonichu)
