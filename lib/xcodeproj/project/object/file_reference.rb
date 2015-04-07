@@ -192,7 +192,7 @@ module Xcodeproj
         #         current file reference.
         #
         def build_files
-          referrers.select { |r| r.class == PBXBuildFile }
+          referrers.grep(PBXBuildFile)
         end
 
         # Sets the last known file type according to the extension of the path.

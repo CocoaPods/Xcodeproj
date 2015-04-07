@@ -446,7 +446,7 @@ module Xcodeproj
     #         project.
     #
     def files
-      objects.select { |obj| obj.class == PBXFileReference }
+      objects.grep(PBXFileReference)
     end
 
     # Returns the file reference for the given absolute path.
@@ -480,9 +480,7 @@ module Xcodeproj
     #         project excluding aggregate targets.
     #
     def native_targets
-      root_object.targets.select do |target|
-        target.is_a? PBXNativeTarget
-      end
+      root_object.targets.grep(PBXNativeTarget)
     end
 
     # @return [PBXGroup] The group which holds the product file references.
