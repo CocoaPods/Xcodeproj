@@ -85,38 +85,13 @@ module Xcodeproj
           target_to_duplicate = src_target
         else
           possible_targets = project.targets.select { |target| target.name.eql?(src_target.to_s) }
-          raise Informative, "No target found for name #{src_target.to_s}" if possible_targets.count == 0
+          raise Informative, "No target found for name #{src_target}" if possible_targets.count == 0
           # Currently only select the first one
           target_to_duplicate = possible_targets.first
         end
-
-        # New Target
-        new_target = project.new(PBXNativeTarget)
-        project.targets << new_target
-
-        new_target.name = dst_target_name
-        new_target.product_name = dst_target_name
-        new_target.product_type = target_to_duplicate.product_type
-
-        # Configuration
-        new_configuration_list = project.new(XCConfigurationList)
-        new_configuration_list.default_configuration_is_visible = target_to_duplicate.build_configuration_list.default_configuration_is_visible
-        new_configuration_list.default_configuration_name = target_to_duplicate.build_configuration_list.default_configuration_name
-        new_configuration_list.build_configurations.push(*target_to_duplicate.build_configuration_list.build_configurations)
-
-        new_target.build_configuration_list = new_configuration_list
-
-        # Build phases
-        target_to_duplicate.build_phases.each do |build_phase|
-          new_phase = project.new(build_phase.class)
-
-          build_phase.files_references.each do |file_ref|
-            new_phase.add_file_reference(file_ref)
-          end
-
-          new_target.build_phases << new_phase
-        end
-        new_target
+        dup = target_to_duplicate.deep_dup(dst_target_name)
+        project.targets << dup
+        dup
       end
       # Creates a new resource bundles target and adds it to the project.
       #

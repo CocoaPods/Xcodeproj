@@ -482,6 +482,31 @@ module Xcodeproj
           find_or_create_build_phase_by_class(PBXResourcesBuildPhase)
         end
 
+        # Duplicate a target
+        #
+        # @param [String] the new name of the target.
+        #
+        # @return [PBXNativeTarget] the duplicated target
+        #
+        def deep_dup(name = nil)
+          dup = project.new(PBXNativeTarget)
+
+          name ||= "#{self.name}_copy"
+          dup.name = name
+          dup.product_name = name
+          dup.product_type = product_type
+          dup.build_configuration_list = build_configuration_list.deep_dup
+
+          # Build phase
+          build_phases = self.build_phases.map(&:deep_dup)
+          build_phases.each do |phase|
+            dup.build_phases << phase
+          end
+
+          dup.product_reference = product_reference
+          dup
+        end
+
         private
 
         # @!group Internal Helpers

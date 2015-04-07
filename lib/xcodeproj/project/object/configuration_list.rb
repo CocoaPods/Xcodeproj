@@ -29,12 +29,13 @@ module Xcodeproj
 
         # Duplicate the configuration list
         # @return [XCConfigurationList] A duplicate instance
+        #
         def deep_dup
-          dup = Project.new(XCConfigurationList)
-          dup.default_configuration_is_visible = self.default_configuration_is_visible
-          dup.default_configuration_name = self.default_configuration_name
+          dup = project.new(XCConfigurationList)
+          dup.default_configuration_is_visible = default_configuration_is_visible
+          dup.default_configuration_name = default_configuration_name
 
-          self.build_configurations.each do |conf|
+          build_configurations.each do |conf|
             dup.build_configurations << conf.deep_dup
           end
 
