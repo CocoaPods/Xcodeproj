@@ -63,6 +63,20 @@ module ProjectSpecs
 
         target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXResourcesBuildPhase PBXSourcesBuildPhase)
       end
+
+      it 'creates a new aggregate target' do
+        target = @helper.new_aggregate_target(@project, 'Pods')
+        target.name.should == 'Pods'
+        target.product_name.should.be.nil
+
+        target.build_configuration_list.should.not.be.nil
+        configurations = target.build_configuration_list.build_configurations
+        configurations.map(&:name).sort.should == %w(Debug Release)
+
+        @project.targets.should.include target
+
+        target.build_phases.count.should == 0
+      end
     end
 
     #-------------------------------------------------------------------------#

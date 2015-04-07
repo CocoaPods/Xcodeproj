@@ -123,6 +123,26 @@ module Xcodeproj
         target
       end
 
+      # Creates a new aggregate target and adds it to the project.
+      #
+      # The target is configured for the given platform.
+      #
+      # @param  [Project] project
+      #         the project to which the target should be added.
+      #
+      # @param  [String] name
+      #         the name of the aggregate target.
+      #
+      # @return [PBXAggregateTarget] the target.
+      #
+      def self.new_aggregate_target(project, name)
+        target = project.new(PBXAggregateTarget)
+        project.targets << target
+        target.name = name
+        target.build_configuration_list = configuration_list(project)
+        target
+      end
+
       # @!group Private Helpers
 
       #-----------------------------------------------------------------------#
@@ -148,7 +168,7 @@ module Xcodeproj
       #
       # @return [XCConfigurationList] the generated configuration list.
       #
-      def self.configuration_list(project, platform, deployment_target = nil, target_product_type, language)
+      def self.configuration_list(project, platform = nil, deployment_target = nil, target_product_type = nil, language = nil)
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
@@ -199,7 +219,7 @@ module Xcodeproj
       #
       # @return [Hash] The common build settings
       #
-      def self.common_build_settings(type, platform, deployment_target = nil, target_product_type = nil, language = :objc)
+      def self.common_build_settings(type, platform = nil, deployment_target = nil, target_product_type = nil, language = :objc)
         target_product_type = (Constants::PRODUCT_TYPE_UTI.find { |_, v| v == target_product_type } || [target_product_type || :application])[0]
         common_settings = Constants::COMMON_BUILD_SETTINGS
 

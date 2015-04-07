@@ -311,8 +311,17 @@ module ProjectSpecs
       end
 
       it 'returns the targets' do
-        target = @project.new_target(:static_library, 'Pods', :ios).product_reference
-        @project.products.should.include?(target)
+        target = @project.new_target(:static_library, 'Pods', :ios)
+        @project.targets.should.include?(target)
+      end
+
+      it 'returns the native targets' do
+        native_target = @project.new_target(:static_library, 'Pods', :ios)
+        @project.new_aggregate_target('Trees')
+        @project.targets << @project.new(PBXLegacyTarget)
+        native_targets = @project.native_targets
+        native_targets.should.include?(native_target)
+        native_targets.count.should == 1
       end
 
       it 'returns the products group' do
@@ -410,6 +419,13 @@ module ProjectSpecs
         target = @project.new_resources_bundle('Pods', :ios)
         target.name.should == 'Pods'
         target.product_type.should == 'com.apple.product-type.bundle'
+      end
+
+      it 'creates a new aggregate target' do
+        native_target = @project.new_target(:static_library, 'BananaLib', :ios, '6.0')
+        aggregate_target = @project.new_aggregate_target('Pods', [native_target])
+        aggregate_target.name.should == 'Pods'
+        aggregate_target.dependencies.first.target.should == native_target
       end
 
       #----------------------------------------#

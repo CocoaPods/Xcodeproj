@@ -2,6 +2,23 @@
 
 ## Master
 
+##### Enhancements
+
+* Return a list of project targets including only native targets by
+  `native_targets`.  
+  [Marc Boquet](https://github.com/apalancat)
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#256](https://github.com/CocoaPods/Xcodeproj/pull/256)
+
+* `ProjectHelper`: Allow to create aggregate targets.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#260](https://github.com/CocoaPods/Xcodeproj/pull/260)
+
+* `ProjectHelper`: Give optional parameter of `configuration_list`
+  and `common_build_settings` the default value `nil`.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Xcodeproj#260](https://github.com/CocoaPods/Xcodeproj/pull/260)
+
 #### Bug Fixes
 
 * Save xcconfig files also if only the includes where modified by fixing the

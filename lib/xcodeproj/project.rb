@@ -469,11 +469,20 @@ module Xcodeproj
       end
     end
 
-    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    # @return [ObjectList<AbstractTarget>] A list of all the targets in the
     #         project.
     #
     def targets
       root_object.targets
+    end
+
+    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    #         project excluding aggregate targets.
+    #
+    def native_targets
+      root_object.targets.select do |target|
+        target.is_a? PBXNativeTarget
+      end
     end
 
     # @return [PBXGroup] The group which holds the product file references.
@@ -596,6 +605,31 @@ module Xcodeproj
     def new_resources_bundle(name, platform, product_group = nil)
       product_group ||= products_group
       ProjectHelper.new_resources_bundle(self, name, platform, product_group)
+    end
+
+    # Creates a new target and adds it to the project.
+    #
+    # The target is configured for the given platform and its file reference it
+    # is added to the {products_group}.
+    #
+    # The target is pre-populated with common build settings, and the
+    # appropriate Framework according to the platform is added to to its
+    # Frameworks phase.
+    #
+    # @param  [String] name
+    #         the name of the target.
+    #
+    # @param  [Array<AbstractTarget>] target_dependencies
+    #         targets, which should be added as dependencies.
+    #
+    # @return [PBXNativeTarget] the target.
+    #
+    def new_aggregate_target(name, target_dependencies = [])
+      ProjectHelper.new_aggregate_target(self, name).tap do |aggregate_target|
+        target_dependencies.each do |dep|
+          aggregate_target.add_dependency(dep)
+        end
+      end
     end
 
     # Adds a new build configuration to the project and populates its with
