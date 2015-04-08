@@ -6,7 +6,7 @@ module Xcodeproj
       class PBXProject < AbstractObject
         # @!group Attributes
 
-        # @return [ObjectList<PBXNativeTarget>] a list of all the targets in
+        # @return [ObjectList<AbstractTarget>] a list of all the targets in
         #         the project.
         #
         has_many :targets, AbstractTarget
