@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Use `xcode-select --print-path` to be compatible with OS X 10.8.  
+  [Boris Bügling](https://github.com/neonichu)
+  [CocoaPods#3387](https://github.com/CocoaPods/CocoaPods/issues/3387)
+
 * Return a list of project targets including only native targets by
   `native_targets`.  
   [Marc Boquet](https://github.com/apalancat)
