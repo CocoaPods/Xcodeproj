@@ -627,7 +627,7 @@ module DevToolsCore
     extern :class_getName, [Class], CoreFoundation::CharPointer
   end
 
-  XCODE_PATH = Pathname.new(`xcrun xcode-select -p`.strip).dirname
+  XCODE_PATH = Pathname.new(`xcrun xcode-select --print-path`.strip).dirname
 
   def self.load_xcode_framework(framework)
     Fiddle.dlopen(XCODE_PATH.join(framework).to_s)
