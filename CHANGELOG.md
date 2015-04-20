@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Support for Xcode 6.3 compatible projects.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#253](https://github.com/CocoaPods/Xcodeproj/pull/253)
+
+
 ## 0.24.0
 
 ##### Enhancements
