@@ -70,6 +70,12 @@ module ProjectSpecs
       it 'adds the frameworks group' do
         @project['Frameworks'].class.should == PBXGroup
       end
+
+      it 'allows providing an optional object version parameter' do
+        object_version = Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION
+        @project = Xcodeproj::Project.new('foo.xcodeproj', false, object_version)
+        @project.object_version.should == object_version.to_s
+      end
     end
 
     #-------------------------------------------------------------------------#
