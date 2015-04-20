@@ -124,6 +124,12 @@ module ProjectSpecs
           Xcodeproj::Project.open(@path)
         end.should.raise(Xcodeproj::Informative)
       end
+
+      it 'can load projects in Xcode 6.3 format' do
+        @path = @dir + '6.3-format.xcodeproj'
+        @project = Xcodeproj::Project.open(@path)
+        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      end
     end
 
     #-------------------------------------------------------------------------#
