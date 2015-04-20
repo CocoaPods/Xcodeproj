@@ -14,6 +14,9 @@ module Xcodeproj
     #
     LAST_KNOWN_ARCHIVE_VERSION = 1
 
+    # @return [String] The default object version for Xcodeproj.
+    DEFAULT_OBJECT_VERSION = 46
+
     # @return [String] The last known object version to Xcodeproj.
     #
     LAST_KNOWN_OBJECT_VERSION  = 47

@@ -163,7 +163,7 @@ module Xcodeproj
     #
     def initialize_from_scratch
       @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
-      @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      @object_version  =  Constants::DEFAULT_OBJECT_VERSION.to_s
       @classes         =  {}
 
       root_object.remove_referrer(self) if root_object

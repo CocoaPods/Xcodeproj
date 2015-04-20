@@ -32,9 +32,10 @@ module ProjectSpecs
         @project.classes.should == {}
       end
 
-      it 'initializes to the last known archive version' do
-        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      it 'initializes to the default archive version' do
+        @project.object_version.should == Xcodeproj::Constants::DEFAULT_OBJECT_VERSION.to_s
       end
+
       it 'sets itself as the owner of the root object' do
         @project.root_object.referrers.should == [@project]
       end
