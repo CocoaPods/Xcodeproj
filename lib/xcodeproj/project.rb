@@ -48,17 +48,20 @@ module Xcodeproj
     #         The path provided will be expanded to an absolute path.
     # @param  [Bool] skip_initialization
     #         Wether the project should be initialized from scratch.
+    # @param  [Int] object_version
+    #         Object version to use for serialization, defaults to Xcode 3.2 compatible.
     #
     # @example Creating a project
     #         Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(path, skip_initialization = false)
+    def initialize(path, skip_initialization = false, object_version = Constants::DEFAULT_OBJECT_VERSION)
       @path = Pathname.new(path).expand_path
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
       unless skip_initialization
         initialize_from_scratch
+        @object_version = object_version.to_s
       end
       unless skip_initialization.is_a?(TrueClass) || skip_initialization.is_a?(FalseClass)
         raise ArgumentError, '[Xcodeproj] Initialization parameter expected to ' \
@@ -163,7 +166,6 @@ module Xcodeproj
     #
     def initialize_from_scratch
       @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
-      @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       @classes         =  {}
 
       root_object.remove_referrer(self) if root_object

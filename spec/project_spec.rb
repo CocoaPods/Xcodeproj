@@ -32,9 +32,10 @@ module ProjectSpecs
         @project.classes.should == {}
       end
 
-      it 'initializes to the last known archive version' do
-        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+      it 'initializes to the default archive version' do
+        @project.object_version.should == Xcodeproj::Constants::DEFAULT_OBJECT_VERSION.to_s
       end
+
       it 'sets itself as the owner of the root object' do
         @project.root_object.referrers.should == [@project]
       end
@@ -68,6 +69,12 @@ module ProjectSpecs
 
       it 'adds the frameworks group' do
         @project['Frameworks'].class.should == PBXGroup
+      end
+
+      it 'allows providing an optional object version parameter' do
+        object_version = Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION
+        @project = Xcodeproj::Project.new('foo.xcodeproj', false, object_version)
+        @project.object_version.should == object_version.to_s
       end
     end
 
@@ -122,6 +129,12 @@ module ProjectSpecs
         lambda do
           Xcodeproj::Project.open(@path)
         end.should.raise(Xcodeproj::Informative)
+      end
+
+      it 'can load projects in Xcode 6.3 format' do
+        @path = @dir + '6.3-format.xcodeproj'
+        @project = Xcodeproj::Project.open(@path)
+        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       end
     end
 
