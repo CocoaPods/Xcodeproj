@@ -4,7 +4,7 @@
 
 #### Enhancements
 
-* `Constants`: Adds support for Command Line Tool as a product type
+* `Constants`: Adds support for Command Line Tool as a product type.  
   [Nick Jordan](https://github.com/nickkjordan)
   [Xcodeproj#268](https://github.com/CocoaPods/Xcodeproj/pull/264)
 
