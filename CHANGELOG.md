@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+#### Enhancements
+
+* `Constants`: Adds support for Command Line Tool as a product type
+  [Nick Jordan](https://github.com/nickkjordan)
+  [Xcodeproj#264](https://github.com/CocoaPods/Xcodeproj/pull/264)
+
+
 ## 0.24.1
 
 ##### Enhancements
