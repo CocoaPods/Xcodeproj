@@ -99,7 +99,7 @@ module Xcodeproj
       :bundle            => 'com.apple.product-type.bundle',
       :unit_test_bundle  => 'com.apple.product-type.bundle.unit-test',
       :app_extension     => 'com.apple.product-type.app-extension',
-      :command_line_tool => 'com.apple.product-type.tool'
+      :command_line_tool => 'com.apple.product-type.tool',
       :watch_app         => 'com.apple.product-type.application.watchapp',
       :watch_extension   => 'com.apple.product-type.watchkit-extension',
     }.freeze
