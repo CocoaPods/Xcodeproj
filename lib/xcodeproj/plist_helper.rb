@@ -1,4 +1,11 @@
-require 'fiddle'
+begin
+  require 'fiddle'
+rescue LoadError
+  message = 'Xcodeproj relies on a library called `fiddle` to read and write ' \
+            'Xcode project files. Ensure your Ruby installation includes ' \
+            '`fiddle` and try again.'
+  raise Xcodeproj::Informative, message
+end
 
 module Xcodeproj
   # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
