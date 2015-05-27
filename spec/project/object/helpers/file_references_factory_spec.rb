@@ -225,7 +225,7 @@ module ProjectSpecs
 
         container_proxies.uniq.count.should == 3
         container_proxies.map(&:container_portal).uniq.should == [@ref.uuid]
-        container_proxies.map(&:proxy_type).uniq.should == ['2']
+        container_proxies.map(&:proxy_type).uniq.should == [2]
         container_proxies.map(&:remote_info).uniq.should == ['Subproject']
 
         container_proxy = container_proxies.first
