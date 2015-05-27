@@ -44,7 +44,7 @@ module Xcodeproj
         #
         # @note   @see {Constants::PROXY_TYPE.values} for valid values.
         #
-        attribute :proxy_type, String
+        attribute :proxy_type, Fixnum
 
         # @return [String] apparently the UUID of the represented
         #         object.
