@@ -201,7 +201,7 @@ module ProjectSpecs
           target_dependency.target.should == dependency_target
           container_proxy = target_dependency.target_proxy
           container_proxy.container_portal.should == @project.root_object.uuid
-          container_proxy.proxy_type.should == '1'
+          container_proxy.proxy_type.should == 1
           container_proxy.remote_global_id_string.should == dependency_target.uuid
           container_proxy.remote_info.should == dependency_target.name
         end
