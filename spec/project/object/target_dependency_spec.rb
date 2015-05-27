@@ -23,7 +23,7 @@ module ProjectSpecs
       proxy = @project.new(PBXContainerItemProxy)
       proxy.container_portal = @project.root_object.uuid
       proxy.remote_info = 'Pods'
-      proxy.proxy_type = '1'
+      proxy.proxy_type = 1
       proxy.remote_global_id_string = target.uuid
 
       @target_dependency.target_proxy = proxy
