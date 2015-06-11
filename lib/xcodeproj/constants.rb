@@ -157,6 +157,16 @@ module Xcodeproj
       }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :dynamic_library, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :framework, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :static_library, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
       }.freeze,
       [:framework] => {
         'VERSION_INFO_PREFIX'               => '',
