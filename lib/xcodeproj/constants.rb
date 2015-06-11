@@ -28,6 +28,10 @@ module Xcodeproj
     #
     LAST_UPGRADE_CHECK  = '0700'
 
+    # @return [String] The last known object version to Xcodeproj.
+    #
+    LAST_SWIFT_UPGRADE_CHECK = '0700'
+
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
