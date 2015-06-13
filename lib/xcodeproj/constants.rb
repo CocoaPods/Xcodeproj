@@ -10,6 +10,9 @@ module Xcodeproj
     #
     LAST_KNOWN_OSX_SDK  = '10.10'
 
+    # @return [String] The last known watchOS SDK (unstable).
+    LAST_KNOWN_WATCHOS_SDK = '2.0'
+
     # @return [String] The last known archive version to Xcodeproj.
     #
     LAST_KNOWN_ARCHIVE_VERSION = 1
@@ -101,7 +104,9 @@ module Xcodeproj
       :app_extension     => 'com.apple.product-type.app-extension',
       :command_line_tool => 'com.apple.product-type.tool',
       :watch_app         => 'com.apple.product-type.application.watchapp',
+      :watch2_app        => 'com.apple.product-type.application.watchapp2',
       :watch_extension   => 'com.apple.product-type.watchkit-extension',
+      :watch2_extension  => 'com.apple.product-type.watchkit2-extension',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
@@ -133,6 +138,9 @@ module Xcodeproj
       }.freeze,
       [:osx] => {
         'SDKROOT'                           => 'macosx',
+      }.freeze,
+      [:watchos] => {
+        'SDKROOT'                           => 'watchos',
       }.freeze,
       [:debug, :osx] => {
         # Empty?

@@ -93,6 +93,8 @@ module Xcodeproj
             :ios
           elsif sdk.include? 'macosx'
             :osx
+          elsif sdk.include? 'watchos'
+            :watchos
           end
         end
 
@@ -294,6 +296,10 @@ module Xcodeproj
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
+            when :watchos
+              group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
+              path_sdk_name = 'WatchOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_WATCHOS_SDK
             else
               raise 'Unknown platform for target'
             end
