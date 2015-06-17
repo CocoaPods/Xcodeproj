@@ -398,7 +398,7 @@ module Xcodeproj
         #         the files references of the source files that should be added
         #         to the target.
         #
-        # @param  [Hash{String=>String}] compiler_flags
+        # @param  [String] compiler_flags
         #         the compiler flags for the source files.
         #
         # @yield_param [PBXBuildFile] each created build file.
@@ -407,18 +407,21 @@ module Xcodeproj
         #
         def add_file_references(file_references, compiler_flags = {})
           file_references.map do |file|
-            build_file = project.new(PBXBuildFile)
-            build_file.file_ref = file
-
             extension = File.extname(file.path).downcase
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
-            if header_extensions.include?(extension)
-              headers_build_phase.files << build_file
-            else
-              if compiler_flags && !compiler_flags.empty?
-                build_file.settings = { 'COMPILER_FLAGS' => compiler_flags }
+            is_header_phase = header_extensions.include?(extension)
+            phase = is_header_phase ? headers_build_phase : source_build_phase
+
+            unless build_file = phase.build_file(file)
+              build_file = project.new(PBXBuildFile)
+              build_file.file_ref = file
+              phase.files << build_file
+            end
+
+            if compiler_flags && !compiler_flags.empty? && !is_header_phase
+              (build_file.settings ||= {}).merge!('COMPILER_FLAGS' => compiler_flags) do |_, old, new|
+                (old || '').+(new || '').split(' ').uniq.join(' ')
               end
-              source_build_phase.files << build_file
             end
 
             yield build_file if block_given?
@@ -436,6 +439,7 @@ module Xcodeproj
         #
         def add_resources(resource_file_references)
           resource_file_references.each do |file|
+            next if resources_build_phase.include?(file)
             build_file = project.new(PBXBuildFile)
             build_file.file_ref = file
             resources_build_phase.files << build_file

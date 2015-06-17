@@ -541,6 +541,22 @@ module ProjectSpecs
         build_files.first.file_ref.path.should == 'Image.png'
         build_files.first.settings.should.be.nil
       end
+
+      it 'de-duplicates added sources files' do
+        ref = @project.main_group.new_file('Class.h')
+        new_build_files = @target.add_file_references([ref], '-fobjc-arc')
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        new_build_files.should == build_files
+      end
+
+      it 'de-duplicates added resources' do
+        ref = @project.main_group.new_file('Image.png')
+        @target.add_resources([ref])
+        @target.add_resources([ref])
+        build_files = @target.resources_build_phase.files
+        build_files.count.should == 1
+      end
     end
   end
 
