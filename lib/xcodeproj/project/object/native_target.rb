@@ -420,7 +420,7 @@ module Xcodeproj
 
             if compiler_flags && !compiler_flags.empty? && !is_header_phase
               (build_file.settings ||= {}).merge!('COMPILER_FLAGS' => compiler_flags) do |_, old, new|
-                (old || '').+(new || '').split(' ').uniq.join(' ')
+                [old, new].compact.join(' ')
               end
             end
 
