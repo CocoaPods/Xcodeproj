@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Ensure that duplicate resources or source files aren't added to a target.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.24.2
 
 #### Enhancements
