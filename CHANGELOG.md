@@ -16,7 +16,7 @@
 
 ## 0.24.2
 
-#### Enhancements
+##### Enhancements
 
 * `Constants`: Adds support for Command Line Tool as a product type.  
   [Nick Jordan](https://github.com/nickkjordan)
