@@ -2,6 +2,7 @@ module Xcodeproj
   class Command
     class ConfigDump < Command
       def self.banner
+        require 'active_support/core_ext/string/strip.rb'
         <<-eos.strip_heredoc
         Dumps the build settings of all project targets for all configurations in
         directories named by the target in given output directory.

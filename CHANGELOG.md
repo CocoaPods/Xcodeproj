@@ -7,6 +7,12 @@
 * Ensure that duplicate resources or source files aren't added to a target.  
   [Samuel Giddins](https://github.com/segiddins)
 
+##### Bug Fixes
+
+* Fix the help output for `xcodeproj config-dump`.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#274](https://github.com/CocoaPods/Xcodeproj/issues/274)
+
 
 ## 0.24.2
 
