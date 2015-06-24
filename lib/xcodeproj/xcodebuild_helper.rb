@@ -20,6 +20,13 @@ module Xcodeproj
       verions_by_sdk[:osx].sort.last
     end
 
+    # @return [String] The version of the last watchOS sdk.
+    #
+    def last_watchos_sdk
+      parse_sdks_if_needed
+      verions_by_sdk[:watchos].sort.last
+    end
+
     private
 
     # !@group Private Helpers
@@ -38,12 +45,14 @@ module Xcodeproj
         @verions_by_sdk = {}
         @verions_by_sdk[:osx] = []
         @verions_by_sdk[:ios] = []
+        @verions_by_sdk[:watchos] = []
         if xcodebuild_available?
           skds = parse_sdks_information(xcodebuild_sdks)
           skds.each do |(name, version)|
             case
             when name == 'macosx' then @verions_by_sdk[:osx] << version
             when name == 'iphoneos' then @verions_by_sdk[:ios] << version
+            when name == 'watchos' then @verions_by_sdk[:watchos] << version
             end
           end
         end
@@ -64,7 +73,7 @@ module Xcodeproj
     #         is the name of the SDK and the second is the version.
     #
     def parse_sdks_information(output)
-      output.scan(/-sdk (macosx|iphoneos)(.+\w)/)
+      output.scan(/-sdk (macosx|iphoneos|watchos)(.+\w)/)
     end
 
     # @return [String] The sdk information reported by xcodebuild.

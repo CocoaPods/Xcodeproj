@@ -11,6 +11,12 @@ iOS SDKs:
 
 iOS Simulator SDKs:
 	Simulator - iOS 6.1           	-sdk iphonesimulator6.1
+
+watchOS SDKs:
+  Watch OS 2.0                    -sdk watchos2.0
+
+watchOS Simulator SDKs:
+  Simulator - Watch OS 2.0        -sdk watchsimulator2.0
 DOC
 # rubocop:enable Style/Tab
 
@@ -35,6 +41,10 @@ module Xcodeproj
       it 'returns the last OS X SDK' do
         @helper.last_osx_sdk.should == '10.8'
       end
+
+      it 'returns the last watchOS SDK' do
+        @helper.last_watchos_sdk.should == '2.0'
+      end
     end
 
     #--------------------------------------------------------------------------------#
@@ -55,7 +65,7 @@ module Xcodeproj
       describe '#parse_sdks_information' do
         it 'parses the skds information returned by xcodebuild' do
           result = @helper.send(:parse_sdks_information, SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
-          result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1']]
+          result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1'], ['watchos', '2.0']]
         end
       end
     end
