@@ -110,10 +110,10 @@ module Xcodeproj
         #         platform.
         #
         def deployment_target
-          if platform_name == :ios
-            common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
-          else
-            common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          case platform_name
+          when :ios then common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
+          when :osx then common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          when :watchos then common_resolved_build_setting('WATCHOS_DEPLOYMENT_TARGET')
           end
         end
 
