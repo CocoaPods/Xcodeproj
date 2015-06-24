@@ -698,7 +698,7 @@ module DevToolsCore
 
     def initialize(path)
       DevToolsCore.silence_stderr do
-        CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
+        return unless CoreFoundation.IDEInitialize(1, CoreFoundation::NULL) != 0
         CoreFoundation.XCInitializeCoreIfNeeded(1)
       end
 
@@ -741,7 +741,7 @@ module DevToolsCore
       @image ||= DevToolsCore.load_xcode_frameworks
     end
 
-    extern :IDEInitialize, [CoreFoundation::Boolean, ID], CoreFoundation::Void
+    extern :IDEInitialize, [CoreFoundation::Boolean, ID], CoreFoundation::Boolean
     extern :XCInitializeCoreIfNeeded, [CoreFoundation::Boolean], CoreFoundation::Void
   end
 

@@ -13,6 +13,10 @@
   [Samuel Giddins](https://github.com/segiddins)
   [#274](https://github.com/CocoaPods/Xcodeproj/issues/274)
 
+* Fall back to XML project output when Xcode initialization fails.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#3723](https://github.com/CocoaPods/CocoaPods/issues/3723)
+
 
 ## 0.24.2
 
