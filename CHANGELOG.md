@@ -7,6 +7,10 @@
 * Ensure that duplicate resources or source files aren't added to a target.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Support for native watch app targets.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#272](https://github.com/CocoaPods/Xcodeproj/pull/272)
+
 ##### Bug Fixes
 
 * Fix the help output for `xcodeproj config-dump`.  
