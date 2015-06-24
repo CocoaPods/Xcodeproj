@@ -10,21 +10,21 @@ module Xcodeproj
     #
     def last_ios_sdk
       parse_sdks_if_needed
-      verions_by_sdk[:ios].sort.last
+      versions_by_sdk[:ios].sort.last
     end
 
     # @return [String] The version of the last OS X sdk.
     #
     def last_osx_sdk
       parse_sdks_if_needed
-      verions_by_sdk[:osx].sort.last
+      versions_by_sdk[:osx].sort.last
     end
 
     # @return [String] The version of the last watchOS sdk.
     #
     def last_watchos_sdk
       parse_sdks_if_needed
-      verions_by_sdk[:watchos].sort.last
+      versions_by_sdk[:watchos].sort.last
     end
 
     private
@@ -35,24 +35,24 @@ module Xcodeproj
 
     # @return [Hash] The versions of the sdks grouped by name (`:ios`, or `:osx`).
     #
-    attr_accessor :verions_by_sdk
+    attr_accessor :versions_by_sdk
 
     # @return [void] Parses the SDKs returned by xcodebuild and stores the
     #         information in the `needs_to_parse_sdks` hash.
     #
     def parse_sdks_if_needed
       if @needs_to_parse_sdks
-        @verions_by_sdk = {}
-        @verions_by_sdk[:osx] = []
-        @verions_by_sdk[:ios] = []
-        @verions_by_sdk[:watchos] = []
+        @versions_by_sdk = {}
+        @versions_by_sdk[:osx] = []
+        @versions_by_sdk[:ios] = []
+        @versions_by_sdk[:watchos] = []
         if xcodebuild_available?
-          skds = parse_sdks_information(xcodebuild_sdks)
-          skds.each do |(name, version)|
+          sdks = parse_sdks_information(xcodebuild_sdks)
+          sdks.each do |(name, version)|
             case
-            when name == 'macosx' then @verions_by_sdk[:osx] << version
-            when name == 'iphoneos' then @verions_by_sdk[:ios] << version
-            when name == 'watchos' then @verions_by_sdk[:watchos] << version
+            when name == 'macosx' then @versions_by_sdk[:osx] << version
+            when name == 'iphoneos' then @versions_by_sdk[:ios] << version
+            when name == 'watchos' then @versions_by_sdk[:watchos] << version
             end
           end
         end

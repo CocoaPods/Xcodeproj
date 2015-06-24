@@ -63,7 +63,7 @@ module Xcodeproj
       end
 
       describe '#parse_sdks_information' do
-        it 'parses the skds information returned by xcodebuild' do
+        it 'parses the sdks information returned by xcodebuild' do
           result = @helper.send(:parse_sdks_information, SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
           result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1'], ['watchos', '2.0']]
         end
