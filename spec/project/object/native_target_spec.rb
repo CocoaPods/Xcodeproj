@@ -122,6 +122,10 @@ module ProjectSpecs
         t2 = @project.new_target(:static_library, 'Pods', :osx)
         t2.build_configuration_list.set_setting('SDKROOT', 'macosx10.8')
         t2.sdk_version.should == '10.8'
+
+        t3 = @project.new_target(:static_library, 'Pods', :watchos)
+        t3.build_configuration_list.set_setting('SDKROOT', 'watchos2.0')
+        t3.sdk_version.should == '2.0'
       end
 
       describe 'returns the deployment target specified in its build configuration' do
@@ -133,6 +137,11 @@ module ProjectSpecs
         it 'works for OSX' do
           @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
           @project.new_target(:static_library, 'Pods', :osx, '10.7').deployment_target.should == '10.7'
+        end
+
+        it 'works for watchOS' do
+          @project.build_configuration_list.set_setting('WATCHOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :watchos, '2.0').deployment_target.should == '2.0'
         end
       end
 
@@ -149,6 +158,13 @@ module ProjectSpecs
           osx_target = @project.new_target(:static_library, 'Pods', :osx)
           osx_target.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil
           osx_target.deployment_target.should == '10.7'
+        end
+
+        it 'works for watchOS' do
+          @project.build_configuration_list.set_setting('WATCHOS_DEPLOYMENT_TARGET', '2.0')
+          watch_target = @project.new_target(:static_library, 'Pods', :watchos)
+          watch_target.build_configurations.first.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = nil
+          watch_target.deployment_target.should == '2.0'
         end
       end
 
@@ -345,6 +361,13 @@ module ProjectSpecs
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
           file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+        end
+
+        it 'uses the last known watchOS SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'watchos')
+          @target.add_system_framework('WatchConnectivity')
+          file = @project['Frameworks/watchOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_WATCHOS_SDK
         end
 
         it "doesn't duplicate references to a frameworks if one already exists" do
