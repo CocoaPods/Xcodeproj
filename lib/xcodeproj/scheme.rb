@@ -33,6 +33,8 @@ module Xcodeproj
       @test_action.attributes['shouldUseLaunchSchemeArgsEnv'] = 'YES'
       @test_action.attributes['buildConfiguration'] = 'Debug'
 
+      @test_action_additional_options = @test_action.add_element 'AdditionalOptions'
+
       @testables = @test_action.add_element 'Testables'
 
       @launch_action = @scheme.add_element 'LaunchAction'
@@ -43,6 +45,7 @@ module Xcodeproj
       @launch_action.attributes['buildConfiguration'] = 'Debug'
       @launch_action.attributes['ignoresPersistentStateOnLaunch'] = 'NO'
       @launch_action.attributes['debugDocumentVersioning'] = 'YES'
+      @launch_action.attributes['debugServiceExtension'] = 'internal'
       @launch_action.attributes['allowLocationSimulation'] = 'YES'
       @launch_action.add_element('AdditionalOptions')
 
@@ -117,6 +120,7 @@ module Xcodeproj
     #
     def set_launch_target(build_target)
       launch_product_runnable = @launch_action.add_element 'BuildableProductRunnable'
+      launch_product_runnable.attributes['runnableDebuggingMode'] = '0'
 
       launch_buildable_reference = launch_product_runnable.add_element 'BuildableReference'
       launch_buildable_reference.attributes['BuildableIdentifier'] = 'primary'

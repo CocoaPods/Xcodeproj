@@ -11,6 +11,11 @@
   [Boris Bügling](https://github.com/neonichu)
   [Xcodeproj#272](https://github.com/CocoaPods/Xcodeproj/pull/272)
 
+* Update default build and scheme settings for Xcode 7.0.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#271](https://github.com/CocoaPods/Xcodeproj/pull/271)
+
 ##### Bug Fixes
 
 * Fix the help output for `xcodeproj config-dump`.  

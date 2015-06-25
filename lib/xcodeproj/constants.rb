@@ -28,6 +28,10 @@ module Xcodeproj
     #
     LAST_UPGRADE_CHECK  = '0700'
 
+    # @return [String] The last known object version to Xcodeproj.
+    #
+    LAST_SWIFT_UPGRADE_CHECK = '0700'
+
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {
@@ -153,6 +157,16 @@ module Xcodeproj
       }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :dynamic_library, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :framework, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
+      }.freeze,
+      [:debug, :static_library, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
       }.freeze,
       [:framework] => {
         'VERSION_INFO_PREFIX'               => '',
