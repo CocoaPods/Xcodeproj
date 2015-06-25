@@ -15,6 +15,7 @@
 
 * Fall back to XML project output when Xcode initialization fails.  
   [Samuel Giddins](https://github.com/segiddins)
+  [Boris Bügling](https://github.com/neonichu)
   [CocoaPods#3723](https://github.com/CocoaPods/CocoaPods/issues/3723)
 
 
