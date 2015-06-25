@@ -220,6 +220,11 @@ EOS
 
         write_temp_file_and_compare(read_sample)
       end
+
+      it 'will fallback to XML encoding if Xcode initialization fails' do
+        CoreFoundation.stubs(:IDEFoundation).returns(0)
+        write_temp_file_and_compare(read_sample)
+      end
     end
   end
 end
