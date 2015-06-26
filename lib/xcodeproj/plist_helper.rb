@@ -703,7 +703,7 @@ module DevToolsCore
     def initialize(path)
       DevToolsCore.silence_stderr do
         CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
-        CoreFoundation.XCInitializeCoreIfNeeded(1)
+        CoreFoundation.XCInitializeCoreIfNeeded(0)
       end
 
       selector = 'projectWithFile:'
