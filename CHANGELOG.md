@@ -22,6 +22,12 @@
   [Samuel Giddins](https://github.com/segiddins)
   [#274](https://github.com/CocoaPods/Xcodeproj/issues/274)
 
+* Add support for project serialization with Xcode 7 Beta 2.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [Boris Bügling](https://github.com/neonichu)
+  [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
+  [CocoaPods#3723](https://github.com/CocoaPods/CocoaPods/issues/3723)
+
 
 ## 0.24.2
 

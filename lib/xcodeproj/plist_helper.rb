@@ -699,6 +699,8 @@ module DevToolsCore
     def initialize(path)
       DevToolsCore.silence_stderr do
         CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
+
+        # The parameter is whether UI must be initialized (which we don't need)
         CoreFoundation.XCInitializeCoreIfNeeded(0)
       end
 
