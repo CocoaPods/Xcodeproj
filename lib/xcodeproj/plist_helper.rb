@@ -7,8 +7,6 @@ rescue LoadError
   raise Xcodeproj::Informative, message
 end
 
-require 'liferaft'
-
 module Xcodeproj
   # TODO: Delete me (compatibility with Ruby 1.8.7 C ext bundle)
   def self.read_plist(path)
@@ -636,9 +634,7 @@ module DevToolsCore
     extern :class_getName, [Class], CoreFoundation::CharPointer
   end
 
-  IDEINITIALIZE_MAY_FAIL_VERSION = Liferaft::Version.new('7A121l')
   XCODE_PATH = Pathname.new(`xcrun xcode-select --print-path`.strip).dirname
-  XCODE_VERSION = Liferaft::Version.new(`xcrun xcodebuild -version`.strip.split(' ').last)
 
   def self.load_xcode_framework(framework)
     Fiddle.dlopen(XCODE_PATH.join(framework).to_s)
@@ -702,9 +698,10 @@ module DevToolsCore
 
     def initialize(path)
       DevToolsCore.silence_stderr do
-        initialized = CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
-        return if initialized == 0 && XCODE_VERSION >= IDEINITIALIZE_MAY_FAIL_VERSION
-        CoreFoundation.XCInitializeCoreIfNeeded(1)
+        CoreFoundation.IDEInitialize(1, CoreFoundation::NULL)
+
+        # The parameter is whether UI must be initialized (which we don't need)
+        CoreFoundation.XCInitializeCoreIfNeeded(0)
       end
 
       selector = 'projectWithFile:'
@@ -746,7 +743,7 @@ module DevToolsCore
       @image ||= DevToolsCore.load_xcode_frameworks
     end
 
-    extern :IDEInitialize, [CoreFoundation::Boolean, ID], CoreFoundation::Boolean
+    extern :IDEInitialize, [CoreFoundation::Boolean, ID], CoreFoundation::Void
     extern :XCInitializeCoreIfNeeded, [CoreFoundation::Boolean], CoreFoundation::Void
   end
 
