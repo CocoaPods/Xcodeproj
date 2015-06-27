@@ -85,3 +85,6 @@ DEPENDENCIES
   rubocop
   simplecov
   xcodeproj!
+
+BUNDLED WITH
+   1.10.5
