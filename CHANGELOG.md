@@ -8,6 +8,10 @@
   [Samuel Giddins](https://github.com/segiddins)
   [#267](https://github.com/CocoaPods/Xcodeproj/issues/267)
 
+* Actually fix crashing when using Xcode 7 betas 1 & 2.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
+
 
 ## 0.25.0
 
