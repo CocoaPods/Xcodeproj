@@ -10,4 +10,4 @@ end
 
 require 'xcodeproj'
 
-Xcodeproj::Command.run(*ARGV)
+Xcodeproj::Command.run(ARGV)

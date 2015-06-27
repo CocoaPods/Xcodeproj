@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gemspec
 
+gem 'claide', :git => 'https://github.com/CocoaPods/CLAide', :branch => 'seg-multiple-options'
+
 # This is the version that ships with OS X 10.10, so be sure we test against it.
 gem 'json', '1.7.7'
 
