@@ -42,6 +42,15 @@
   [CocoaPods#3723](https://github.com/CocoaPods/CocoaPods/issues/3723)
 
 
+## 0.24.3
+
+##### Bug Fixes
+
+* Actually fix crashing when using Xcode 7 betas 1 & 2.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
+
+
 ## 0.24.2
 
 ##### Enhancements
