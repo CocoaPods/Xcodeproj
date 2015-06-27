@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.25.0
 
 ##### Enhancements
 
