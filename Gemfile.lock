@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    xcodeproj (0.24.2)
+    xcodeproj (0.24.3)
       activesupport (>= 3)
       colored (~> 1.2)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (4.2.1)
+    activesupport (4.2.2)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -33,7 +33,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.6.1)
+    minitest (5.7.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
@@ -85,3 +85,6 @@ DEPENDENCIES
   rubocop
   simplecov
   xcodeproj!
+
+BUNDLED WITH
+   1.10.5
