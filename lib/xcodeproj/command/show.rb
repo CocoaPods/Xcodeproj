@@ -51,8 +51,8 @@ module Xcodeproj
           yaml = value.to_yaml
           yaml.gsub!(/^---$/, '')
           yaml.gsub!(/^-/, "\n-")
-          section << yaml
-          sections << section
+          yaml.prepend(section)
+          sections << yaml
         end
         puts sections * "\n\n"
       end

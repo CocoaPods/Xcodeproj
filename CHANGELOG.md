@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Allow `xcodeproj show` to accept `--no-color` as an option without crashing.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#267](https://github.com/CocoaPods/Xcodeproj/issues/267)
+
+
 ## 0.25.0
 
 ##### Enhancements
