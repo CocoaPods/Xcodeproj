@@ -423,9 +423,17 @@ module Xcodeproj
           permute[obj, path + '/' << attrb.plist_name] if obj
         end
 
-        (object.to_many_attributes + object.references_by_keys_attributes).each do |attrb|
+        object.to_many_attributes.each do |attrb|
           attrb.get_value(object).each do |o|
             permute[o, path + '/' << attrb.plist_name << "/#{o.display_name}"]
+          end
+        end
+
+        object.references_by_keys_attributes.each do |attrb|
+          attrb.get_value(object).each do |dictionary|
+            dictionary.each do |key, value|
+              permute[value, path + '/' << attrb.plist_name << "/k:#{key}/#{value.display_name}"]
+            end
           end
         end
       end
