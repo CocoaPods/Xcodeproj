@@ -1,6 +1,10 @@
 os:
   - osx
 
+branches:
+  only:
+    - master
+
 language: ruby
 cache: bundler
 rvm:
