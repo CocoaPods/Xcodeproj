@@ -3,6 +3,7 @@ require 'securerandom'
 
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
+require 'xcodeproj/project/uuid_generator'
 require 'xcodeproj/plist_helper'
 
 module Xcodeproj
@@ -412,59 +413,7 @@ module Xcodeproj
     # @note this should only be used for entirely machine-generated projects
     #
     def predictabilize_uuids
-      new_objects_by_uuid = {}
-
-      paths_by_object = {}
-      permute = ->(object, path) do
-        path << "/pp:#{object.to_tree_hash}" if object.is_a?(PBXBuildRule) || object.is_a?(PBXShellScriptBuildPhase)
-        if object.respond_to?(:proxy?) && object.proxy?
-          path << "/proxy:#{object.path}" if object.respond_to?(:path)
-        end
-        paths_by_object[object] = path
-
-        object.to_one_attributes.each do |attrb|
-          obj = attrb.get_value(object)
-          permute[obj, path + '/' << attrb.plist_name] if obj
-        end
-
-        object.to_many_attributes.each do |attrb|
-          attrb.get_value(object).each do |o|
-            permute[o, path + '/' << attrb.plist_name << "/#{o.to_tree_hash}"]
-          end
-        end
-
-        object.references_by_keys_attributes.each do |attrb|
-          attrb.get_value(object).each do |dictionary|
-            dictionary.each do |key, value|
-              permute[value, path + '/' << attrb.plist_name << "/k:#{key}/#{value.to_tree_hash}"]
-            end
-          end
-        end
-      end
-      permute[root_object, '']
-
-      objects.each do |object|
-        next unless path = paths_by_object[object]
-        uuid = Digest::MD5.hexdigest(path).upcase
-        object.instance_variable_set(:@uuid, uuid)
-        new_objects_by_uuid[uuid] = object
-      end
-
-      objects.each do |object|
-        fixup = ->(attr) do
-          if object.respond_to?(attr) && link = objects_by_uuid[object.send(attr)]
-            object.send(:"#{attr}=", link.uuid)
-          end
-        end
-        [:remote_global_id_string, :container_portal, :target_proxy].each(&fixup)
-      end
-
-      duplicates = objects - new_objects_by_uuid.values
-      raise "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
-        duplicates.map { |d| "#{d.isa} -- #{paths_by_object[d]}" }.join("\n") unless duplicates.empty?
-
-      @generated_uuids = @available_uuids
-      @objects_by_uuid = new_objects_by_uuid
+      UUIDGenerator.new(self).generate!
     end
 
     # @return [Array<AbstractObject>] all the objects of the project with a
