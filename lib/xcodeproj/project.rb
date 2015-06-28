@@ -461,7 +461,7 @@ module Xcodeproj
 
       duplicates = objects - new_objects_by_uuid.values
       raise "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
-        duplicates.map { |d| "#{d.isa} -- #{paths_by_object[d]}"}.join("\n") unless duplicates.empty?
+        duplicates.map { |d| "#{d.isa} -- #{paths_by_object[d]}" }.join("\n") unless duplicates.empty?
 
       @generated_uuids = @available_uuids
       @objects_by_uuid = new_objects_by_uuid
