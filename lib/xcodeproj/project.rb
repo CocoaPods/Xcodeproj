@@ -424,7 +424,7 @@ module Xcodeproj
         end
 
         (object.to_many_attributes + object.references_by_keys_attributes).each do |attrb|
-          attrb.get_value(object).each_with_index do |o, i|
+          attrb.get_value(object).each do |o|
             permute[o, path + '/' << attrb.plist_name << "/#{o.display_name}"]
           end
         end

@@ -405,6 +405,15 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe 'Deterministic UUID generation' do
+      it 'does not have duplicate UUIDS' do
+        @project.predictabilize_uuids
+        @project.uuids.size.should == @project.uuids.uniq.size
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
     describe 'Helpers for creating new objects' do
       it 'adds a new group' do
         group = @project.new_group('NewGroup')
