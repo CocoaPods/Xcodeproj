@@ -429,14 +429,14 @@ module Xcodeproj
 
         object.to_many_attributes.each do |attrb|
           attrb.get_value(object).each do |o|
-            permute[o, path + '/' << attrb.plist_name << "/#{o.display_name}"]
+            permute[o, path + '/' << attrb.plist_name << "/#{o.to_tree_hash}"]
           end
         end
 
         object.references_by_keys_attributes.each do |attrb|
           attrb.get_value(object).each do |dictionary|
             dictionary.each do |key, value|
-              permute[value, path + '/' << attrb.plist_name << "/k:#{key}/#{value.display_name}"]
+              permute[value, path + '/' << attrb.plist_name << "/k:#{key}/#{value.to_tree_hash}"]
             end
           end
         end
