@@ -416,6 +416,10 @@ module Xcodeproj
 
       paths_by_object = {}
       permute = ->(object, path) do
+        path << "/pp:#{object.to_tree_hash}" if object.is_a?(PBXBuildRule) || object.is_a?(PBXShellScriptBuildPhase)
+        if object.respond_to?(:proxy?) && object.proxy?
+          path << "/proxy:#{object.path}" if object.respond_to?(:path)
+        end
         paths_by_object[object] = path
 
         object.to_one_attributes.each do |attrb|
