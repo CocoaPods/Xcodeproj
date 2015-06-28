@@ -27,8 +27,8 @@ require 'spec_helper/project'
 require 'spec_helper/project_helper'
 require 'spec_helper/temporary_directory'
 
-def fixture_path(path)
-  File.join(File.dirname(__FILE__), 'fixtures', path)
+def fixture_path(*path)
+  File.join(File.dirname(__FILE__), 'fixtures', *path)
 end
 
 class Hash
