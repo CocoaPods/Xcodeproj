@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: 9994bccfc6fe7fa6970a39b8d787e481a3a65c6c
-  branch: seg-multiple-options
+  revision: c30d689b5ed233261bcec6c71ddefcb52e39d19c
   specs:
     claide (0.8.2)
 
