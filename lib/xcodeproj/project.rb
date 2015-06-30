@@ -322,6 +322,21 @@ module Xcodeproj
       Xcodeproj.write_plist(to_hash, file)
     end
 
+    # Replaces all the UUIDs in the project with deterministic MD5 checksums.
+    #
+    # @note The current sorting of the project is taken into account when
+    #       generating the new UUIDs.
+    #
+    # @note This method should only be used for entirely machine-generated
+    #       projects, as true UUIDs are useful for tracking changes in the
+    #       project.
+    #
+    # @return [void]
+    #
+    def predictabilize_uuids
+      UUIDGenerator.new(self).generate!
+    end
+
     public
 
     # @!group Creating objects
@@ -408,12 +423,6 @@ module Xcodeproj
     #
     def uuids
       objects_by_uuid.keys
-    end
-
-    # @note this should only be used for entirely machine-generated projects
-    #
-    def predictabilize_uuids
-      UUIDGenerator.new(self).generate!
     end
 
     # @return [Array<AbstractObject>] all the objects of the project with a
