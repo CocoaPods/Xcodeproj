@@ -1,8 +1,15 @@
+GIT
+  remote: https://github.com/CocoaPods/CLAide
+  revision: c30d689b5ed233261bcec6c71ddefcb52e39d19c
+  specs:
+    claide (0.8.2)
+
 PATH
   remote: .
   specs:
     xcodeproj (0.25.1)
       activesupport (>= 3)
+      claide (~> 0.8.2)
       colored (~> 1.2)
 
 GEM
@@ -75,6 +82,7 @@ PLATFORMS
 
 DEPENDENCIES
   bacon
+  claide!
   codeclimate-test-reporter
   json (= 1.7.7)
   kicker
