@@ -3,6 +3,7 @@ require 'securerandom'
 
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
+require 'xcodeproj/project/uuid_generator'
 require 'xcodeproj/plist_helper'
 
 module Xcodeproj
@@ -319,6 +320,21 @@ module Xcodeproj
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
+    end
+
+    # Replaces all the UUIDs in the project with deterministic MD5 checksums.
+    #
+    # @note The current sorting of the project is taken into account when
+    #       generating the new UUIDs.
+    #
+    # @note This method should only be used for entirely machine-generated
+    #       projects, as true UUIDs are useful for tracking changes in the
+    #       project.
+    #
+    # @return [void]
+    #
+    def predictabilize_uuids
+      UUIDGenerator.new(self).generate!
     end
 
     public

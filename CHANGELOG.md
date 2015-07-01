@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Allow transforming a project's UUIDs into predictable replacements.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#175](https://github.com/CocoaPods/Xcodeproj/issues/175)
+
+
 ## 0.25.1
 
 ##### Bug Fixes
