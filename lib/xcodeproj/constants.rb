@@ -138,13 +138,13 @@ module Xcodeproj
         'MTL_ENABLE_DEBUG_INFO'             => 'NO',
       }.freeze,
       [:ios] => {
-        #'SDKROOT'                           => 'iphoneos',
+        'SDKROOT'                           => `xcode-select -print-path`.chomp('\n') + "/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS" + LAST_KNOWN_IOS_SDK + ".sdk",
       }.freeze,
       [:osx] => {
-        'SDKROOT'                           => 'macosx',
+        'SDKROOT'                           => `xcode-select -print-path`.chomp('\n') + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX" + LAST_KNOWN_OSX_SDK + ".sdk",
       }.freeze,
       [:watchos] => {
-        'SDKROOT'                           => 'watchos',
+        'SDKROOT'                           => `xcode-select -print-path`.chomp('\n') + "/Platforms/WatchOS.platform/Developer/SDKs/WatchOS" + LAST_KNOWN_WATCHOS_SDK + ".sdk",
       }.freeze,
       [:debug, :osx] => {
         # Empty?
@@ -225,11 +225,11 @@ module Xcodeproj
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:ios, :bundle] => {
-        #'SDKROOT'                           => 'iphoneos',
+        'SDKROOT'                           => `xcode-select -print-path`.chomp('\n') + "/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS" + LAST_KNOWN_IOS_SDK + ".sdk",
       }.freeze,
       [:osx, :bundle] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
-        'SDKROOT'                           => 'macosx',
+        'SDKROOT'                           => `xcode-select -print-path`.chomp('\n') + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX" + LAST_KNOWN_OSX_SDK + ".sdk",
         'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Bundles',
       }.freeze,
     }.freeze
