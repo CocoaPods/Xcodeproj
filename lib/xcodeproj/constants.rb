@@ -138,7 +138,7 @@ module Xcodeproj
         'MTL_ENABLE_DEBUG_INFO'             => 'NO',
       }.freeze,
       [:ios] => {
-        'SDKROOT'                           => 'iphoneos',
+        #'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx] => {
         'SDKROOT'                           => 'macosx',
@@ -225,7 +225,7 @@ module Xcodeproj
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:ios, :bundle] => {
-        'SDKROOT'                           => 'iphoneos',
+        #'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx, :bundle] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
