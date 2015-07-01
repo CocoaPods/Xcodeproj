@@ -89,12 +89,14 @@ module Xcodeproj
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
-          if sdk.include? 'iphoneos'
-            :ios
-          elsif sdk.include? 'macosx'
-            :osx
-          elsif sdk.include? 'watchos'
-            :watchos
+          if sdk
+            if sdk.scan(/iphoneos/i)
+              :ios
+            elsif sdk.scan(/macosx/i)
+              :osx
+            elsif sdk.scan(/watchos/i)
+              :watchos
+            end
           end
         end
 
@@ -102,7 +104,10 @@ module Xcodeproj
         #
         def sdk_version
           if sdk
-            sdk.scan(/[0-9.]+/).first
+            value = sdk.scan(/[0-9][0-9.]*/).last
+            if value
+              value.chomp(".")
+            end
           end
         end
 
