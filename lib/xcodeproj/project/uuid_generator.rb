@@ -79,15 +79,16 @@ module Xcodeproj
         tree_hash_to_path(hash)
       end
 
-      def tree_hash_to_path(object)
+      def tree_hash_to_path(object, depth = 3)
+        return '|' if depth.zero?
         case object
         when Hash
           object.sort.each_with_object('') do |(key, value), string|
-            string << key << ':' << tree_hash_to_path(value) << ','
+            string << key << ':' << tree_hash_to_path(value, depth - 1) << ','
           end
         when Array
           object.map do |value|
-            tree_hash_to_path(value)
+            tree_hash_to_path(value, depth - 1)
           end.join(',')
         when String
           object

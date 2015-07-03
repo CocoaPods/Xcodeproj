@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Vastly speed up deterministic UUID generation for large projects.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.26.0
 
 ##### Enhancements
