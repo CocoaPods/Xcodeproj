@@ -12,6 +12,7 @@ module Xcodeproj
     end
   end
 
+  require 'xcodeproj/gem_version'
   require 'xcodeproj/user_interface'
 
   autoload :Command,          'xcodeproj/command'

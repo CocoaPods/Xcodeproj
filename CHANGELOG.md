@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Fix a crash when using the `xcodeproj` CLI.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.26.1
 
 ##### Enhancements
