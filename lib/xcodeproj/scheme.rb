@@ -1,70 +1,147 @@
 require 'rexml/document'
 
+require 'xcodeproj/scheme/build_action'
+require 'xcodeproj/scheme/test_action'
+require 'xcodeproj/scheme/launch_action'
+require 'xcodeproj/scheme/profile_action'
+require 'xcodeproj/scheme/analyze_action'
+require 'xcodeproj/scheme/archive_action'
+
+require 'xcodeproj/scheme/buildable_product_runnable'
+require 'xcodeproj/scheme/buildable_reference'
+require 'xcodeproj/scheme/macro_expansion'
+
 module Xcodeproj
   # This class represents a Scheme document represented by a ".xcscheme" file
   # usually stored in a xcuserdata or xcshareddata (for a shared scheme)
   # folder.
   #
   class XCScheme
+    XCSCHEME_FORMAT_VERSION = '1.3'
+
     # @return [REXML::Document] the XML object that will be manipulated to save
     #         the scheme file after.
     #
     attr_reader :doc
 
-    # Create a new XCScheme instance
+    # Create a XCScheme either from scratch or using an existing file
     #
-    def initialize
-      @doc = REXML::Document.new
-      @doc << REXML::XMLDecl.new(REXML::XMLDecl::DEFAULT_VERSION, 'UTF-8')
-      @doc.context[:attribute_quote] = :quote
+    # @param [String] file_path
+    #        The path of the existing .xcscheme file. If nil will create an empty scheme
+    #
+    def initialize(file_path = nil)
+      if file_path
+        @doc = REXML::Document.new(File.new(file_path))
+        @doc.context[:attribute_quote] = :quote
+        
+        @scheme = @doc.elements['Scheme']
+        raise Informative , 'Unsupported scheme version' unless @scheme.attributes['version'] == XCSCHEME_FORMAT_VERSION
+      else
+        @doc = REXML::Document.new
+        @doc.context[:attribute_quote] = :quote
+        @doc << REXML::XMLDecl.new(REXML::XMLDecl::DEFAULT_VERSION, 'UTF-8')
 
-      @scheme = @doc.add_element 'Scheme'
-      @scheme.attributes['LastUpgradeVersion'] = Constants::LAST_UPGRADE_CHECK
-      @scheme.attributes['version'] = '1.3'
+        @scheme = @doc.add_element 'Scheme'
+        @scheme.attributes['LastUpgradeVersion'] = Constants::LAST_UPGRADE_CHECK
+        @scheme.attributes['version'] = XCSCHEME_FORMAT_VERSION
 
-      @build_action = @scheme.add_element 'BuildAction'
-      @build_action.attributes['parallelizeBuildables'] = 'YES'
-      @build_action.attributes['buildImplicitDependencies'] = 'YES'
-      @build_action_entries = nil
+        self.build_action = BuildAction.new
+      end
+    end
 
-      @test_action = @scheme.add_element 'TestAction'
-      @test_action.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
-      @test_action.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
-      @test_action.attributes['shouldUseLaunchSchemeArgsEnv'] = 'YES'
-      @test_action.attributes['buildConfiguration'] = 'Debug'
+    # Convenience method to quickly add app and test targets to a new scheme.
+    #
+    # It will add the runnable_target to the Build, Launch and Profile actions
+    # and the test_target to the Build and Test actions
+    #
+    # @param [Xcodeproj::Project::Object::PBXAbstractTarget] runnable_target
+    #        The target to use for the 'Run', 'Profile' and 'Analyze' actions
+    #
+    # @param [Xcodeproj::Project::Object::PBXAbstractTarget] test_target
+    #        The target to use for the 'Test' action
+    #
+    def configure_with_targets(runnable_target, test_target)
+      build_action = BuildAction.new
+      build_action.add_entry BuildAction::Entry.new(runnable_target) if runnable_target
+      build_action.add_entry BuildAction::Entry.new(test_target) if test_target
 
-      @test_action_additional_options = @test_action.add_element 'AdditionalOptions'
+      test_action = TestAction.new
+      test_action.add_testable TestAction::TestableReference.new(test_target) if test_target
 
-      @testables = @test_action.add_element 'Testables'
+      launch_action = LaunchAction.new
+      launch_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
 
-      @launch_action = @scheme.add_element 'LaunchAction'
-      @launch_action.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
-      @launch_action.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
-      @launch_action.attributes['launchStyle'] = '0'
-      @launch_action.attributes['useCustomWorkingDirectory'] = 'NO'
-      @launch_action.attributes['buildConfiguration'] = 'Debug'
-      @launch_action.attributes['ignoresPersistentStateOnLaunch'] = 'NO'
-      @launch_action.attributes['debugDocumentVersioning'] = 'YES'
-      @launch_action.attributes['debugServiceExtension'] = 'internal'
-      @launch_action.attributes['allowLocationSimulation'] = 'YES'
-      @launch_action.add_element('AdditionalOptions')
+      profile_action = ProfileAction.new
+      profile_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
 
-      @profile_action = @scheme.add_element 'ProfileAction'
-      @profile_action.attributes['shouldUseLaunchSchemeArgsEnv'] = 'YES'
-      @profile_action.attributes['savedToolIdentifier'] = ''
-      @profile_action.attributes['useCustomWorkingDirectory'] = 'NO'
-      @profile_action.attributes['buildConfiguration'] = 'Release'
-      @profile_action.attributes['debugDocumentVersioning'] = 'YES'
+      analyze_action = AnalyzeAction.new
 
-      analyze_action = @scheme.add_element 'AnalyzeAction'
-      analyze_action.attributes['buildConfiguration'] = 'Debug'
-
-      archive_action = @scheme.add_element 'ArchiveAction'
-      archive_action.attributes['buildConfiguration'] = 'Release'
-      archive_action.attributes['revealArchiveInOrganizer'] = 'YES'
+      archive_action = ArchiveAction.new
     end
 
     public
+
+    # @!group Access Action nodes
+
+    def build_action
+      @build_action ||= BuildAction.new(@scheme.elements['BuildAction'])
+    end
+
+    def build_action=(action)
+      @scheme.delete_element('BuildAction')
+      @scheme.add_element(action.xml_element)
+      @build_action = action
+    end
+
+    def test_action
+      @test_action ||= TestAction.new(@scheme.elements['TestAction'])
+    end
+
+    def test_action=(action)
+      @scheme.delete_element('TestAction')
+      @scheme.add_element(action.xml_element)
+      @test_action = action
+    end
+
+    def launch_action
+      @launch_action ||= LaunchAction.new(@scheme.elements['LaunchAction'])
+    end
+
+    def launch_action=(action)
+      @scheme.delete_element('LaunchAction')
+      @scheme.add_element(action.xml_element)
+      @launch_action = action
+    end
+
+    def profile_action
+      @profile_action ||= ProfileAction.new(@scheme.elements['ProfileAction'])
+    end
+
+    def profile_action=(action)
+      @scheme.delete_element('ProfileAction')
+      @scheme.add_element(action.xml_element)
+      @profile_action = action
+    end
+
+    def analyze_action
+      @analyze_action ||= AnalyzeAction.new(@scheme.elements['AnalyzeAction'])
+    end
+
+    def analyze_action=(action)
+      @scheme.delete_element('AnalyzeAction')
+      @scheme.add_element(action.xml_element)
+      @analyze_action = action
+    end
+
+    def archive_action
+      @archive_action ||= ArchiveAction.new(@scheme.elements['ArchiveAction'])
+    end
+
+    def archive_action=(action)
+      @scheme.delete_element('ArchiveAction')
+      @scheme.add_element(action.xml_element)
+      @archive_action = action
+    end
 
     # @!group Target methods
 
@@ -77,23 +154,15 @@ module Xcodeproj
     #        Whether to build this target in the launch action. Often false for test targets.
     #
     def add_build_target(build_target, build_for_running = true)
-      unless @build_action_entries
-        @build_action_entries = @build_action.add_element 'BuildActionEntries'
-      end
+      entry = BuildAction::Entry.new(build_target)
 
-      build_action_entry = @build_action_entries.add_element 'BuildActionEntry'
-      build_action_entry.attributes['buildForTesting'] = 'YES'
-      build_action_entry.attributes['buildForRunning'] = build_for_running ? 'YES' : 'NO'
-      build_action_entry.attributes['buildForProfiling'] = 'YES'
-      build_action_entry.attributes['buildForArchiving'] = 'YES'
-      build_action_entry.attributes['buildForAnalyzing'] = 'YES'
+      entry.build_for_testing   = true
+      entry.build_for_running   = build_for_running
+      entry.build_for_profiling = true
+      entry.build_for_archiving = true
+      entry.build_for_analyzing = true
 
-      buildable_reference = build_action_entry.add_element 'BuildableReference'
-      buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      buildable_reference.attributes['BuildableName'] = construct_buildable_name(build_target)
-      buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
+      build_action.add_entry(entry)
     end
 
     # Add a target to the list of targets to build in the build action.
@@ -102,15 +171,9 @@ module Xcodeproj
     #        A target used by scheme in the test step.
     #
     def add_test_target(test_target)
-      testable_reference = @testables.add_element 'TestableReference'
-      testable_reference.attributes['skipped'] = 'NO'
+      testable = TestAction::TestableReference.new(test_target)
 
-      buildable_reference = testable_reference.add_element 'BuildableReference'
-      buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      buildable_reference.attributes['BlueprintIdentifier'] = test_target.uuid
-      buildable_reference.attributes['BuildableName'] = "#{test_target.name}.octest"
-      buildable_reference.attributes['BlueprintName'] = test_target.name
-      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(test_target)
+      test_action.add_testable(testable)
     end
 
     # Sets a runnable target to be the target of the launch action of the scheme.
@@ -119,33 +182,16 @@ module Xcodeproj
     #        A target used by scheme in the launch step.
     #
     def set_launch_target(build_target)
-      launch_product_runnable = @launch_action.add_element 'BuildableProductRunnable'
-      launch_product_runnable.attributes['runnableDebuggingMode'] = '0'
+      launch_runnable = BuildableProductRunnable.new(build_target)
+      launch_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
+      launch_action.build_product_runnable = launch_runnable
 
-      launch_buildable_reference = launch_product_runnable.add_element 'BuildableReference'
-      launch_buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      launch_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      launch_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
-      launch_buildable_reference.attributes['BlueprintName'] = build_target.name
-      launch_buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
+      profile_runnable = BuildableProductRunnable.new(build_target)
+      profile_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
+      profile_action.build_product_runnable = profile_runnable
 
-      profile_product_runnable = @profile_action.add_element 'BuildableProductRunnable'
-
-      profile_buildable_reference = profile_product_runnable.add_element 'BuildableReference'
-      profile_buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      profile_buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      profile_buildable_reference.attributes['BuildableName'] = "#{build_target.name}.app"
-      profile_buildable_reference.attributes['BlueprintName'] = build_target.name
-      profile_buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
-
-      macro_expansion = @test_action.add_element 'MacroExpansion'
-
-      buildable_reference = macro_expansion.add_element 'BuildableReference'
-      buildable_reference.attributes['BuildableIdentifier'] = 'primary'
-      buildable_reference.attributes['BlueprintIdentifier'] = build_target.uuid
-      buildable_reference.attributes['BuildableName'] = File.basename(build_target.product_reference.path)
-      buildable_reference.attributes['BlueprintName'] = build_target.name
-      buildable_reference.attributes['ReferencedContainer'] = construct_referenced_container_uri(build_target)
+      macro_exp = MacroExpansion.new(build_target)
+      test_action.add_macro_expansion(macro_exp)
     end
 
     # @!group Class methods
@@ -269,40 +315,6 @@ module Xcodeproj
         output << ' ' * @level
         output << "</#{node.expanded_name}>"
       end
-    end
-
-    #-------------------------------------------------------------------------#
-
-    private
-
-    # @!group Private helpers
-
-    # @param [Xcodeproj::Project::Object::AbstractTarget] target
-    #
-    # @return [String] The buildable name of the scheme.
-    #
-    def construct_buildable_name(build_target)
-      case build_target.isa
-      when 'PBXNativeTarget'
-        File.basename(build_target.product_reference.path)
-      when 'PBXAggregateTarget'
-        build_target.name
-      else
-        raise ArgumentError, "Unsupported build target type #{build_target.isa}"
-      end
-    end
-
-    # @param [Xcodeproj::Project::Object::AbstractTarget] target
-    #
-    # @return [String] A string in the format "container:[path to the project
-    #                  file relative to the project_dir_path, always ending with
-    #                  the actual project directory name]"
-    #
-    def construct_referenced_container_uri(target)
-      project = target.project
-      relative_path = project.path.relative_path_from(project.path + project.root_object.project_dir_path).to_s
-      relative_path = project.path.basename if relative_path == '.'
-      "container:#{relative_path}"
     end
 
     #-------------------------------------------------------------------------#
