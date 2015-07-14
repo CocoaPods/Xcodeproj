@@ -1,7 +1,6 @@
 module Xcodeproj
   class XCScheme
     class LaunchAction < XMLElementWrapper
-
       # @param [REXML::Element] node
       #
       def initialize(node = nil)
@@ -39,7 +38,7 @@ module Xcodeproj
       def allow_location_simulation?
         string_to_bool(@xml_element.attributes['allowLocationSimulation'])
       end
-      
+
       def allow_location_simulation=(flag)
         @xml_element.attributes['allowLocationSimulation'] = bool_to_string(flag)
       end

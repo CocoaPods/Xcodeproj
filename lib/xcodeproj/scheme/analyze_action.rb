@@ -1,7 +1,6 @@
 module Xcodeproj
   class XCScheme
     class AnalyzeAction < XMLElementWrapper
-
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'AnalyzeAction') do
           self.build_configuration = 'Debug'

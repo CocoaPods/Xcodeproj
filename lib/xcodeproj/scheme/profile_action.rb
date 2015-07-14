@@ -1,7 +1,6 @@
 module Xcodeproj
   class XCScheme
     class ProfileAction < XMLElementWrapper
-
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ProfileAction') do
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
@@ -44,7 +43,7 @@ module Xcodeproj
       def build_product_runnable=(runnable)
         @xml_element.delete_element('BuildableProductRunnable')
         @xml_element.add_element(runnable.xml_element) if runnable
-      end      
+      end
     end
   end
 end

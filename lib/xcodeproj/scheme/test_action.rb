@@ -1,7 +1,6 @@
 module Xcodeproj
   class XCScheme
     class TestAction < XMLElementWrapper
-
       # @param [REXML::Element] node
       #
       def initialize(node = nil)
@@ -17,7 +16,7 @@ module Xcodeproj
       def should_use_launch_scheme_args_env?
         string_to_bool(@xml_element.attributes['shouldUseLaunchSchemeArgsEnv'])
       end
-      
+
       def should_use_launch_scheme_args_env=(flag)
         @xml_element.attributes['shouldUseLaunchSchemeArgsEnv'] = bool_to_string(flag)
       end
@@ -64,23 +63,22 @@ module Xcodeproj
       #-------------------------------------------------------------------------#
 
       class TestableReference < XMLElementWrapper
-
         # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
-        #        Either the Xcode target to reference, 
+        #        Either the Xcode target to reference,
         #        or an existing XML 'TestableReference' node element to reference,
         #        or nil to create an new, empty TestableReference
         #
         def initialize(target_or_node = nil)
           create_xml_element_with_fallback(target_or_node, 'TestableReference') do
             self.skipped = false
-            self.add_buildable_reference BuildableReference.new(target_or_node) unless target_or_node.nil?
+            add_buildable_reference BuildableReference.new(target_or_node) unless target_or_node.nil?
           end
         end
 
         def skipped?
           string_to_bool(@xml_element.attributes['skipped'])
         end
-        
+
         def skipped=(flag)
           @xml_element.attributes['skipped'] = bool_to_string(flag)
         end

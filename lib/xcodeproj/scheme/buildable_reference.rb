@@ -1,15 +1,14 @@
 module Xcodeproj
   class XCScheme
     class BuildableReference < XMLElementWrapper
-
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
-      #        Either the Xcode target to reference, 
+      #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableReference' node element to reference
       #
       def initialize(target_or_node)
         create_xml_element_with_fallback(target_or_node, 'BuildableReference') do
           @xml_element.attributes['BuildableIdentifier'] = 'primary'
-          self.set_reference_target(target_or_node, true) if target_or_node
+          set_reference_target(target_or_node, true) if target_or_node
         end
       end
 

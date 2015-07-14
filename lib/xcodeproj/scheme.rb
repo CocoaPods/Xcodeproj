@@ -33,9 +33,9 @@ module Xcodeproj
       if file_path
         @doc = REXML::Document.new(File.new(file_path))
         @doc.context[:attribute_quote] = :quote
-        
+
         @scheme = @doc.elements['Scheme']
-        raise Informative , 'Unsupported scheme version' unless @scheme.attributes['version'] == XCSCHEME_FORMAT_VERSION
+        raise Informative, 'Unsupported scheme version' unless @scheme.attributes['version'] == XCSCHEME_FORMAT_VERSION
       else
         @doc = REXML::Document.new
         @doc.context[:attribute_quote] = :quote

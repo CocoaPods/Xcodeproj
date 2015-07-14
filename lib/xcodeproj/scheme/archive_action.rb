@@ -1,7 +1,6 @@
 module Xcodeproj
   class XCScheme
     class ArchiveAction < XMLElementWrapper
-
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ArchiveAction') do
           self.build_configuration = 'Release'

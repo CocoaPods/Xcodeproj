@@ -1,9 +1,8 @@
 module Xcodeproj
   class XCScheme
     class BuildableProductRunnable < XMLElementWrapper
-
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
-      #        Either the Xcode target to reference, 
+      #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableProductRunnable' node element to reference
       #        or nil to create an new, empty BuildableProductRunnable
       #
@@ -38,7 +37,6 @@ module Xcodeproj
         @xml_element.add_element(ref.xml_element)
         @buildable_reference = ref
       end
-
     end
   end
 end

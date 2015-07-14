@@ -1,10 +1,9 @@
 module Xcodeproj
   class XCScheme
     class MacroExpansion < XMLElementWrapper
-
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
-      #        Either the Xcode target to reference, 
-      #        or an existing XML 'MacroExpansion' node element 
+      #        Either the Xcode target to reference,
+      #        or an existing XML 'MacroExpansion' node element
       #        or nil to create an empty MacroExpansion object
       #
       def initialize(target_or_node = nil)
@@ -26,7 +25,6 @@ module Xcodeproj
         @xml_element.add_element(ref.xml_element)
         @buildable_reference = ref
       end
-
     end
   end
 end
