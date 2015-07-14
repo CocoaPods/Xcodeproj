@@ -10,7 +10,7 @@ module Xcodeproj
           @xml_element.attributes['debugDocumentVersioning'] = bool_to_string(true)
 
           # Setup default values for other (handled) attributes
-          self.build_configuration = 'Debug'
+          self.build_configuration = 'Release'
           self.should_use_launch_scheme_args_env = true
         end
       end

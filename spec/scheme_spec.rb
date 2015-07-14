@@ -70,13 +70,13 @@ module ProjectSpecs
 
     describe 'Creating a Shared Scheme' do
       before do
-        @ios_application = @project.new_target(:application, 'iOS application', :osx)
+        @ios_application = @project.new_target(:application, 'iOS application', :ios)
         @ios_application.stubs(:uuid).returns('E52523F316245AB20012E2BA')
-        @ios_application_tests = @project.new_target(:bundle, 'iOS applicationTests', :osx)
+        @ios_application_tests = @project.new_target(:octest_bundle, 'iOS applicationTests', :ios)
         @ios_application_tests.stubs(:uuid).returns('E525241E16245AB20012E2BA')
         @ios_static_library = @project.new_target(:bundle, 'iOS staticLibrary', :osx)
         @ios_static_library.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
-        @ios_static_library_tests = @project.new_target(:bundle, 'iOS staticLibraryTests', :osx)
+        @ios_static_library_tests = @project.new_target(:octest_bundle, 'iOS staticLibraryTests', :ios)
         @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
 
         @scheme = Xcodeproj::XCScheme.new

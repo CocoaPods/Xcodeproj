@@ -70,7 +70,7 @@ module Xcodeproj
       build_action.add_entry BuildAction::Entry.new(test_target) if test_target
 
       test_action.add_testable TestAction::TestableReference.new(test_target) if test_target
-      launch_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
+      launch_action.build_product_runnable = BuildableProductRunnable.new(runnable_target, 0) if runnable_target
       profile_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
     end
 
@@ -176,12 +176,10 @@ module Xcodeproj
     #        A target used by scheme in the launch step.
     #
     def set_launch_target(build_target)
-      launch_runnable = BuildableProductRunnable.new(build_target)
-      #launch_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
+      launch_runnable = BuildableProductRunnable.new(build_target, 0)
       launch_action.build_product_runnable = launch_runnable
 
       profile_runnable = BuildableProductRunnable.new(build_target)
-      #profile_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
       profile_action.build_product_runnable = profile_runnable
 
       macro_exp = MacroExpansion.new(build_target)

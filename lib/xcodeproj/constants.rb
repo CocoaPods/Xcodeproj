@@ -104,6 +104,7 @@ module Xcodeproj
       :dynamic_library   => 'com.apple.product-type.library.dynamic',
       :static_library    => 'com.apple.product-type.library.static',
       :bundle            => 'com.apple.product-type.bundle',
+      :octest_bundle     => 'com.apple.product-type.bundle',
       :unit_test_bundle  => 'com.apple.product-type.bundle.unit-test',
       :app_extension     => 'com.apple.product-type.app-extension',
       :command_line_tool => 'com.apple.product-type.tool',
@@ -116,11 +117,13 @@ module Xcodeproj
     # @return [Hash] The extensions or the various product UTIs.
     #
     PRODUCT_UTI_EXTENSIONS = {
-      :application     => 'app',
-      :framework       => 'framework',
-      :dynamic_library => 'dylib',
-      :static_library  => 'a',
-      :bundle          => 'bundle',
+      :application      => 'app',
+      :framework        => 'framework',
+      :dynamic_library  => 'dylib',
+      :static_library   => 'a',
+      :bundle           => 'bundle',
+      :octest_bundle    => 'octest',
+      :unit_test_bundle => 'xctest',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build

@@ -7,17 +7,23 @@ module Xcodeproj
       #        or an existing XML 'BuildableProductRunnable' node element to reference
       #        or nil to create an new, empty BuildableProductRunnable
       #
-      def initialize(target_or_node = nil)
+      # @param [#to_s] runnable_debugging_mode
+      #        The debugging mode (usually '0')
+      #
+      def initialize(target_or_node = nil, runnable_debugging_mode = nil)
         create_xml_element_with_fallback(target_or_node, 'BuildableProductRunnable') do
-          # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
-          @xml_element.attributes['runnableDebuggingMode'] = '0'
-
-          # Setup default values for other (handled) attributes
           self.buildable_reference = BuildableReference.new(target_or_node) if target_or_node
+          @xml_element.attributes['runnableDebuggingMode'] = runnable_debugging_mode.to_s if runnable_debugging_mode
         end
       end
 
-      # @todo handle 'runnableDebuggingMode' attrbute
+      def runnable_debugging_mode
+        @xml_element.attributes['runnableDebuggingMode']
+      end
+
+      def runnable_debugging_mode=(value)
+        @xml_element.attributes['runnableDebuggingMode'] = value.to_s
+      end
 
       # @return [BuildableReference]
       #

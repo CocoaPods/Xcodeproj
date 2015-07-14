@@ -48,7 +48,7 @@ module Xcodeproj
       #         The BuildReference to launch when testing
       #
       def build_product_runnable
-        BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
+        BuildableProductRunnable.new(@xml_element.elements['BuildableProductRunnable'], 0)
       end
 
       # @param [BuildableProductRunnable] runnable
