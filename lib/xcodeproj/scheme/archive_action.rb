@@ -1,19 +1,13 @@
+require 'xcodeproj/scheme/abstract_scheme_action'
+
 module Xcodeproj
   class XCScheme
-    class ArchiveAction < XMLElementWrapper
+    class ArchiveAction < AbstractSchemeAction
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ArchiveAction') do
           self.build_configuration = 'Release'
           self.reveal_archive_in_organizer = true
         end
-      end
-
-      def build_configuration
-        @xml_element.attributes['buildConfiguration']
-      end
-
-      def build_configuration=(config_name)
-        @xml_element.attributes['buildConfiguration'] = config_name
       end
 
       def reveal_archive_in_organizer?

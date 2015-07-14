@@ -2,6 +2,11 @@ require 'xcodeproj/scheme/xml_element_wrapper'
 
 module Xcodeproj
   class XCScheme
+    # Scheme action for "Build"
+    #
+    # Note: It's not a AbstractSchemeAction like the others because it is
+    # a special case of action (with no build_configuration, etc)
+    #
     class BuildAction < XMLElementWrapper
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'BuildAction') do

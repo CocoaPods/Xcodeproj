@@ -1,6 +1,8 @@
+require 'xcodeproj/scheme/abstract_scheme_action'
+
 module Xcodeproj
   class XCScheme
-    class ProfileAction < XMLElementWrapper
+    class ProfileAction < AbstractSchemeAction
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ProfileAction') do
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
@@ -12,14 +14,6 @@ module Xcodeproj
           self.build_configuration = 'Release'
           self.should_use_launch_scheme_args_env = true
         end
-      end
-
-      def build_configuration
-        @xml_element.attributes['buildConfiguration']
-      end
-
-      def build_configuration=(config_name)
-        @xml_element.attributes['buildConfiguration'] = config_name
       end
 
       def should_use_launch_scheme_args_env?

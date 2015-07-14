@@ -1,6 +1,8 @@
+require 'xcodeproj/scheme/abstract_scheme_action'
+
 module Xcodeproj
   class XCScheme
-    class LaunchAction < XMLElementWrapper
+    class LaunchAction < AbstractSchemeAction
       # @param [REXML::Element] node
       #
       def initialize(node = nil)
@@ -19,14 +21,6 @@ module Xcodeproj
           self.build_configuration = 'Debug'
           self.allow_location_simulation = true
         end
-      end
-
-      def build_configuration
-        @xml_element.attributes['buildConfiguration']
-      end
-
-      def build_configuration=(config_name)
-        @xml_element.attributes['buildConfiguration'] = config_name
       end
 
       # @todo handle 'launchStyle' attribute

@@ -1,6 +1,8 @@
+require 'xcodeproj/scheme/abstract_scheme_action'
+
 module Xcodeproj
   class XCScheme
-    class TestAction < XMLElementWrapper
+    class TestAction < AbstractSchemeAction
       # @param [REXML::Element] node
       #
       def initialize(node = nil)
@@ -19,14 +21,6 @@ module Xcodeproj
 
       def should_use_launch_scheme_args_env=(flag)
         @xml_element.attributes['shouldUseLaunchSchemeArgsEnv'] = bool_to_string(flag)
-      end
-
-      def build_configuration
-        @xml_element.attributes['buildConfiguration']
-      end
-
-      def build_configuration=(config_name)
-        @xml_element.attributes['buildConfiguration'] = config_name
       end
 
       # @return [Array<TestableReference>]
