@@ -115,7 +115,7 @@ module ProjectSpecs
       it 'Constructs ReferencedContainer attributes correctly' do
         project = Xcodeproj::Project.new('/project_dir/Project.xcodeproj')
         target = project.new_target(:application, 'iOS application', :osx)
-        buildable_ref = Xcodeproj::BuildableReference.new(nil)
+        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
 
         buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:Project.xcodeproj'
 

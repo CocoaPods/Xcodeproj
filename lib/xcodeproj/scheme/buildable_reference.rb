@@ -38,7 +38,7 @@ module Xcodeproj
         @xml_element.attributes['BlueprintIdentifier'] = target.uuid
         @xml_element.attributes['BlueprintName'] = target.name
         @xml_element.attributes['ReferencedContainer'] = construct_referenced_container_uri(target)
-        buildable_name = construct_buildable_name(target) if override_buildable_name
+        self.buildable_name = construct_buildable_name(target) if override_buildable_name
       end
 
       def buildable_name

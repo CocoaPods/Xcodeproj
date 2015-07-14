@@ -45,7 +45,12 @@ module Xcodeproj
         @scheme.attributes['LastUpgradeVersion'] = Constants::LAST_UPGRADE_CHECK
         @scheme.attributes['version'] = XCSCHEME_FORMAT_VERSION
 
-        self.build_action = BuildAction.new
+        self.build_action   = BuildAction.new
+        self.test_action    = TestAction.new
+        self.launch_action  = LaunchAction.new
+        self.profile_action = ProfileAction.new
+        self.analyze_action = AnalyzeAction.new
+        self.archive_action = ArchiveAction.new
       end
     end
 
@@ -61,22 +66,12 @@ module Xcodeproj
     #        The target to use for the 'Test' action
     #
     def configure_with_targets(runnable_target, test_target)
-      build_action = BuildAction.new
       build_action.add_entry BuildAction::Entry.new(runnable_target) if runnable_target
       build_action.add_entry BuildAction::Entry.new(test_target) if test_target
 
-      test_action = TestAction.new
       test_action.add_testable TestAction::TestableReference.new(test_target) if test_target
-
-      launch_action = LaunchAction.new
       launch_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
-
-      profile_action = ProfileAction.new
       profile_action.build_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
-
-      analyze_action = AnalyzeAction.new
-
-      archive_action = ArchiveAction.new
     end
 
     public
@@ -172,7 +167,6 @@ module Xcodeproj
     #
     def add_test_target(test_target)
       testable = TestAction::TestableReference.new(test_target)
-
       test_action.add_testable(testable)
     end
 
@@ -183,11 +177,11 @@ module Xcodeproj
     #
     def set_launch_target(build_target)
       launch_runnable = BuildableProductRunnable.new(build_target)
-      launch_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
+      #launch_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
       launch_action.build_product_runnable = launch_runnable
 
       profile_runnable = BuildableProductRunnable.new(build_target)
-      profile_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
+      #profile_runnable.buildable_reference.buildable_name = "#{build_target.name}.app"
       profile_action.build_product_runnable = profile_runnable
 
       macro_exp = MacroExpansion.new(build_target)
