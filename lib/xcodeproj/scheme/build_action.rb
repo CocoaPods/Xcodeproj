@@ -37,10 +37,8 @@ module Xcodeproj
       # @param [BuildAction::Entry] entry
       #
       def add_entry(entry)
-        unless @xml_element.elements['BuildActionEntries']
-          @xml_element.add_element('BuildActionEntries')
-        end
-        @xml_element.elements['BuildActionEntries'].add_element(entry.xml_element)
+        entries = @xml_element.elements['BuildActionEntries'] || @xml_element.add_element('BuildActionEntries')
+        entries.add_element(entry.xml_element)
       end
 
       #-------------------------------------------------------------------------#
@@ -53,9 +51,14 @@ module Xcodeproj
         #
         def initialize(target_or_node = nil)
           create_xml_element_with_fallback(target_or_node, 'BuildActionEntry') do
-            native_target = target_or_node && target_or_node.is_a?(::Xcodeproj::Project::Object::PBXNativeTarget)
-            is_test_target = native_target && target_or_node.product_type == 'com.apple.product-type.bundle.unit-test'
-            is_app_target = native_target && target_or_node.product_type == 'com.apple.product-type.application'
+            # Check target type to configure the default entry attributes accordingly
+            is_test_target, is_app_target = [false, false]
+            if target_or_node && target_or_node.is_a?(::Xcodeproj::Project::Object::PBXNativeTarget)
+              test_types = [Constants::PRODUCT_TYPE_UTI[:octest_bundle], Constants::PRODUCT_TYPE_UTI[:unit_test_bundle]]
+              app_types = [Constants::PRODUCT_TYPE_UTI[:application]]
+              is_test_target = test_types.include?(target_or_node.product_type)
+              is_app_target = app_types.include?(target_or_node.product_type)
+            end
 
             self.build_for_analyzing = true
             self.build_for_testing   = is_test_target

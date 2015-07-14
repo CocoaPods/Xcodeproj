@@ -40,10 +40,8 @@ module Xcodeproj
       # @param [TestableReference] testable
       #
       def add_testable(testable)
-        unless @xml_element.elements['Testables']
-          @xml_element.add_element('Testables')
-        end
-        @xml_element.elements['Testables'].add_element(testable.xml_element)
+        testables = @xml_element.elements['Testables'] || @xml_element.add_element('Testables')
+        testables.add_element(testable.xml_element)
       end
 
       # @return [Array<MacroExpansion>]
