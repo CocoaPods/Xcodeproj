@@ -54,7 +54,7 @@ module Xcodeproj
         end
       end
 
-      # @param [TestableReference] testable
+      # @param [MacroExpansion] macro_expansion
       #
       def add_macro_expansion(macro_expansion)
         @xml_element.add_element(macro_expansion.xml_element)
@@ -97,7 +97,6 @@ module Xcodeproj
           @xml_element.add_element(ref.xml_element)
         end
 
-        # @todo handle 'MacroExpansion' tag
         # @todo handle 'AdditionalOptions' tag
       end
     end
