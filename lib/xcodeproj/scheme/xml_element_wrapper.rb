@@ -32,6 +32,7 @@ module Xcodeproj
       end
 
       def string_to_bool(str)
+        raise Informative, 'Invalid tag value. Expected YES or NO.' unless %w(YES NO).include?(str)
         str == 'YES'
       end
     end
