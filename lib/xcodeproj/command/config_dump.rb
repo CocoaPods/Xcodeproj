@@ -23,17 +23,15 @@ module Xcodeproj
 
       def initialize(argv)
         self.xcodeproj_path = argv.shift_argument
-
         @output_path  = Pathname(argv.shift_argument || '.')
-        unless @output_path.directory?
-          raise Informative, 'The output path must be a directory.'
-        end
 
-        super unless argv.empty?
+        super
       end
 
       def validate!
         super
+
+        raise Informative, 'The output path must be a directory.' unless @output_path.directory?
         open_project!
       end
 

@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Fix a crash when calling `xcodeproj config-dump`.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.26.2
 
 ##### Bug Fixes
