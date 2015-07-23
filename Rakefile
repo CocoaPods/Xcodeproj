@@ -64,7 +64,8 @@ begin
     desc "Create a new empty project"
     task :new_project => [:prepare] do
       verbose false
-      Bundler.require 'xcodeproj'
+      Bundler.setup
+      require 'xcodeproj'
       title "Setup Boilerplate"
 
       confirm "Delete existing fixture project and all data"
@@ -80,7 +81,8 @@ begin
     desc "Interactive walkthrough for creating fixture targets"
     task :targets => [:prepare] do
       verbose false
-      Bundler.require 'xcodeproj'
+      Bundler.setup
+      require 'xcodeproj'
 
       title "Create Targets"
       subtitle "You will be guided how to *manually* create the needed targets."
