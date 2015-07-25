@@ -21,7 +21,7 @@ module Xcodeproj
 
       def verify_no_duplicates!(all_objects)
         duplicates = all_objects - @new_objects_by_uuid.values
-        raise "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
+        UserInterface.warn "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
           duplicates.map { |d| "#{d.isa} -- #{@paths_by_object[d]}" }.join("\n") unless duplicates.empty?
       end
 
