@@ -76,10 +76,12 @@ module Xcodeproj
 
       def path_component_for_object(object)
         hash = object.to_tree_hash
-        tree_hash_to_path(hash)
+        component = tree_hash_to_path(hash)
+        component << object.hierarchy_path.to_s if object.respond_to?(:hierarchy_path)
+        component
       end
 
-      def tree_hash_to_path(object, depth = 3)
+      def tree_hash_to_path(object, depth = 4)
         return '|' if depth.zero?
         case object
         when Hash
