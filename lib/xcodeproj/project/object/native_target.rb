@@ -89,6 +89,7 @@ module Xcodeproj
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
+          return unless sdk
           if sdk.include? 'iphoneos'
             :ios
           elsif sdk.include? 'macosx'
@@ -101,9 +102,8 @@ module Xcodeproj
         # @return [String] the version of the SDK.
         #
         def sdk_version
-          if sdk
-            sdk.scan(/[0-9.]+/).first
-          end
+          return unless sdk
+          sdk.scan(/[0-9.]+/).first
         end
 
         # @return [String] the deployment target of the target according to its
