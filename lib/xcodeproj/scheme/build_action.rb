@@ -24,7 +24,7 @@ module Xcodeproj
       end
 
       def build_implicit_dependencies?
-        bool_to_string(@xml_element.attributes['buildImplicitDependencies'])
+        string_to_bool(@xml_element.attributes['buildImplicitDependencies'])
       end
 
       def build_implicit_dependencies=(flag)

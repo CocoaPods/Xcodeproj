@@ -26,6 +26,7 @@ $LOAD_PATH.unshift((ROOT + 'spec').to_s)
 require 'spec_helper/project'
 require 'spec_helper/project_helper'
 require 'spec_helper/temporary_directory'
+require 'spec_helper/xcscheme'
 
 def fixture_path(*path)
   File.join(File.dirname(__FILE__), 'fixtures', *path)
