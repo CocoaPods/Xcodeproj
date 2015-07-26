@@ -21,7 +21,7 @@ module Xcodeproj
 
       def verify_no_duplicates!(all_objects)
         duplicates = all_objects - @new_objects_by_uuid.values
-        raise "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
+        UserInterface.warn "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
           duplicates.map { |d| "#{d.isa} -- #{@paths_by_object[d]}" }.join("\n") unless duplicates.empty?
       end
 
@@ -76,10 +76,12 @@ module Xcodeproj
 
       def path_component_for_object(object)
         hash = object.to_tree_hash
-        tree_hash_to_path(hash)
+        component = tree_hash_to_path(hash)
+        component << object.hierarchy_path.to_s if object.respond_to?(:hierarchy_path)
+        component
       end
 
-      def tree_hash_to_path(object, depth = 3)
+      def tree_hash_to_path(object, depth = 4)
         return '|' if depth.zero?
         case object
         when Hash

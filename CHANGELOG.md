@@ -7,6 +7,13 @@
 * Fix a crash when calling `xcodeproj config-dump`.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Reduces the number of cases un which deterministic UUIDs would yield
+  duplicates. Downgraded duplicate generated UUIDs to a warning from an
+  exception.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#3823](https://github.com/CocoaPods/CocoaPods/issues/3823)
+  [CocoaPods#3850](https://github.com/CocoaPods/CocoaPods/issues/3850)
+
 
 ## 0.26.2
 
