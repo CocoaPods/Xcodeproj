@@ -28,6 +28,13 @@ module Xcodeproj
         @ref = Xcodeproj::XCScheme::BuildableReference.new(node)
       end
 
+      it 'raise if invalid XML node' do
+        node = REXML::Element.new('Foo')
+        should.raise(Informative) do
+          Xcodeproj::XCScheme::BuildableReference.new(node)
+        end.message.should.match /Wrong XML tag name/
+      end
+
       it '#target_name' do
         @ref.target_name.should == @ref.xml_element.attributes['BlueprintName']
       end
