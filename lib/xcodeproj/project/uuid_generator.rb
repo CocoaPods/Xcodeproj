@@ -92,10 +92,8 @@ module Xcodeproj
           object.map do |value|
             tree_hash_to_path(value, depth - 1)
           end.join(',')
-        when String
-          object
         else
-          raise "[Xcodeproj] Unrecognized object `#{hash}` in #tree_hash_to_path"
+          object.to_s
         end
       end
     end
