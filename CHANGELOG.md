@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.26.3
 
 ##### Bug Fixes
 
