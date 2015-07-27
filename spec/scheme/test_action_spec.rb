@@ -31,7 +31,7 @@ module Xcodeproj
       it '#testables' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         @sut.xml_element.add_element('Testables')
-        
+
         target1 = project.new_target(:application, 'FooApp', :ios)
         test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
         @sut.xml_element.elements['Testables'].add_element(test_ref1.xml_element)
@@ -65,7 +65,7 @@ module Xcodeproj
       it '#macro_expansions' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         @sut.xml_element.add_element('Testables')
-        
+
         target1 = project.new_target(:application, 'FooApp', :ios)
         macro1 = XCScheme::MacroExpansion.new(target1)
         @sut.xml_element.add_element(macro1.xml_element)

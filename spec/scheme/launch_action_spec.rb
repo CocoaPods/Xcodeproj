@@ -34,24 +34,24 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:allow_location_simulation => 'allowLocationSimulation')
 
-      describe 'build_product_runnable' do
-        it '#build_product_runnable' do
+      describe 'buildable_product_runnable' do
+        it '#buildable_product_runnable' do
           project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 
           node = bpr.xml_element
           @sut.xml_element.elements['BuildableProductRunnable'] = node
-          @sut.build_product_runnable.class.should == XCScheme::BuildableProductRunnable
-          @sut.build_product_runnable.xml_element.should == node
+          @sut.buildable_product_runnable.class.should == XCScheme::BuildableProductRunnable
+          @sut.buildable_product_runnable.xml_element.should == node
         end
 
-        it '#build_product_runnable=' do
+        it '#buildable_product_runnable=' do
           project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 
-          @sut.build_product_runnable = bpr
+          @sut.buildable_product_runnable = bpr
           @sut.xml_element.elements['BuildableProductRunnable'].should == bpr.xml_element
         end
       end

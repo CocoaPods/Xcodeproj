@@ -27,14 +27,14 @@ module Xcodeproj
       # @return [BuildableProductRunnable]
       #         The BuildReference to launch when testing
       #
-      def build_product_runnable
+      def buildable_product_runnable
         BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
       end
 
       # @param [BuildableProductRunnable] runnable
       #         The BuildableProductRunnable referencing the target to launch when profiling
       #
-      def build_product_runnable=(runnable)
+      def buildable_product_runnable=(runnable)
         @xml_element.delete_element('BuildableProductRunnable')
         @xml_element.add_element(runnable.xml_element) if runnable
       end
