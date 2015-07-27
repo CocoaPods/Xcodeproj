@@ -3,12 +3,12 @@ require File.expand_path('../../spec_helper', __FILE__)
 module Xcodeproj
   describe XCScheme::BuildAction do
     it 'Creates a default XML node when created from scratch' do
-      build_action = Xcodeproj::XCScheme::BuildAction.new(nil)
-      build_action.xml_element.name.should == 'BuildAction'
-      build_action.xml_element.attributes.count.should == 2
-      build_action.xml_element.attributes['parallelizeBuildables'].should == 'YES'
-      build_action.xml_element.attributes['buildImplicitDependencies'].should == 'YES'
-      build_action.xml_element.elements.count.should == 0
+      action = Xcodeproj::XCScheme::BuildAction.new(nil)
+      action.xml_element.name.should == 'BuildAction'
+      action.xml_element.attributes.count.should == 2
+      action.xml_element.attributes['parallelizeBuildables'].should == 'YES'
+      action.xml_element.attributes['buildImplicitDependencies'].should == 'YES'
+      action.xml_element.elements.count.should == 0
     end
 
     it 'raises if created with an invalid XML node' do
@@ -19,13 +19,12 @@ module Xcodeproj
     end
 
     describe 'Map attributes to XML' do
-      extend SpecHelper::XCScheme
-
       before do
         node = REXML::Element.new('BuildAction')
         @sut = Xcodeproj::XCScheme::BuildAction.new(node)
       end
 
+      extend SpecHelper::XCScheme
       attributes = {
         :parallelize_buildables => 'parallelizeBuildables',
         :build_implicit_dependencies => 'buildImplicitDependencies'
@@ -86,7 +85,7 @@ module Xcodeproj
         before do
           @project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         end
-        it 'Uses the proper XML node when' do
+        it 'Uses the proper XML node' do
           target = @project.new_target(:application, 'FooApp', :ios)
           entry = Xcodeproj::XCScheme::BuildAction::Entry.new(target)
           entry.xml_element.name.should == 'BuildActionEntry'
@@ -124,12 +123,11 @@ module Xcodeproj
       end
 
       describe 'Map attributes to XML' do
-        extend SpecHelper::XCScheme
-
         before do
           @sut = Xcodeproj::XCScheme::BuildAction::Entry.new(nil)
         end
 
+        extend SpecHelper::XCScheme
         attributes = {
           :build_for_testing => 'buildForTesting',
           :build_for_running => 'buildForRunning',
