@@ -32,6 +32,10 @@ module Xcodeproj
     #
     LAST_SWIFT_UPGRADE_CHECK = '0700'
 
+    # @return [String] The version of `.xcscheme` files supported by Xcodeproj
+    #
+    XCSCHEME_FORMAT_VERSION = '1.3'
+
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
     KNOWN_ISAS = {

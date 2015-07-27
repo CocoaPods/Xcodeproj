@@ -17,8 +17,6 @@ module Xcodeproj
   # folder.
   #
   class XCScheme
-    XCSCHEME_FORMAT_VERSION = '1.3'
-
     # @return [REXML::Document] the XML object that will be manipulated to save
     #         the scheme file after.
     #
@@ -35,7 +33,7 @@ module Xcodeproj
         @doc.context[:attribute_quote] = :quote
 
         @scheme = @doc.elements['Scheme']
-        raise Informative, 'Unsupported scheme version' unless @scheme.attributes['version'] == XCSCHEME_FORMAT_VERSION
+        raise Informative, 'Unsupported scheme version' unless @scheme.attributes['version'] == Xcodeproj::Constants::XCSCHEME_FORMAT_VERSION
       else
         @doc = REXML::Document.new
         @doc.context[:attribute_quote] = :quote
@@ -43,7 +41,7 @@ module Xcodeproj
 
         @scheme = @doc.add_element 'Scheme'
         @scheme.attributes['LastUpgradeVersion'] = Constants::LAST_UPGRADE_CHECK
-        @scheme.attributes['version'] = XCSCHEME_FORMAT_VERSION
+        @scheme.attributes['version'] = Xcodeproj::Constants::XCSCHEME_FORMAT_VERSION
 
         self.build_action   = BuildAction.new
         self.test_action    = TestAction.new
