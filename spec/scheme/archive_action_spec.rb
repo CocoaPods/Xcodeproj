@@ -26,12 +26,21 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:reveal_archive_in_organizer => 'revealArchiveInOrganizer')
 
-      xit '#custom_archive_name' do
-        # @todo
-      end
+      describe 'custom_archive_name' do
+        it '#custom_archive_name' do
+          @sut.xml_element.attributes['customArchiveName'] = 'Foo'
+          @sut.custom_archive_name.should == 'Foo'
+        end
 
-      xit '#custom_archive_name=' do
-        # @todo
+        it '#custom_archive_name= sets a new name' do
+          @sut.custom_archive_name = 'Bar'
+          @sut.xml_element.attributes['customArchiveName'].should == 'Bar'
+        end
+
+        it '#custom_archive_name= removes custom name' do
+          @sut.custom_archive_name = nil
+          @sut.xml_element.attributes['customArchiveName'].should.nil?
+        end
       end
     end
   end

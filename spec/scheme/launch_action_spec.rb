@@ -13,7 +13,7 @@ module Xcodeproj
       action.xml_element.attributes['ignoresPersistentStateOnLaunch'].should == 'NO'
       action.xml_element.attributes['debugDocumentVersioning'].should == 'YES'
       action.xml_element.attributes['debugServiceExtension'].should == 'internal'
-      
+
       action.xml_element.attributes['buildConfiguration'].should == 'Debug'
       action.xml_element.attributes['allowLocationSimulation'].should == 'YES'
     end
@@ -34,12 +34,26 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:allow_location_simulation => 'allowLocationSimulation')
 
-      xit '#build_product_runnable' do
-        # @todo
-      end
+      describe 'build_product_runnable' do
+        it '#build_product_runnable' do
+          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          target = project.new_target(:application, 'FooApp', :ios)
+          bpr = XCScheme::BuildableProductRunnable.new(target)
 
-      xit '#build_product_runnable=' do
-        # @todo
+          node = bpr.xml_element
+          @sut.xml_element.elements['BuildableProductRunnable'] = node
+          @sut.build_product_runnable.class.should == XCScheme::BuildableProductRunnable
+          @sut.build_product_runnable.xml_element.should == node
+        end
+
+        it '#build_product_runnable=' do
+          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          target = project.new_target(:application, 'FooApp', :ios)
+          bpr = XCScheme::BuildableProductRunnable.new(target)
+
+          @sut.build_product_runnable = bpr
+          @sut.xml_element.elements['BuildableProductRunnable'].should == bpr.xml_element
+        end
       end
     end
   end

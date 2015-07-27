@@ -26,6 +26,8 @@ module Xcodeproj
       # @return [Array<TestableReference>]
       #
       def testables
+        return [] unless @xml_element.elements['Testables']
+
         @xml_element.elements['Testables'].get_elements('TestableReference').map do |node|
           TestableReference.new(node)
         end

@@ -27,7 +27,7 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       attributes = {
         :parallelize_buildables => 'parallelizeBuildables',
-        :build_implicit_dependencies => 'buildImplicitDependencies'
+        :build_implicit_dependencies => 'buildImplicitDependencies',
       }
       specs_for_bool_attr(attributes)
 
@@ -42,7 +42,7 @@ module Xcodeproj
 
       it '#entries' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
-        
+
         target1 = project.new_target(:application, 'FooApp', :ios)
         entry1 = XCScheme::BuildAction::Entry.new
         entry1.add_buildable_reference(XCScheme::BuildableReference.new(target1))
@@ -145,22 +145,22 @@ module Xcodeproj
         target = project.new_target(:application, 'FooApp', :ios)
         ref = XCScheme::BuildableReference.new(target)
         entry.add_buildable_reference(ref)
-        
+
         entry.xml_element.elements['BuildableReference'].should == ref.xml_element
       end
 
       it '#buildable_references' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         entry = XCScheme::BuildAction::Entry.new
-        
+
         target1 = project.new_target(:application, 'FooApp', :ios)
         ref1 = XCScheme::BuildableReference.new(target1)
         entry.add_buildable_reference(ref1)
-        
+
         target2 = project.new_target(:static_library, 'FooLib', :ios)
         ref2 = XCScheme::BuildableReference.new(target2)
         entry.add_buildable_reference(ref2)
-        
+
         entry.buildable_references.count.should == 2
         entry.buildable_references.all? { |e| e.class.should == XCScheme::BuildableReference }
         entry.buildable_references[0].xml_element.should == ref1.xml_element

@@ -28,20 +28,72 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:should_use_launch_scheme_args_env => 'shouldUseLaunchSchemeArgsEnv')
 
-      xit '#testables' do
-        # @todo
+      it '#testables' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        @sut.xml_element.add_element('Testables')
+        
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
+        @sut.xml_element.elements['Testables'].add_element(test_ref1.xml_element)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        test_ref2 = XCScheme::TestAction::TestableReference.new(target2)
+        @sut.xml_element.elements['Testables'].add_element(test_ref2.xml_element)
+
+        @sut.testables.count.should == 2
+        @sut.testables.all? { |t| t.class.should == XCScheme::TestAction::TestableReference }
+        @sut.testables[0].xml_element.should == test_ref1.xml_element
+        @sut.testables[1].xml_element.should == test_ref2.xml_element
       end
 
-      xit '#add_testables' do
-        # @todo
+      it '#add_testables' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
+        @sut.add_testable(test_ref1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        test_ref2 = XCScheme::TestAction::TestableReference.new(target2)
+        @sut.add_testable(test_ref2)
+
+        @sut.xml_element.elements['Testables'].count.should == 2
+        @sut.xml_element.elements['Testables/TestableReference[1]'].should == test_ref1.xml_element
+        @sut.xml_element.elements['Testables/TestableReference[2]'].should == test_ref2.xml_element
       end
 
-      xit '#macro_expansions' do
-        # @todo
+      it '#macro_expansions' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        @sut.xml_element.add_element('Testables')
+        
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        macro1 = XCScheme::MacroExpansion.new(target1)
+        @sut.xml_element.add_element(macro1.xml_element)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        macro2 = XCScheme::MacroExpansion.new(target2)
+        @sut.xml_element.add_element(macro2.xml_element)
+
+        @sut.macro_expansions.count.should == 2
+        @sut.macro_expansions.all? { |m| m.class.should == XCScheme::MacroExpansion }
+        @sut.macro_expansions[0].xml_element.should == macro1.xml_element
+        @sut.macro_expansions[1].xml_element.should == macro2.xml_element
       end
 
-      xit '#add_macro_expansion' do
-        # @todo
+      it '#add_macro_expansion' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        macro1 = XCScheme::MacroExpansion.new(target1)
+        @sut.add_macro_expansion(macro1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        macro2 = XCScheme::MacroExpansion.new(target2)
+        @sut.add_macro_expansion(macro2)
+
+        @sut.xml_element.get_elements('MacroExpansion').count.should == 2
+        @sut.xml_element.elements['MacroExpansion[1]'].should == macro1.xml_element
+        @sut.xml_element.elements['MacroExpansion[2]'].should == macro2.xml_element
       end
     end
 
@@ -88,22 +140,22 @@ module Xcodeproj
         target = project.new_target(:application, 'FooApp', :ios)
         ref = XCScheme::BuildableReference.new(target)
         test_ref.add_buildable_reference(ref)
-        
+
         test_ref.xml_element.elements['BuildableReference'].should == ref.xml_element
       end
 
       it '#buildable_references' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         test_ref = XCScheme::TestAction::TestableReference.new
-        
+
         target1 = project.new_target(:application, 'FooApp', :ios)
         ref1 = XCScheme::BuildableReference.new(target1)
         test_ref.add_buildable_reference(ref1)
-        
+
         target2 = project.new_target(:static_library, 'FooLib', :ios)
         ref2 = XCScheme::BuildableReference.new(target2)
         test_ref.add_buildable_reference(ref2)
-        
+
         test_ref.buildable_references.count.should == 2
         test_ref.buildable_references.all? { |e| e.class.should == XCScheme::BuildableReference }
         test_ref.buildable_references[0].xml_element.should == ref1.xml_element
