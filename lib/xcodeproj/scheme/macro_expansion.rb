@@ -1,5 +1,7 @@
 module Xcodeproj
   class XCScheme
+    # This class wraps the MacroExpansion node of a .xcscheme XML file
+    #
     class MacroExpansion < XMLElementWrapper
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
       #        Either the Xcode target to reference,
@@ -13,12 +15,14 @@ module Xcodeproj
       end
 
       # @return [BuildableReference]
+      #         The BuildableReference this MacroExpansion refers to
       #
       def buildable_reference
         @buildable_reference ||= BuildableReference.new @xml_element.elements['BuildableReference']
       end
 
       # @param [BuildableReference] ref
+      #        Set the BuildableReference this MacroExpansion refers to
       #
       def buildable_reference=(ref)
         @xml_element.delete_element('BuildableReference')

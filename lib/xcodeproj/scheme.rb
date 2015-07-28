@@ -76,60 +76,96 @@ module Xcodeproj
 
     # @!group Access Action nodes
 
+    # @return [XCScheme::BuildAction]
+    #         The Build Action associated with this scheme
+    #
     def build_action
       @build_action ||= BuildAction.new(@scheme.elements['BuildAction'])
     end
 
+    # @param [XCScheme::BuildAction] action
+    #        The Build Action to associate to this scheme
+    #
     def build_action=(action)
       @scheme.delete_element('BuildAction')
       @scheme.add_element(action.xml_element)
       @build_action = action
     end
 
+    # @return [XCScheme::TestAction]
+    #         The Test Action associated with this scheme
+    #
     def test_action
       @test_action ||= TestAction.new(@scheme.elements['TestAction'])
     end
 
+    # @param [XCScheme::TestAction] action
+    #        The Test Action to associate to this scheme
+    #
     def test_action=(action)
       @scheme.delete_element('TestAction')
       @scheme.add_element(action.xml_element)
       @test_action = action
     end
 
+    # @return [XCScheme::LaunchAction]
+    #         The Launch Action associated with this scheme
+    #
     def launch_action
       @launch_action ||= LaunchAction.new(@scheme.elements['LaunchAction'])
     end
 
+    # @param [XCScheme::LaunchAction] action
+    #        The Launch Action to associate to this scheme
+    #
     def launch_action=(action)
       @scheme.delete_element('LaunchAction')
       @scheme.add_element(action.xml_element)
       @launch_action = action
     end
 
+    # @return [XCScheme::ProfileAction]
+    #         The Profile Action associated with this scheme
+    #
     def profile_action
       @profile_action ||= ProfileAction.new(@scheme.elements['ProfileAction'])
     end
 
+    # @param [XCScheme::ProfileAction] action
+    #        The Profile Action to associate to this scheme
+    #
     def profile_action=(action)
       @scheme.delete_element('ProfileAction')
       @scheme.add_element(action.xml_element)
       @profile_action = action
     end
 
+    # @return [XCScheme::AnalyzeAction]
+    #         The Analyze Action associated with this scheme
+    #
     def analyze_action
       @analyze_action ||= AnalyzeAction.new(@scheme.elements['AnalyzeAction'])
     end
 
+    # @param [XCScheme::AnalyzeAction] action
+    #        The Analyze Action to associate to this scheme
+    #
     def analyze_action=(action)
       @scheme.delete_element('AnalyzeAction')
       @scheme.add_element(action.xml_element)
       @analyze_action = action
     end
 
+    # @return [XCScheme::ArchiveAction]
+    #         The Archive Action associated with this scheme
+    #
     def archive_action
       @archive_action ||= ArchiveAction.new(@scheme.elements['ArchiveAction'])
     end
 
+    # @param [XCScheme::ArchiveAction] action
+    #        The Archive Action to associate to this scheme
+    #
     def archive_action=(action)
       @scheme.delete_element('ArchiveAction')
       @scheme.add_element(action.xml_element)

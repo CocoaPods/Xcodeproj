@@ -2,8 +2,12 @@ require 'xcodeproj/scheme/abstract_scheme_action'
 
 module Xcodeproj
   class XCScheme
+    # This class wraps the TestAction node of a .xcscheme XML file
+    #
     class TestAction < AbstractSchemeAction
       # @param [REXML::Element] node
+      #        The 'TestAction' XML node that this object will wrap.
+      #        If nil, will create a default XML node to use.
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'TestAction') do
@@ -15,15 +19,24 @@ module Xcodeproj
         end
       end
 
+      # @return [Bool]
+      #         Whether this Test Action should use the same arguments and environment variables
+      #         as the Launch Action.
+      #
       def should_use_launch_scheme_args_env?
         string_to_bool(@xml_element.attributes['shouldUseLaunchSchemeArgsEnv'])
       end
 
+      # @param [Bool] flag
+      #        Set Whether this Test Action should use the same arguments and environment variables
+      #        as the Launch Action.
+      #
       def should_use_launch_scheme_args_env=(flag)
         @xml_element.attributes['shouldUseLaunchSchemeArgsEnv'] = bool_to_string(flag)
       end
 
       # @return [Array<TestableReference>]
+      #         The list of TestableReference (test bundles) associated with this Test Action
       #
       def testables
         return [] unless @xml_element.elements['Testables']
@@ -34,6 +47,7 @@ module Xcodeproj
       end
 
       # @param [TestableReference] testable
+      #        Add a TestableReference (test bundle) to this Test Action
       #
       def add_testable(testable)
         testables = @xml_element.elements['Testables'] || @xml_element.add_element('Testables')
@@ -41,6 +55,7 @@ module Xcodeproj
       end
 
       # @return [Array<MacroExpansion>]
+      #         The list of MacroExpansion bound with this TestAction
       #
       def macro_expansions
         @xml_element.get_elements('MacroExpansion').map do |node|
@@ -49,6 +64,7 @@ module Xcodeproj
       end
 
       # @param [MacroExpansion] macro_expansion
+      #        Add a MacroExpansion to this TestAction
       #
       def add_macro_expansion(macro_expansion)
         @xml_element.add_element(macro_expansion.xml_element)
@@ -69,15 +85,23 @@ module Xcodeproj
           end
         end
 
+        # @return [Bool]
+        #         Whether or not this TestableReference (test bundle) should be skipped or not
+        #
         def skipped?
           string_to_bool(@xml_element.attributes['skipped'])
         end
 
+        # @param [Bool] flag
+        #        Set whether or not this TestableReference (test bundle) should be skipped or not
+        #
         def skipped=(flag)
           @xml_element.attributes['skipped'] = bool_to_string(flag)
         end
 
         # @return [Array<BuildableReference>]
+        #         The list of BuildableReferences this action will build.
+        #         (The list usually contains only one element)
         #
         def buildable_references
           @xml_element.get_elements('BuildableReference').map do |node|
@@ -86,6 +110,7 @@ module Xcodeproj
         end
 
         # @param [BuildableReference] ref
+        #         The BuildableReference to add to the list of targets this action will build
         #
         def add_buildable_reference(ref)
           @xml_element.add_element(ref.xml_element)

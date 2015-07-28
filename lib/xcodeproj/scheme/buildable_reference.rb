@@ -1,5 +1,10 @@
 module Xcodeproj
   class XCScheme
+    # This class wraps the BuildableReference node of a .xcscheme XML file
+    #
+    # A BuildableReference is a reference to a buildable product (which is
+    # typically is synonymous for an Xcode target)
+    #
     class BuildableReference < XMLElementWrapper
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
       #        Either the Xcode target to reference,
@@ -12,14 +17,28 @@ module Xcodeproj
         end
       end
 
+      # @return [String]
+      #         The name of the target this Buildable Reference points to
+      #
       def target_name
         @xml_element.attributes['BlueprintName']
       end
 
+      # @return [String]
+      #         The Unique Identifier of the target (target.uuid) this Buildable Reference points to.
+      #
+      # @note You can use this to `#find` the `Xcodeproj::Project::Object::AbstractTarget`
+      #       instance in your Xcodeproj::Project object.
+      #       e.g. `project.targets.find { |t| t.uuid == ref.target_uuid }`
+      #
       def target_uuid
         @xml_element.attributes['BlueprintIdentifier']
       end
 
+      # @return [String]
+      #         The string representing the container of that target.
+      #         Typically in the form of 'container:xxxx.xcodeproj'
+      #
       def target_referenced_container
         @xml_element.attributes['ReferencedContainer']
       end
@@ -40,10 +59,16 @@ module Xcodeproj
         self.buildable_name = construct_buildable_name(target) if override_buildable_name
       end
 
+      # @return [String]
+      #         The name of the final product when building this Buildable Reference
+      #
       def buildable_name
         @xml_element.attributes['BuildableName']
       end
 
+      # @param [String] value
+      #        Set the name of the final product when building this Buildable Reference
+      #
       def buildable_name=(value)
         @xml_element.attributes['BuildableName'] = value
       end

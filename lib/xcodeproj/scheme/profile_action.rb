@@ -2,7 +2,13 @@ require 'xcodeproj/scheme/abstract_scheme_action'
 
 module Xcodeproj
   class XCScheme
+    # This class wraps the ProfileAction node of a .xcscheme XML file
+    #
     class ProfileAction < AbstractSchemeAction
+      # @param [REXML::Element] node
+      #        The 'ProfileAction' XML node that this object will wrap.
+      #        If nil, will create a default XML node to use.
+      #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ProfileAction') do
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
@@ -16,23 +22,31 @@ module Xcodeproj
         end
       end
 
+      # @return [Bool]
+      #         Whether this Profile Action should use the same arguments and environment variables
+      #         as the Launch Action.
+      #
       def should_use_launch_scheme_args_env?
         string_to_bool(@xml_element.attributes['shouldUseLaunchSchemeArgsEnv'])
       end
 
+      # @param [Bool] flag
+      #        Set Whether this Profile Action should use the same arguments and environment variables
+      #        as the Launch Action.
+      #
       def should_use_launch_scheme_args_env=(flag)
         @xml_element.attributes['shouldUseLaunchSchemeArgsEnv'] = bool_to_string(flag)
       end
 
       # @return [BuildableProductRunnable]
-      #         The BuildReference to launch when testing
+      #         The BuildableProductRunnable to launch when launching the Profile action
       #
       def buildable_product_runnable
         BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
       end
 
       # @param [BuildableProductRunnable] runnable
-      #         The BuildableProductRunnable referencing the target to launch when profiling
+      #        Set the BuildableProductRunnable referencing the target to launch when profiling
       #
       def buildable_product_runnable=(runnable)
         @xml_element.delete_element('BuildableProductRunnable')

@@ -1,5 +1,10 @@
 module Xcodeproj
   class XCScheme
+    # This class wraps the BuildableProductRunnable node of a .xcscheme XML file
+    #
+    # A BuildableProductRunnable is a product that is both buildable
+    # (it contains a BuildableReference) and runnable (it can be launched and debugged)
+    #
     class BuildableProductRunnable < XMLElementWrapper
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
       #        Either the Xcode target to reference,
@@ -16,21 +21,29 @@ module Xcodeproj
         end
       end
 
+      # @return [String]
+      #         The Runnable debugging mode (usually either empty or equal to '0')
+      #
       def runnable_debugging_mode
         @xml_element.attributes['runnableDebuggingMode']
       end
 
+      # @param [String] value
+      #        Set the runnable debugging mode of this buildable product runnable
+      #
       def runnable_debugging_mode=(value)
         @xml_element.attributes['runnableDebuggingMode'] = value.to_s
       end
 
       # @return [BuildableReference]
+      #         The Buildable Reference this Buildable Product Runnable is gonna build and run
       #
       def buildable_reference
         @buildable_reference ||= BuildableReference.new @xml_element.elements['BuildableReference']
       end
 
       # @param [BuildableReference] ref
+      #        Set the Buildable Reference this Buildable Product Runnable is gonna build and run
       #
       def buildable_reference=(ref)
         @xml_element.delete_element('BuildableReference')
