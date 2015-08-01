@@ -33,7 +33,6 @@ module Xcodeproj
         @doc.context[:attribute_quote] = :quote
 
         @scheme = @doc.elements['Scheme']
-        raise Informative, 'Unsupported scheme version' unless @scheme.attributes['version'] == Xcodeproj::Constants::XCSCHEME_FORMAT_VERSION
       else
         @doc = REXML::Document.new
         @doc.context[:attribute_quote] = :quote
