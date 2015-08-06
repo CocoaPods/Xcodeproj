@@ -283,6 +283,13 @@ module ProjectSpecs
       end
     end
 
+      it 'sorts display_names case insensitively' do
+        @test_instance.files << @project.new_file('Classes/JSAnimatedImageView.m')
+        @test_instance.files << @project.new_file('Classes/MSWeakTimer.m')
+        @test_instance.files << @project.new_file('Classes/iRate.m')
+        @test_instance.sort
+        @test_instance.files.map(&:display_name).should == ['iRate.m', 'JSAnimatedImageView.m', 'MSWeakTimer.m']
+      end
     #-------------------------------------------------------------------------#
   end
 end
