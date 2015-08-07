@@ -8,6 +8,10 @@
   it using `Xcodeproj::XCScheme`.  
   [Olivier Halligon](https://github.com/AliSoftware)
   [Xcodeproj#288](https://github.com/CocoaPods/Xcodeproj/pull/288)
+  
+ * The pods will now be ordered case insensitively in the Project navigator and where the targets are listed in Xcode.
+  [Emma Koszinowski](http://github.com/emkosz)
+  [#3684](https://github.com/CocoaPods/CocoaPods/issues/3684)
 
 ## 0.26.3
 
