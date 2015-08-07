@@ -281,7 +281,6 @@ module ProjectSpecs
         @test_instance.files << f
         f.referrers.should.include?(@test_instance)
       end
-    end
 
       it 'sorts display_names case insensitively' do
         @test_instance.files << @project.new_file('Classes/JSAnimatedImageView.m')
@@ -290,6 +289,7 @@ module ProjectSpecs
         @test_instance.sort
         @test_instance.files.map(&:display_name).should == ['iRate.m', 'JSAnimatedImageView.m', 'MSWeakTimer.m']
       end
+    end
     #-------------------------------------------------------------------------#
   end
 end
