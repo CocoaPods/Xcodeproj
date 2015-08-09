@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Added the ability to load an existing `.xcscheme` file and manipulate
+  it using `Xcodeproj::XCScheme`.  
+  [Olivier Halligon](https://github.com/AliSoftware)
+  [Xcodeproj#288](https://github.com/CocoaPods/Xcodeproj/pull/288)
+
 ## 0.26.3
 
 ##### Bug Fixes

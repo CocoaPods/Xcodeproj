@@ -13,6 +13,90 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
+    describe 'Load an existing scheme from file' do
+      before do
+        scheme_path = fixture_path('SharedSchemes', 'SharedSchemes.xcodeproj/xcshareddata/xcschemes/SharedSchemes.xcscheme')
+        @scheme = Xcodeproj::XCScheme.new(scheme_path)
+      end
+
+      it 'Properly map the scheme\'s BuildAction' do
+        @scheme.build_action.parallelize_buildables?.should == true
+        @scheme.build_action.build_implicit_dependencies?.should == true
+        @scheme.build_action.entries.count.should == 1
+
+        entry = @scheme.build_action.entries[0]
+        entry.class.should == Xcodeproj::XCScheme::BuildAction::Entry
+        entry.build_for_testing?.should == true
+        entry.build_for_running?.should == true
+        entry.build_for_profiling?.should == true
+        entry.build_for_archiving?.should == true
+        entry.build_for_analyzing?.should == true
+
+        entry.buildable_references.count.should == 1
+        ref = entry.buildable_references[0]
+        ref.target_name.should == 'SharedSchemes'
+        ref.target_uuid.should == '632143E8175736EE0038D40D'
+        ref.buildable_name.should == 'SharedSchemes.app'
+        ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+      end
+
+      it 'Properly map the scheme\'s TestAction' do
+        @scheme.test_action.should_use_launch_scheme_args_env?.should == true
+        @scheme.test_action.build_configuration.should == 'Debug'
+
+        @scheme.test_action.testables.count.should == 0
+        @scheme.test_action.macro_expansions.count.should == 1
+
+        macro = @scheme.test_action.macro_expansions[0]
+        macro.class.should == Xcodeproj::XCScheme::MacroExpansion
+
+        ref = macro.buildable_reference
+        ref.target_name.should == 'SharedSchemes'
+        ref.target_uuid.should == '632143E8175736EE0038D40D'
+        ref.buildable_name.should == 'SharedSchemes.app'
+        ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+      end
+
+      it 'Properly map the scheme\'s LaunchAction' do
+        @scheme.launch_action.allow_location_simulation?.should == true
+        @scheme.launch_action.build_configuration.should == 'Debug'
+
+        bpr = @scheme.launch_action.buildable_product_runnable
+        bpr.class.should == Xcodeproj::XCScheme::BuildableProductRunnable
+
+        ref = bpr.buildable_reference
+        ref.target_name.should == 'SharedSchemes'
+        ref.target_uuid.should == '632143E8175736EE0038D40D'
+        ref.buildable_name.should == 'SharedSchemes.app'
+        ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+      end
+
+      it 'Properly map the scheme\'s ProfileAction' do
+        @scheme.profile_action.should_use_launch_scheme_args_env?.should == true
+        @scheme.profile_action.build_configuration.should == 'Release'
+
+        bpr = @scheme.launch_action.buildable_product_runnable
+        bpr.class.should == Xcodeproj::XCScheme::BuildableProductRunnable
+
+        ref = bpr.buildable_reference
+        ref.target_name.should == 'SharedSchemes'
+        ref.target_uuid.should == '632143E8175736EE0038D40D'
+        ref.buildable_name.should == 'SharedSchemes.app'
+        ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+      end
+
+      it 'Properly map the scheme\'s AnalyzeAction' do
+        @scheme.analyze_action.build_configuration.should == 'Debug'
+      end
+
+      it 'Properly map the scheme\'s ArchiveAction' do
+        @scheme.archive_action.build_configuration.should == 'Release'
+        @scheme.archive_action.reveal_archive_in_organizer?.should == true
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
     describe 'Serialization' do
       before do
         app = @project.new_target(:application, 'iOS application', :osx)
@@ -70,13 +154,13 @@ module ProjectSpecs
 
     describe 'Creating a Shared Scheme' do
       before do
-        @ios_application = @project.new_target(:application, 'iOS application', :osx)
+        @ios_application = @project.new_target(:application, 'iOS application', :ios)
         @ios_application.stubs(:uuid).returns('E52523F316245AB20012E2BA')
-        @ios_application_tests = @project.new_target(:bundle, 'iOS applicationTests', :osx)
+        @ios_application_tests = @project.new_target(:octest_bundle, 'iOS applicationTests', :ios)
         @ios_application_tests.stubs(:uuid).returns('E525241E16245AB20012E2BA')
         @ios_static_library = @project.new_target(:bundle, 'iOS staticLibrary', :osx)
         @ios_static_library.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
-        @ios_static_library_tests = @project.new_target(:bundle, 'iOS staticLibraryTests', :osx)
+        @ios_static_library_tests = @project.new_target(:octest_bundle, 'iOS staticLibraryTests', :ios)
         @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
 
         @scheme = Xcodeproj::XCScheme.new
@@ -115,11 +199,12 @@ module ProjectSpecs
       it 'Constructs ReferencedContainer attributes correctly' do
         project = Xcodeproj::Project.new('/project_dir/Project.xcodeproj')
         target = project.new_target(:application, 'iOS application', :osx)
+        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
 
-        @scheme.send(:construct_referenced_container_uri, target).should == 'container:Project.xcodeproj'
+        buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:Project.xcodeproj'
 
         project.root_object.project_dir_path = '/a_dir'
-        @scheme.send(:construct_referenced_container_uri, target).should == 'container:../project_dir/Project.xcodeproj'
+        buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:../project_dir/Project.xcodeproj'
       end
 
       describe 'For iOS Application' do
