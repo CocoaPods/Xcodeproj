@@ -291,6 +291,15 @@ module ProjectSpecs
           @group.sort(:groups_position => :below)
           @group.children.map(&:display_name).should == %w(A.h A.m B.h B.m A)
         end
+
+        it 'sorts case insensitive' do
+          files = 'JSAnimatedImageView', 'MSWeakTimer', 'Pods-CPtestAlphabetic', 'iRate'
+          files.each do |file|
+            @group.new_group(file)
+          end
+          @group.sort
+          @group.children.map(&:display_name).should == ['iRate', 'JSAnimatedImageView', 'MSWeakTimer', 'Pods-CPtestAlphabetic']
+        end
       end
     end
 

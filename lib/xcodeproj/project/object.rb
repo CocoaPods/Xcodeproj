@@ -145,7 +145,7 @@ module Xcodeproj
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
             list.sort! do |x, y|
-              x.display_name <=> y.display_name
+              x.display_name.downcase <=> y.display_name.downcase
             end
           end
         end
