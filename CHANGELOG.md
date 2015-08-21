@@ -7,11 +7,15 @@
 * Added the ability to load an existing `.xcscheme` file and manipulate
   it using `Xcodeproj::XCScheme`.  
   [Olivier Halligon](https://github.com/AliSoftware)
-  [Xcodeproj#288](https://github.com/CocoaPods/Xcodeproj/pull/288)
-  
- * The pods will now be ordered case insensitively in the Project navigator and where the targets are listed in Xcode.
+  [#288](https://github.com/CocoaPods/Xcodeproj/pull/288)
+
+ * Sorting is now done in a case-insensitive manner.  
   [Emma Koszinowski](http://github.com/emkosz)
-  [#3684](https://github.com/CocoaPods/CocoaPods/issues/3684)
+  [CocoaPods#3684](https://github.com/CocoaPods/CocoaPods/issues/3684)
+
+* Trailing whitespace is stripped when serializing XCConfig files.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 0.26.3
 
