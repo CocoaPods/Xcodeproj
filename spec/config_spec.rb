@@ -79,6 +79,11 @@ describe Xcodeproj::Config do
       @config.to_hash.should.be.equal @hash
     end
 
+    it 'ignores settings that are only inherited in #to_hash' do
+      config = Xcodeproj::Config.new('Y' => '$(inherited)', 'Z' => '${inherited}', 'X' => '$(inherited) 1')
+      config.to_hash.should == { 'X' => '$(inherited) 1' }
+    end
+
     it 'can prefix values during serialization' do
       @prefix_hash = { 'PODS_PREFIX_OTHER_LDFLAGS' => @hash['OTHER_LDFLAGS'] }
       @config.to_hash('PODS_PREFIX_').should.be.equal @prefix_hash

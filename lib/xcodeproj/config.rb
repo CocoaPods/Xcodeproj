@@ -131,6 +131,7 @@ module Xcodeproj
 
       result = attributes.dup
       result['OTHER_LDFLAGS'] = list.join(' ') unless list.empty?
+      result.reject! { |_, v| %w($(inherited) ${inherited}).freeze.any? { |i| i == v.strip } }
 
       if prefix
         Hash[result.map { |k, v| [prefix + k, v] }]
