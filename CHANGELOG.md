@@ -16,6 +16,10 @@
 * Trailing whitespace is stripped when serializing XCConfig files.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* XCConfig values that are only `$(inherited)` will be omitted during
+  serialization.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 0.26.3 (2015-07-26)
 
