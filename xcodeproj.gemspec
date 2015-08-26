@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name     = "xcodeproj"
   s.version  = Xcodeproj::VERSION
   s.license  = "MIT"
-  s.email    = "eloy.de.enige@gmail.com"
-  s.homepage = "https://github.com/cocoapods/xcodeproj"
+  s.email    = "carles@pacemaker.net"
+  s.homepage = "https://github.com/pacemakermusic/Xcodeproj.git"
   s.authors  = ["Eloy Duran"]
 
   s.summary     = "Create and modify Xcode projects from Ruby."
