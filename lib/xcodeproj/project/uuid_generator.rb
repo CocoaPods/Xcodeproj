@@ -19,6 +19,8 @@ module Xcodeproj
 
       private
 
+      UUID_ATTRIBUTES = [:remote_global_id_string, :container_portal, :target_proxy].freeze
+
       def verify_no_duplicates!(all_objects)
         duplicates = all_objects - @new_objects_by_uuid.values
         UserInterface.warn "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
@@ -32,14 +34,15 @@ module Xcodeproj
           end
         end
         @project.objects.each do |object|
-          [:remote_global_id_string, :container_portal, :target_proxy].each do |attr|
+          UUID_ATTRIBUTES.each do |attr|
             fixup[object, attr]
           end
         end
       end
 
       def generate_paths(object, path = '')
-        @paths_by_object[object] = path
+        existing = @paths_by_object[object] || path
+        @paths_by_object[object] = path.size > existing.size ? path : existing
 
         object.to_one_attributes.each do |attrb|
           obj = attrb.get_value(object)
@@ -75,10 +78,12 @@ module Xcodeproj
       end
 
       def path_component_for_object(object)
-        hash = object.to_tree_hash
-        component = tree_hash_to_path(hash)
-        component << object.hierarchy_path.to_s if object.respond_to?(:hierarchy_path)
-        component
+        @path_component_for_object ||= Hash.new do |cache, object|
+          component = tree_hash_to_path(object.to_tree_hash)
+          component << object.hierarchy_path.to_s if object.respond_to?(:hierarchy_path)
+          cache[object] = component
+        end
+        @path_component_for_object[object]
       end
 
       def tree_hash_to_path(object, depth = 4)
