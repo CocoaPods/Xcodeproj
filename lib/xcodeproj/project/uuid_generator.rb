@@ -78,10 +78,10 @@ module Xcodeproj
       end
 
       def path_component_for_object(object)
-        @path_component_for_object ||= Hash.new do |cache, object|
-          component = tree_hash_to_path(object.to_tree_hash)
-          component << object.hierarchy_path.to_s if object.respond_to?(:hierarchy_path)
-          cache[object] = component
+        @path_component_for_object ||= Hash.new do |cache, key|
+          component = tree_hash_to_path(key.to_tree_hash)
+          component << key.hierarchy_path.to_s if key.respond_to?(:hierarchy_path)
+          cache[key] = component
         end
         @path_component_for_object[object]
       end
