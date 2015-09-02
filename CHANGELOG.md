@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Cache some calculations in deterministic UUID generation.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.27.1 (2015-08-28)
 
 ##### Bug Fixes
