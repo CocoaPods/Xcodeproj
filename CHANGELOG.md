@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.27.2 (2015-09-02)
 
 ##### Enhancements
 
