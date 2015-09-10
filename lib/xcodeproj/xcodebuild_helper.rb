@@ -56,7 +56,6 @@ module Xcodeproj
         @versions_by_sdk[:watchos] = []
         if xcodebuild_available?
           sdks = parse_sdks_information(xcodebuild_sdks)
-          p sdks
           sdks.each do |(name, version)|
             case
             when name == 'macosx' then @versions_by_sdk[:osx] << version
