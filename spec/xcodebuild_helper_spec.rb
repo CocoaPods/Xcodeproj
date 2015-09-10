@@ -12,6 +12,12 @@ iOS SDKs:
 iOS Simulator SDKs:
 	Simulator - iOS 6.1           	-sdk iphonesimulator6.1
 
+tvOS SDKs:
+  tvOS 9.0                        -sdk appletvos9.0
+
+tvOS Simulator SDKs:
+  Simulator - tvOS 9.0            -sdk appletvsimulator9.0
+
 watchOS SDKs:
   Watch OS 2.0                    -sdk watchos2.0
 
@@ -42,6 +48,10 @@ module Xcodeproj
         @helper.last_osx_sdk.should == '10.8'
       end
 
+      it 'returns the last tvOS SDK' do
+        @helper.last_tvos_sdk.should == '9.0'
+      end
+
       it 'returns the last watchOS SDK' do
         @helper.last_watchos_sdk.should == '2.0'
       end
@@ -65,7 +75,7 @@ module Xcodeproj
       describe '#parse_sdks_information' do
         it 'parses the sdks information returned by xcodebuild' do
           result = @helper.send(:parse_sdks_information, SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT)
-          result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1'], ['watchos', '2.0']]
+          result.should == [['macosx', '10.7'], ['macosx', '10.8'], ['iphoneos', '6.1'], ['appletvos', '9.0'], ['watchos', '2.0']]
         end
       end
     end

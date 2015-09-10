@@ -237,6 +237,7 @@ module Xcodeproj
           case platform
           when :ios then settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
           when :osx then settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+          when :tvos then settings['TVOS_DEPLOYMENT_TARGET'] = deployment_target
           when :watchos then settings['WATCHOS_DEPLOYMENT_TARGET'] = deployment_target
           end
         end

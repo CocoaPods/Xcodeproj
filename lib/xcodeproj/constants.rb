@@ -10,6 +10,9 @@ module Xcodeproj
     #
     LAST_KNOWN_OSX_SDK  = '10.10'
 
+    # @return [String] The last known tvOS SDK (unstable).
+    LAST_KNOWN_TVOS_SDK = '9.0'
+
     # @return [String] The last known watchOS SDK (unstable).
     LAST_KNOWN_WATCHOS_SDK = '2.0'
 
@@ -149,6 +152,9 @@ module Xcodeproj
       }.freeze,
       [:osx] => {
         'SDKROOT'                           => 'macosx',
+      }.freeze,
+      [:tvos] => {
+        'SDKROOT'                           => 'appletvos',
       }.freeze,
       [:watchos] => {
         'SDKROOT'                           => 'watchos',
