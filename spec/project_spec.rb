@@ -136,6 +136,14 @@ module ProjectSpecs
         @project = Xcodeproj::Project.open(@path)
         @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       end
+
+      it 'can load projects that have circular target dependencies' do
+        @path = @dir + 'Circular.xcodeproj'
+        @project = Xcodeproj::Project.open(@path)
+        target_a, target_b = *@project.targets
+        target_a.dependencies.first.target.should == target_b
+        target_b.dependencies.first.target.should == target_a
+      end
     end
 
     #-------------------------------------------------------------------------#
