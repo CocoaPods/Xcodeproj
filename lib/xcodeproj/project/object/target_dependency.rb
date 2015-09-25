@@ -39,6 +39,19 @@ module Xcodeproj
           return target_proxy.remote_info if target_proxy
         end
 
+        # @note This override is necessary because Xcode allows for circular
+        #       target dependencies.
+        #
+        # @return [Hash<String => String>] Returns a cascade representation of
+        #         the object without UUIDs.
+        #
+        def to_tree_hash
+          hash = {}
+          hash['displayName'] = display_name
+          hash['isa'] = isa
+          hash
+        end
+
         # @note This is a no-op, because the targets could theoretically depend
         #   on each other, leading to a stack level too deep error.
         #

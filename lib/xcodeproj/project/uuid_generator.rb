@@ -42,6 +42,7 @@ module Xcodeproj
 
       def generate_paths(object, path = '')
         existing = @paths_by_object[object] || path
+        return existing if @paths_by_object.key?(object)
         @paths_by_object[object] = path.size > existing.size ? path : existing
 
         object.to_one_attributes.each do |attrb|
