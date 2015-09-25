@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Allow opening and saving projects that have circular target dependencies.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#4229](https://github.com/CocoaPods/CocoaPods/issues/4229)
+
+
 ## 0.27.2 (2015-09-02)
 
 ##### Enhancements
