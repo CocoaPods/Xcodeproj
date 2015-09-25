@@ -6,7 +6,11 @@
 
 * Allow opening and saving projects that have circular target dependencies.  
   [Samuel Giddins](https://github.com/segiddins)
-  [#4229](https://github.com/CocoaPods/CocoaPods/issues/4229)
+  [CocoaPods#4229](https://github.com/CocoaPods/CocoaPods/issues/4229)
+
+* Fix the generation of deterministic UUIDs for `.xcdatamodeld` bundles.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#4187](https://github.com/CocoaPods/CocoaPods/issues/4187)
 
 
 ## 0.27.2 (2015-09-02)
