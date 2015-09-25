@@ -1,0 +1,176 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		C04BB2DA1BB4C17E0094B9A9 /* A */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C04BB2DB1BB4C17E0094B9A9 /* Build configuration list for PBXAggregateTarget "A" */;
+			buildPhases = (
+			);
+			dependencies = (
+				C04BB2E51BB4C18E0094B9A9 /* PBXTargetDependency */,
+			);
+			name = A;
+			productName = A;
+		};
+		C04BB2DE1BB4C1840094B9A9 /* B */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C04BB2DF1BB4C1840094B9A9 /* Build configuration list for PBXAggregateTarget "B" */;
+			buildPhases = (
+			);
+			dependencies = (
+				C04BB2E31BB4C18A0094B9A9 /* PBXTargetDependency */,
+			);
+			name = B;
+			productName = B;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		C04BB2E21BB4C18A0094B9A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C04BB2D41BB4C16A0094B9A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C04BB2DA1BB4C17E0094B9A9;
+			remoteInfo = A;
+		};
+		C04BB2E41BB4C18E0094B9A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C04BB2D41BB4C16A0094B9A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C04BB2DE1BB4C1840094B9A9;
+			remoteInfo = B;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXGroup section */
+		C04BB2D31BB4C16A0094B9A9 = {
+			isa = PBXGroup;
+			children = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		C04BB2D41BB4C16A0094B9A9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					C04BB2DA1BB4C17E0094B9A9 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					C04BB2DE1BB4C1840094B9A9 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = C04BB2D71BB4C16A0094B9A9 /* Build configuration list for PBXProject "Circular" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C04BB2D31BB4C16A0094B9A9;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C04BB2DA1BB4C17E0094B9A9 /* A */,
+				C04BB2DE1BB4C1840094B9A9 /* B */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXTargetDependency section */
+		C04BB2E31BB4C18A0094B9A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C04BB2DA1BB4C17E0094B9A9 /* A */;
+			targetProxy = C04BB2E21BB4C18A0094B9A9 /* PBXContainerItemProxy */;
+		};
+		C04BB2E51BB4C18E0094B9A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C04BB2DE1BB4C1840094B9A9 /* B */;
+			targetProxy = C04BB2E41BB4C18E0094B9A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C04BB2D81BB4C16A0094B9A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		C04BB2D91BB4C16A0094B9A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		C04BB2DC1BB4C17E0094B9A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C04BB2DD1BB4C17E0094B9A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C04BB2E01BB4C1840094B9A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C04BB2E11BB4C1840094B9A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C04BB2D71BB4C16A0094B9A9 /* Build configuration list for PBXProject "Circular" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C04BB2D81BB4C16A0094B9A9 /* Debug */,
+				C04BB2D91BB4C16A0094B9A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C04BB2DB1BB4C17E0094B9A9 /* Build configuration list for PBXAggregateTarget "A" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C04BB2DC1BB4C17E0094B9A9 /* Debug */,
+				C04BB2DD1BB4C17E0094B9A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C04BB2DF1BB4C1840094B9A9 /* Build configuration list for PBXAggregateTarget "B" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C04BB2E01BB4C1840094B9A9 /* Debug */,
+				C04BB2E11BB4C1840094B9A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C04BB2D41BB4C16A0094B9A9 /* Project object */;
+}
