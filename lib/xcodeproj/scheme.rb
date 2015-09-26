@@ -29,6 +29,7 @@ module Xcodeproj
     #
     def initialize(file_path = nil)
       if file_path
+        @file_path = file_path
         @doc = REXML::Document.new(File.new(file_path))
         @doc.context[:attribute_quote] = :quote
 
@@ -307,6 +308,19 @@ module Xcodeproj
       scheme_folder_path.mkpath
       scheme_path = scheme_folder_path + "#{name}.xcscheme"
       File.open(scheme_path, 'w') do |f|
+        f.write(to_s)
+      end
+    end
+
+    # Serializes the current state of the object to the original ".xcscheme"
+    # file this XCScheme was created from, overriding the original file.
+    #
+    # Requires that the XCScheme object was initialized using a file path.
+    #
+    def save!
+      raise Informative, 'This XCScheme object was not initialized ' \
+        'using a file path. Use save_as instead.' unless @file_path
+      File.open(@file_path, 'w') do |f|
         f.write(to_s)
       end
     end
