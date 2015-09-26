@@ -98,6 +98,8 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Serialization' do
+      extend SpecHelper::TemporaryDirectory
+
       before do
         app = @project.new_target(:application, 'iOS application', :osx)
         @scheme = Xcodeproj::XCScheme.new
@@ -119,6 +121,26 @@ module ProjectSpecs
               parallelizeBuildables = "YES"
               buildImplicitDependencies = "YES">
         DOC
+      end
+
+      it 'saves in place when initialized from file' do
+        scheme_dir = 'SharedSchemes/SharedSchemes.xcodeproj/xcshareddata/xcschemes/'
+        scheme_name = 'SharedSchemes.xcscheme'
+        FileUtils.cp_r fixture_path(scheme_dir + scheme_name), temporary_directory
+        temp_file = File.join(temporary_directory, scheme_name)
+
+        scheme = Xcodeproj::XCScheme.new(temp_file)
+        FileUtils.rm_r temp_file
+        File.exist?(temp_file).should.be.false
+        scheme.save!
+        File.exist?(temp_file).should.be.true
+        File.read(temp_file).should == scheme.to_s
+      end
+
+      it 'raises when trying to save in place but not initialized from file' do
+        should.raise Xcodeproj::Informative do
+          @scheme.save!
+        end.message.should.match /This XCScheme object was not initialized using a file path/
       end
     end
 
