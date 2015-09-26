@@ -36,14 +36,14 @@ module Xcodeproj
       end
 
       # @return [Bool]
-      #         Whether Xcode7's Clang Code Coverage is enabled ('Gather coverage data' turned ON)
+      #         Whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
       #
       def code_coverage_enabled?
         string_to_bool(@xml_element.attributes['codeCoverageEnabled'])
       end
 
       # @rparam [Bool] flag
-      #         Set whether Xcode7's Clang Code Coverage is enabled ('Gather coverage data' turned ON)
+      #         Set whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
       #
       def code_coverage_enabled=(flag)
         @xml_element.attributes['codeCoverageEnabled'] = bool_to_string(flag)
