@@ -126,6 +126,10 @@ module ProjectSpecs
         t3 = @project.new_target(:static_library, 'Pods', :watchos)
         t3.build_configuration_list.set_setting('SDKROOT', 'watchos2.0')
         t3.sdk_version.should == '2.0'
+
+        t4 = @project.new_target(:static_library, 'Pods', :tvos)
+        t4.build_configuration_list.set_setting('SDKROOT', 'tvos9.0')
+        t4.sdk_version.should == '9.0'
       end
 
       describe 'returns the deployment target specified in its build configuration' do
@@ -137,6 +141,11 @@ module ProjectSpecs
         it 'works for OSX' do
           @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
           @project.new_target(:static_library, 'Pods', :osx, '10.7').deployment_target.should == '10.7'
+        end
+
+        it 'works for tvOS' do
+          @project.build_configuration_list.set_setting('TVOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :tvos, '9.0').deployment_target.should == '9.0'
         end
 
         it 'works for watchOS' do
@@ -165,6 +174,13 @@ module ProjectSpecs
           watch_target = @project.new_target(:static_library, 'Pods', :watchos)
           watch_target.build_configurations.first.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = nil
           watch_target.deployment_target.should == '2.0'
+        end
+
+        it 'works for tvOS' do
+          @project.build_configuration_list.set_setting('TVOS_DEPLOYMENT_TARGET', '9.0')
+          tv_target = @project.new_target(:static_library, 'Pods', :tvos)
+          tv_target.build_configurations.first.build_settings['TVOS_DEPLOYMENT_TARGET'] = nil
+          tv_target.deployment_target.should == '9.0'
         end
       end
 
@@ -345,7 +361,7 @@ module ProjectSpecs
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/QuartzCore.framework'
+          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/QuartzCore.framework'
           file.source_tree.should == 'DEVELOPER_DIR'
         end
 
@@ -361,6 +377,13 @@ module ProjectSpecs
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
           file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+        end
+
+        it 'uses the last known tvOS SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'appletvos')
+          @target.add_system_framework('TVServices')
+          file = @project['Frameworks/tvOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do

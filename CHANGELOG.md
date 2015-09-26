@@ -2,6 +2,12 @@
 
 ## Master
 
+##### Enhancements
+
+* Add `tvos` as a new platform.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#301](https://github.com/CocoaPods/Xcodeproj/pull/301)
+
 ##### Bug Fixes
 
 * Allow opening and saving projects that have circular target dependencies.  

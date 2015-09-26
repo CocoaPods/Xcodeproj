@@ -94,6 +94,8 @@ module Xcodeproj
             :ios
           elsif sdk.include? 'macosx'
             :osx
+          elsif sdk.include? 'appletvos'
+            :tvos
           elsif sdk.include? 'watchos'
             :watchos
           end
@@ -113,6 +115,7 @@ module Xcodeproj
           case platform_name
           when :ios then common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
           when :osx then common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          when :tvos then common_resolved_build_setting('TVOS_DEPLOYMENT_TARGET')
           when :watchos then common_resolved_build_setting('WATCHOS_DEPLOYMENT_TARGET')
           end
         end
@@ -296,6 +299,10 @@ module Xcodeproj
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
+            when :tvos
+              group = project.frameworks_group['tvOS'] || project.frameworks_group.new_group('tvOS')
+              path_sdk_name = 'AppleTVOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_TVOS_SDK
             when :watchos
               group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
               path_sdk_name = 'WatchOS'
