@@ -35,7 +35,6 @@ module Xcodeproj
 
         @scheme = @doc.elements['Scheme']
       else
-        @file_path = nil
         @doc = REXML::Document.new
         @doc.context[:attribute_quote] = :quote
         @doc << REXML::XMLDecl.new(REXML::XMLDecl::DEFAULT_VERSION, 'UTF-8')
