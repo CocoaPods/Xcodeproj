@@ -27,6 +27,7 @@ module Xcodeproj
 
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:should_use_launch_scheme_args_env => 'shouldUseLaunchSchemeArgsEnv')
+      specs_for_bool_attr(:code_coverage_enabled => 'codeCoverageEnabled')
 
       it '#testables' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')

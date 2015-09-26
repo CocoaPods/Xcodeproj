@@ -28,11 +28,25 @@ module Xcodeproj
       end
 
       # @param [Bool] flag
-      #        Set Whether this Test Action should use the same arguments and environment variables
+      #        Set whether this Test Action should use the same arguments and environment variables
       #        as the Launch Action.
       #
       def should_use_launch_scheme_args_env=(flag)
         @xml_element.attributes['shouldUseLaunchSchemeArgsEnv'] = bool_to_string(flag)
+      end
+
+      # @return [Bool]
+      #         Whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
+      #
+      def code_coverage_enabled?
+        string_to_bool(@xml_element.attributes['codeCoverageEnabled'])
+      end
+
+      # @rparam [Bool] flag
+      #         Set whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
+      #
+      def code_coverage_enabled=(flag)
+        @xml_element.attributes['codeCoverageEnabled'] = bool_to_string(flag)
       end
 
       # @return [Array<TestableReference>]

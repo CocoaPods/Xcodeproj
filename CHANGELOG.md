@@ -8,6 +8,11 @@
   [Boris Bügling](https://github.com/neonichu)
   [Xcodeproj#301](https://github.com/CocoaPods/Xcodeproj/pull/301)
 
+* Allow accessing the new Xcode 7's Clang code coverage setting on XCSchemes
+  ("Gather Code Coverage" checkbox).  
+  [Olivier Halligon](https://github.com/AliSoftware)
+  [#307](https://github.com/CocoaPods/Xcodeproj/pull/307)
+
 ##### Bug Fixes
 
 * Allow opening and saving projects that have circular target dependencies.  
