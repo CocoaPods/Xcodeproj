@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.28.0 (2015-10-01)
 
 ##### Enhancements
 
@@ -13,7 +13,7 @@
   [Olivier Halligon](https://github.com/AliSoftware)
   [#307](https://github.com/CocoaPods/Xcodeproj/pull/307)
 
-* Adds `Xcodeproj::XCScheme#save!` to save in place when 
+* Adds `Xcodeproj::XCScheme#save!` to save in place when
   the `XCScheme` object was initialized from an existing file.  
   [Olivier Halligon](https://github.com/AliSoftware)
   [#308](https://github.com/CocoaPods/Xcodeproj/pull/308)

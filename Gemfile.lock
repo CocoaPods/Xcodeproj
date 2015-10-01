@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (0.27.2)
+    xcodeproj (0.28.0)
       activesupport (>= 3)
       claide (~> 0.9.1)
       colored (~> 1.2)
@@ -40,7 +40,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.8.0)
+    minitest (5.8.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
