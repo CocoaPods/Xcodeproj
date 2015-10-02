@@ -84,6 +84,14 @@ describe Xcodeproj::Config do
       config.to_hash.should == { 'X' => '$(inherited) 1' }
     end
 
+    it 'handles non-string settings in #to_s' do
+      config = Xcodeproj::Config.new('X' => true, 'Y' => 123)
+      config.to_s.should == <<-EOS.strip
+X = true
+Y = 123
+      EOS
+    end
+
     it 'can prefix values during serialization' do
       @prefix_hash = { 'PODS_PREFIX_OTHER_LDFLAGS' => @hash['OTHER_LDFLAGS'] }
       @config.to_hash('PODS_PREFIX_').should.be.equal @prefix_hash
