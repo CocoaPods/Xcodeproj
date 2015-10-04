@@ -2,7 +2,7 @@
 //  DetailViewController.h
 //  Objc_iOS_Native
 //
-//  Created by Kyle Fuller on 27/10/2014.
+//  Created by Samuel Giddins on 10/4/15.
 //
 //
 

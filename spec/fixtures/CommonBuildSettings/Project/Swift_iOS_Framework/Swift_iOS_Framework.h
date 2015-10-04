@@ -2,7 +2,7 @@
 //  Swift_iOS_Framework.h
 //  Swift_iOS_Framework
 //
-//  Created by Kyle Fuller on 27/10/2014.
+//  Created by Samuel Giddins on 10/4/15.
 //
 //
 

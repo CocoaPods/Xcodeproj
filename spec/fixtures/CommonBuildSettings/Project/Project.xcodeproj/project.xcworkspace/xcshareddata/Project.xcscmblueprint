@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D" : 0,
+    "9F9800D332981B4632368512DE7ED0F103520D36" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "E407766F-40EB-446D-B018-32F221D1E73F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D" : "Xcodeproj",
+    "9F9800D332981B4632368512DE7ED0F103520D36" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Project",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "spec\/fixtures\/CommonBuildSettings\/Project\/Project.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mrackwitz\/Xcodeproj",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "40C1ABB87EF7EC127A2FEAE2BC9906D703A3B53D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/CocoaPods\/Rainforest",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9F9800D332981B4632368512DE7ED0F103520D36"
+    }
+  ]
+}
