@@ -59,7 +59,8 @@ module Xcodeproj
         # @visibility private
         #
         def initialize(project, uuid)
-          @project, @uuid = project, uuid
+          @project = project
+          @uuid = uuid
           @isa = self.class.isa
           @referrers = []
           unless @isa.match(/^(PBX|XC)/)

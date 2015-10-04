@@ -223,8 +223,8 @@ module ProjectSpecs
 
     describe 'Concerning attributes' do
       class PBXTestClass < AbstractObject
-        attribute :value,   String
-        has_one :file,  Xcodeproj::Project::Object::PBXFileReference
+        attribute :value, String
+        has_one :file, Xcodeproj::Project::Object::PBXFileReference
         has_many :files, Xcodeproj::Project::Object::PBXFileReference
         attribute :value_with_default, String, 'default'
       end

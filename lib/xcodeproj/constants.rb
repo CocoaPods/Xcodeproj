@@ -25,11 +25,11 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION  = 47
+    LAST_KNOWN_OBJECT_VERSION = 47
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0700'
+    LAST_UPGRADE_CHECK = '0700'
 
     # @return [String] The last known object version to Xcodeproj.
     #
@@ -178,6 +178,7 @@ module Xcodeproj
       }.freeze,
       [:debug, :framework, :swift] => {
         'ENABLE_TESTABILITY'                => 'YES',
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:debug, :static_library, :swift] => {
         'ENABLE_TESTABILITY'                => 'YES',
@@ -205,9 +206,6 @@ module Xcodeproj
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
-      }.freeze,
-      [:debug, :framework, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:osx, :static_library] => {
         'EXECUTABLE_PREFIX'                 => 'lib',
