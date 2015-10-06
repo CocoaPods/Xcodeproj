@@ -62,6 +62,22 @@ module Xcodeproj
         @xml_element.add_element(runnable.xml_element) if runnable
       end
 
+      # @return [EnvironmentVariables]
+      #         Returns the EnvironmentVariables that will be defined at app launch
+      #
+      def environment_variables
+        EnvironmentVariables.new(@xml_element.elements[XCScheme::VARIABLES_NODE])
+      end
+
+      # @param [EnvironmentVariables,nil] env_vars
+      #        Sets the EnvironmentVariables that will be defined at app launch
+      #
+      def environment_variables=(env_vars)
+        @xml_element.delete_element(XCScheme::VARIABLES_NODE)
+        @xml_element.add_element(env_vars.xml_element) if env_vars
+        env_vars
+      end
+
       # @todo handle 'AdditionalOptions' tag
     end
   end

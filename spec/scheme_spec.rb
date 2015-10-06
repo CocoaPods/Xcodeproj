@@ -55,6 +55,10 @@ module ProjectSpecs
         ref.target_uuid.should == '632143E8175736EE0038D40D'
         ref.buildable_name.should == 'SharedSchemes.app'
         ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+
+        @scheme.test_action.environment_variables.to_a.should ==
+          [{ :key => 'testkey', :value => 'testval', :enabled => true },
+           { :key => 'testkeydisabled', :value => 'testvaldisabled', :enabled => false }]
       end
 
       it 'Properly map the scheme\'s LaunchAction' do
@@ -69,6 +73,10 @@ module ProjectSpecs
         ref.target_uuid.should == '632143E8175736EE0038D40D'
         ref.buildable_name.should == 'SharedSchemes.app'
         ref.target_referenced_container.should == 'container:SharedSchemes.xcodeproj'
+
+        @scheme.launch_action.environment_variables.to_a.should ==
+          [{ :key => 'launchkey', :value => 'launchval', :enabled => true },
+           { :key => 'launchkeydisabled', :value => 'launchvaldisabled', :enabled => false }]
       end
 
       it 'Properly map the scheme\'s ProfileAction' do
