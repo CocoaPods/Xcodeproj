@@ -645,13 +645,15 @@ module DevToolsCore
   # @note The IB frameworks only seem to be necessary on Xcode 7+
   #
   def self.load_xcode_frameworks
-    load_xcode_framework('SharedFrameworks/DVTFoundation.framework/DVTFoundation')
-    load_xcode_framework('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl')
-    load_xcode_framework('SharedFrameworks/CSServiceClient.framework/CSServiceClient')
-    load_xcode_framework('Frameworks/IBFoundation.framework/IBFoundation')
-    load_xcode_framework('Frameworks/IBAutolayoutFoundation.framework/IBAutolayoutFoundation')
-    load_xcode_framework('Frameworks/IDEFoundation.framework/IDEFoundation')
-    load_xcode_framework('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core')
+    DevToolsCore.silence_stderr do
+      load_xcode_framework('SharedFrameworks/DVTFoundation.framework/DVTFoundation')
+      load_xcode_framework('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl')
+      load_xcode_framework('SharedFrameworks/CSServiceClient.framework/CSServiceClient')
+      load_xcode_framework('Frameworks/IBFoundation.framework/IBFoundation')
+      load_xcode_framework('Frameworks/IBAutolayoutFoundation.framework/IBAutolayoutFoundation')
+      load_xcode_framework('Frameworks/IDEFoundation.framework/IDEFoundation')
+      load_xcode_framework('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core')
+    end
   end
 
   class CFDictionary < NSObject
