@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Silence `dyld` warnings appearing on OS X 10.11.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#312](https://github.com/CocoaPods/Xcodeproj/pull/312)
+
+
 ## 0.28.1 (2015-10-05)
 
 ##### Bug Fixes
@@ -7,10 +16,6 @@
 * Handle non-string values when serializing an XCConfig.  
   [Samuel Giddins](https://github.com/)
   [CocoaPods#4291](https://github.com/CocoaPods/CocoaPods/issues/4291)
-
-* Silence `dyld` warnings appearing on OS X 10.11.  
-  [Boris Bügling](https://github.com/neonichu)
-  [#312](https://github.com/CocoaPods/Xcodeproj/pull/312)
 
 
 ## 0.28.0 (2015-10-01)
