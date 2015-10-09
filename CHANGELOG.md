@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 0.28.2 (2015-10-09)
 
 ##### Bug Fixes
 
