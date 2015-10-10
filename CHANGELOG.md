@@ -1,5 +1,13 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* Add method to create new variant groups (groups for localized versions of the same file)  
+  [Tim Bodeit](https://github.com/timbodeit)
+  [Xcodeproj#301](https://github.com/CocoaPods/Xcodeproj/pull/315)
+
 ## 0.28.2 (2015-10-09)
 
 ##### Bug Fixes
