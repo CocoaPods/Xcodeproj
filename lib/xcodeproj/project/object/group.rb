@@ -264,6 +264,34 @@ module Xcodeproj
           group
         end
 
+        # Creates a new variant group and adds it to the group
+        #
+        # @note   @see new_group
+        #
+        # @param  [#to_s] name
+        #         the name of the new group.
+        #
+        # @param  [#to_s] path
+        #         The, preferably absolute, path of the variant group.
+        #         Pass the path of the folder containing all the .lproj bundles,
+        #         that contain files for the variant group.
+        #         Do not pass the path of a specific bundle (such as en.lproj)
+        #
+        # @param  [Symbol] source_tree
+        #         The source tree key to use to configure the path (@see
+        #         GroupableHelper::SOURCE_TREES_BY_KEY).
+        #
+        # @return [PBXVariantGroup] the new variant group.
+        #
+        def new_variant_group(name, path = nil, source_tree = :group)
+          group = project.new(PBXVariantGroup)
+          children << group
+          group.name = name
+          group.set_source_tree(source_tree)
+          group.set_path(path)
+          group
+        end
+
         # Traverses the children groups and finds the group with the given
         # path, if exists.
         #
