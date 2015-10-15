@@ -131,6 +131,26 @@ module ProjectSpecs
       end
     end
 
+    describe '#new_variant_group' do
+      it 'creates a new variant group' do
+        group = @group.new_variant_group('LocalizedResource')
+        group.name.should == 'LocalizedResource'
+        group.parent.should == @group
+        group.should.is_a?(PBXVariantGroup)
+      end
+
+      it 'sets the source tree to group if not path is provided' do
+        group = @group.new_group('LocalizedResource')
+        group.source_tree.should == '<group>'
+      end
+
+      it 'sets the path according to the source tree if provided' do
+        group = @group.new_group('LocalizedResource', '/project_dir/localized_resources')
+        group.source_tree.should == '<group>'
+        group.path.should == 'localized_resources'
+      end
+    end
+
     #-------------------------------------------------------------------------#
 
     it 'removes groups and files recursively' do
