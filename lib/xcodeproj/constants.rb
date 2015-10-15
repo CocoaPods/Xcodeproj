@@ -119,7 +119,7 @@ module Xcodeproj
       :watch2_app        => 'com.apple.product-type.application.watchapp2',
       :watch_extension   => 'com.apple.product-type.watchkit-extension',
       :watch2_extension  => 'com.apple.product-type.watchkit2-extension',
-      :tv_extension      => 'com.apple.product-type.tv-app-extension'
+      :tv_extension      => 'com.apple.product-type.tv-app-extension',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
