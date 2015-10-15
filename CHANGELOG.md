@@ -8,6 +8,10 @@
   [Tim Bodeit](https://github.com/timbodeit)
   [Xcodeproj#315](https://github.com/CocoaPods/Xcodeproj/pull/315)
 
+* Added target type for TV application extensions.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#318](https://github.com/CocoaPods/Xcodeproj/pull/318)
+
 
 ## 0.28.2 (2015-10-09)
 
