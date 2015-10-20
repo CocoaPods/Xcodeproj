@@ -8,9 +8,29 @@ describe Xcodeproj::Workspace do
       @workspace = Xcodeproj::Workspace.new(pods_project_file_reference, project_file_reference)
     end
 
+    it 'contains the initial projects' do
+      @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
+      @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
+    end
+
     it 'accepts new projects' do
       @workspace << 'Framework.xcodeproj'
       @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('Framework.xcodeproj')
+    end
+
+    it 'accepts new groups' do
+      elem = @workspace.add_group('Test Group')
+      elem.should.not.be.nil
+      @workspace.group_references.should.include Xcodeproj::Workspace::GroupReference.new('Test Group')
+    end
+
+    it 'allows file references to be added to groups' do
+      file_reference_in_group = Xcodeproj::Workspace::FileReference.new('ProjectInGroup.xcodeproj')
+      @workspace.add_group('Another Group') do |_, elem|
+        elem.add_element(file_reference_in_group.to_node)
+      end
+      @workspace.group_references.should.include Xcodeproj::Workspace::GroupReference.new('Another Group')
+      @workspace.file_references.should.include file_reference_in_group
     end
   end
 
@@ -19,6 +39,12 @@ describe Xcodeproj::Workspace do
       pods_project_file_reference = Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
       project_file_reference = Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
       @workspace = Xcodeproj::Workspace.new(pods_project_file_reference, project_file_reference)
+
+      file_reference_in_group = Xcodeproj::Workspace::FileReference.new('ProjectInGroup.xcodeproj')
+      @workspace.add_group('Another Group') do |_, elem|
+        elem.add_element(file_reference_in_group.to_node)
+      end
+
       @doc = REXML::Document.new(@workspace.to_s)
     end
 
@@ -27,9 +53,9 @@ describe Xcodeproj::Workspace do
     end
 
     it 'refers to the projects in xml' do
-      @doc.root.get_elements('/Workspace/FileRef').map do |node|
+      @doc.root.get_elements('/Workspace//FileRef').map do |node|
         node.attributes['location']
-      end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj']
+      end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj', 'group:ProjectInGroup.xcodeproj']
     end
 
     it 'formats the XML consistently with Xcode' do
@@ -43,6 +69,13 @@ describe Xcodeproj::Workspace do
    <FileRef
       location = "group:App.xcodeproj">
    </FileRef>
+   <Group
+      location = "container:"
+      name = "Another Group">
+      <FileRef
+         location = "group:ProjectInGroup.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>
       DOC
       @workspace.to_s.should == expected
@@ -58,6 +91,11 @@ describe Xcodeproj::Workspace do
       @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('libPusher.xcodeproj')
       @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('libPusher-OSX/libPusher-OSX.xcodeproj')
       @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
+      @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('ProjectInAGroup.xcodeproj')
+    end
+
+    it 'contains the group' do
+      @workspace.group_references.should.include Xcodeproj::Workspace::GroupReference.new('Test Group')
     end
   end
 
@@ -68,6 +106,10 @@ describe Xcodeproj::Workspace do
 
     it 'contains no projects' do
       @workspace.file_references.should.be.empty
+    end
+
+    it 'contains no groups' do
+      @workspace.group_references.should.be.empty
     end
   end
 
