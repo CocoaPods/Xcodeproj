@@ -12,6 +12,9 @@
   [Boris Bügling](https://github.com/neonichu)
   [Xcodeproj#318](https://github.com/CocoaPods/Xcodeproj/pull/318)
 
+* Added .hxx to the list of recognized header file extensions.  
+  [Jason Vasquez](https://github.com/jasonvasquez)
+  [Xcodeproj#320](https://github.com/CocoaPods/Xcodeproj/pull/320)
 
 ## 0.28.2 (2015-10-09)
 
