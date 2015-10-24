@@ -142,7 +142,7 @@ Y = 123
     it 'de-duplicates values when merging' do
       @config << { 'FOO' => 'bar $(baz)' }
       @config.merge!('FOO' => 'bar $(baz)')
-      @config.to_hash.should ==  {
+      @config.to_hash.should == {
         'FOO' => 'bar $(baz)',
         'OTHER_LDFLAGS' => '-framework "Foundation"',
       }
