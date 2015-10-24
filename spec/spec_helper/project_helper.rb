@@ -5,8 +5,9 @@ module SpecHelper
     # Keys which are excluded from comparison
     EXCLUDED_KEYS = %w(
       INFOPLIST_FILE
-      MACOSX_DEPLOYMENT_TARGET
       IPHONEOS_DEPLOYMENT_TARGET
+      MACOSX_DEPLOYMENT_TARGET
+      PRODUCT_BUNDLE_IDENTIFIER
     ).freeze
 
     # Generates test cases to compare two settings hashes.
