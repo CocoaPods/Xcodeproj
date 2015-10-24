@@ -139,6 +139,15 @@ Y = 123
       }
     end
 
+    it 'de-duplicates values when merging' do
+      @config << { 'FOO' => 'bar $(baz)' }
+      @config.merge!('FOO' => 'bar $(baz)')
+      @config.to_hash.should ==  {
+        'FOO' => 'bar $(baz)',
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
+      }
+    end
+
     it 'generates the config file with refs to all included xcconfigs' do
       @config.includes = ['Somefile.xcconfig']
       @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
