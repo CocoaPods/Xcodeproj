@@ -50,7 +50,7 @@ module SpecHelper
 
         if unexpected_settings.count > 0
           description << 'Unexpected additional build settings:'
-          description += unexpected_settings.map { |s| "* #{s.green} (produced[s])" }
+          description += unexpected_settings.map { |s| "* #{s.green} (#{produced[s]})" }
           description << ''
         end
 
