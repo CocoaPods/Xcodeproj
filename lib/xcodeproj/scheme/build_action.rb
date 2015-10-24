@@ -76,7 +76,8 @@ module Xcodeproj
         def initialize(target_or_node = nil)
           create_xml_element_with_fallback(target_or_node, 'BuildActionEntry') do
             # Check target type to configure the default entry attributes accordingly
-            is_test_target, is_app_target = [false, false]
+            is_test_target = false
+            is_app_target = false
             if target_or_node && target_or_node.is_a?(::Xcodeproj::Project::Object::PBXNativeTarget)
               test_types = [Constants::PRODUCT_TYPE_UTI[:octest_bundle], Constants::PRODUCT_TYPE_UTI[:unit_test_bundle]]
               app_types = [Constants::PRODUCT_TYPE_UTI[:application]]

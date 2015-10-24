@@ -2,7 +2,7 @@
 //  DetailViewController.swift
 //  Swift_iOS_Native
 //
-//  Created by Kyle Fuller on 27/10/2014.
+//  Created by Samuel Giddins on 10/24/15.
 //
 //
 
@@ -22,7 +22,7 @@ class DetailViewController: UIViewController {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail: AnyObject = self.detailItem {
+        if let detail = self.detailItem {
             if let label = self.detailDescriptionLabel {
                 label.text = detail.description
             }

@@ -23,7 +23,7 @@ module Xcodeproj
 
       def initialize(argv)
         self.xcodeproj_path = argv.shift_argument
-        @output_path  = Pathname(argv.shift_argument || '.')
+        @output_path = Pathname(argv.shift_argument || '.')
 
         super
       end

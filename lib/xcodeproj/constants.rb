@@ -4,16 +4,16 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '9.0'
+    LAST_KNOWN_IOS_SDK = '9.1'
 
     # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK  = '10.11'
 
-    # @return [String] The last known tvOS SDK (unstable).
+    # @return [String] The last known tvOS SDK (stable).
     LAST_KNOWN_TVOS_SDK = '9.0'
 
-    # @return [String] The last known watchOS SDK.
+    # @return [String] The last known watchOS SDK (stable).
     LAST_KNOWN_WATCHOS_SDK = '2.0'
 
     # @return [String] The last known archive version to Xcodeproj.
@@ -25,15 +25,15 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION  = 47
+    LAST_KNOWN_OBJECT_VERSION = 47
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0700'
+    LAST_UPGRADE_CHECK = '0700'
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0700'
+    LAST_SWIFT_UPGRADE_CHECK = '0710'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -139,13 +139,17 @@ module Xcodeproj
     #
     COMMON_BUILD_SETTINGS = {
       :all => {
-        'PRODUCT_NAME'                      => '$(TARGET_NAME)',
         'ENABLE_STRICT_OBJC_MSGSEND'        => 'YES',
+        'GCC_NO_COMMON_BLOCKS'              => 'YES',
+        'PRODUCT_NAME'                      => '$(TARGET_NAME)',
       }.freeze,
       [:debug] => {
+        'DEBUG_INFORMATION_FORMAT'          => 'dwarf',
+        'ENABLE_TESTABILITY'                => 'YES',
         'MTL_ENABLE_DEBUG_INFO'             => 'YES',
       }.freeze,
       [:release] => {
+        'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
         'MTL_ENABLE_DEBUG_INFO'             => 'NO',
       }.freeze,
       [:ios] => {
@@ -164,20 +168,16 @@ module Xcodeproj
         # Empty?
       }.freeze,
       [:release, :osx] => {
-        'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
+        # Empty?
       }.freeze,
       [:debug, :ios] => {
         # Empty?
       }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
-        'ENABLE_TESTABILITY'                => 'YES',
       }.freeze,
-      [:debug, :dynamic_library, :swift] => {
-        'ENABLE_TESTABILITY'                => 'YES',
-      }.freeze,
-      [:debug, :framework, :swift] => {
-        'ENABLE_TESTABILITY'                => 'YES',
+      [:debug, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:debug, :static_library, :swift] => {
         'ENABLE_TESTABILITY'                => 'YES',
@@ -201,25 +201,26 @@ module Xcodeproj
       [:osx, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/Frameworks'],
         'FRAMEWORK_VERSION'                 => 'A',
+        'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
       }.freeze,
-      [:debug, :framework, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
-      }.freeze,
       [:osx, :static_library] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:ios, :static_library] => {
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'OTHER_LDFLAGS'                     => '-ObjC',
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:osx, :dynamic_library] => {
-        'EXECUTABLE_PREFIX'                 => 'lib',
+        'CODE_SIGN_IDENTITY'                => '-',
         'DYLIB_COMPATIBILITY_VERSION'       => '1',
         'DYLIB_CURRENT_VERSION'             => '1',
+        'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
@@ -227,6 +228,7 @@ module Xcodeproj
       [:ios, :application] => {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :application] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
@@ -242,9 +244,10 @@ module Xcodeproj
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx, :bundle] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
-        'SDKROOT'                           => 'macosx',
         'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Bundles',
+        'SDKROOT'                           => 'macosx',
       }.freeze,
     }.freeze
 

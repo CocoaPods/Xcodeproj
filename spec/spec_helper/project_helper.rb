@@ -5,8 +5,9 @@ module SpecHelper
     # Keys which are excluded from comparison
     EXCLUDED_KEYS = %w(
       INFOPLIST_FILE
-      MACOSX_DEPLOYMENT_TARGET
       IPHONEOS_DEPLOYMENT_TARGET
+      MACOSX_DEPLOYMENT_TARGET
+      PRODUCT_BUNDLE_IDENTIFIER
     ).freeze
 
     # Generates test cases to compare two settings hashes.
@@ -43,13 +44,13 @@ module SpecHelper
 
         if missing_settings.count > 0
           description << 'Missing build settings:'
-          description << missing_settings.map { |s| "* #{s.red}" }
+          description << missing_settings.map { |s| "* #{s.red} (#{expected[s]})" }
           description << ''
         end
 
         if unexpected_settings.count > 0
           description << 'Unexpected additional build settings:'
-          description += unexpected_settings.map { |s| "* #{s.green}" }
+          description += unexpected_settings.map { |s| "* #{s.green} (#{produced[s]})" }
           description << ''
         end
 
