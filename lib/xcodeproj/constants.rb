@@ -4,16 +4,16 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '9.0'
+    LAST_KNOWN_IOS_SDK = '9.1'
 
     # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK  = '10.11'
 
-    # @return [String] The last known tvOS SDK (unstable).
+    # @return [String] The last known tvOS SDK (stable).
     LAST_KNOWN_TVOS_SDK = '9.0'
 
-    # @return [String] The last known watchOS SDK.
+    # @return [String] The last known watchOS SDK (stable).
     LAST_KNOWN_WATCHOS_SDK = '2.0'
 
     # @return [String] The last known archive version to Xcodeproj.
@@ -33,7 +33,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0700'
+    LAST_SWIFT_UPGRADE_CHECK = '0710'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -208,16 +208,19 @@ module Xcodeproj
         'DEFINES_MODULE'                    => 'YES',
       }.freeze,
       [:osx, :static_library] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:ios, :static_library] => {
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'OTHER_LDFLAGS'                     => '-ObjC',
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:osx, :dynamic_library] => {
-        'EXECUTABLE_PREFIX'                 => 'lib',
+        'CODE_SIGN_IDENTITY'                => '-',
         'DYLIB_COMPATIBILITY_VERSION'       => '1',
         'DYLIB_CURRENT_VERSION'             => '1',
+        'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
@@ -241,9 +244,10 @@ module Xcodeproj
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx, :bundle] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
-        'SDKROOT'                           => 'macosx',
         'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Bundles',
+        'SDKROOT'                           => 'macosx',
       }.freeze,
     }.freeze
 
