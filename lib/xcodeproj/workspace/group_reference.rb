@@ -38,12 +38,12 @@ module Xcodeproj
         [name, type].hash
       end
 
-      # Returns a file reference given XML representation.
+      # Returns a group reference given XML representation.
       #
       # @param  [REXML::Element] xml_node
       #         the XML representation.
       #
-      # @return [FileReference] The new file reference instance.
+      # @return [GroupReference] The new group reference instance.
       #
       def self.from_node(xml_node)
         type, _ = xml_node.attribute('location').value.split(':', 2)
@@ -51,7 +51,7 @@ module Xcodeproj
         new(name, type)
       end
 
-      # @return [REXML::Element] the XML representation of the file reference.
+      # @return [REXML::Element] the XML representation of the group reference.
       #
       def to_node
         REXML::Element.new('Group').tap do |element|
