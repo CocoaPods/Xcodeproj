@@ -1,0 +1,4 @@
+#include "Objc_tvOS_Native/Objc_tvOS_Native_base.xcconfig"
+DEBUG_INFORMATION_FORMAT = dwarf
+ENABLE_TESTABILITY = YES
+MTL_ENABLE_DEBUG_INFO = YES

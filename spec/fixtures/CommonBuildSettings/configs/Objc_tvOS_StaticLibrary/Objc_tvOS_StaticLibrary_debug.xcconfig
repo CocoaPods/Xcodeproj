@@ -1,0 +1,4 @@
+#include "Objc_tvOS_StaticLibrary/Objc_tvOS_StaticLibrary_base.xcconfig"
+DEBUG_INFORMATION_FORMAT = dwarf
+ENABLE_TESTABILITY = YES
+MTL_ENABLE_DEBUG_INFO = YES

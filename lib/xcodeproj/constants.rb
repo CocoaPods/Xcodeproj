@@ -204,6 +204,15 @@ module Xcodeproj
         'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
       }.freeze,
+      [:watchos, :framework] => {
+        'APPLICATION_EXTENSION_API_ONLY'    => 'YES',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '4',
+      }.freeze,
+      [:tvos, :framework] => {
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '3',
+      }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
       }.freeze,
@@ -213,6 +222,14 @@ module Xcodeproj
       }.freeze,
       [:ios, :static_library] => {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+        'OTHER_LDFLAGS'                     => '-ObjC',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:watchos, :static_library] => {
+        'OTHER_LDFLAGS'                     => '-ObjC',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:tvos, :static_library] => {
         'OTHER_LDFLAGS'                     => '-ObjC',
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
@@ -234,6 +251,19 @@ module Xcodeproj
         'COMBINE_HIDPI_IMAGES'              => 'YES',
         'CODE_SIGN_IDENTITY'                => '-',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks'],
+      }.freeze,
+      [:watchos, :application] => {
+        'SKIP_INSTALL'                      => 'YES',
+        'TARGETED_DEVICE_FAMILY'            => '4',
+      }.freeze,
+      [:watchos, :application, :swift] => {
+        'EMBEDDED_CONTENT_CONTAINS_SWIFT'   => 'YES',
+      }.freeze,
+      [:tvos, :application] => {
+        'ASSETCATALOG_COMPILER_APPICON_NAME' => 'App Icon & Top Shelf Image',
+        'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
+        'TARGETED_DEVICE_FAMILY'            => '3',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
       }.freeze,
       [:bundle] => {
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
