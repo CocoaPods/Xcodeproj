@@ -42,7 +42,9 @@ module Xcodeproj
           raise TypeError, "The given `#{path}` must be a string or 'pathname'."
         end
         path = path.to_s
-        raise IOError, 'Empty path.' if path == ''
+        raise IOError, 'Empty path.' if path.empty?
+
+        raise ThreadError, 'Can only write plists from the main thread.' unless Thread.current == Thread.main
 
         if DevToolsCore.load_xcode_frameworks && path.end_with?('pbxproj')
           ruby_hash_write_xcode(hash, path)
