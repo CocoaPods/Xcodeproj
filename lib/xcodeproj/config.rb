@@ -277,8 +277,7 @@ module Xcodeproj
       @attributes.merge!(attributes) do |_, v1, v2|
         v1 = v1.strip
         v2 = v2.strip
-        existing = v1.strip.shellsplit
-        existing.include?(v2) ? v1 : "#{v1} #{v2}"
+        (v2.shellsplit - v1.shellsplit).empty? ? v1 : "#{v1} #{v2}"
       end
     end
 
