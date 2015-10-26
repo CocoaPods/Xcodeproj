@@ -15,6 +15,7 @@ doc
 tmp
 .DS_Store
 xcuserdata
+*.xcscmblueprint
 rakelib/doccoverage/
 coverage/
 .coveralls.yml

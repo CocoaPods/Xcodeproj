@@ -515,8 +515,8 @@ module Xcodeproj
           unless phase_class < AbstractBuildPhase
             raise ArgumentError, "#{phase_class} must be a subclass of #{AbstractBuildPhase.class}"
           end
-          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } \
-            || project.new(phase_class).tap { |bp| build_phases << bp }
+          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } ||
+            project.new(phase_class).tap { |bp| build_phases << bp }
         end
 
         public

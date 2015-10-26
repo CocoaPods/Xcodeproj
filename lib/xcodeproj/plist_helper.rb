@@ -42,7 +42,9 @@ module Xcodeproj
           raise TypeError, "The given `#{path}` must be a string or 'pathname'."
         end
         path = path.to_s
-        raise IOError, 'Empty path.' if path == ''
+        raise IOError, 'Empty path.' if path.empty?
+
+        raise ThreadError, 'Can only write plists from the main thread.' unless Thread.current == Thread.main
 
         if DevToolsCore.load_xcode_frameworks && path.end_with?('pbxproj')
           ruby_hash_write_xcode(hash, path)
@@ -91,7 +93,7 @@ module Xcodeproj
       #
       def fix_encoding(filename)
         output = ''
-        input = File.open(filename, 'rb') { |file| file.read }
+        input = File.open(filename, 'rb', &:read)
         input.unpack('U*').each do |codepoint|
           if codepoint > 127 # ASCII is 7-bit, so 0-127 are valid characters
             output << "&##{codepoint};"
@@ -375,7 +377,7 @@ module CoreFoundation
   # CFNumber
   extern :CFNumberIsFloatType, [CFTypeRef], Boolean
   extern :CFNumberGetValue, [CFTypeRef, CFNumberType, VoidPointer], Boolean
-  extern :CFNumberCreate,  [CFTypeRef, CFNumberType, VoidPointer], CFTypeRef
+  extern :CFNumberCreate, [CFTypeRef, CFNumberType, VoidPointer], CFTypeRef
 
   # @!group Custom convenience functions
   #---------------------------------------------------------------------------#
@@ -638,8 +640,8 @@ module DevToolsCore
 
   def self.load_xcode_framework(framework)
     Fiddle.dlopen(XCODE_PATH.join(framework).to_s)
-    rescue Fiddle::DLError
-      nil
+  rescue Fiddle::DLError
+    nil
   end
 
   # @note The IB frameworks only seem to be necessary on Xcode 7+

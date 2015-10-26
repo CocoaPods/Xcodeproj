@@ -20,6 +20,13 @@
   [David Parton](https://github.com/dparton)
   [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/320)
 
+##### Bug Fixes
+
+* Avoid duplicating settings with multiple values in common when merging.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#3652](https://github.com/CocoaPods/CocoaPods/issues/3652)
+
+
 ## 0.28.2 (2015-10-09)
 
 ##### Bug Fixes

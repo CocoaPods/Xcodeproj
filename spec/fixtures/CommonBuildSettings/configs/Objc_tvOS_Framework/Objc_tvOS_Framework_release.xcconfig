@@ -1,0 +1,4 @@
+#include "Objc_tvOS_Framework/Objc_tvOS_Framework_base.xcconfig"
+COPY_PHASE_STRIP = NO
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+MTL_ENABLE_DEBUG_INFO = NO
