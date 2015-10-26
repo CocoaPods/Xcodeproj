@@ -166,6 +166,92 @@ module ProjectHelperSpecs
           end
         end
       end
+
+      describe 'on platform watchOS' do
+        define :platform => :watchos
+
+        # TODO: Create a target and dump its config
+        # describe "for product type Bundle" do
+        #  define product_type: :bundle
+        #  behaves_like target_from_fixtures 'watchOS_Bundle'
+        # end
+
+        describe 'in language Objective-C' do
+          define :language => :objc
+
+          describe 'for product type Framework' do
+            define :product_type => :framework
+            behaves_like target_from_fixtures 'Objc_watchOS_Framework'
+          end
+
+          describe 'for product type Application' do
+            define :product_type => :application
+            behaves_like target_from_fixtures 'Objc_watchOS_Native'
+          end
+
+          describe 'for product type Static Library' do
+            define :product_type => :static_library
+            behaves_like target_from_fixtures 'Objc_watchOS_StaticLibrary'
+          end
+        end
+
+        describe 'in language Swift' do
+          define :language => :swift
+
+          describe 'for product type Framework' do
+            define :product_type => :framework
+            behaves_like target_from_fixtures 'Swift_watchOS_Framework'
+          end
+
+          describe 'for product type Application' do
+            define :product_type => :application
+            behaves_like target_from_fixtures 'Swift_watchOS_Native'
+          end
+        end
+      end
+
+      describe 'on platform tvOS' do
+        define :platform => :tvos
+
+        # TODO: Create a target and dump its config
+        # describe "for product type Bundle" do
+        #  define product_type: :bundle
+        #  behaves_like target_from_fixtures 'tvOS_Bundle'
+        # end
+
+        describe 'in language Objective-C' do
+          define :language => :objc
+
+          describe 'for product type Framework' do
+            define :product_type => :framework
+            behaves_like target_from_fixtures 'Objc_tvOS_Framework'
+          end
+
+          describe 'for product type Application' do
+            define :product_type => :application
+            behaves_like target_from_fixtures 'Objc_tvOS_Native'
+          end
+
+          describe 'for product type Static Library' do
+            define :product_type => :static_library
+            behaves_like target_from_fixtures 'Objc_tvOS_StaticLibrary'
+          end
+        end
+
+        describe 'in language Swift' do
+          define :language => :swift
+
+          describe 'for product type Framework' do
+            define :product_type => :framework
+            behaves_like target_from_fixtures 'Swift_tvOS_Framework'
+          end
+
+          describe 'for product type Application' do
+            define :product_type => :application
+            behaves_like target_from_fixtures 'Swift_tvOS_Native'
+          end
+        end
+      end
     end
   end
 end
