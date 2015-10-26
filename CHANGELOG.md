@@ -18,7 +18,7 @@
 
 * Added basic Xcodeproj::Workspace APIs to support groups
   [David Parton](https://github.com/dparton)
-  [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/320)
+  [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/322)
 
 ##### Bug Fixes
 
