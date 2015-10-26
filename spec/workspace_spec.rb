@@ -19,9 +19,9 @@ describe Xcodeproj::Workspace do
     end
 
     it 'accepts new groups' do
-      elem = @workspace.add_group('Test Group')
-      elem.should.not.be.nil
-      @workspace.group_references.should.include Xcodeproj::Workspace::GroupReference.new('Test Group')
+      added_group = @workspace.add_group('Test Group')
+      added_group.should.not.be.nil
+      @workspace.group_references.should.include added_group
     end
 
     it 'allows file references to be added to groups' do

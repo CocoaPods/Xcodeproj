@@ -16,6 +16,10 @@
   [Jason Vasquez](https://github.com/jasonvasquez)
   [Xcodeproj#320](https://github.com/CocoaPods/Xcodeproj/pull/320)
 
+* Added basic Xcodeproj::Workspace APIs to support groups
+  [David Parton](https://github.com/dparton)
+  [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/320)
+
 ## 0.28.2 (2015-10-09)
 
 ##### Bug Fixes

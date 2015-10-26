@@ -10,6 +10,9 @@ module Xcodeproj
   class Workspace
     # @return [REXML::Document] the parsed XML model for the workspace contents
     attr_reader :document
+
+    # @return [Hash<String => String>] a mapping from scheme name to project full path
+    #         containing the scheme
     attr_reader :schemes
 
     # @return [Array<FileReference>] the paths of the projects contained in the
@@ -34,9 +37,12 @@ module Xcodeproj
     # @param [REXML::Document] document @see document
     # @param [Array<FileReference>] file_references additional projects to add
     #
+    # @note The document parameter is passed to the << operator if it is not a
+    #       valid REXML::Document. It is optional, but may also be passed as nil
+    #
     def initialize(document, *file_references)
       @schemes = {}
-      if !document || document.is_a?(REXML::Document)
+      if document.nil? || document.is_a?(REXML::Document)
         @document = document
       else
         @document = REXML::Document.new(root_xml(''))
@@ -78,23 +84,22 @@ module Xcodeproj
       instance
     end
 
-    #-------------------------------------------------------------------------#
-
     # Adds a new path to the list of the of projects contained in the
     # workspace.
+    # @param [String, Xcodeproj::Workspace::FileReference] path_or_reference
+    #        A string or Xcode::Workspace::FileReference containing a path to an Xcode project
     #
-    # @param  [String] projpath
-    #         The path of the project to add.
+    # @raise [ArgumentError] Raised if the input is neither a String nor a FileReference
     #
     # @return [void]
     #
-    def <<(projpath)
+    def <<(path_or_reference)
       return unless @document && @document.respond_to?(:root)
       case
-      when projpath.is_a?(String)
-        project_file_reference = Xcodeproj::Workspace::FileReference.new(projpath)
-      when projpath.is_a?(Xcodeproj::Workspace::FileReference)
-        project_file_reference = projpath
+      when path_or_reference.is_a?(String)
+        project_file_reference = Xcodeproj::Workspace::FileReference.new(path_or_reference)
+      when path_or_reference.is_a?(Xcodeproj::Workspace::FileReference)
+        project_file_reference = path_or_reference
         projpath = nil
       else
         raise ArgumentError, 'Input to the << operator must be a file path or FileReference'
@@ -110,15 +115,17 @@ module Xcodeproj
     #
     # @param  [String] name The name of the group
     #
-    # @return [Xcodeproj::Workspace::GroupReference]
-    # The added group reference
+    # @yield [Xcodeproj::Workspace::GroupReference, REXML::Element]
+    #        Yields the GroupReference and underlying XML element for mutation
+    #
+    # @return [Xcodeproj::Workspace::GroupReference] The added group reference
     #
     def add_group(name)
       return nil unless @document
       group = Xcodeproj::Workspace::GroupReference.new(name)
       elem = @document.root.add_element(group.to_node)
       yield group, elem if block_given?
-      elem
+      group
     end
 
     # Checks if the workspace contains the project with the given file
@@ -141,12 +148,9 @@ module Xcodeproj
       @document.root.each_recursive do |elem|
         until stack.empty?
           last = stack.last
-          if last == elem.parent
-            break
-          else
-            contents += xcworkspace_element_end_xml(stack.length, stack.last)
-            stack.pop
-          end
+          break if last == elem.parent
+          contents += xcworkspace_element_end_xml(stack.length, last)
+          stack.pop
         end
 
         stack << elem
@@ -158,7 +162,6 @@ module Xcodeproj
         stack.pop
       end
 
-      # contents = file_references.map { |reference| file_reference_xml(reference) }
       root_xml(contents)
     end
 
@@ -219,13 +222,14 @@ module Xcodeproj
    version = "1.0">
 #{contents.rstrip}
 </Workspace>
-      DOC
+DOC
     end
 
-    # @return [String] The Xcode-specific XML formatting of an element start
     #
     # @param  [Integer] depth The depth of the element in the tree
     # @param  [REXML::Document::Element] elem The XML element to format.
+    #
+    # @return [String] The Xcode-specific XML formatting of an element start
     #
     def xcworkspace_element_start_xml(depth, elem)
       attributes = case elem.name
@@ -236,14 +240,15 @@ module Xcodeproj
                    end
       contents = "<#{elem.name}"
       indent = '   ' * depth
-      attributes.each { | name| contents += "\n   #{name} = \"#{elem.attribute(name).value}\"" }
+      attributes.each { |name| contents += "\n   #{name} = \"#{elem.attribute(name).value}\"" }
       contents.split("\n").map { |line| "#{indent}#{line}" }.join("\n") + ">\n"
     end
 
-    # @return [String] The Xcode-specific XML formatting of an element end
     #
     # @param  [Integer] depth The depth of the element in the tree
     # @param  [REXML::Document::Element] elem The XML element to format.
+    #
+    # @return [String] The Xcode-specific XML formatting of an element end
     #
     def xcworkspace_element_end_xml(depth, elem)
       "#{'   ' * depth}</#{elem.name}>\n"

@@ -46,7 +46,7 @@ module Xcodeproj
       # @return [GroupReference] The new group reference instance.
       #
       def self.from_node(xml_node)
-        type, _ = xml_node.attribute('location').value.split(':', 2)
+        type = xml_node.attribute('location').value.split(':', 2).first
         name = xml_node.attribute('name').value
         new(name, type)
       end
