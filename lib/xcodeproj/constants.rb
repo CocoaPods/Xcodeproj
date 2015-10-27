@@ -8,7 +8,7 @@ module Xcodeproj
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK  = '10.11'
+    LAST_KNOWN_OSX_SDK = '10.11'
 
     # @return [String] The last known tvOS SDK (stable).
     LAST_KNOWN_TVOS_SDK = '9.0'

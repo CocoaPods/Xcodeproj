@@ -87,7 +87,7 @@ module ProjectSpecs
 
       it 'allows hashes, strings, booleans, numbers, and arrays of hashes and strings as values' do
         hash = {
-          'hash'   => { 'a hash' => 'in a hash' },
+          'hash' => { 'a hash' => 'in a hash' },
           'string' => 'string',
           'true_bool' => '1',
           'false_bool' => '0',

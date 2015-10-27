@@ -1,4 +1,5 @@
 require 'xcodeproj/scheme/abstract_scheme_action'
+require 'xcodeproj/scheme/environment_variables'
 
 module Xcodeproj
   class XCScheme
@@ -82,6 +83,23 @@ module Xcodeproj
       #
       def add_macro_expansion(macro_expansion)
         @xml_element.add_element(macro_expansion.xml_element)
+      end
+
+      # @return [EnvironmentVariables]
+      #         Returns the EnvironmentVariables that will be defined at test launch
+      #
+      def environment_variables
+        EnvironmentVariables.new(@xml_element.elements[XCScheme::VARIABLES_NODE])
+      end
+
+      # @param [EnvironmentVariables,nil] env_vars
+      #        Sets the EnvironmentVariables that will be defined at test launch
+      # @return [EnvironmentVariables]
+      #
+      def environment_variables=(env_vars)
+        @xml_element.delete_element(XCScheme::VARIABLES_NODE)
+        @xml_element.add_element(env_vars.xml_element) if env_vars
+        env_vars
       end
 
       #-------------------------------------------------------------------------#
