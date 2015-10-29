@@ -1,9 +1,7 @@
 module Xcodeproj
   class Project
     module Object
-
       class AbstractTarget < AbstractObject
-
         # @!group Attributes
 
         # @return [String] The name of the Target.
@@ -31,7 +29,6 @@ module Xcodeproj
         #
         has_many :dependencies, PBXTargetDependency
 
-
         public
 
         # @!group Helpers
@@ -54,7 +51,7 @@ module Xcodeproj
         def resolved_build_setting(key)
           target_settings = build_configuration_list.get_setting(key)
           project_settings = project.build_configuration_list.get_setting(key)
-          target_settings.merge(project_settings) do |key, target_val, proj_val|
+          target_settings.merge(project_settings) do |_key, target_val, proj_val|
             target_val || proj_val
           end
         end
@@ -92,27 +89,34 @@ module Xcodeproj
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
-          if    sdk.include? 'iphoneos' then :ios
-          elsif sdk.include? 'macosx'   then :osx
+          return unless sdk
+          if sdk.include? 'iphoneos'
+            :ios
+          elsif sdk.include? 'macosx'
+            :osx
+          elsif sdk.include? 'appletvos'
+            :tvos
+          elsif sdk.include? 'watchos'
+            :watchos
           end
         end
 
         # @return [String] the version of the SDK.
         #
         def sdk_version
-          if sdk
-            sdk.scan(/[0-9.]+/).first
-          end
+          return unless sdk
+          sdk.scan(/[0-9.]+/).first
         end
 
         # @return [String] the deployment target of the target according to its
         #         platform.
         #
         def deployment_target
-          if platform_name == :ios
-            common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
-          else
-            common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          case platform_name
+          when :ios then common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
+          when :osx then common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          when :tvos then common_resolved_build_setting('TVOS_DEPLOYMENT_TARGET')
+          when :watchos then common_resolved_build_setting('WATCHOS_DEPLOYMENT_TARGET')
           end
         end
 
@@ -176,14 +180,14 @@ module Xcodeproj
         #         the copy files build phases of the target.
         #
         def copy_files_build_phases
-          build_phases.select { |bp| bp.class == PBXCopyFilesBuildPhase }
+          build_phases.grep(PBXCopyFilesBuildPhase)
         end
 
         # @return [Array<PBXShellScriptBuildPhase>]
         #         the copy files build phases of the target.
         #
         def shell_script_build_phases
-          build_phases.select { |bp| bp.class == PBXShellScriptBuildPhase }
+          build_phases.grep(PBXShellScriptBuildPhase)
         end
 
         # Adds a dependency on the given target.
@@ -197,24 +201,42 @@ module Xcodeproj
         # @return [void]
         #
         def add_dependency(target)
-          unless dependencies.map(&:target).include?(target)
+          unless dependency_for_target(target)
             container_proxy = project.new(Xcodeproj::Project::PBXContainerItemProxy)
             if target.project == project
               container_proxy.container_portal = project.root_object.uuid
             else
               subproject_reference = project.reference_for_path(target.project.path)
-              raise ArgumentError, "add_dependency got target that belongs to a project is not this project and is not a subproject of this project" unless subproject_reference
+              raise ArgumentError, 'add_dependency got target that belongs to a project is not this project and is not a subproject of this project' unless subproject_reference
               container_proxy.container_portal = subproject_reference.uuid
             end
-            container_proxy.proxy_type = '1'
+            container_proxy.proxy_type = Constants::PROXY_TYPES[:native_target]
             container_proxy.remote_global_id_string = target.uuid
             container_proxy.remote_info = target.name
 
             dependency = project.new(Xcodeproj::Project::PBXTargetDependency)
-            dependency.target = target
+            dependency.name = target.name
+            dependency.target = target if target.project == project
             dependency.target_proxy = container_proxy
 
             dependencies << dependency
+          end
+        end
+
+        # Checks whether this target has a dependency on the given target.
+        #
+        # @param  [AbstractTarget] target
+        #         the target to search for.
+        #
+        # @return [PBXTargetDependency]
+        #
+        def dependency_for_target(target)
+          dependencies.find do |dep|
+            if dep.target_proxy.remote?
+              dep.target_proxy.remote_global_id_string == target.uuid
+            else
+              dep.target == target
+            end
           end
         end
 
@@ -245,7 +267,6 @@ module Xcodeproj
           phase
         end
 
-
         public
 
         # @!group System frameworks
@@ -269,7 +290,6 @@ module Xcodeproj
         #
         def add_system_framework(names)
           Array(names).each do |name|
-
             case platform_name
             when :ios
               group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')
@@ -279,8 +299,16 @@ module Xcodeproj
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
+            when :tvos
+              group = project.frameworks_group['tvOS'] || project.frameworks_group.new_group('tvOS')
+              path_sdk_name = 'AppleTVOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_TVOS_SDK
+            when :watchos
+              group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
+              path_sdk_name = 'WatchOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_WATCHOS_SDK
             else
-              raise "Unknown platform for target"
+              raise 'Unknown platform for target'
             end
 
             path = "Platforms/#{path_sdk_name}.platform/Developer/SDKs/#{path_sdk_name}#{path_sdk_version}.sdk/System/Library/Frameworks/#{name}.framework"
@@ -291,7 +319,7 @@ module Xcodeproj
             ref
           end
         end
-        alias :add_system_frameworks :add_system_framework
+        alias_method :add_system_frameworks, :add_system_framework
 
         # Adds a file reference for one or more system libraries to the project
         # if needed and adds them to the Frameworks build phases.
@@ -304,14 +332,15 @@ module Xcodeproj
         def add_system_library(names)
           Array(names).each do |name|
             path = "usr/lib/lib#{name}.dylib"
-            unless ref = project.frameworks_group.files.find { |ref| ref.path == path }
-              ref = project.frameworks_group.new_file(path, :sdk_root)
+            files = project.frameworks_group.files
+            unless reference = files.find { |ref| ref.path == path }
+              reference = project.frameworks_group.new_file(path, :sdk_root)
             end
-            frameworks_build_phase.add_file_reference(ref, true)
-            ref
+            frameworks_build_phase.add_file_reference(reference, true)
+            reference
           end
         end
-        alias :add_system_libraries :add_system_library
+        alias_method :add_system_libraries, :add_system_library
 
         public
 
@@ -325,11 +354,10 @@ module Xcodeproj
           {
             display_name => {
               'Build Phases' => build_phases.map(&:pretty_print),
-              'Build Configurations' => build_configurations.map(&:pretty_print)
-            }
+              'Build Configurations' => build_configurations.map(&:pretty_print),
+            },
           }
         end
-
       end
 
       #-----------------------------------------------------------------------#
@@ -337,7 +365,6 @@ module Xcodeproj
       # Represents a target handled by Xcode.
       #
       class PBXNativeTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [PBXBuildRule] the build rules of this target.
@@ -365,7 +392,6 @@ module Xcodeproj
         #
         has_many :build_phases, AbstractBuildPhase
 
-
         public
 
         # @!group Helpers
@@ -374,7 +400,8 @@ module Xcodeproj
         # @return [Symbol] The type of the target expressed as a symbol.
         #
         def symbol_type
-          pair = Constants::PRODUCT_TYPE_UTI.find { |key, value| value == product_type }
+          pair = Constants::PRODUCT_TYPE_UTI.find { |_key, value| value == product_type }
+          return nil if pair.nil?
           pair.first
         end
 
@@ -384,26 +411,35 @@ module Xcodeproj
         #         the files references of the source files that should be added
         #         to the target.
         #
-        # @param  [Hash{String=>String}] compiler_flags
+        # @param  [String] compiler_flags
         #         the compiler flags for the source files.
         #
-        # @return [void]
+        # @yield_param [PBXBuildFile] each created build file.
+        #
+        # @return [Array<PBXBuildFile>] the created build files.
         #
         def add_file_references(file_references, compiler_flags = {})
-          file_references.each do |file|
-            build_file = project.new(PBXBuildFile)
-            build_file.file_ref = file
-
-            extension = File.extname(file.path)
+          file_references.map do |file|
+            extension = File.extname(file.path).downcase
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
-            if (header_extensions.include?(extension))
-              headers_build_phase.files << build_file
-            else
-              if compiler_flags && !compiler_flags.empty?
-                build_file.settings = { 'COMPILER_FLAGS' => compiler_flags }
-              end
-              source_build_phase.files << build_file
+            is_header_phase = header_extensions.include?(extension)
+            phase = is_header_phase ? headers_build_phase : source_build_phase
+
+            unless build_file = phase.build_file(file)
+              build_file = project.new(PBXBuildFile)
+              build_file.file_ref = file
+              phase.files << build_file
             end
+
+            if compiler_flags && !compiler_flags.empty? && !is_header_phase
+              (build_file.settings ||= {}).merge!('COMPILER_FLAGS' => compiler_flags) do |_, old, new|
+                [old, new].compact.join(' ')
+              end
+            end
+
+            yield build_file if block_given?
+
+            build_file
           end
         end
 
@@ -416,6 +452,7 @@ module Xcodeproj
         #
         def add_resources(resource_file_references)
           resource_file_references.each do |file|
+            next if resources_build_phase.include?(file)
             build_file = project.new(PBXBuildFile)
             build_file.file_ref = file
             resources_build_phase.files << build_file
@@ -429,19 +466,7 @@ module Xcodeproj
         # @return [PBXHeadersBuildPhase] the headers build phase.
         #
         def headers_build_phase
-          unless @headers_build_phase
-            headers_build_phase = build_phases.find { |bp| bp.class == PBXHeadersBuildPhase }
-            unless headers_build_phase
-              # Working around a bug in Xcode 4.2 betas, remove this once the
-              # Xcode bug is fixed:
-              # https://github.com/alloy/cocoapods/issues/13
-              # phase = copy_header_phase || headers_build_phases.first
-              headers_build_phase = project.new(PBXHeadersBuildPhase)
-              build_phases << headers_build_phase
-            end
-            @headers_build_phase = headers_build_phase
-          end
-          @headers_build_phase
+          find_or_create_build_phase_by_class(PBXHeadersBuildPhase)
         end
 
         # Finds or creates the source build phase of the target.
@@ -451,15 +476,7 @@ module Xcodeproj
         # @return [PBXSourcesBuildPhase] the source build phase.
         #
         def source_build_phase
-          unless @source_build_phase
-            source_build_phase = build_phases.find { |bp| bp.class == PBXSourcesBuildPhase }
-            unless source_build_phase
-              source_build_phase = project.new(PBXSourcesBuildPhase)
-              build_phases << source_build_phase
-            end
-            @source_build_phase = source_build_phase
-          end
-          @source_build_phase
+          find_or_create_build_phase_by_class(PBXSourcesBuildPhase)
         end
 
         # Finds or creates the frameworks build phase of the target.
@@ -469,12 +486,7 @@ module Xcodeproj
         # @return [PBXFrameworksBuildPhase] the frameworks build phase.
         #
         def frameworks_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
-          unless phase
-            phase= project.new(PBXFrameworksBuildPhase)
-            build_phases << phase
-          end
-          phase
+          find_or_create_build_phase_by_class(PBXFrameworksBuildPhase)
         end
 
         # Finds or creates the resources build phase of the target.
@@ -484,14 +496,28 @@ module Xcodeproj
         # @return [PBXResourcesBuildPhase] the resources build phase.
         #
         def resources_build_phase
-          phase = build_phases.find { |bp| bp.class == PBXResourcesBuildPhase }
-          unless phase
-            phase = project.new(PBXResourcesBuildPhase)
-            build_phases << phase
-          end
-          phase
+          find_or_create_build_phase_by_class(PBXResourcesBuildPhase)
         end
 
+        private
+
+        # @!group Internal Helpers
+        #--------------------------------------#
+
+        # Find or create a build phase by a given class
+        #
+        # @param [Class] phase_class the class of the build phase to find or create.
+        #
+        # @return [AbstractBuildPhase] the build phase whose class match the given phase_class.
+        #
+        def find_or_create_build_phase_by_class(phase_class)
+          @phases ||= {}
+          unless phase_class < AbstractBuildPhase
+            raise ArgumentError, "#{phase_class} must be a subclass of #{AbstractBuildPhase.class}"
+          end
+          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } ||
+            project.new(phase_class).tap { |bp| build_phases << bp }
+        end
 
         public
 
@@ -503,7 +529,7 @@ module Xcodeproj
         #
         # Build phases are not sorted as they order is relevant.
         #
-        def sort(options = nil)
+        def sort(_options = nil)
           attributes_to_sort = to_many_attributes.reject { |attr| attr.name == :build_phases }
           attributes_to_sort.each do |attrb|
             list = attrb.get_value(self)
@@ -521,7 +547,6 @@ module Xcodeproj
       # @todo Apparently it can't have build rules.
       #
       class PBXAggregateTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [PBXBuildRule] the build phases of the target.
@@ -530,8 +555,7 @@ module Xcodeproj
         #         PBXShellScriptBuildPhase can appear multiple times in a
         #         target.
         #
-        has_many :build_phases, [ PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase ]
-
+        has_many :build_phases, [PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase]
       end
 
       #-----------------------------------------------------------------------#
@@ -542,7 +566,6 @@ module Xcodeproj
       # present.
       #
       class PBXLegacyTarget < AbstractTarget
-
         # @!group Attributes
 
         # @return [String] e.g "Dir"
@@ -568,11 +591,9 @@ module Xcodeproj
         #         target.
         #
         has_many :build_phases, AbstractBuildPhase
-
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end

@@ -12,13 +12,13 @@ module ProjectSpecs
       @differ = Xcodeproj::Helper::TargetDiff.new(@project, 'Target 1', 'Target 2')
     end
 
-    it "initalizes with a project and the targets to diff" do
-      @differ.project.should == @project
+    it 'initalizes with a project and the targets to diff' do
+      @differ.project.should.eql @project
       @differ.target1.should == @target1
       @differ.target2.should == @target2
     end
 
-    it "lists source build files that have been added in target 2, sorted by path" do
+    it 'lists source build files that have been added in target 2, sorted by path' do
       @differ.new_source_build_files.should == @target2.source_build_phase.files.last(2).reverse
     end
   end

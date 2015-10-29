@@ -1,9 +1,7 @@
 module Xcodeproj
-
   # Manages the UI output so clients can customize it.
   #
   module UserInterface
-
     # Prints a message to standard output.
     #
     # @return [void]
@@ -19,8 +17,6 @@ module Xcodeproj
     def self.warn(message)
       STDERR.puts message
     end
-
   end
   UI = UserInterface
 end
-

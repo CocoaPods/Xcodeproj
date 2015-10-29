@@ -1,20 +1,24 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 gemspec
 
+gem 'claide', :git => 'https://github.com/CocoaPods/CLAide'
+
+# This is the version that ships with OS X 10.10, so be sure we test against it.
+gem 'json', '1.7.7'
+
 group :development do
-  gem 'coveralls', :require => false
-  gem "rake"
-  gem "mocha"
-  gem "bacon"
-  gem "mocha-on-bacon"
-  gem 'prettybacon', :git => 'https://github.com/irrationalfab/PrettyBacon.git', :branch => 'master'
-  gem "kicker", :git => 'https://github.com/alloy/kicker.git', :branch => '3.0.0'
+  gem 'mocha'
+  gem 'bacon'
+  gem 'mocha-on-bacon'
+  gem 'prettybacon'
+  gem 'rake'
+
+  gem 'codeclimate-test-reporter', :require => nil
+  gem 'simplecov'
+  gem 'rubocop'
 end
 
-group :documentation do
-  gem 'yard'
-  gem 'redcarpet'
-  gem 'github-markup'
-  gem 'pygments.rb'
+group :debugging do
+  gem 'kicker'
 end

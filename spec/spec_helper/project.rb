@@ -8,9 +8,8 @@ module SpecHelper
 
     def settings(*keys)
       settings = Xcodeproj::Constants::COMMON_BUILD_SETTINGS.values_at(*keys)
-      settings.inject({}) { |hash, h| hash.merge(h) }
+      settings.reduce({}) { |hash, h| hash.merge(h) }
     end
-
   end
 end
 
@@ -26,5 +25,7 @@ module ProjectSpecs
       extend SpecHelper::Project
       instance_eval(&block)
     end
+
+    Bacon::ErrorLog.gsub!(%r{^.*spec/spec_helper.*\n}, '')
   end
 end

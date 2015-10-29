@@ -1,19 +1,11 @@
 # Set up coverage analysis
 #-----------------------------------------------------------------------------#
 
-if ENV['CI'] || ENV['GENERATE_COVERAGE']
-  require 'simplecov'
-  require 'coveralls'
-
-  if ENV['CI']
-    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-  elsif ENV['GENERATE_COVERAGE']
-    SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
-  end
-  SimpleCov.start do
-    add_filter "/spec_helper/"
-  end
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.configure do |config|
+  config.logger.level = Logger::WARN
 end
+CodeClimate::TestReporter.start
 
 # Set up
 #-----------------------------------------------------------------------------#
@@ -26,17 +18,18 @@ require 'pathname'
 
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
 
-$:.unshift((ROOT + 'ext').to_s)
-$:.unshift((ROOT + 'lib').to_s)
+$LOAD_PATH.unshift((ROOT + 'ext').to_s)
+$LOAD_PATH.unshift((ROOT + 'lib').to_s)
 require 'xcodeproj'
 
-$:.unshift((ROOT + 'spec').to_s)
+$LOAD_PATH.unshift((ROOT + 'spec').to_s)
 require 'spec_helper/project'
+require 'spec_helper/project_helper'
 require 'spec_helper/temporary_directory'
+require 'spec_helper/xcscheme'
 
-
-def fixture_path(path)
-  File.join(File.dirname(__FILE__), "fixtures", path)
+def fixture_path(*path)
+  File.join(File.dirname(__FILE__), 'fixtures', *path)
 end
 
 class Hash

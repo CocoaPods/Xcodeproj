@@ -1718,7 +1718,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CP;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					806F6FC217EFAF47001051EE = {

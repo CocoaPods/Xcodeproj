@@ -1,12 +1,10 @@
 module Xcodeproj
   class Project
     module Object
-
       # Contains the information about the build settings of a file used by an
       # {AbstractBuildPhase}.
       #
       class PBXBuildFile < AbstractObject
-
         # @!group Attributes
 
         # @return [Hash] the list of build settings for this file.
@@ -30,7 +28,7 @@ module Xcodeproj
           PBXGroup,
           PBXVariantGroup,
           XCVersionGroup,
-          PBXReferenceProxy
+          PBXReferenceProxy,
         ]
 
         #---------------------------------------------------------------------#
@@ -62,7 +60,6 @@ module Xcodeproj
         end
 
         #---------------------------------------------------------------------#
-
       end
     end
   end

@@ -1,19 +1,26 @@
 module Xcodeproj
   class Command
     class Sort < Command
-      def self.banner
-%{Sorts the give project
+      self.description = <<-eos
+        Sorts the given project.
 
-    $ sort [PROJECT]
+        If no `PROJECT' is specified then the current work directory is searched for one.
+      eos
 
-      If no `PROJECT' is specified then the current work directory is searched
-      for one.}
-      end
+      self.summary = 'Sorts the give project.'
+
+      self.arguments = [
+        CLAide::Argument.new('PROJECT', false),
+      ]
 
       def initialize(argv)
-        xcodeproj_path = argv.shift_argument
-        @xcodeproj_path = File.expand_path(xcodeproj_path) if xcodeproj_path
-        super unless argv.empty?
+        self.xcodeproj_path = argv.shift_argument
+        super
+      end
+
+      def validate!
+        super
+        open_project!
       end
 
       def run
@@ -24,6 +31,3 @@ module Xcodeproj
     end
   end
 end
-
-
-

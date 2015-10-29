@@ -1,14 +1,12 @@
 module Xcodeproj
   class Project
     module Object
-
       # This class represents the root object of a project document.
       #
       class PBXProject < AbstractObject
-
         # @!group Attributes
 
-        # @return [ObjectList<PBXNativeTarget>] a list of all the targets in
+        # @return [ObjectList<AbstractTarget>] a list of all the targets in
         #         the project.
         #
         has_many :targets, AbstractTarget
@@ -22,7 +20,9 @@ module Xcodeproj
         #         - `LastUpgradeCheck`
         #         - `ORGANIZATIONNAME`
         #
-        attribute :attributes, Hash, {'LastUpgradeCheck' => Constants::LAST_UPGRADE_CHECK }
+        attribute :attributes, Hash,
+                  'LastSwiftUpdateCheck' => Constants::LAST_SWIFT_UPGRADE_CHECK,
+                  'LastUpgradeCheck' => Constants::LAST_UPGRADE_CHECK
 
         # @return [XCConfigurationList] the configuration list of the project.
         #
@@ -64,11 +64,9 @@ module Xcodeproj
 
         # @return [Array<ObjectDictionary>] any reference to other projects.
         #
-        has_many_references_by_keys :project_references, {
-          :project_ref   => PBXFileReference,
-          :product_group => PBXGroup
-        }
-
+        has_many_references_by_keys :project_references,
+                                    :project_ref   => PBXFileReference,
+                                    :product_group => PBXGroup
       end
     end
   end

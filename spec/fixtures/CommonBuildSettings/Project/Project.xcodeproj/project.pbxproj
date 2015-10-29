@@ -1,0 +1,3588 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C03C7ADF1BDC45A000191591 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7ADE1BDC45A000191591 /* main.m */; };
+		C03C7AE21BDC45A000191591 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AE11BDC45A000191591 /* AppDelegate.m */; };
+		C03C7AE51BDC45A000191591 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AE41BDC45A000191591 /* MasterViewController.m */; };
+		C03C7AE81BDC45A000191591 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AE71BDC45A000191591 /* DetailViewController.m */; };
+		C03C7AEB1BDC45A000191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7AE91BDC45A000191591 /* Main.storyboard */; };
+		C03C7AED1BDC45A000191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7AEC1BDC45A000191591 /* Assets.xcassets */; };
+		C03C7AF01BDC45A000191591 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7AEE1BDC45A000191591 /* LaunchScreen.storyboard */; };
+		C03C7AFC1BDC45A900191591 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AFB1BDC45A900191591 /* AppDelegate.swift */; };
+		C03C7AFE1BDC45A900191591 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AFD1BDC45A900191591 /* MasterViewController.swift */; };
+		C03C7B001BDC45A900191591 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7AFF1BDC45A900191591 /* DetailViewController.swift */; };
+		C03C7B031BDC45A900191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B011BDC45A900191591 /* Main.storyboard */; };
+		C03C7B051BDC45A900191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B041BDC45A900191591 /* Assets.xcassets */; };
+		C03C7B081BDC45A900191591 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B061BDC45A900191591 /* LaunchScreen.storyboard */; };
+		C03C7B151BDC45B400191591 /* Objc_iOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B141BDC45B400191591 /* Objc_iOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7B191BDC45B400191591 /* Objc_iOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B121BDC45B400191591 /* Objc_iOS_Framework.framework */; };
+		C03C7B1A1BDC45B400191591 /* Objc_iOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B121BDC45B400191591 /* Objc_iOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7B271BDC45BF00191591 /* Swift_iOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B261BDC45BF00191591 /* Swift_iOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7B2B1BDC45BF00191591 /* Swift_iOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B241BDC45BF00191591 /* Swift_iOS_Framework.framework */; };
+		C03C7B2C1BDC45BF00191591 /* Swift_iOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B241BDC45BF00191591 /* Swift_iOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7B371BDC45CA00191591 /* Objc_iOS_StaticLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B361BDC45CA00191591 /* Objc_iOS_StaticLibrary.h */; };
+		C03C7B391BDC45CA00191591 /* Objc_iOS_StaticLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B381BDC45CA00191591 /* Objc_iOS_StaticLibrary.m */; };
+		C03C7B451BDC45D500191591 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B441BDC45D500191591 /* AppDelegate.m */; };
+		C03C7B481BDC45D500191591 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B471BDC45D500191591 /* main.m */; };
+		C03C7B4B1BDC45D500191591 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B4A1BDC45D500191591 /* ViewController.m */; };
+		C03C7B4D1BDC45D500191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B4C1BDC45D500191591 /* Assets.xcassets */; };
+		C03C7B501BDC45D500191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B4E1BDC45D500191591 /* Main.storyboard */; };
+		C03C7B5C1BDC45DE00191591 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B5B1BDC45DE00191591 /* AppDelegate.swift */; };
+		C03C7B5E1BDC45DE00191591 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B5D1BDC45DE00191591 /* ViewController.swift */; };
+		C03C7B601BDC45DE00191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B5F1BDC45DE00191591 /* Assets.xcassets */; };
+		C03C7B631BDC45DE00191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7B611BDC45DE00191591 /* Main.storyboard */; };
+		C03C7B701BDC45E900191591 /* Objc_OSX_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B6F1BDC45E900191591 /* Objc_OSX_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7B741BDC45E900191591 /* Objc_OSX_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B6D1BDC45E800191591 /* Objc_OSX_Framework.framework */; };
+		C03C7B751BDC45E900191591 /* Objc_OSX_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B6D1BDC45E800191591 /* Objc_OSX_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7B821BDC45F000191591 /* Swift_OSX_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B811BDC45F000191591 /* Swift_OSX_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7B861BDC45F000191591 /* Swift_OSX_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B7F1BDC45F000191591 /* Swift_OSX_Framework.framework */; };
+		C03C7B871BDC45F000191591 /* Swift_OSX_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7B7F1BDC45F000191591 /* Swift_OSX_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7B921BDC45FA00191591 /* Objc_OSX_StaticLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B911BDC45FA00191591 /* Objc_OSX_StaticLibrary.h */; };
+		C03C7B941BDC45FA00191591 /* Objc_OSX_StaticLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7B931BDC45FA00191591 /* Objc_OSX_StaticLibrary.m */; };
+		C03C7B9F1BDC460200191591 /* Objc_OSX_DynamicLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7B9E1BDC460200191591 /* Objc_OSX_DynamicLibrary.h */; };
+		C03C7BA11BDC460200191591 /* Objc_OSX_DynamicLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7BA01BDC460200191591 /* Objc_OSX_DynamicLibrary.m */; };
+		C03C7BB51BDC461B00191591 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BB31BDC461B00191591 /* Interface.storyboard */; };
+		C03C7BB71BDC461B00191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BB61BDC461B00191591 /* Assets.xcassets */; };
+		C03C7BBE1BDC461B00191591 /* Objc_watchOS_Native Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C03C7BBD1BDC461B00191591 /* Objc_watchOS_Native Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C03C7BC41BDC461B00191591 /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7BC31BDC461B00191591 /* InterfaceController.m */; };
+		C03C7BC71BDC461B00191591 /* ExtensionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7BC61BDC461B00191591 /* ExtensionDelegate.m */; };
+		C03C7BC91BDC461B00191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BC81BDC461B00191591 /* Assets.xcassets */; };
+		C03C7BCD1BDC461B00191591 /* Objc_watchOS_Native.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C03C7BB11BDC461B00191591 /* Objc_watchOS_Native.app */; };
+		C03C7BDC1BDC46E600191591 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BDA1BDC46E600191591 /* Interface.storyboard */; };
+		C03C7BDE1BDC46E600191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BDD1BDC46E600191591 /* Assets.xcassets */; };
+		C03C7BE51BDC46E600191591 /* Swift_watchOS_Native Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C03C7BE41BDC46E600191591 /* Swift_watchOS_Native Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C03C7BEA1BDC46E600191591 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7BE91BDC46E600191591 /* InterfaceController.swift */; };
+		C03C7BEC1BDC46E600191591 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7BEB1BDC46E600191591 /* ExtensionDelegate.swift */; };
+		C03C7BEE1BDC46E600191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7BED1BDC46E600191591 /* Assets.xcassets */; };
+		C03C7BF21BDC46E600191591 /* Swift_watchOS_Native.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C03C7BD81BDC46E600191591 /* Swift_watchOS_Native.app */; };
+		C03C7C031BDC46F700191591 /* Objc_watchOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C021BDC46F700191591 /* Objc_watchOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7C071BDC46F700191591 /* Objc_watchOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C001BDC46F700191591 /* Objc_watchOS_Framework.framework */; };
+		C03C7C081BDC46F700191591 /* Objc_watchOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C001BDC46F700191591 /* Objc_watchOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7C151BDC470000191591 /* Swift_watchOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C141BDC470000191591 /* Swift_watchOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7C191BDC470000191591 /* Swift_watchOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C121BDC470000191591 /* Swift_watchOS_Framework.framework */; };
+		C03C7C1A1BDC470000191591 /* Swift_watchOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C121BDC470000191591 /* Swift_watchOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7C251BDC470A00191591 /* Objc_watchOS_StaticLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C241BDC470A00191591 /* Objc_watchOS_StaticLibrary.h */; };
+		C03C7C271BDC470A00191591 /* Objc_watchOS_StaticLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C261BDC470A00191591 /* Objc_watchOS_StaticLibrary.m */; };
+		C03C7C331BDC471600191591 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C321BDC471600191591 /* main.m */; };
+		C03C7C361BDC471600191591 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C351BDC471600191591 /* AppDelegate.m */; };
+		C03C7C391BDC471600191591 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C381BDC471600191591 /* ViewController.m */; };
+		C03C7C3C1BDC471600191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7C3A1BDC471600191591 /* Main.storyboard */; };
+		C03C7C3E1BDC471600191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7C3D1BDC471600191591 /* Assets.xcassets */; };
+		C03C7C4A1BDC471F00191591 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C491BDC471F00191591 /* AppDelegate.swift */; };
+		C03C7C4C1BDC471F00191591 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C4B1BDC471F00191591 /* ViewController.swift */; };
+		C03C7C4F1BDC471F00191591 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03C7C4D1BDC471F00191591 /* Main.storyboard */; };
+		C03C7C511BDC471F00191591 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03C7C501BDC471F00191591 /* Assets.xcassets */; };
+		C03C7C5E1BDC472900191591 /* Objc_tvOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C5D1BDC472900191591 /* Objc_tvOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7C621BDC472900191591 /* Objc_tvOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C5B1BDC472900191591 /* Objc_tvOS_Framework.framework */; };
+		C03C7C631BDC472900191591 /* Objc_tvOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C5B1BDC472900191591 /* Objc_tvOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7C701BDC473300191591 /* Swift_tvOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C6F1BDC473300191591 /* Swift_tvOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C03C7C741BDC473300191591 /* Swift_tvOS_Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C6D1BDC473300191591 /* Swift_tvOS_Framework.framework */; };
+		C03C7C751BDC473300191591 /* Swift_tvOS_Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C03C7C6D1BDC473300191591 /* Swift_tvOS_Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C03C7C801BDC473B00191591 /* Objc_tvOS_StaticLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = C03C7C7F1BDC473B00191591 /* Objc_tvOS_StaticLibrary.h */; };
+		C03C7C821BDC473B00191591 /* Objc_tvOS_StaticLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C03C7C811BDC473B00191591 /* Objc_tvOS_StaticLibrary.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C03C7B171BDC45B400191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7B111BDC45B400191591;
+			remoteInfo = Objc_iOS_Framework;
+		};
+		C03C7B291BDC45BF00191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7B231BDC45BF00191591;
+			remoteInfo = Swift_iOS_Framework;
+		};
+		C03C7B721BDC45E900191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7B6C1BDC45E800191591;
+			remoteInfo = Objc_OSX_Framework;
+		};
+		C03C7B841BDC45F000191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7B7E1BDC45F000191591;
+			remoteInfo = Swift_OSX_Framework;
+		};
+		C03C7BBF1BDC461B00191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7BBC1BDC461B00191591;
+			remoteInfo = "Objc_watchOS_Native Extension";
+		};
+		C03C7BCB1BDC461B00191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7BB01BDC461B00191591;
+			remoteInfo = Objc_watchOS_Native;
+		};
+		C03C7BE61BDC46E600191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7BE31BDC46E600191591;
+			remoteInfo = "Swift_watchOS_Native Extension";
+		};
+		C03C7BF01BDC46E600191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7BD71BDC46E600191591;
+			remoteInfo = Swift_watchOS_Native;
+		};
+		C03C7C051BDC46F700191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7BFF1BDC46F700191591;
+			remoteInfo = Objc_watchOS_Framework;
+		};
+		C03C7C171BDC470000191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7C111BDC470000191591;
+			remoteInfo = Swift_watchOS_Framework;
+		};
+		C03C7C601BDC472900191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7C5A1BDC472900191591;
+			remoteInfo = Objc_tvOS_Framework;
+		};
+		C03C7C721BDC473300191591 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76384FD464FB3A6EC51F5C17 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03C7C6C1BDC473300191591;
+			remoteInfo = Swift_tvOS_Framework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C03C7B1E1BDC45B400191591 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C03C7B1A1BDC45B400191591 /* Objc_iOS_Framework.framework in Embed Frameworks */,
+				C03C7B2C1BDC45BF00191591 /* Swift_iOS_Framework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B321BDC45CA00191591 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B791BDC45E900191591 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C03C7B871BDC45F000191591 /* Swift_OSX_Framework.framework in Embed Frameworks */,
+				C03C7B751BDC45E900191591 /* Objc_OSX_Framework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BD11BDC461B00191591 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C03C7BBE1BDC461B00191591 /* Objc_watchOS_Native Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BD51BDC461B00191591 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				C03C7BCD1BDC461B00191591 /* Objc_watchOS_Native.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BF61BDC46E600191591 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C03C7BE51BDC46E600191591 /* Swift_watchOS_Native Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BFA1BDC46E600191591 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				C03C7BF21BDC46E600191591 /* Swift_watchOS_Native.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C0C1BDC46F700191591 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C03C7C081BDC46F700191591 /* Objc_watchOS_Framework.framework in Embed Frameworks */,
+				C03C7C1A1BDC470000191591 /* Swift_watchOS_Framework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C201BDC470900191591 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C671BDC472900191591 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C03C7C631BDC472900191591 /* Objc_tvOS_Framework.framework in Embed Frameworks */,
+				C03C7C751BDC473300191591 /* Swift_tvOS_Framework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C7B1BDC473B00191591 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C03C7ADB1BDC45A000191591 /* Objc_iOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Objc_iOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7ADE1BDC45A000191591 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C03C7AE01BDC45A000191591 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C03C7AE11BDC45A000191591 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C03C7AE31BDC45A000191591 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		C03C7AE41BDC45A000191591 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		C03C7AE61BDC45A000191591 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		C03C7AE71BDC45A000191591 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		C03C7AEA1BDC45A000191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7AEC1BDC45A000191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7AEF1BDC45A000191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C03C7AF11BDC45A000191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7AF91BDC45A900191591 /* Swift_iOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swift_iOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7AFB1BDC45A900191591 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C03C7AFD1BDC45A900191591 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		C03C7AFF1BDC45A900191591 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		C03C7B021BDC45A900191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7B041BDC45A900191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7B071BDC45A900191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C03C7B091BDC45A900191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B121BDC45B400191591 /* Objc_iOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Objc_iOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B141BDC45B400191591 /* Objc_iOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_iOS_Framework.h; sourceTree = "<group>"; };
+		C03C7B161BDC45B400191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B241BDC45BF00191591 /* Swift_iOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_iOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B261BDC45BF00191591 /* Swift_iOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swift_iOS_Framework.h; sourceTree = "<group>"; };
+		C03C7B281BDC45BF00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B341BDC45CA00191591 /* libObjc_iOS_StaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjc_iOS_StaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B361BDC45CA00191591 /* Objc_iOS_StaticLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_iOS_StaticLibrary.h; sourceTree = "<group>"; };
+		C03C7B381BDC45CA00191591 /* Objc_iOS_StaticLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objc_iOS_StaticLibrary.m; sourceTree = "<group>"; };
+		C03C7B411BDC45D500191591 /* Objc_OSX_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Objc_OSX_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B431BDC45D500191591 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C03C7B441BDC45D500191591 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C03C7B471BDC45D500191591 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C03C7B491BDC45D500191591 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C03C7B4A1BDC45D500191591 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C03C7B4C1BDC45D500191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7B4F1BDC45D500191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7B511BDC45D500191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B591BDC45DE00191591 /* Swift_OSX_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swift_OSX_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B5B1BDC45DE00191591 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C03C7B5D1BDC45DE00191591 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C03C7B5F1BDC45DE00191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7B621BDC45DE00191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7B641BDC45DE00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B6D1BDC45E800191591 /* Objc_OSX_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Objc_OSX_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B6F1BDC45E900191591 /* Objc_OSX_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_OSX_Framework.h; sourceTree = "<group>"; };
+		C03C7B711BDC45E900191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B7F1BDC45F000191591 /* Swift_OSX_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_OSX_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B811BDC45F000191591 /* Swift_OSX_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swift_OSX_Framework.h; sourceTree = "<group>"; };
+		C03C7B831BDC45F000191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7B8F1BDC45FA00191591 /* libObjc_OSX_StaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjc_OSX_StaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B911BDC45FA00191591 /* Objc_OSX_StaticLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_OSX_StaticLibrary.h; sourceTree = "<group>"; };
+		C03C7B931BDC45FA00191591 /* Objc_OSX_StaticLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objc_OSX_StaticLibrary.m; sourceTree = "<group>"; };
+		C03C7B9C1BDC460200191591 /* libObjc_OSX_DynamicLibrary.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libObjc_OSX_DynamicLibrary.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7B9E1BDC460200191591 /* Objc_OSX_DynamicLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_OSX_DynamicLibrary.h; sourceTree = "<group>"; };
+		C03C7BA01BDC460200191591 /* Objc_OSX_DynamicLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objc_OSX_DynamicLibrary.m; sourceTree = "<group>"; };
+		C03C7BA91BDC460B00191591 /* OSX_Bundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OSX_Bundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7BAB1BDC460B00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7BB11BDC461B00191591 /* Objc_watchOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Objc_watchOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7BB41BDC461B00191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		C03C7BB61BDC461B00191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7BB81BDC461B00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7BBD1BDC461B00191591 /* Objc_watchOS_Native Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Objc_watchOS_Native Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7BC21BDC461B00191591 /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		C03C7BC31BDC461B00191591 /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		C03C7BC51BDC461B00191591 /* ExtensionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExtensionDelegate.h; sourceTree = "<group>"; };
+		C03C7BC61BDC461B00191591 /* ExtensionDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExtensionDelegate.m; sourceTree = "<group>"; };
+		C03C7BC81BDC461B00191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7BCA1BDC461B00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7BD81BDC46E600191591 /* Swift_watchOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swift_watchOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7BDB1BDC46E600191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		C03C7BDD1BDC46E600191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7BDF1BDC46E600191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7BE41BDC46E600191591 /* Swift_watchOS_Native Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Swift_watchOS_Native Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7BE91BDC46E600191591 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		C03C7BEB1BDC46E600191591 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		C03C7BED1BDC46E600191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7BEF1BDC46E600191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C001BDC46F700191591 /* Objc_watchOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Objc_watchOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C021BDC46F700191591 /* Objc_watchOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_watchOS_Framework.h; sourceTree = "<group>"; };
+		C03C7C041BDC46F700191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C121BDC470000191591 /* Swift_watchOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_watchOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C141BDC470000191591 /* Swift_watchOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swift_watchOS_Framework.h; sourceTree = "<group>"; };
+		C03C7C161BDC470000191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C221BDC470900191591 /* libObjc_watchOS_StaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjc_watchOS_StaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C241BDC470A00191591 /* Objc_watchOS_StaticLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_watchOS_StaticLibrary.h; sourceTree = "<group>"; };
+		C03C7C261BDC470A00191591 /* Objc_watchOS_StaticLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objc_watchOS_StaticLibrary.m; sourceTree = "<group>"; };
+		C03C7C2F1BDC471600191591 /* Objc_tvOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Objc_tvOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C321BDC471600191591 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C03C7C341BDC471600191591 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C03C7C351BDC471600191591 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C03C7C371BDC471600191591 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C03C7C381BDC471600191591 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C03C7C3B1BDC471600191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7C3D1BDC471600191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7C3F1BDC471600191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C471BDC471F00191591 /* Swift_tvOS_Native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swift_tvOS_Native.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C491BDC471F00191591 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C03C7C4B1BDC471F00191591 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C03C7C4E1BDC471F00191591 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C03C7C501BDC471F00191591 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03C7C521BDC471F00191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C5B1BDC472900191591 /* Objc_tvOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Objc_tvOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C5D1BDC472900191591 /* Objc_tvOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_tvOS_Framework.h; sourceTree = "<group>"; };
+		C03C7C5F1BDC472900191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C6D1BDC473300191591 /* Swift_tvOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Swift_tvOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C6F1BDC473300191591 /* Swift_tvOS_Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swift_tvOS_Framework.h; sourceTree = "<group>"; };
+		C03C7C711BDC473300191591 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03C7C7D1BDC473B00191591 /* libObjc_tvOS_StaticLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libObjc_tvOS_StaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03C7C7F1BDC473B00191591 /* Objc_tvOS_StaticLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Objc_tvOS_StaticLibrary.h; sourceTree = "<group>"; };
+		C03C7C811BDC473B00191591 /* Objc_tvOS_StaticLibrary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Objc_tvOS_StaticLibrary.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C03C7AD81BDC45A000191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B191BDC45B400191591 /* Objc_iOS_Framework.framework in Frameworks */,
+				C03C7B2B1BDC45BF00191591 /* Swift_iOS_Framework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7AF61BDC45A900191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B0E1BDC45B400191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B201BDC45BF00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B311BDC45CA00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B3E1BDC45D500191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B861BDC45F000191591 /* Swift_OSX_Framework.framework in Frameworks */,
+				C03C7B741BDC45E900191591 /* Objc_OSX_Framework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B561BDC45DE00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B691BDC45E800191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B7B1BDC45F000191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B8C1BDC45FA00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B991BDC460200191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BA61BDC460B00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BBA1BDC461B00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C071BDC46F700191591 /* Objc_watchOS_Framework.framework in Frameworks */,
+				C03C7C191BDC470000191591 /* Swift_watchOS_Framework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BE11BDC46E600191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BFC1BDC46F700191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C0E1BDC470000191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C1F1BDC470900191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C2C1BDC471600191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C621BDC472900191591 /* Objc_tvOS_Framework.framework in Frameworks */,
+				C03C7C741BDC473300191591 /* Swift_tvOS_Framework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C441BDC471F00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C571BDC472900191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C691BDC473300191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C7A1BDC473B00191591 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7279AE56359594EEEFCA6188 = {
+			isa = PBXGroup;
+			children = (
+				C03C7ADC1BDC45A000191591 /* Objc_iOS_Native */,
+				C03C7AFA1BDC45A900191591 /* Swift_iOS_Native */,
+				C03C7B131BDC45B400191591 /* Objc_iOS_Framework */,
+				C03C7B251BDC45BF00191591 /* Swift_iOS_Framework */,
+				C03C7B351BDC45CA00191591 /* Objc_iOS_StaticLibrary */,
+				C03C7B421BDC45D500191591 /* Objc_OSX_Native */,
+				C03C7B5A1BDC45DE00191591 /* Swift_OSX_Native */,
+				C03C7B6E1BDC45E900191591 /* Objc_OSX_Framework */,
+				C03C7B801BDC45F000191591 /* Swift_OSX_Framework */,
+				C03C7B901BDC45FA00191591 /* Objc_OSX_StaticLibrary */,
+				C03C7B9D1BDC460200191591 /* Objc_OSX_DynamicLibrary */,
+				C03C7BAA1BDC460B00191591 /* OSX_Bundle */,
+				C03C7BB21BDC461B00191591 /* Objc_watchOS_Native */,
+				C03C7BC11BDC461B00191591 /* Objc_watchOS_Native Extension */,
+				C03C7BD91BDC46E600191591 /* Swift_watchOS_Native */,
+				C03C7BE81BDC46E600191591 /* Swift_watchOS_Native Extension */,
+				C03C7C011BDC46F700191591 /* Objc_watchOS_Framework */,
+				C03C7C131BDC470000191591 /* Swift_watchOS_Framework */,
+				C03C7C231BDC470A00191591 /* Objc_watchOS_StaticLibrary */,
+				C03C7C301BDC471600191591 /* Objc_tvOS_Native */,
+				C03C7C481BDC471F00191591 /* Swift_tvOS_Native */,
+				C03C7C5C1BDC472900191591 /* Objc_tvOS_Framework */,
+				C03C7C6E1BDC473300191591 /* Swift_tvOS_Framework */,
+				C03C7C7E1BDC473B00191591 /* Objc_tvOS_StaticLibrary */,
+				A6B5BFCEDF00E28BFACFE431 /* Products */,
+				A865C3E790D2386A4249AAEF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A6B5BFCEDF00E28BFACFE431 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7ADB1BDC45A000191591 /* Objc_iOS_Native.app */,
+				C03C7AF91BDC45A900191591 /* Swift_iOS_Native.app */,
+				C03C7B121BDC45B400191591 /* Objc_iOS_Framework.framework */,
+				C03C7B241BDC45BF00191591 /* Swift_iOS_Framework.framework */,
+				C03C7B341BDC45CA00191591 /* libObjc_iOS_StaticLibrary.a */,
+				C03C7B411BDC45D500191591 /* Objc_OSX_Native.app */,
+				C03C7B591BDC45DE00191591 /* Swift_OSX_Native.app */,
+				C03C7B6D1BDC45E800191591 /* Objc_OSX_Framework.framework */,
+				C03C7B7F1BDC45F000191591 /* Swift_OSX_Framework.framework */,
+				C03C7B8F1BDC45FA00191591 /* libObjc_OSX_StaticLibrary.a */,
+				C03C7B9C1BDC460200191591 /* libObjc_OSX_DynamicLibrary.dylib */,
+				C03C7BA91BDC460B00191591 /* OSX_Bundle.bundle */,
+				C03C7BB11BDC461B00191591 /* Objc_watchOS_Native.app */,
+				C03C7BBD1BDC461B00191591 /* Objc_watchOS_Native Extension.appex */,
+				C03C7BD81BDC46E600191591 /* Swift_watchOS_Native.app */,
+				C03C7BE41BDC46E600191591 /* Swift_watchOS_Native Extension.appex */,
+				C03C7C001BDC46F700191591 /* Objc_watchOS_Framework.framework */,
+				C03C7C121BDC470000191591 /* Swift_watchOS_Framework.framework */,
+				C03C7C221BDC470900191591 /* libObjc_watchOS_StaticLibrary.a */,
+				C03C7C2F1BDC471600191591 /* Objc_tvOS_Native.app */,
+				C03C7C471BDC471F00191591 /* Swift_tvOS_Native.app */,
+				C03C7C5B1BDC472900191591 /* Objc_tvOS_Framework.framework */,
+				C03C7C6D1BDC473300191591 /* Swift_tvOS_Framework.framework */,
+				C03C7C7D1BDC473B00191591 /* libObjc_tvOS_StaticLibrary.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A865C3E790D2386A4249AAEF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C03C7ADC1BDC45A000191591 /* Objc_iOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7AE01BDC45A000191591 /* AppDelegate.h */,
+				C03C7AE11BDC45A000191591 /* AppDelegate.m */,
+				C03C7AE31BDC45A000191591 /* MasterViewController.h */,
+				C03C7AE41BDC45A000191591 /* MasterViewController.m */,
+				C03C7AE61BDC45A000191591 /* DetailViewController.h */,
+				C03C7AE71BDC45A000191591 /* DetailViewController.m */,
+				C03C7AE91BDC45A000191591 /* Main.storyboard */,
+				C03C7AEC1BDC45A000191591 /* Assets.xcassets */,
+				C03C7AEE1BDC45A000191591 /* LaunchScreen.storyboard */,
+				C03C7AF11BDC45A000191591 /* Info.plist */,
+				C03C7ADD1BDC45A000191591 /* Supporting Files */,
+			);
+			path = Objc_iOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7ADD1BDC45A000191591 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7ADE1BDC45A000191591 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C03C7AFA1BDC45A900191591 /* Swift_iOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7AFB1BDC45A900191591 /* AppDelegate.swift */,
+				C03C7AFD1BDC45A900191591 /* MasterViewController.swift */,
+				C03C7AFF1BDC45A900191591 /* DetailViewController.swift */,
+				C03C7B011BDC45A900191591 /* Main.storyboard */,
+				C03C7B041BDC45A900191591 /* Assets.xcassets */,
+				C03C7B061BDC45A900191591 /* LaunchScreen.storyboard */,
+				C03C7B091BDC45A900191591 /* Info.plist */,
+			);
+			path = Swift_iOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7B131BDC45B400191591 /* Objc_iOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B141BDC45B400191591 /* Objc_iOS_Framework.h */,
+				C03C7B161BDC45B400191591 /* Info.plist */,
+			);
+			path = Objc_iOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7B251BDC45BF00191591 /* Swift_iOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B261BDC45BF00191591 /* Swift_iOS_Framework.h */,
+				C03C7B281BDC45BF00191591 /* Info.plist */,
+			);
+			path = Swift_iOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7B351BDC45CA00191591 /* Objc_iOS_StaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B361BDC45CA00191591 /* Objc_iOS_StaticLibrary.h */,
+				C03C7B381BDC45CA00191591 /* Objc_iOS_StaticLibrary.m */,
+			);
+			path = Objc_iOS_StaticLibrary;
+			sourceTree = "<group>";
+		};
+		C03C7B421BDC45D500191591 /* Objc_OSX_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B431BDC45D500191591 /* AppDelegate.h */,
+				C03C7B441BDC45D500191591 /* AppDelegate.m */,
+				C03C7B491BDC45D500191591 /* ViewController.h */,
+				C03C7B4A1BDC45D500191591 /* ViewController.m */,
+				C03C7B4C1BDC45D500191591 /* Assets.xcassets */,
+				C03C7B4E1BDC45D500191591 /* Main.storyboard */,
+				C03C7B511BDC45D500191591 /* Info.plist */,
+				C03C7B461BDC45D500191591 /* Supporting Files */,
+			);
+			path = Objc_OSX_Native;
+			sourceTree = "<group>";
+		};
+		C03C7B461BDC45D500191591 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B471BDC45D500191591 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C03C7B5A1BDC45DE00191591 /* Swift_OSX_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B5B1BDC45DE00191591 /* AppDelegate.swift */,
+				C03C7B5D1BDC45DE00191591 /* ViewController.swift */,
+				C03C7B5F1BDC45DE00191591 /* Assets.xcassets */,
+				C03C7B611BDC45DE00191591 /* Main.storyboard */,
+				C03C7B641BDC45DE00191591 /* Info.plist */,
+			);
+			path = Swift_OSX_Native;
+			sourceTree = "<group>";
+		};
+		C03C7B6E1BDC45E900191591 /* Objc_OSX_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B6F1BDC45E900191591 /* Objc_OSX_Framework.h */,
+				C03C7B711BDC45E900191591 /* Info.plist */,
+			);
+			path = Objc_OSX_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7B801BDC45F000191591 /* Swift_OSX_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B811BDC45F000191591 /* Swift_OSX_Framework.h */,
+				C03C7B831BDC45F000191591 /* Info.plist */,
+			);
+			path = Swift_OSX_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7B901BDC45FA00191591 /* Objc_OSX_StaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B911BDC45FA00191591 /* Objc_OSX_StaticLibrary.h */,
+				C03C7B931BDC45FA00191591 /* Objc_OSX_StaticLibrary.m */,
+			);
+			path = Objc_OSX_StaticLibrary;
+			sourceTree = "<group>";
+		};
+		C03C7B9D1BDC460200191591 /* Objc_OSX_DynamicLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7B9E1BDC460200191591 /* Objc_OSX_DynamicLibrary.h */,
+				C03C7BA01BDC460200191591 /* Objc_OSX_DynamicLibrary.m */,
+			);
+			path = Objc_OSX_DynamicLibrary;
+			sourceTree = "<group>";
+		};
+		C03C7BAA1BDC460B00191591 /* OSX_Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7BAB1BDC460B00191591 /* Info.plist */,
+			);
+			path = OSX_Bundle;
+			sourceTree = "<group>";
+		};
+		C03C7BB21BDC461B00191591 /* Objc_watchOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7BB31BDC461B00191591 /* Interface.storyboard */,
+				C03C7BB61BDC461B00191591 /* Assets.xcassets */,
+				C03C7BB81BDC461B00191591 /* Info.plist */,
+			);
+			path = Objc_watchOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7BC11BDC461B00191591 /* Objc_watchOS_Native Extension */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7BC21BDC461B00191591 /* InterfaceController.h */,
+				C03C7BC31BDC461B00191591 /* InterfaceController.m */,
+				C03C7BC51BDC461B00191591 /* ExtensionDelegate.h */,
+				C03C7BC61BDC461B00191591 /* ExtensionDelegate.m */,
+				C03C7BC81BDC461B00191591 /* Assets.xcassets */,
+				C03C7BCA1BDC461B00191591 /* Info.plist */,
+			);
+			path = "Objc_watchOS_Native Extension";
+			sourceTree = "<group>";
+		};
+		C03C7BD91BDC46E600191591 /* Swift_watchOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7BDA1BDC46E600191591 /* Interface.storyboard */,
+				C03C7BDD1BDC46E600191591 /* Assets.xcassets */,
+				C03C7BDF1BDC46E600191591 /* Info.plist */,
+			);
+			path = Swift_watchOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7BE81BDC46E600191591 /* Swift_watchOS_Native Extension */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7BE91BDC46E600191591 /* InterfaceController.swift */,
+				C03C7BEB1BDC46E600191591 /* ExtensionDelegate.swift */,
+				C03C7BED1BDC46E600191591 /* Assets.xcassets */,
+				C03C7BEF1BDC46E600191591 /* Info.plist */,
+			);
+			path = "Swift_watchOS_Native Extension";
+			sourceTree = "<group>";
+		};
+		C03C7C011BDC46F700191591 /* Objc_watchOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C021BDC46F700191591 /* Objc_watchOS_Framework.h */,
+				C03C7C041BDC46F700191591 /* Info.plist */,
+			);
+			path = Objc_watchOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7C131BDC470000191591 /* Swift_watchOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C141BDC470000191591 /* Swift_watchOS_Framework.h */,
+				C03C7C161BDC470000191591 /* Info.plist */,
+			);
+			path = Swift_watchOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7C231BDC470A00191591 /* Objc_watchOS_StaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C241BDC470A00191591 /* Objc_watchOS_StaticLibrary.h */,
+				C03C7C261BDC470A00191591 /* Objc_watchOS_StaticLibrary.m */,
+			);
+			path = Objc_watchOS_StaticLibrary;
+			sourceTree = "<group>";
+		};
+		C03C7C301BDC471600191591 /* Objc_tvOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C341BDC471600191591 /* AppDelegate.h */,
+				C03C7C351BDC471600191591 /* AppDelegate.m */,
+				C03C7C371BDC471600191591 /* ViewController.h */,
+				C03C7C381BDC471600191591 /* ViewController.m */,
+				C03C7C3A1BDC471600191591 /* Main.storyboard */,
+				C03C7C3D1BDC471600191591 /* Assets.xcassets */,
+				C03C7C3F1BDC471600191591 /* Info.plist */,
+				C03C7C311BDC471600191591 /* Supporting Files */,
+			);
+			path = Objc_tvOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7C311BDC471600191591 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C321BDC471600191591 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C03C7C481BDC471F00191591 /* Swift_tvOS_Native */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C491BDC471F00191591 /* AppDelegate.swift */,
+				C03C7C4B1BDC471F00191591 /* ViewController.swift */,
+				C03C7C4D1BDC471F00191591 /* Main.storyboard */,
+				C03C7C501BDC471F00191591 /* Assets.xcassets */,
+				C03C7C521BDC471F00191591 /* Info.plist */,
+			);
+			path = Swift_tvOS_Native;
+			sourceTree = "<group>";
+		};
+		C03C7C5C1BDC472900191591 /* Objc_tvOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C5D1BDC472900191591 /* Objc_tvOS_Framework.h */,
+				C03C7C5F1BDC472900191591 /* Info.plist */,
+			);
+			path = Objc_tvOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7C6E1BDC473300191591 /* Swift_tvOS_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C6F1BDC473300191591 /* Swift_tvOS_Framework.h */,
+				C03C7C711BDC473300191591 /* Info.plist */,
+			);
+			path = Swift_tvOS_Framework;
+			sourceTree = "<group>";
+		};
+		C03C7C7E1BDC473B00191591 /* Objc_tvOS_StaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				C03C7C7F1BDC473B00191591 /* Objc_tvOS_StaticLibrary.h */,
+				C03C7C811BDC473B00191591 /* Objc_tvOS_StaticLibrary.m */,
+			);
+			path = Objc_tvOS_StaticLibrary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		C03C7B0F1BDC45B400191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B151BDC45B400191591 /* Objc_iOS_Framework.h in Headers */,
+				C03C7B371BDC45CA00191591 /* Objc_iOS_StaticLibrary.h in Headers */,
+				C03C7B271BDC45BF00191591 /* Swift_iOS_Framework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B211BDC45BF00191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B6A1BDC45E800191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B821BDC45F000191591 /* Swift_OSX_Framework.h in Headers */,
+				C03C7B701BDC45E900191591 /* Objc_OSX_Framework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B7C1BDC45F000191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B8D1BDC45FA00191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B921BDC45FA00191591 /* Objc_OSX_StaticLibrary.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B9A1BDC460200191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B9F1BDC460200191591 /* Objc_OSX_DynamicLibrary.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BFD1BDC46F700191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C031BDC46F700191591 /* Objc_watchOS_Framework.h in Headers */,
+				C03C7C251BDC470A00191591 /* Objc_watchOS_StaticLibrary.h in Headers */,
+				C03C7C151BDC470000191591 /* Swift_watchOS_Framework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C0F1BDC470000191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C581BDC472900191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C5E1BDC472900191591 /* Objc_tvOS_Framework.h in Headers */,
+				C03C7C701BDC473300191591 /* Swift_tvOS_Framework.h in Headers */,
+				C03C7C801BDC473B00191591 /* Objc_tvOS_StaticLibrary.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C6A1BDC473300191591 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		C03C7ADA1BDC45A000191591 /* Objc_iOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7AF41BDC45A000191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_Native" */;
+			buildPhases = (
+				C03C7AD71BDC45A000191591 /* Sources */,
+				C03C7AD81BDC45A000191591 /* Frameworks */,
+				C03C7AD91BDC45A000191591 /* Resources */,
+				C03C7B1E1BDC45B400191591 /* Embed Frameworks */,
+				C03C7BD51BDC461B00191591 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7B181BDC45B400191591 /* PBXTargetDependency */,
+				C03C7B2A1BDC45BF00191591 /* PBXTargetDependency */,
+				C03C7BCC1BDC461B00191591 /* PBXTargetDependency */,
+			);
+			name = Objc_iOS_Native;
+			productName = Objc_iOS_Native;
+			productReference = C03C7ADB1BDC45A000191591 /* Objc_iOS_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7AF81BDC45A900191591 /* Swift_iOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B0A1BDC45A900191591 /* Build configuration list for PBXNativeTarget "Swift_iOS_Native" */;
+			buildPhases = (
+				C03C7AF51BDC45A900191591 /* Sources */,
+				C03C7AF61BDC45A900191591 /* Frameworks */,
+				C03C7AF71BDC45A900191591 /* Resources */,
+				C03C7BFA1BDC46E600191591 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7BF11BDC46E600191591 /* PBXTargetDependency */,
+			);
+			name = Swift_iOS_Native;
+			productName = Swift_iOS_Native;
+			productReference = C03C7AF91BDC45A900191591 /* Swift_iOS_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7B111BDC45B400191591 /* Objc_iOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B1B1BDC45B400191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_Framework" */;
+			buildPhases = (
+				C03C7B0D1BDC45B400191591 /* Sources */,
+				C03C7B0E1BDC45B400191591 /* Frameworks */,
+				C03C7B0F1BDC45B400191591 /* Headers */,
+				C03C7B101BDC45B400191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_iOS_Framework;
+			productName = Objc_iOS_Framework;
+			productReference = C03C7B121BDC45B400191591 /* Objc_iOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7B231BDC45BF00191591 /* Swift_iOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B2D1BDC45C000191591 /* Build configuration list for PBXNativeTarget "Swift_iOS_Framework" */;
+			buildPhases = (
+				C03C7B1F1BDC45BF00191591 /* Sources */,
+				C03C7B201BDC45BF00191591 /* Frameworks */,
+				C03C7B211BDC45BF00191591 /* Headers */,
+				C03C7B221BDC45BF00191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_iOS_Framework;
+			productName = Swift_iOS_Framework;
+			productReference = C03C7B241BDC45BF00191591 /* Swift_iOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7B331BDC45CA00191591 /* Objc_iOS_StaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B3A1BDC45CA00191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_StaticLibrary" */;
+			buildPhases = (
+				C03C7B301BDC45CA00191591 /* Sources */,
+				C03C7B311BDC45CA00191591 /* Frameworks */,
+				C03C7B321BDC45CA00191591 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_iOS_StaticLibrary;
+			productName = Objc_iOS_StaticLibrary;
+			productReference = C03C7B341BDC45CA00191591 /* libObjc_iOS_StaticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C03C7B401BDC45D500191591 /* Objc_OSX_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B521BDC45D500191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_Native" */;
+			buildPhases = (
+				C03C7B3D1BDC45D500191591 /* Sources */,
+				C03C7B3E1BDC45D500191591 /* Frameworks */,
+				C03C7B3F1BDC45D500191591 /* Resources */,
+				C03C7B791BDC45E900191591 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7B731BDC45E900191591 /* PBXTargetDependency */,
+				C03C7B851BDC45F000191591 /* PBXTargetDependency */,
+			);
+			name = Objc_OSX_Native;
+			productName = Objc_OSX_Native;
+			productReference = C03C7B411BDC45D500191591 /* Objc_OSX_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7B581BDC45DE00191591 /* Swift_OSX_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B651BDC45DE00191591 /* Build configuration list for PBXNativeTarget "Swift_OSX_Native" */;
+			buildPhases = (
+				C03C7B551BDC45DE00191591 /* Sources */,
+				C03C7B561BDC45DE00191591 /* Frameworks */,
+				C03C7B571BDC45DE00191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_OSX_Native;
+			productName = Swift_OSX_Native;
+			productReference = C03C7B591BDC45DE00191591 /* Swift_OSX_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7B6C1BDC45E800191591 /* Objc_OSX_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B761BDC45E900191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_Framework" */;
+			buildPhases = (
+				C03C7B681BDC45E800191591 /* Sources */,
+				C03C7B691BDC45E800191591 /* Frameworks */,
+				C03C7B6A1BDC45E800191591 /* Headers */,
+				C03C7B6B1BDC45E800191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_OSX_Framework;
+			productName = Objc_OSX_Framework;
+			productReference = C03C7B6D1BDC45E800191591 /* Objc_OSX_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7B7E1BDC45F000191591 /* Swift_OSX_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B881BDC45F000191591 /* Build configuration list for PBXNativeTarget "Swift_OSX_Framework" */;
+			buildPhases = (
+				C03C7B7A1BDC45F000191591 /* Sources */,
+				C03C7B7B1BDC45F000191591 /* Frameworks */,
+				C03C7B7C1BDC45F000191591 /* Headers */,
+				C03C7B7D1BDC45F000191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_OSX_Framework;
+			productName = Swift_OSX_Framework;
+			productReference = C03C7B7F1BDC45F000191591 /* Swift_OSX_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7B8E1BDC45FA00191591 /* Objc_OSX_StaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7B951BDC45FA00191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_StaticLibrary" */;
+			buildPhases = (
+				C03C7B8B1BDC45FA00191591 /* Sources */,
+				C03C7B8C1BDC45FA00191591 /* Frameworks */,
+				C03C7B8D1BDC45FA00191591 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_OSX_StaticLibrary;
+			productName = Objc_OSX_StaticLibrary;
+			productReference = C03C7B8F1BDC45FA00191591 /* libObjc_OSX_StaticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C03C7B9B1BDC460200191591 /* Objc_OSX_DynamicLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BA21BDC460200191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_DynamicLibrary" */;
+			buildPhases = (
+				C03C7B981BDC460200191591 /* Sources */,
+				C03C7B991BDC460200191591 /* Frameworks */,
+				C03C7B9A1BDC460200191591 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_OSX_DynamicLibrary;
+			productName = Objc_OSX_DynamicLibrary;
+			productReference = C03C7B9C1BDC460200191591 /* libObjc_OSX_DynamicLibrary.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		C03C7BA81BDC460B00191591 /* OSX_Bundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BAC1BDC460B00191591 /* Build configuration list for PBXNativeTarget "OSX_Bundle" */;
+			buildPhases = (
+				C03C7BA51BDC460B00191591 /* Sources */,
+				C03C7BA61BDC460B00191591 /* Frameworks */,
+				C03C7BA71BDC460B00191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OSX_Bundle;
+			productName = OSX_Bundle;
+			productReference = C03C7BA91BDC460B00191591 /* OSX_Bundle.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		C03C7BB01BDC461B00191591 /* Objc_watchOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BD21BDC461B00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Native" */;
+			buildPhases = (
+				C03C7BAF1BDC461B00191591 /* Resources */,
+				C03C7BD11BDC461B00191591 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7BC01BDC461B00191591 /* PBXTargetDependency */,
+			);
+			name = Objc_watchOS_Native;
+			productName = Objc_watchOS_Native;
+			productReference = C03C7BB11BDC461B00191591 /* Objc_watchOS_Native.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		C03C7BBC1BDC461B00191591 /* Objc_watchOS_Native Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BCE1BDC461B00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Native Extension" */;
+			buildPhases = (
+				C03C7BB91BDC461B00191591 /* Sources */,
+				C03C7BBA1BDC461B00191591 /* Frameworks */,
+				C03C7BBB1BDC461B00191591 /* Resources */,
+				C03C7C0C1BDC46F700191591 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7C061BDC46F700191591 /* PBXTargetDependency */,
+				C03C7C181BDC470000191591 /* PBXTargetDependency */,
+			);
+			name = "Objc_watchOS_Native Extension";
+			productName = "Objc_watchOS_Native Extension";
+			productReference = C03C7BBD1BDC461B00191591 /* Objc_watchOS_Native Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		C03C7BD71BDC46E600191591 /* Swift_watchOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BF71BDC46E600191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Native" */;
+			buildPhases = (
+				C03C7BD61BDC46E600191591 /* Resources */,
+				C03C7BF61BDC46E600191591 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7BE71BDC46E600191591 /* PBXTargetDependency */,
+			);
+			name = Swift_watchOS_Native;
+			productName = Swift_watchOS_Native;
+			productReference = C03C7BD81BDC46E600191591 /* Swift_watchOS_Native.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		C03C7BE31BDC46E600191591 /* Swift_watchOS_Native Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7BF31BDC46E600191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Native Extension" */;
+			buildPhases = (
+				C03C7BE01BDC46E600191591 /* Sources */,
+				C03C7BE11BDC46E600191591 /* Frameworks */,
+				C03C7BE21BDC46E600191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Swift_watchOS_Native Extension";
+			productName = "Swift_watchOS_Native Extension";
+			productReference = C03C7BE41BDC46E600191591 /* Swift_watchOS_Native Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		C03C7BFF1BDC46F700191591 /* Objc_watchOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C091BDC46F700191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Framework" */;
+			buildPhases = (
+				C03C7BFB1BDC46F700191591 /* Sources */,
+				C03C7BFC1BDC46F700191591 /* Frameworks */,
+				C03C7BFD1BDC46F700191591 /* Headers */,
+				C03C7BFE1BDC46F700191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_watchOS_Framework;
+			productName = Objc_watchOS_Framework;
+			productReference = C03C7C001BDC46F700191591 /* Objc_watchOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7C111BDC470000191591 /* Swift_watchOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C1B1BDC470000191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Framework" */;
+			buildPhases = (
+				C03C7C0D1BDC470000191591 /* Sources */,
+				C03C7C0E1BDC470000191591 /* Frameworks */,
+				C03C7C0F1BDC470000191591 /* Headers */,
+				C03C7C101BDC470000191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_watchOS_Framework;
+			productName = Swift_watchOS_Framework;
+			productReference = C03C7C121BDC470000191591 /* Swift_watchOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7C211BDC470900191591 /* Objc_watchOS_StaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C281BDC470A00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_StaticLibrary" */;
+			buildPhases = (
+				C03C7C1E1BDC470900191591 /* Sources */,
+				C03C7C1F1BDC470900191591 /* Frameworks */,
+				C03C7C201BDC470900191591 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_watchOS_StaticLibrary;
+			productName = Objc_watchOS_StaticLibrary;
+			productReference = C03C7C221BDC470900191591 /* libObjc_watchOS_StaticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C03C7C2E1BDC471600191591 /* Objc_tvOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C401BDC471600191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_Native" */;
+			buildPhases = (
+				C03C7C2B1BDC471600191591 /* Sources */,
+				C03C7C2C1BDC471600191591 /* Frameworks */,
+				C03C7C2D1BDC471600191591 /* Resources */,
+				C03C7C671BDC472900191591 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C03C7C611BDC472900191591 /* PBXTargetDependency */,
+				C03C7C731BDC473300191591 /* PBXTargetDependency */,
+			);
+			name = Objc_tvOS_Native;
+			productName = Objc_tvOS_Native;
+			productReference = C03C7C2F1BDC471600191591 /* Objc_tvOS_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7C461BDC471F00191591 /* Swift_tvOS_Native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C531BDC471F00191591 /* Build configuration list for PBXNativeTarget "Swift_tvOS_Native" */;
+			buildPhases = (
+				C03C7C431BDC471F00191591 /* Sources */,
+				C03C7C441BDC471F00191591 /* Frameworks */,
+				C03C7C451BDC471F00191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_tvOS_Native;
+			productName = Swift_tvOS_Native;
+			productReference = C03C7C471BDC471F00191591 /* Swift_tvOS_Native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C03C7C5A1BDC472900191591 /* Objc_tvOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C641BDC472900191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_Framework" */;
+			buildPhases = (
+				C03C7C561BDC472900191591 /* Sources */,
+				C03C7C571BDC472900191591 /* Frameworks */,
+				C03C7C581BDC472900191591 /* Headers */,
+				C03C7C591BDC472900191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_tvOS_Framework;
+			productName = Objc_tvOS_Framework;
+			productReference = C03C7C5B1BDC472900191591 /* Objc_tvOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7C6C1BDC473300191591 /* Swift_tvOS_Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C761BDC473300191591 /* Build configuration list for PBXNativeTarget "Swift_tvOS_Framework" */;
+			buildPhases = (
+				C03C7C681BDC473300191591 /* Sources */,
+				C03C7C691BDC473300191591 /* Frameworks */,
+				C03C7C6A1BDC473300191591 /* Headers */,
+				C03C7C6B1BDC473300191591 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swift_tvOS_Framework;
+			productName = Swift_tvOS_Framework;
+			productReference = C03C7C6D1BDC473300191591 /* Swift_tvOS_Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C03C7C7C1BDC473B00191591 /* Objc_tvOS_StaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03C7C831BDC473B00191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_StaticLibrary" */;
+			buildPhases = (
+				C03C7C791BDC473B00191591 /* Sources */,
+				C03C7C7A1BDC473B00191591 /* Frameworks */,
+				C03C7C7B1BDC473B00191591 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Objc_tvOS_StaticLibrary;
+			productName = Objc_tvOS_StaticLibrary;
+			productReference = C03C7C7D1BDC473B00191591 /* libObjc_tvOS_StaticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		76384FD464FB3A6EC51F5C17 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					C03C7ADA1BDC45A000191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7AF81BDC45A900191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B111BDC45B400191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B231BDC45BF00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B331BDC45CA00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B401BDC45D500191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B581BDC45DE00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B6C1BDC45E800191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B7E1BDC45F000191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B8E1BDC45FA00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7B9B1BDC460200191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BA81BDC460B00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BB01BDC461B00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BBC1BDC461B00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BD71BDC46E600191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BE31BDC46E600191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7BFF1BDC46F700191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C111BDC470000191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C211BDC470900191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C2E1BDC471600191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C461BDC471F00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C5A1BDC472900191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C6C1BDC473300191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					C03C7C7C1BDC473B00191591 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = 1700C6112F4FC1DA0D6E1EA9 /* Build configuration list for PBXProject "Project" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7279AE56359594EEEFCA6188;
+			productRefGroup = A6B5BFCEDF00E28BFACFE431 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C03C7ADA1BDC45A000191591 /* Objc_iOS_Native */,
+				C03C7AF81BDC45A900191591 /* Swift_iOS_Native */,
+				C03C7B111BDC45B400191591 /* Objc_iOS_Framework */,
+				C03C7B231BDC45BF00191591 /* Swift_iOS_Framework */,
+				C03C7B331BDC45CA00191591 /* Objc_iOS_StaticLibrary */,
+				C03C7B401BDC45D500191591 /* Objc_OSX_Native */,
+				C03C7B581BDC45DE00191591 /* Swift_OSX_Native */,
+				C03C7B6C1BDC45E800191591 /* Objc_OSX_Framework */,
+				C03C7B7E1BDC45F000191591 /* Swift_OSX_Framework */,
+				C03C7B8E1BDC45FA00191591 /* Objc_OSX_StaticLibrary */,
+				C03C7B9B1BDC460200191591 /* Objc_OSX_DynamicLibrary */,
+				C03C7BA81BDC460B00191591 /* OSX_Bundle */,
+				C03C7BB01BDC461B00191591 /* Objc_watchOS_Native */,
+				C03C7BBC1BDC461B00191591 /* Objc_watchOS_Native Extension */,
+				C03C7BD71BDC46E600191591 /* Swift_watchOS_Native */,
+				C03C7BE31BDC46E600191591 /* Swift_watchOS_Native Extension */,
+				C03C7BFF1BDC46F700191591 /* Objc_watchOS_Framework */,
+				C03C7C111BDC470000191591 /* Swift_watchOS_Framework */,
+				C03C7C211BDC470900191591 /* Objc_watchOS_StaticLibrary */,
+				C03C7C2E1BDC471600191591 /* Objc_tvOS_Native */,
+				C03C7C461BDC471F00191591 /* Swift_tvOS_Native */,
+				C03C7C5A1BDC472900191591 /* Objc_tvOS_Framework */,
+				C03C7C6C1BDC473300191591 /* Swift_tvOS_Framework */,
+				C03C7C7C1BDC473B00191591 /* Objc_tvOS_StaticLibrary */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C03C7AD91BDC45A000191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7AF01BDC45A000191591 /* LaunchScreen.storyboard in Resources */,
+				C03C7AED1BDC45A000191591 /* Assets.xcassets in Resources */,
+				C03C7AEB1BDC45A000191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7AF71BDC45A900191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B081BDC45A900191591 /* LaunchScreen.storyboard in Resources */,
+				C03C7B051BDC45A900191591 /* Assets.xcassets in Resources */,
+				C03C7B031BDC45A900191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B101BDC45B400191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B221BDC45BF00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B3F1BDC45D500191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B4D1BDC45D500191591 /* Assets.xcassets in Resources */,
+				C03C7B501BDC45D500191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B571BDC45DE00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B601BDC45DE00191591 /* Assets.xcassets in Resources */,
+				C03C7B631BDC45DE00191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B6B1BDC45E800191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B7D1BDC45F000191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BA71BDC460B00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BAF1BDC461B00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BB71BDC461B00191591 /* Assets.xcassets in Resources */,
+				C03C7BB51BDC461B00191591 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BBB1BDC461B00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BC91BDC461B00191591 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BD61BDC46E600191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BDE1BDC46E600191591 /* Assets.xcassets in Resources */,
+				C03C7BDC1BDC46E600191591 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BE21BDC46E600191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BEE1BDC46E600191591 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BFE1BDC46F700191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C101BDC470000191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C2D1BDC471600191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C3E1BDC471600191591 /* Assets.xcassets in Resources */,
+				C03C7C3C1BDC471600191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C451BDC471F00191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C511BDC471F00191591 /* Assets.xcassets in Resources */,
+				C03C7C4F1BDC471F00191591 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C591BDC472900191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C6B1BDC473300191591 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C03C7AD71BDC45A000191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7AE21BDC45A000191591 /* AppDelegate.m in Sources */,
+				C03C7AE51BDC45A000191591 /* MasterViewController.m in Sources */,
+				C03C7ADF1BDC45A000191591 /* main.m in Sources */,
+				C03C7AE81BDC45A000191591 /* DetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7AF51BDC45A900191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B001BDC45A900191591 /* DetailViewController.swift in Sources */,
+				C03C7AFE1BDC45A900191591 /* MasterViewController.swift in Sources */,
+				C03C7AFC1BDC45A900191591 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B0D1BDC45B400191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B1F1BDC45BF00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B301BDC45CA00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B391BDC45CA00191591 /* Objc_iOS_StaticLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B3D1BDC45D500191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B4B1BDC45D500191591 /* ViewController.m in Sources */,
+				C03C7B481BDC45D500191591 /* main.m in Sources */,
+				C03C7B451BDC45D500191591 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B551BDC45DE00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B5E1BDC45DE00191591 /* ViewController.swift in Sources */,
+				C03C7B5C1BDC45DE00191591 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B681BDC45E800191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B7A1BDC45F000191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B8B1BDC45FA00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7B941BDC45FA00191591 /* Objc_OSX_StaticLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7B981BDC460200191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BA11BDC460200191591 /* Objc_OSX_DynamicLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BA51BDC460B00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BB91BDC461B00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BC71BDC461B00191591 /* ExtensionDelegate.m in Sources */,
+				C03C7BC41BDC461B00191591 /* InterfaceController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BE01BDC46E600191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7BEC1BDC46E600191591 /* ExtensionDelegate.swift in Sources */,
+				C03C7BEA1BDC46E600191591 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7BFB1BDC46F700191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C0D1BDC470000191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C1E1BDC470900191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C271BDC470A00191591 /* Objc_watchOS_StaticLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C2B1BDC471600191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C391BDC471600191591 /* ViewController.m in Sources */,
+				C03C7C361BDC471600191591 /* AppDelegate.m in Sources */,
+				C03C7C331BDC471600191591 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C431BDC471F00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C4C1BDC471F00191591 /* ViewController.swift in Sources */,
+				C03C7C4A1BDC471F00191591 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C561BDC472900191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C681BDC473300191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03C7C791BDC473B00191591 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03C7C821BDC473B00191591 /* Objc_tvOS_StaticLibrary.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C03C7B181BDC45B400191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7B111BDC45B400191591 /* Objc_iOS_Framework */;
+			targetProxy = C03C7B171BDC45B400191591 /* PBXContainerItemProxy */;
+		};
+		C03C7B2A1BDC45BF00191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7B231BDC45BF00191591 /* Swift_iOS_Framework */;
+			targetProxy = C03C7B291BDC45BF00191591 /* PBXContainerItemProxy */;
+		};
+		C03C7B731BDC45E900191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7B6C1BDC45E800191591 /* Objc_OSX_Framework */;
+			targetProxy = C03C7B721BDC45E900191591 /* PBXContainerItemProxy */;
+		};
+		C03C7B851BDC45F000191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7B7E1BDC45F000191591 /* Swift_OSX_Framework */;
+			targetProxy = C03C7B841BDC45F000191591 /* PBXContainerItemProxy */;
+		};
+		C03C7BC01BDC461B00191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7BBC1BDC461B00191591 /* Objc_watchOS_Native Extension */;
+			targetProxy = C03C7BBF1BDC461B00191591 /* PBXContainerItemProxy */;
+		};
+		C03C7BCC1BDC461B00191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7BB01BDC461B00191591 /* Objc_watchOS_Native */;
+			targetProxy = C03C7BCB1BDC461B00191591 /* PBXContainerItemProxy */;
+		};
+		C03C7BE71BDC46E600191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7BE31BDC46E600191591 /* Swift_watchOS_Native Extension */;
+			targetProxy = C03C7BE61BDC46E600191591 /* PBXContainerItemProxy */;
+		};
+		C03C7BF11BDC46E600191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7BD71BDC46E600191591 /* Swift_watchOS_Native */;
+			targetProxy = C03C7BF01BDC46E600191591 /* PBXContainerItemProxy */;
+		};
+		C03C7C061BDC46F700191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7BFF1BDC46F700191591 /* Objc_watchOS_Framework */;
+			targetProxy = C03C7C051BDC46F700191591 /* PBXContainerItemProxy */;
+		};
+		C03C7C181BDC470000191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7C111BDC470000191591 /* Swift_watchOS_Framework */;
+			targetProxy = C03C7C171BDC470000191591 /* PBXContainerItemProxy */;
+		};
+		C03C7C611BDC472900191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7C5A1BDC472900191591 /* Objc_tvOS_Framework */;
+			targetProxy = C03C7C601BDC472900191591 /* PBXContainerItemProxy */;
+		};
+		C03C7C731BDC473300191591 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03C7C6C1BDC473300191591 /* Swift_tvOS_Framework */;
+			targetProxy = C03C7C721BDC473300191591 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C03C7AE91BDC45A000191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7AEA1BDC45A000191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7AEE1BDC45A000191591 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7AEF1BDC45A000191591 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7B011BDC45A900191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7B021BDC45A900191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7B061BDC45A900191591 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7B071BDC45A900191591 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7B4E1BDC45D500191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7B4F1BDC45D500191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7B611BDC45DE00191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7B621BDC45DE00191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7BB31BDC461B00191591 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7BB41BDC461B00191591 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7BDA1BDC46E600191591 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7BDB1BDC46E600191591 /* Base */,
+			);
+			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7C3A1BDC471600191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7C3B1BDC471600191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C03C7C4D1BDC471F00191591 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03C7C4E1BDC471F00191591 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		948F7CA3C33D3D4962572167 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		ADCAC416FCC1BF481FC85B4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C03C7AF21BDC45A000191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_iOS_Native/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C03C7AF31BDC45A000191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_iOS_Native/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C03C7B0B1BDC45A900191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_iOS_Native/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C03C7B0C1BDC45A900191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_iOS_Native/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C03C7B1C1BDC45B400191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_iOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7B1D1BDC45B400191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_iOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7B2E1BDC45C000191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_iOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7B2F1BDC45C000191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_iOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7B3B1BDC45CA00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C03C7B3C1BDC45CA00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		C03C7B531BDC45D500191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_OSX_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-OSX-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C03C7B541BDC45D500191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_OSX_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-OSX-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C03C7B661BDC45DE00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_OSX_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-OSX-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C03C7B671BDC45DE00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_OSX_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-OSX-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C03C7B771BDC45E900191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_OSX_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-OSX-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7B781BDC45E900191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_OSX_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-OSX-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7B891BDC45F000191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_OSX_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-OSX-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7B8A1BDC45F000191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_OSX_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-OSX-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7B961BDC45FA00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C03C7B971BDC45FA00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C03C7BA31BDC460200191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C03C7BA41BDC460200191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C03C7BAD1BDC460B00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = OSX_Bundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.OSX-Bundle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		C03C7BAE1BDC460B00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = OSX_Bundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.OSX-Bundle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		C03C7BCF1BDC461B00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Objc_watchOS_Native Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7BD01BDC461B00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Objc_watchOS_Native Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7BD31BDC461B00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = Objc_watchOS_Native_Extension;
+				INFOPLIST_FILE = Objc_watchOS_Native/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7BD41BDC461B00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = Objc_watchOS_Native_Extension;
+				INFOPLIST_FILE = Objc_watchOS_Native/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-iOS-Native.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7BF41BDC46E600191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Swift_watchOS_Native Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7BF51BDC46E600191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "Swift_watchOS_Native Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7BF81BDC46E600191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = Swift_watchOS_Native_Extension;
+				INFOPLIST_FILE = Swift_watchOS_Native/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7BF91BDC46E600191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IBSC_MODULE = Swift_watchOS_Native_Extension;
+				INFOPLIST_FILE = Swift_watchOS_Native/Info.plist;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-iOS-Native.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7C0A1BDC46F700191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_watchOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-watchOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7C0B1BDC46F700191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_watchOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-watchOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7C1C1BDC470000191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_watchOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-watchOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7C1D1BDC470000191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_watchOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-watchOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7C291BDC470A00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		C03C7C2A1BDC470A00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		C03C7C411BDC471600191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_tvOS_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-tvOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		C03C7C421BDC471600191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_tvOS_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-tvOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		C03C7C541BDC471F00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_tvOS_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-tvOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		C03C7C551BDC471F00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_tvOS_Native/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-tvOS-Native";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		C03C7C651BDC472900191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_tvOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-tvOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7C661BDC472900191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Objc_tvOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Objc-tvOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7C771BDC473300191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_tvOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-tvOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C03C7C781BDC473300191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Swift_tvOS_Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.Swift-tvOS-Framework";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C03C7C841BDC473B00191591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		C03C7C851BDC473B00191591 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1700C6112F4FC1DA0D6E1EA9 /* Build configuration list for PBXProject "Project" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				948F7CA3C33D3D4962572167 /* Debug */,
+				ADCAC416FCC1BF481FC85B4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C03C7AF41BDC45A000191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7AF21BDC45A000191591 /* Debug */,
+				C03C7AF31BDC45A000191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B0A1BDC45A900191591 /* Build configuration list for PBXNativeTarget "Swift_iOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B0B1BDC45A900191591 /* Debug */,
+				C03C7B0C1BDC45A900191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B1B1BDC45B400191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B1C1BDC45B400191591 /* Debug */,
+				C03C7B1D1BDC45B400191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B2D1BDC45C000191591 /* Build configuration list for PBXNativeTarget "Swift_iOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B2E1BDC45C000191591 /* Debug */,
+				C03C7B2F1BDC45C000191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B3A1BDC45CA00191591 /* Build configuration list for PBXNativeTarget "Objc_iOS_StaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B3B1BDC45CA00191591 /* Debug */,
+				C03C7B3C1BDC45CA00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B521BDC45D500191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B531BDC45D500191591 /* Debug */,
+				C03C7B541BDC45D500191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B651BDC45DE00191591 /* Build configuration list for PBXNativeTarget "Swift_OSX_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B661BDC45DE00191591 /* Debug */,
+				C03C7B671BDC45DE00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B761BDC45E900191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B771BDC45E900191591 /* Debug */,
+				C03C7B781BDC45E900191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B881BDC45F000191591 /* Build configuration list for PBXNativeTarget "Swift_OSX_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B891BDC45F000191591 /* Debug */,
+				C03C7B8A1BDC45F000191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7B951BDC45FA00191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_StaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7B961BDC45FA00191591 /* Debug */,
+				C03C7B971BDC45FA00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BA21BDC460200191591 /* Build configuration list for PBXNativeTarget "Objc_OSX_DynamicLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BA31BDC460200191591 /* Debug */,
+				C03C7BA41BDC460200191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BAC1BDC460B00191591 /* Build configuration list for PBXNativeTarget "OSX_Bundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BAD1BDC460B00191591 /* Debug */,
+				C03C7BAE1BDC460B00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BCE1BDC461B00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Native Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BCF1BDC461B00191591 /* Debug */,
+				C03C7BD01BDC461B00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BD21BDC461B00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BD31BDC461B00191591 /* Debug */,
+				C03C7BD41BDC461B00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BF31BDC46E600191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Native Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BF41BDC46E600191591 /* Debug */,
+				C03C7BF51BDC46E600191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7BF71BDC46E600191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7BF81BDC46E600191591 /* Debug */,
+				C03C7BF91BDC46E600191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C091BDC46F700191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C0A1BDC46F700191591 /* Debug */,
+				C03C7C0B1BDC46F700191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C1B1BDC470000191591 /* Build configuration list for PBXNativeTarget "Swift_watchOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C1C1BDC470000191591 /* Debug */,
+				C03C7C1D1BDC470000191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C281BDC470A00191591 /* Build configuration list for PBXNativeTarget "Objc_watchOS_StaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C291BDC470A00191591 /* Debug */,
+				C03C7C2A1BDC470A00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C401BDC471600191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C411BDC471600191591 /* Debug */,
+				C03C7C421BDC471600191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C531BDC471F00191591 /* Build configuration list for PBXNativeTarget "Swift_tvOS_Native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C541BDC471F00191591 /* Debug */,
+				C03C7C551BDC471F00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C641BDC472900191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C651BDC472900191591 /* Debug */,
+				C03C7C661BDC472900191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C761BDC473300191591 /* Build configuration list for PBXNativeTarget "Swift_tvOS_Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C771BDC473300191591 /* Debug */,
+				C03C7C781BDC473300191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C03C7C831BDC473B00191591 /* Build configuration list for PBXNativeTarget "Objc_tvOS_StaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03C7C841BDC473B00191591 /* Debug */,
+				C03C7C851BDC473B00191591 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 76384FD464FB3A6EC51F5C17 /* Project object */;
+}

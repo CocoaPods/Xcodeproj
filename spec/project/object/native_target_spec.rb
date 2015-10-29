@@ -1,109 +1,119 @@
 require File.expand_path('../../../spec_helper', __FILE__)
 
 module ProjectSpecs
-
   describe AbstractTarget do
-    describe "In general" do
-
+    describe 'In general' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
-        @sut.name.should == "Pods"
-        @sut.product_name.should == "Pods"
+      it 'returns the product name, which is the name of the binary (minus prefix/suffix)' do
+        @target.name.should == 'Pods'
+        @target.product_name.should == 'Pods'
       end
     end
 
+    #----------------------------------------#
 
+    describe 'Creation' do
+      it 'inherits build configurations from the project similar to Xcode' do
+        @project.add_build_configuration('App Store', :release)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
+
+        @project.build_configurations.map(&:name).sort.should == \
+          @target.build_configurations.map(&:name).sort
+      end
+
+      it 'uses default Release build configuration build settings for custom build configurations when adding a target' do
+        @project.add_build_configuration('App Store', :release)
+        target = @project.new_target(:static_library, 'Pods', :ios, '9.0', @project.products_group)
+
+        release_settings = Xcodeproj::Project::ProjectHelper.common_build_settings(:release, :ios, '9.0', :static_library)
+        target.build_settings('App Store').should == release_settings
+      end
+    end
 
     #----------------------------------------#
 
-    describe "Helpers" do
-
+    describe 'Helpers' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      describe "#common_resolved_build_setting" do
-
-        it "returns the resolved build setting for the given key as indicated in the target build configuration" do
+      describe '#common_resolved_build_setting' do
+        it 'returns the resolved build setting for the given key as indicated in the target build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', nil)
-          @sut.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
-          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"VALID_ARCHS", "Debug"=>"VALID_ARCHS"}
+          @target.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @target.resolved_build_setting('ARCHS').should == { 'Release' => 'VALID_ARCHS', 'Debug' => 'VALID_ARCHS' }
         end
 
-        it "returns the resolved build setting for the given key as indicated in the project build configuration" do
+        it 'returns the resolved build setting for the given key as indicated in the project build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
-          @sut.build_configuration_list.set_setting('ARCHS', nil)
-          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"VALID_ARCHS", "Debug"=>"VALID_ARCHS"}
+          @target.build_configuration_list.set_setting('ARCHS', nil)
+          @target.resolved_build_setting('ARCHS').should == { 'Release' => 'VALID_ARCHS', 'Debug' => 'VALID_ARCHS' }
         end
 
-        it "overrides the project settings with the target ones" do
+        it 'overrides the project settings with the target ones' do
           @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
-          @sut.build_configuration_list.set_setting('ARCHS', "arm64")
-          @sut.resolved_build_setting('ARCHS').should == {"Release"=>"arm64", "Debug"=>"arm64"}
+          @target.build_configuration_list.set_setting('ARCHS', 'arm64')
+          @target.resolved_build_setting('ARCHS').should == { 'Release' => 'arm64', 'Debug' => 'arm64' }
         end
-
       end
 
       #----------------------------------------#
 
-      describe "#common_resolved_build_setting" do
-
-        it "returns the common resolved build setting for the given key as indicated in the target build configuration" do
+      describe '#common_resolved_build_setting' do
+        it 'returns the common resolved build setting for the given key as indicated in the target build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', nil)
-          @sut.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
-          @sut.common_resolved_build_setting('ARCHS').should == "VALID_ARCHS"
+          @target.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
+          @target.common_resolved_build_setting('ARCHS').should == 'VALID_ARCHS'
         end
 
-        it "returns the common resolved build setting for the given key as indicated in the project build configuration" do
+        it 'returns the common resolved build setting for the given key as indicated in the project build configuration' do
           @project.build_configuration_list.set_setting('ARCHS', 'VALID_ARCHS')
-          @sut.build_configuration_list.set_setting('ARCHS', nil)
-          @sut.common_resolved_build_setting('ARCHS').should == "VALID_ARCHS"
+          @target.build_configuration_list.set_setting('ARCHS', nil)
+          @target.common_resolved_build_setting('ARCHS').should == 'VALID_ARCHS'
         end
 
-        it "raises if the build setting has multiple values across the build configurations" do
-          @sut.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = "arm64"
-          @sut.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = "VALID_ARCHS"
+        it 'raises if the build setting has multiple values across the build configurations' do
+          @target.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = 'arm64'
+          @target.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = 'VALID_ARCHS'
           should.raise do
-            @sut.common_resolved_build_setting('ARCHS')
+            @target.common_resolved_build_setting('ARCHS')
           end.message.should.match /multiple values/
         end
 
-        it "ignores nil values when determining if an unique value exists" do
-          @sut.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = nil
-          @sut.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = "VALID_ARCHS"
+        it 'ignores nil values when determining if an unique value exists' do
+          @target.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = nil
+          @target.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = 'VALID_ARCHS'
           should.not.raise do
-            @sut.common_resolved_build_setting('ARCHS')
+            @target.common_resolved_build_setting('ARCHS')
           end
-
         end
-
       end
 
       #----------------------------------------#
 
-      it "returns the SDK specified in its build configuration" do
+      it 'returns the SDK specified in its build configuration' do
         @project.build_configuration_list.set_setting('SDKROOT', nil)
-        @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
-        @sut.sdk.should == 'iphoneos'
+        @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
+        @target.sdk.should == 'iphoneos'
       end
 
-      it "returns the SDK of the project if one is not specified in the build configurations" do
+      it 'returns the SDK of the project if one is not specified in the build configurations' do
         @project.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
-        @sut.build_configuration_list.set_setting('SDKROOT', nil)
-        @sut.sdk.should == 'iphoneos'
+        @target.build_configuration_list.set_setting('SDKROOT', nil)
+        @target.sdk.should == 'iphoneos'
       end
 
-      it "returns the platform name" do
+      it 'returns the platform name' do
         @project.new_target(:static_library, 'Pods', :ios).platform_name.should == :ios
         @project.new_target(:static_library, 'Pods', :osx).platform_name.should == :osx
       end
 
-      it "returns the SDK version" do
-        @project.new_target(:static_library, 'Pods', :ios).sdk_version.should == nil
-        @project.new_target(:static_library, 'Pods', :osx).sdk_version.should == nil
+      it 'returns the SDK version' do
+        @project.new_target(:static_library, 'Pods', :ios).sdk_version.should.nil?
+        @project.new_target(:static_library, 'Pods', :osx).sdk_version.should.nil?
 
         t1 = @project.new_target(:static_library, 'Pods', :ios)
         t1.build_configuration_list.set_setting('SDKROOT', 'iphoneos7.0')
@@ -112,75 +122,114 @@ module ProjectSpecs
         t2 = @project.new_target(:static_library, 'Pods', :osx)
         t2.build_configuration_list.set_setting('SDKROOT', 'macosx10.8')
         t2.sdk_version.should == '10.8'
+
+        t3 = @project.new_target(:static_library, 'Pods', :watchos)
+        t3.build_configuration_list.set_setting('SDKROOT', 'watchos2.0')
+        t3.sdk_version.should == '2.0'
+
+        t4 = @project.new_target(:static_library, 'Pods', :tvos)
+        t4.build_configuration_list.set_setting('SDKROOT', 'tvos9.0')
+        t4.sdk_version.should == '9.0'
       end
 
-      it "returns the deployment target specified in its build configuration" do
-        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
-        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
-        @project.new_target(:static_library, 'Pods', :ios).deployment_target.should == '4.3'
-        @project.new_target(:static_library, 'Pods', :osx).deployment_target.should == '10.7'
+      describe 'returns the deployment target specified in its build configuration' do
+        it 'works for iOS' do
+          @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :ios, '4.3').deployment_target.should == '4.3'
+        end
+
+        it 'works for OSX' do
+          @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :osx, '10.7').deployment_target.should == '10.7'
+        end
+
+        it 'works for tvOS' do
+          @project.build_configuration_list.set_setting('TVOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :tvos, '9.0').deployment_target.should == '9.0'
+        end
+
+        it 'works for watchOS' do
+          @project.build_configuration_list.set_setting('WATCHOS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :watchos, '2.0').deployment_target.should == '2.0'
+        end
       end
 
-      it "returns the deployment target" do
-        @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', '4.3')
-        @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', '10.7')
-        mac_target = @project.new_target(:static_library, 'Pods', :ios)
-        mac_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
-        mac_target.deployment_target.should == '4.3'
+      describe 'returns the deployment target of the project build configuration' do
+        it 'works for iOS' do
+          @project.build_configuration_list.set_setting('IPHONEOS_DEPLOYMENT_TARGET', '4.3')
+          ios_target = @project.new_target(:static_library, 'Pods', :ios)
+          ios_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = nil
+          ios_target.deployment_target.should == '4.3'
+        end
+
+        it 'works for OSX' do
+          @project.build_configuration_list.set_setting('MACOSX_DEPLOYMENT_TARGET', '10.7')
+          osx_target = @project.new_target(:static_library, 'Pods', :osx)
+          osx_target.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'] = nil
+          osx_target.deployment_target.should == '10.7'
+        end
+
+        it 'works for watchOS' do
+          @project.build_configuration_list.set_setting('WATCHOS_DEPLOYMENT_TARGET', '2.0')
+          watch_target = @project.new_target(:static_library, 'Pods', :watchos)
+          watch_target.build_configurations.first.build_settings['WATCHOS_DEPLOYMENT_TARGET'] = nil
+          watch_target.deployment_target.should == '2.0'
+        end
+
+        it 'works for tvOS' do
+          @project.build_configuration_list.set_setting('TVOS_DEPLOYMENT_TARGET', '9.0')
+          tv_target = @project.new_target(:static_library, 'Pods', :tvos)
+          tv_target.build_configurations.first.build_settings['TVOS_DEPLOYMENT_TARGET'] = nil
+          tv_target.deployment_target.should == '9.0'
+        end
       end
 
-      it "returns the build configuration" do
-        build_configurations = @sut.build_configurations
+      it 'returns the build configuration' do
+        build_configurations = @target.build_configurations
         build_configurations.map(&:isa).uniq.should == ['XCBuildConfiguration']
-        build_configurations.map(&:name).sort.should == ["Debug", "Release"]
+        build_configurations.map(&:name).sort.should == %w(Debug Release)
       end
 
       #----------------------------------------#
 
-      describe "#add_build_configuration" do
-
-        it "adds a new build configuration" do
-          @sut.add_build_configuration('App Store', :release)
-          @sut.build_configurations.map(&:name).sort.should == [ 'App Store', 'Debug', 'Release' ]
-        end
-
-        it "configures new build configurations according to the given type" do
-          @sut.add_build_configuration('App Store', :release)
-          @sut.build_settings('App Store')['OTHER_CFLAGS'].should == ['-DNS_BLOCK_ASSERTIONS=1', "$(inherited)"]
+      describe '#add_build_configuration' do
+        it 'adds a new build configuration' do
+          @target.add_build_configuration('App Store', :release)
+          @target.build_configurations.map(&:name).sort.should == ['App Store', 'Debug', 'Release']
         end
 
         it "doesn't duplicate build configurations with existing names" do
-          @sut.add_build_configuration('App Store', :release)
-          @sut.add_build_configuration('App Store', :release)
-          @sut.build_configurations.map(&:name).grep('App Store').size.should == 1
+          @target.add_build_configuration('App Store', :release)
+          @target.add_build_configuration('App Store', :release)
+          @target.build_configurations.map(&:name).grep('App Store').size.should == 1
         end
 
-        it "returns the new build configuration" do
-          conf = @sut.add_build_configuration('App Store', :release)
+        it 'returns the new build configuration' do
+          conf = @target.add_build_configuration('App Store', :release)
           conf.name.should == 'App Store'
         end
 
-        it "returns the existing build configuration" do
-          conf_1 = @sut.add_build_configuration('App Store', :release)
-          conf_2 = @sut.add_build_configuration('App Store', :release)
+        it 'returns the existing build configuration' do
+          conf_1 = @target.add_build_configuration('App Store', :release)
+          conf_2 = @target.add_build_configuration('App Store', :release)
           conf_1.object_id.should == conf_2.object_id
         end
-
       end
 
       #----------------------------------------#
 
-      it "returns the build settings of the configuration with the given name" do
-        @sut.build_settings('Debug')['PRODUCT_NAME'].should == "$(TARGET_NAME)"
+      it 'returns the build settings of the configuration with the given name' do
+        @target.build_settings('Debug')['PRODUCT_NAME'].should == '$(TARGET_NAME)'
       end
 
-      describe "#add_dependency" do
+      describe '#add_dependency' do
+        extend SpecHelper::TemporaryDirectory
 
-        it "adds a dependency on another target" do
+        it 'adds a dependency on another target' do
           dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
-          @sut.add_dependency(dependency_target)
-          @sut.dependencies.count.should == 1
-          target_dependency = @sut.dependencies.first
+          @target.add_dependency(dependency_target)
+          @target.dependencies.count.should == 1
+          target_dependency = @target.dependencies.first
           target_dependency.target.should == dependency_target
           container_proxy = target_dependency.target_proxy
           container_proxy.container_portal.should == @project.root_object.uuid
@@ -189,17 +238,27 @@ module ProjectSpecs
           container_proxy.remote_info.should == dependency_target.name
         end
 
-        it "adds a dependency on a target in a subproject" do
-          subproject = Xcodeproj::Project.new('/other_project_dir/OtherProject.xcodeproj')
-          dependency_target = subproject.new_target(:static_library, 'Pods-SMCalloutView', :ios)
-          subproject_file_reference = @project.main_group.new_file(subproject.path)
-          @sut.add_dependency(dependency_target)
+        it 'adds a dependency on a target in a subproject' do
+          path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+          subproject = Xcodeproj::Project.open(path)
+          dependency_target = subproject.targets.first
+          subproject_file_reference = @project.main_group.new_file(path)
+          @target.add_dependency(dependency_target)
 
-          @sut.dependencies.count.should == 1
-          target_dependency = @sut.dependencies.first
-          target_dependency.target.should == dependency_target
+          @target.dependencies.count.should == 1
+          target_dependency = @target.dependencies.first
+          target_dependency.target.should.be.nil
 
-          target_dependency.target_proxy.container_portal.should == subproject_file_reference.uuid
+          container_proxy = target_dependency.target_proxy
+          container_proxy.container_portal.should == subproject_file_reference.uuid
+          container_proxy.remote_global_id_string.should == dependency_target.uuid
+
+          # Regression test: Ensure that we can open the modified project
+          # without attempting to initialize an object with an unknown UUID
+          Xcodeproj::UI.stubs(:warn).never
+          temp_path = temporary_directory + 'ProjectWithTargetDependencyToSubproject.xcodeproj'
+          @project.save(temp_path)
+          Xcodeproj::Project.open(temp_path)
         end
 
         it "doesn't add a dependency on a target in an unknown project" do
@@ -207,27 +266,46 @@ module ProjectSpecs
           dependency_target = unknown_project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
 
           should.raise ArgumentError do
-            @sut.add_dependency(dependency_target)
+            @target.add_dependency(dependency_target)
           end.message.should.match /not this project/
         end
 
         it "doesn't duplicate dependencies" do
           dependency_target = @project.new_target(:static_library, 'Pods-SMCalloutView', :ios)
-          @sut.add_dependency(dependency_target)
-          @sut.add_dependency(dependency_target)
-          @sut.dependencies.count.should == 1
+          @target.add_dependency(dependency_target)
+          @target.add_dependency(dependency_target)
+          @target.dependencies.count.should == 1
+        end
+      end
+
+      describe '#dependency_for_target' do
+        before do
+          subproject_path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
+          @subproject = Xcodeproj::Project.open(subproject_path)
+
+          project_path = fixture_path('Sample Project/ContainsSubproject/ContainsSubproject.xcodeproj')
+          @project = Xcodeproj::Project.open(project_path)
+        end
+
+        it 'returns the dependency for targets from the current project' do
+          @target = @project.targets.find { |t| t.name == 'ContainsSubprojectTests' }
+          @target.dependency_for_target(@project.targets.first).should == @target.dependencies.first
+        end
+
+        it 'returns the dependency for targets from a subproject' do
+          @target = @project.targets.first
+          @target.dependency_for_target(@subproject.targets.first).should == @target.dependencies.first
         end
       end
     end
 
-
     #----------------------------------------#
 
-    describe "Build phases" do
+    describe 'Build phases' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
-        @sut.build_phases << @project.new(PBXCopyFilesBuildPhase)
-        @sut.build_phases << @project.new(PBXShellScriptBuildPhase)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
+        @target.build_phases << @project.new(PBXCopyFilesBuildPhase)
+        @target.build_phases << @project.new(PBXShellScriptBuildPhase)
       end
 
       {
@@ -238,9 +316,8 @@ module ProjectSpecs
         :copy_files_build_phases   => PBXCopyFilesBuildPhase,
         :shell_script_build_phases => PBXShellScriptBuildPhase,
       }.each do |association_method, klass|
-
         it "returns an empty #{klass.isa}" do
-          phase = @sut.send(association_method)
+          phase = @target.send(association_method)
           if phase.is_a? Array
             phase = phase.first
           end
@@ -254,237 +331,280 @@ module ProjectSpecs
         end
       end
 
-      it "returns the frameworks build phase" do
-        @sut.frameworks_build_phases.class.should == PBXFrameworksBuildPhase
+      it 'returns the frameworks build phase' do
+        @target.frameworks_build_phases.class.should == PBXFrameworksBuildPhase
       end
 
       it "creates a new 'copy files build phase'" do
-        before = @sut.copy_files_build_phases.count
-        @sut.new_copy_files_build_phase
-        @sut.copy_files_build_phases.count.should == before + 1
+        before = @target.copy_files_build_phases.count
+        @target.new_copy_files_build_phase
+        @target.copy_files_build_phases.count.should == before + 1
       end
 
       it "creates a new 'shell script build phase'" do
-        before = @sut.shell_script_build_phases.count
-        @sut.new_shell_script_build_phase
-        @sut.shell_script_build_phases.count.should == before + 1
+        before = @target.shell_script_build_phases.count
+        @target.new_shell_script_build_phase
+        @target.shell_script_build_phases.count.should == before + 1
       end
     end
 
     #----------------------------------------#
 
-    describe "System frameworks" do
-
+    describe 'System frameworks' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
-        @sut.frameworks_build_phase.clear
+        @target = @project.new_target(:static_library, 'Pods', :ios)
+        @target.frameworks_build_phase.clear
         @project.frameworks_group.clear
       end
 
-      describe "#add_system_framework" do
-
-        it "adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group" do
-          @sut.add_system_framework('QuartzCore')
+      describe '#add_system_framework' do
+        it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
+          @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/QuartzCore.framework"
+          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.1.sdk/System/Library/Frameworks/QuartzCore.framework'
           file.source_tree.should == 'DEVELOPER_DIR'
         end
 
-        it "uses the sdk version of the target" do
-          @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos6.0')
-          @sut.add_system_framework('QuartzCore')
+        it 'uses the sdk version of the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos6.0')
+          @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == "6.0"
+          file.path.scan(/\d\.\d/).first.should == '6.0'
         end
 
-        it "uses the last known SDK version if none is specified in the target" do
-          @sut.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
-          @sut.add_system_framework('QuartzCore')
+        it 'uses the last known SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
+          @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
           file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
         end
 
+        it 'uses the last known tvOS SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'appletvos')
+          @target.add_system_framework('TVServices')
+          file = @project['Frameworks/tvOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
+        end
+
+        it 'uses the last known watchOS SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'watchos')
+          @target.add_system_framework('WatchConnectivity')
+          file = @project['Frameworks/watchOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_WATCHOS_SDK
+        end
+
         it "doesn't duplicate references to a frameworks if one already exists" do
-          @sut.add_system_framework('QuartzCore')
-          @sut.add_system_framework('QuartzCore')
+          @target.add_system_framework('QuartzCore')
+          @target.add_system_framework('QuartzCore')
           @project['Frameworks/iOS'].files.count.should == 1
         end
 
-        it "adds the framework to the framework build phases" do
-          @sut.add_system_framework('QuartzCore')
-          @sut.frameworks_build_phase.file_display_names.should == ["QuartzCore.framework"]
+        it 'adds the framework to the framework build phases' do
+          @target.add_system_framework('QuartzCore')
+          @target.frameworks_build_phase.file_display_names.should == ['QuartzCore.framework']
         end
 
         it "doesn't duplicate the frameworks in the build phases" do
-          @sut.add_system_framework('QuartzCore')
-          @sut.add_system_framework('QuartzCore')
-          @sut.frameworks_build_phase.files.count.should == 1
+          @target.add_system_framework('QuartzCore')
+          @target.add_system_framework('QuartzCore')
+          @target.frameworks_build_phase.files.count.should == 1
         end
 
-        it "can add multiple frameworks" do
-          @sut.add_system_frameworks(['CoreData', 'QuartzCore'])
-          names = @sut.frameworks_build_phase.file_display_names
-          names.should == ["CoreData.framework", "QuartzCore.framework"]
+        it 'can add multiple frameworks' do
+          @target.add_system_frameworks(%w(CoreData QuartzCore))
+          names = @target.frameworks_build_phase.file_display_names
+          names.should == ['CoreData.framework', 'QuartzCore.framework']
         end
       end
 
       #----------------------------------------#
 
-      describe "#add_system_library" do
-
-        it "adds a file reference for a system framework, to the Frameworks group" do
-          @sut.add_system_library('xml')
+      describe '#add_system_library' do
+        it 'adds a file reference for a system framework, to the Frameworks group' do
+          @target.add_system_library('xml')
           file = @project['Frameworks'].files.first
-          file.path.should == "usr/lib/libxml.dylib"
+          file.path.should == 'usr/lib/libxml.dylib'
           file.source_tree.should == 'SDKROOT'
         end
 
         it "doesn't duplicate references to a frameworks if one already exists" do
-          @sut.add_system_library('xml')
-          @sut.add_system_library('xml')
+          @target.add_system_library('xml')
+          @target.add_system_library('xml')
           @project.frameworks_group.files.count.should == 1
         end
 
-        it "adds the framework to the framework build phases" do
-          @sut.add_system_library('xml')
-          @sut.frameworks_build_phase.file_display_names.should == ["libxml.dylib"]
+        it 'adds the framework to the framework build phases' do
+          @target.add_system_library('xml')
+          @target.frameworks_build_phase.file_display_names.should == ['libxml.dylib']
         end
 
         it "doesn't duplicate the frameworks in the build phases" do
-          @sut.add_system_library('xml')
-          @sut.add_system_library('xml')
-          @sut.frameworks_build_phase.files.count.should == 1
+          @target.add_system_library('xml')
+          @target.add_system_library('xml')
+          @target.frameworks_build_phase.files.count.should == 1
         end
 
-        it "can add multiple libraries" do
-          @sut.add_system_libraries(['z', 'xml'])
-          names = @sut.frameworks_build_phase.file_display_names
-          names.should == ["libz.dylib", "libxml.dylib"]
+        it 'can add multiple libraries' do
+          @target.add_system_libraries(%w(z xml))
+          names = @target.frameworks_build_phase.file_display_names
+          names.should == ['libz.dylib', 'libxml.dylib']
         end
       end
-
     end
 
     #----------------------------------------#
 
-    describe "AbstractObject Hooks" do
-
+    describe 'AbstractObject Hooks' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "returns the pretty print representation" do
-        pretty_print = @sut.pretty_print
+      it 'returns the pretty print representation' do
+        pretty_print = @target.pretty_print
         pretty_print['Pods']['Build Phases'].should == [
-          { "SourcesBuildPhase" => [] },
-          { "FrameworksBuildPhase" => ["Foundation.framework"] }
+          { 'SourcesBuildPhase' => [] },
+          { 'FrameworksBuildPhase' => ['Foundation.framework'] },
         ]
         build_configurations = pretty_print['Pods']['Build Configurations']
-        build_configurations.map { |bf| bf.keys.first } .should == ["Release", "Debug"]
+        build_configurations.map { |bf| bf.keys.first } .should == %w(Release Debug)
       end
     end
   end
 
   #---------------------------------------------------------------------------#
 
-
   describe PBXNativeTarget do
-
-    describe "In general" do
-
+    describe 'In general' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "returns the product name, which is the name of the binary (minus prefix/suffix)" do
-        @sut.name.should == "Pods"
-        @sut.product_name.should == "Pods"
+      it 'returns the product name, which is the name of the binary (minus prefix/suffix)' do
+        @target.name.should == 'Pods'
+        @target.product_name.should == 'Pods'
       end
 
-      it "returns the product" do
-        @sut.product_reference.should.be.instance_of PBXFileReference
-        @sut.product_reference.path.should == "libPods.a"
+      it 'returns the product' do
+        @target.product_reference.should.be.instance_of PBXFileReference
+        @target.product_reference.path.should == 'libPods.a'
       end
 
-      it "returns that product type is a static library" do
-        @sut.product_type.should == "com.apple.product-type.library.static"
+      it 'returns that product type is a static library' do
+        @target.product_type.should == 'com.apple.product-type.library.static'
       end
 
-      it "returns an empty list of dependencies and build rules" do
-        @sut.dependencies.to_a.should == []
-        @sut.build_rules.to_a.should == []
+      it 'returns an empty list of dependencies and build rules' do
+        @target.dependencies.to_a.should == []
+        @target.build_rules.to_a.should == []
       end
 
-      describe "#sort" do
-
-        it "can be sorted" do
+      describe '#sort' do
+        it 'can be sorted' do
           dep_2 = @project.new_target(:static_library, 'Dep_2', :ios)
           dep_1 = @project.new_target(:static_library, 'Dep_1', :ios)
-          @sut.add_dependency(dep_2)
-          @sut.add_dependency(dep_1)
-          @sut.sort
-          @sut.dependencies.map(&:display_name).should == ['Dep_1', 'Dep_2']
+          @target.add_dependency(dep_2)
+          @target.add_dependency(dep_1)
+          @target.sort
+          @target.dependencies.map(&:display_name).should == %w(Dep_1 Dep_2)
         end
 
         it "doesn't sort the build phases" do
-          @sut.build_phases << @project.new(PBXSourcesBuildPhase)
-          @sut.build_phases << @project.new(PBXHeadersBuildPhase)
-          @sut.build_phases << @project.new(PBXSourcesBuildPhase)
-          @sut.sort
-          @sut.build_phases.map(&:isa).should == [
-            "PBXSourcesBuildPhase",
-            "PBXFrameworksBuildPhase",
-            "PBXSourcesBuildPhase",
-            "PBXHeadersBuildPhase",
-            "PBXSourcesBuildPhase"
-          ]
+          @target.build_phases << @project.new(PBXSourcesBuildPhase)
+          @target.build_phases << @project.new(PBXHeadersBuildPhase)
+          @target.build_phases << @project.new(PBXSourcesBuildPhase)
+          @target.sort
+          @target.build_phases.map(&:isa).should == %w(PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXSourcesBuildPhase PBXHeadersBuildPhase PBXSourcesBuildPhase)
         end
       end
     end
 
     #----------------------------------------#
 
-    describe "Helpers" do
-
+    describe 'Helpers' do
       before do
-        @sut = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:static_library, 'Pods', :ios)
       end
 
-      it "returns the symbol type" do
-        @sut.symbol_type.should == :static_library
+      describe '#symbol_type' do
+        it 'returns the symbol type' do
+          @target.symbol_type.should == :static_library
+        end
+
+        it 'returns nil if the product type is unknown' do
+          @target.stubs(:product_type => 'com.apple.product-type.new-stuff')
+          @target.symbol_type.should.be.nil?
+        end
       end
 
-      it "adds a list of sources file to the target to the source build phase" do
+      it 'adds a list of source files to the target to the source build phase' do
         ref = @project.main_group.new_file('Class.m')
-        @sut.add_file_references([ref], '-fobjc-arc')
-        build_files = @sut.source_build_phase.files
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.source_build_phase.files
         build_files.count.should == 1
         build_files.first.file_ref.path.should == 'Class.m'
-        build_files.first.settings.should == {"COMPILER_FLAGS"=>"-fobjc-arc"}
+        build_files.first.settings.should == { 'COMPILER_FLAGS' => '-fobjc-arc' }
       end
 
-      it "adds a list of headers file to the target header build phases" do
+      it 'adds a list of header files to the target header build phases' do
         ref = @project.main_group.new_file('Class.h')
-        @sut.add_file_references([ref], '-fobjc-arc')
-        build_files = @sut.headers_build_phase.files
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
         build_files.count.should == 1
         build_files.first.file_ref.path.should == 'Class.h'
         build_files.first.settings.should.be.nil
       end
 
-      it "adds a list of resources to the resources build phase" do
+      it 'adds a list of header files with capitalized .H extension to the target header build phases' do
+        ref = @project.main_group.new_file('CLASS.H')
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        build_files.count.should == 1
+        build_files.first.file_ref.path.should == 'CLASS.H'
+        build_files.first.settings.should.be.nil
+      end
+
+      it 'returns a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        new_build_files = @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        new_build_files.should == build_files
+      end
+
+      it 'yields a list of header files to the target header build phases' do
+        ref = @project.main_group.new_file('Class.h')
+        build_files = @target.add_file_references([ref], '-fobjc-arc') do |build_file|
+          build_file.should.be.an.instance_of?(PBXBuildFile)
+          build_file.settings = { 'ATTRIBUTES' => ['Public'] }
+        end
+        build_files.first.settings.should == { 'ATTRIBUTES' => ['Public'] }
+      end
+
+      it 'adds a list of resources to the resources build phase' do
         ref = @project.main_group.new_file('Image.png')
-        @sut.add_resources([ref])
-        build_files = @sut.resources_build_phase.files
+        @target.add_resources([ref])
+        build_files = @target.resources_build_phase.files
         build_files.count.should == 1
         build_files.first.file_ref.path.should == 'Image.png'
         build_files.first.settings.should.be.nil
       end
 
-    end
+      it 'de-duplicates added sources files' do
+        ref = @project.main_group.new_file('Class.h')
+        new_build_files = @target.add_file_references([ref], '-fobjc-arc')
+        @target.add_file_references([ref], '-fobjc-arc')
+        build_files = @target.headers_build_phase.files
+        new_build_files.should == build_files
+      end
 
+      it 'de-duplicates added resources' do
+        ref = @project.main_group.new_file('Image.png')
+        @target.add_resources([ref])
+        @target.add_resources([ref])
+        build_files = @target.resources_build_phase.files
+        build_files.count.should == 1
+      end
+    end
   end
 
   #---------------------------------------------------------------------------#
-
 end

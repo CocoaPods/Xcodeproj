@@ -1,0 +1,4 @@
+#include "Project/Project_base.xcconfig"
+COPY_PHASE_STRIP = YES
+ENABLE_NS_ASSERTIONS = NO
+VALIDATE_PRODUCT = YES

@@ -1,20 +1,12 @@
 require 'fileutils'
-require 'pathname'
-
-# In case a binary built for the current Ruby exists, use that, otherwise see
-# if a prebuilt binary exists for the current platform and Ruby version.
-begin
-  require 'xcodeproj/xcodeproj_ext'
-rescue LoadError
-  require "xcodeproj/prebuilt/#{RUBY_PLATFORM}-#{RUBY_VERSION}/xcodeproj_ext"
-end
+require 'securerandom'
 
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
-require 'xcodeproj/project/xcproj_helper'
+require 'xcodeproj/project/uuid_generator'
+require 'xcodeproj/plist_helper'
 
 module Xcodeproj
-
   # This class represents a Xcode project document.
   #
   # It can be used to manipulate existing documents or even create new ones
@@ -47,7 +39,6 @@ module Xcodeproj
   # consistent state.
   #
   class Project
-
     include Object
 
     # @return [Pathname] the path of the project.
@@ -55,22 +46,26 @@ module Xcodeproj
     attr_reader :path
 
     # @param  [Pathname, String] path @see path
+    #         The path provided will be expanded to an absolute path.
     # @param  [Bool] skip_initialization
     #         Wether the project should be initialized from scratch.
+    # @param  [Int] object_version
+    #         Object version to use for serialization, defaults to Xcode 3.2 compatible.
     #
     # @example Creating a project
     #         Project.new("path/to/Project.xcodeproj")
     #
-    def initialize(path, skip_initialization = false)
-      @path = Pathname.new(path)
+    def initialize(path, skip_initialization = false, object_version = Constants::DEFAULT_OBJECT_VERSION)
+      @path = Pathname.new(path).expand_path
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
       unless skip_initialization
         initialize_from_scratch
+        @object_version = object_version.to_s
       end
       unless skip_initialization.is_a?(TrueClass) || skip_initialization.is_a?(FalseClass)
-        raise ArgumentError, "[Xcodeproj] Initialization parameter expected to " \
+        raise ArgumentError, '[Xcodeproj] Initialization parameter expected to ' \
           "be a boolean #{skip_initialization}"
       end
     end
@@ -122,13 +117,38 @@ module Xcodeproj
     #
     attr_reader :root_object
 
+    # A fast way to see if two {Project} instances refer to the same projects on
+    # disk. Use this over {#eql?} when you do not need to compare the full data.
+    #
+    # This shallow comparison was chosen as the (common) `==` implementation,
+    # because it was too easy to introduce changes into the Xcodeproj code-base
+    # that were slower than O(1).
+    #
+    # @return [Boolean] whether or not the two `Project` instances refer to the
+    #         same projects on disk, determined solely by {#path} and
+    #         `root_object.uuid` equality.
+    #
+    # @todo If ever needed, we could also compare `uuids.sort` instead.
+    #
+    def ==(other)
+      other && path == other.path && root_object.uuid == other.root_object.uuid
+    end
+
     # Compares the project to another one, or to a plist representation.
+    #
+    # @note This operation can be extremely expensive, because it converts a
+    #       `Project` instance to a hash, and should _only_ ever be used to
+    #       determine wether or not the data contents of two `Project` instances
+    #       are completely equal.
+    #
+    #       To simply determine wether or not two {Project} instances refer to
+    #       the same projects on disk, use the {#==} method instead.
     #
     # @param  [#to_hash] other the object to compare.
     #
     # @return [Boolean] whether the project is equivalent to the given object.
     #
-    def ==(other)
+    def eql?(other)
       other.respond_to?(:to_hash) && to_hash == other.to_hash
     end
 
@@ -136,12 +156,7 @@ module Xcodeproj
       "#<#{self.class}> path:`#{path}` UUID:`#{root_object.uuid}`"
     end
 
-    alias :inspect :to_s
-
-    # @return [Bool] Whether the xcproj conversion should be disabled.
-    #
-    attr_accessor :disable_xcproj
-
+    alias_method :inspect, :to_s
 
     public
 
@@ -152,7 +167,6 @@ module Xcodeproj
     #
     def initialize_from_scratch
       @archive_version =  Constants::LAST_KNOWN_ARCHIVE_VERSION.to_s
-      @object_version  =  Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       @classes         =  {}
 
       root_object.remove_referrer(self) if root_object
@@ -177,9 +191,8 @@ module Xcodeproj
     def initialize_from_file
       pbxproj_path = path + 'project.pbxproj'
       plist = Xcodeproj.read_plist(pbxproj_path.to_s)
-      root_object_uuid = plist['rootObject']
       root_object.remove_referrer(self) if root_object
-      @root_object = new_from_plist(root_object_uuid, plist['objects'], self)
+      @root_object = new_from_plist(plist['rootObject'], plist['objects'], self)
       @archive_version =  plist['archiveVersion']
       @object_version  =  plist['objectVersion']
       @classes         =  plist['classes']
@@ -188,15 +201,14 @@ module Xcodeproj
         raise "[Xcodeproj] Unable to find a root object in #{pbxproj_path}."
       end
 
-      if (archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION)
+      if archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION
         raise '[Xcodeproj] Unknown archive version.'
       end
 
-      if (object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION)
+      if object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION
         raise '[Xcodeproj] Unknown object version.'
       end
     end
-
 
     public
 
@@ -233,6 +245,7 @@ module Xcodeproj
       if attributes
         klass = Object.const_get(attributes['isa'])
         object = klass.new(self, uuid)
+        objects_by_uuid[uuid] = object
         object.add_referrer(self) if root_object
         object.configure_with_plist(objects_by_uuid_plist)
         object
@@ -284,7 +297,7 @@ module Xcodeproj
       {
         'File References' => root_object.main_group.pretty_print.values.first,
         'Targets' => root_object.targets.map(&:pretty_print),
-        'Build Configurations' => build_configurations.sort_by(&:name).map(&:pretty_print)
+        'Build Configurations' => build_configurations.sort_by(&:name).map(&:pretty_print),
       }
     end
 
@@ -308,41 +321,22 @@ module Xcodeproj
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
-      fix_encoding(file)
-      XCProjHelper.touch(save_path) unless disable_xcproj
     end
 
-    # Simple workaround to escape characters which are outside of ASCII
-    # character-encoding. Relies on the fact that there are no XML characters
-    # which would need to be escaped.
+    # Replaces all the UUIDs in the project with deterministic MD5 checksums.
     #
-    # @note   This is necessary because Xcode (4.6 currently) uses the MacRoman
-    #         encoding unless the `// !$*UTF8*$!` magic comment is present. It
-    #         is not possible to serialize a plist using the NeXTSTEP format
-    #         without access to the private classes of Xcode and that comment
-    #         is not compatible with the XML format. For the complete
-    #         discussion see CocoaPods/CocoaPods#926.
+    # @note The current sorting of the project is taken into account when
+    #       generating the new UUIDs.
     #
-    #
-    # @note   Sadly this hack is not sufficient for supporting Emoji.
-    #
-    # @param  [String, Pathname] The path of the file which needs to be fixed.
+    # @note This method should only be used for entirely machine-generated
+    #       projects, as true UUIDs are useful for tracking changes in the
+    #       project.
     #
     # @return [void]
     #
-    def fix_encoding(filename)
-      output = ''
-      input = File.open(filename, 'rb') { |file| file.read }
-      input.unpack('U*').each do |codepoint|
-        if codepoint > 127
-          output << "&##{codepoint};"
-        else
-          output << codepoint.chr
-        end
-      end
-      File.open(filename, 'wb') { |file| file.write(output) }
+    def predictabilize_uuids
+      UUIDGenerator.new(self).generate!
     end
-
 
     public
 
@@ -378,14 +372,12 @@ module Xcodeproj
     # @note   Implementation detail: as objects usually are created serially
     #         this method creates a batch of UUID and stores the not colliding
     #         ones, so the search for collisions with known UUIDS (a
-    #         performance bottleneck) is performed is performed less often.
+    #         performance bottleneck) is performed less often.
     #
     # @return [String] A UUID unique to the project.
     #
     def generate_uuid
-      while @available_uuids.empty?
-        generate_available_uuid_list
-      end
+      generate_available_uuid_list while @available_uuids.empty?
       @available_uuids.shift
     end
 
@@ -411,12 +403,11 @@ module Xcodeproj
     # @return [void]
     #
     def generate_available_uuid_list(count = 100)
-      new_uuids = (0..count).map { Xcodeproj.generate_uuid }
+      new_uuids = (0..count).map { SecureRandom.hex(12).upcase }
       uniques = (new_uuids - (@generated_uuids + uuids))
       @generated_uuids += uniques
       @available_uuids += uniques
     end
-
 
     public
 
@@ -474,7 +465,7 @@ module Xcodeproj
     #         project.
     #
     def files
-      objects.select { |obj| obj.class == PBXFileReference }
+      objects.grep(PBXFileReference)
     end
 
     # Returns the file reference for the given absolute path.
@@ -486,20 +477,29 @@ module Xcodeproj
     # @return [Nil] If no file reference could be found.
     #
     def reference_for_path(absolute_path)
-      unless Pathname.new(absolute_path).absolute?
+      absolute_pathname = Pathname.new(absolute_path)
+
+      unless absolute_pathname.absolute?
         raise ArgumentError, "Paths must be absolute #{absolute_path}"
       end
 
       objects.find do |child|
-        child.isa == 'PBXFileReference' && child.real_path == absolute_path
+        child.isa == 'PBXFileReference' && child.real_path == absolute_pathname
       end
     end
 
-    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    # @return [ObjectList<AbstractTarget>] A list of all the targets in the
     #         project.
     #
     def targets
       root_object.targets
+    end
+
+    # @return [ObjectList<PBXNativeTarget>] A list of all the targets in the
+    #         project excluding aggregate targets.
+    #
+    def native_targets
+      root_object.targets.grep(PBXNativeTarget)
     end
 
     # @return [PBXGroup] The group which holds the product file references.
@@ -547,7 +547,6 @@ module Xcodeproj
       root_object.build_configuration_list.build_settings(name)
     end
 
-
     public
 
     # @!group Helpers
@@ -583,23 +582,26 @@ module Xcodeproj
     # Frameworks phase.
     #
     # @param  [Symbol] type
-    #         the type of target. Can be `:application`, `:dynamic_library` or
-    #         `:static_library`.
+    #         the type of target. Can be `:application`, `:framework`,
+    #         `:dynamic_library` or `:static_library`.
     #
     # @param  [String] name
-    #         the name of the static library product.
+    #         the name of the target product.
     #
     # @param  [Symbol] platform
-    #         the platform of the static library. Can be `:ios` or `:osx`.
+    #         the platform of the target. Can be `:ios` or `:osx`.
     #
     # @param  [String] deployment_target
     #         the deployment target for the platform.
     #
+    # @param  [Symbol] language
+    #         the primary language of the target, can be `:objc` or `:swift`.
+    #
     # @return [PBXNativeTarget] the target.
     #
-    def new_target(type, name, platform, deployment_target = nil, product_group = nil)
+    def new_target(type, name, platform, deployment_target = nil, product_group = nil, language = nil)
       product_group ||= products_group
-      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group)
+      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group, language)
     end
 
     # Creates a new resource bundles target and adds it to the project.
@@ -622,6 +624,31 @@ module Xcodeproj
       ProjectHelper.new_resources_bundle(self, name, platform, product_group)
     end
 
+    # Creates a new target and adds it to the project.
+    #
+    # The target is configured for the given platform and its file reference it
+    # is added to the {products_group}.
+    #
+    # The target is pre-populated with common build settings, and the
+    # appropriate Framework according to the platform is added to to its
+    # Frameworks phase.
+    #
+    # @param  [String] name
+    #         the name of the target.
+    #
+    # @param  [Array<AbstractTarget>] target_dependencies
+    #         targets, which should be added as dependencies.
+    #
+    # @return [PBXNativeTarget] the target.
+    #
+    def new_aggregate_target(name, target_dependencies = [])
+      ProjectHelper.new_aggregate_target(self, name).tap do |aggregate_target|
+        target_dependencies.each do |dep|
+          aggregate_target.add_dependency(dep)
+        end
+      end
+    end
+
     # Adds a new build configuration to the project and populates its with
     # default settings according to the provided type.
     #
@@ -636,7 +663,9 @@ module Xcodeproj
     #
     def add_build_configuration(name, type)
       build_configuration_list = root_object.build_configuration_list
-      unless build_configuration_list[name]
+      if build_configuration = build_configuration_list[name]
+        build_configuration
+      else
         build_configuration = new(XCBuildConfiguration)
         build_configuration.name = name
         common_settings = Constants::PROJECT_DEFAULT_BUILD_SETTINGS
@@ -660,7 +689,6 @@ module Xcodeproj
     def sort(options = nil)
       root_object.sort_recursively(options)
     end
-
 
     public
 
@@ -693,6 +721,7 @@ module Xcodeproj
     def recreate_user_schemes(visible = true)
       schemes_dir = XCScheme.user_data_dir(path)
       FileUtils.rm_rf(schemes_dir)
+      FileUtils.mkdir_p(schemes_dir)
 
       xcschememanagement = {}
       xcschememanagement['SchemeUserState'] = {}
@@ -711,6 +740,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

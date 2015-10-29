@@ -3,7 +3,6 @@ module Xcodeproj
     module Object
       class GroupableHelper
         class << self
-
           # @param  [PBXGroup, PBXFileReference] object
           #         The object to analyze.
           #
@@ -12,15 +11,15 @@ module Xcodeproj
           def parent(object)
             referrers = object.referrers.uniq
             if referrers.count > 1
-              referrers = referrers.select{ |obj| obj.isa == 'PBXGroup' }
+              referrers = referrers.grep(PBXGroup)
             end
 
             if referrers.count == 0
-              raise "[Xcodeproj] Consistency issue: no parent " \
+              raise '[Xcodeproj] Consistency issue: no parent ' \
                 "for object `#{object.display_name}`: "\
                 "`#{object.referrers.join('`, `')}`"
             elsif referrers.count > 1
-              raise "[Xcodeproj] Consistency issue: unexpected multiple parents " \
+              raise '[Xcodeproj] Consistency issue: unexpected multiple parents ' \
                 "for object `#{object.display_name}`: "\
                 "#{object.referrers}"
             end
@@ -48,7 +47,9 @@ module Xcodeproj
           #
           def hierarchy_path(object)
             unless main_group?(object)
-              "#{parent(object).hierarchy_path}/#{object.display_name}"
+              parent = parent(object)
+              parent = parent.hierarchy_path if parent.respond_to?(:hierarchy_path)
+              "#{parent}/#{object.display_name}"
             end
           end
 
@@ -178,7 +179,7 @@ module Xcodeproj
 
             if source_tree == SOURCE_TREES_BY_KEY[:absolute]
               unless path.absolute?
-                raise "[Xcodeproj] Attempt to set a relative path with an " \
+                raise '[Xcodeproj] Attempt to set a relative path with an ' \
                   "absolute source tree: `#{path}`"
               end
               object.path = path.to_s
@@ -220,7 +221,6 @@ module Xcodeproj
           end
 
           #-------------------------------------------------------------------#
-
         end
       end
     end

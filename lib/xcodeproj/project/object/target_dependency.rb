@@ -1,11 +1,9 @@
 module Xcodeproj
   class Project
     module Object
-
       # Represents a dependency of a target on another one.
       #
       class PBXTargetDependency < AbstractObject
-
         # @!group Attributes
 
         # @return [PBXNativeTarget] the target that needs to be built to
@@ -28,7 +26,6 @@ module Xcodeproj
         #
         attribute :name, String
 
-
         public
 
         # @!group AbstractObject Hooks
@@ -42,12 +39,25 @@ module Xcodeproj
           return target_proxy.remote_info if target_proxy
         end
 
+        # @note This override is necessary because Xcode allows for circular
+        #       target dependencies.
+        #
+        # @return [Hash<String => String>] Returns a cascade representation of
+        #         the object without UUIDs.
+        #
+        def to_tree_hash
+          hash = {}
+          hash['displayName'] = display_name
+          hash['isa'] = isa
+          hash
+        end
+
         # @note This is a no-op, because the targets could theoretically depend
         #   on each other, leading to a stack level too deep error.
         #
         # @see AbstractObject#sort_recursively
         #
-        def sort_recursively(options = nil)
+        def sort_recursively(_options = nil)
         end
       end
     end

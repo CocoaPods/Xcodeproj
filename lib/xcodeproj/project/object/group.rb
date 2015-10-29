@@ -4,12 +4,10 @@ require 'xcodeproj/project/object/helpers/file_references_factory'
 module Xcodeproj
   class Project
     module Object
-
       # This class represents a group. A group can contain other groups
       # (PBXGroup) and file references (PBXFileReference).
       #
       class PBXGroup < AbstractObject
-
         # @!group Attributes
 
         # @return [ObjectList<PBXGroup, PBXFileReference>]
@@ -77,7 +75,6 @@ module Xcodeproj
         # @note   This is apparently no longer used by Xcode.
         #
         attribute :comments, String
-
 
         public
 
@@ -152,7 +149,7 @@ module Xcodeproj
         #         children.
         #
         def files
-          children.select { |obj| obj.class == PBXFileReference }
+          children.grep(PBXFileReference)
         end
 
         # @return [PBXFileReference] The file references whose path (regardless
@@ -165,6 +162,7 @@ module Xcodeproj
         # @return [Array<PBXGroup>] the groups in the group children.
         #
         def groups
+          # Don't grep / is_a? as this would include child classes.
           children.select { |obj| obj.class == PBXGroup }
         end
 
@@ -172,7 +170,7 @@ module Xcodeproj
         #         children.
         #
         def version_groups
-          children.select { |obj| obj.class == XCVersionGroup }
+          children.grep(XCVersionGroup)
         end
 
         # @return [Array<PBXGroup,PBXFileReference,PBXReferenceProxy>] the
@@ -223,7 +221,7 @@ module Xcodeproj
         def new_reference(path, source_tree = :group)
           FileReferencesFactory.new_reference(self, path, source_tree)
         end
-        alias :new_file :new_reference
+        alias_method :new_file, :new_reference
 
         # Creates a file reference to a static library and adds it to the
         # group.
@@ -266,6 +264,34 @@ module Xcodeproj
           group
         end
 
+        # Creates a new variant group and adds it to the group
+        #
+        # @note   @see new_group
+        #
+        # @param  [#to_s] name
+        #         the name of the new group.
+        #
+        # @param  [#to_s] path
+        #         The, preferably absolute, path of the variant group.
+        #         Pass the path of the folder containing all the .lproj bundles,
+        #         that contain files for the variant group.
+        #         Do not pass the path of a specific bundle (such as en.lproj)
+        #
+        # @param  [Symbol] source_tree
+        #         The source tree key to use to configure the path (@see
+        #         GroupableHelper::SOURCE_TREES_BY_KEY).
+        #
+        # @return [PBXVariantGroup] the new variant group.
+        #
+        def new_variant_group(name, path = nil, source_tree = :group)
+          group = project.new(PBXVariantGroup)
+          children << group
+          group.name = name
+          group.set_source_tree(source_tree)
+          group.set_path(path)
+          group
+        end
+
         # Traverses the children groups and finds the group with the given
         # path, if exists.
         #
@@ -280,7 +306,7 @@ module Xcodeproj
         def clear
           children.objects.each(&:remove_from_project)
         end
-        alias :remove_children_recursively :clear
+        alias_method :remove_children_recursively, :clear
 
         # Traverses the children groups and finds the children with the given
         # path, optionally, creating any needed group. If the given path is
@@ -306,7 +332,7 @@ module Xcodeproj
           return self unless path
           path = path.split('/') unless path.is_a?(Array)
           child_name = path.shift
-          child = children.find{ |c| c.display_name == child_name }
+          child = children.find { |c| c.display_name == child_name }
           if child.nil?
             if should_create
               child = new_group(child_name)
@@ -351,7 +377,7 @@ module Xcodeproj
               if extname_x != extname_y
                 extname_x <=> extname_y
               else
-                File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+                File.basename(x.display_name, '.*') <=> File.basename(y.display_name, '.*')
               end
             else
               0
@@ -364,7 +390,7 @@ module Xcodeproj
         # @return [void]
         #
         def sort_recursively_by_type
-          groups.each { |group| group.sort_recursively_by_type }
+          groups.each(&:sort_recursively_by_type)
           sort_by_type
         end
 
@@ -408,9 +434,9 @@ module Xcodeproj
               end
             end
 
-            result = File.basename(x.display_name, ".*" ) <=> File.basename(y.display_name, ".*" )
+            result = File.basename(x.display_name.downcase, '.*') <=> File.basename(y.display_name.downcase, '.*')
             if result.zero?
-              File.extname(x.display_name) <=> File.extname(y.display_name)
+              File.extname(x.display_name.downcase) <=> File.extname(y.display_name.downcase)
             else
               result
             end
@@ -423,13 +449,11 @@ module Xcodeproj
       # This class is used to gather localized files into one entry.
       #
       class PBXVariantGroup < PBXGroup
-
         # @!group Attributes
 
         # @return [String] the file type guessed by Xcode.
         #
         attribute :last_known_file_type, String
-
       end
 
       #-----------------------------------------------------------------------#
@@ -440,7 +464,6 @@ module Xcodeproj
       # Used to contain the different versions of a `xcdatamodel`.
       #
       class XCVersionGroup < PBXGroup
-
         # @!group Attributes
 
         # @return [PBXFileReference] the reference to the current version.
@@ -450,11 +473,9 @@ module Xcodeproj
         # @return [String] the type of the versioned resource.
         #
         attribute :version_group_type, String, 'wrapper.xcdatamodel'
-
       end
 
       #-----------------------------------------------------------------------#
-
     end
   end
 end

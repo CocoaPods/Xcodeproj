@@ -1,0 +1,11 @@
+inherit_from:
+ - .rubocop_todo.yml
+ - .rubocop_cocoapods.yml
+
+#- Xcodeproj ------------------------------------------------------------------
+
+Style/AccessorMethodName:
+  Exclude:
+    - lib/xcodeproj/project/object/**/*
+    - lib/xcodeproj/project/object_attributes.rb
+    - lib/xcodeproj/scheme.rb

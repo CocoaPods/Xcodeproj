@@ -1,33 +1,42 @@
 require 'shellwords'
+require 'xcodeproj/config/other_linker_flags_parser'
 
 module Xcodeproj
-
   # This class holds the data for a Xcode build settings file (xcconfig) and
   # provides support for serialization.
   #
   class Config
-
     require 'set'
+
+    KEY_VALUE_PATTERN = /
+      (
+        [^=]+       # Any char, but not an assignment operator (non-greedy)
+        (?:         # One or multiple conditional subscripts
+          \[
+          [^\]]*    # The subscript key
+          (?:
+            =       # The subscript comparison operator
+            [^\]]*  # The subscript value
+          )?
+          \]
+        )*
+      )
+      \s+           # Whitespaces after the key (needed because subscripts
+                    # always end with ']')
+      =             # The assignment operator
+      (.*)          # The value
+    /x
 
     # @return [Hash{String => String}] The attributes of the settings file
     #         excluding frameworks, weak_framework and libraries.
     #
     attr_accessor :attributes
 
-    # @return [Set<String>] The list of the frameworks required by this
-    #         settings file.
+    # @return [Hash{Symbol => Set<String>}] The other linker flags by key.
+    #         Xcodeproj handles them in a dedicated way to prevent duplication
+    #         of the libraries and of the frameworks.
     #
-    attr_accessor :frameworks
-
-    # @return [Set<String>] The list of the *weak* frameworks required by
-    #         this settings file.
-    #
-    attr_accessor :weak_frameworks
-
-    # @return [Set<String>] The list of the libraries required by this
-    #         settings file.
-    #
-    attr_accessor :libraries
+    attr_accessor :other_linker_flags
 
     # @return [Array] The list of the configuration files included by this
     #         configuration file (`#include "SomeConfig"`).
@@ -40,7 +49,10 @@ module Xcodeproj
     def initialize(xcconfig_hash_or_file = {})
       @attributes = {}
       @includes = []
-      @frameworks, @weak_frameworks, @libraries = Set.new, Set.new, Set.new
+      @other_linker_flags = {}
+      [:simple, :frameworks, :weak_frameworks, :libraries, :force_load].each do |key|
+        @other_linker_flags[key] = Set.new
+      end
       merge!(extract_hash(xcconfig_hash_or_file))
     end
 
@@ -49,14 +61,13 @@ module Xcodeproj
     end
 
     def ==(other)
-      other.respond_to?(:to_hash) && other.to_hash == self.to_hash
+      other.attributes == attributes && other.other_linker_flags == other_linker_flags && other.includes == includes
     end
-
-    #-------------------------------------------------------------------------#
 
     public
 
     # @!group Serialization
+    #-------------------------------------------------------------------------#
 
     # Sorts the internal data by setting name and serializes it in the xcconfig
     # format.
@@ -69,8 +80,8 @@ module Xcodeproj
     # @return [String] The serialized internal data.
     #
     def to_s(prefix = nil)
-      include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\""}
-      settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }
+      include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\"" }
+      settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}".strip }
       [include_lines + settings].join("\n")
     end
 
@@ -83,12 +94,16 @@ module Xcodeproj
     # @return [void]
     #
     def save_as(pathname, prefix = nil)
+      if File.exist?(pathname)
+        return if Config.new(pathname) == self
+      end
+
       pathname.open('w') { |file| file << to_s(prefix) }
     end
 
     # The hash representation of the xcconfig. The hash includes the
-    # frameworks, the weak frameworks and the libraries in the `Other Linker
-    # Flags` (`OTHER_LDFLAGS`).
+    # frameworks, the weak frameworks, the libraries and the simple other
+    # linker flags in the `Other Linker Flags` (`OTHER_LDFLAGS`).
     #
     # @note   All the values are sorted to have a consistent output in Ruby
     #         1.8.7.
@@ -96,26 +111,61 @@ module Xcodeproj
     # @return [Hash] The hash representation
     #
     def to_hash(prefix = nil)
-      hash = @attributes.dup
-      flags = hash['OTHER_LDFLAGS'] || ''
-      flags = flags.dup.strip
-      flags << libraries.to_a.sort.reduce('')  {| memo, l | memo << " -l#{l}" }
-      flags << frameworks.to_a.sort.reduce('') {| memo, f | memo << " -framework #{f}" }
-      flags << weak_frameworks.to_a.sort.reduce('') {| memo, f | memo << " -weak_framework #{f}" }
-      hash['OTHER_LDFLAGS'] = flags.strip
-      hash.delete('OTHER_LDFLAGS') if flags.strip.empty?
+      list = []
+      list += other_linker_flags[:simple].to_a.sort
+      modifiers = {
+        :frameworks => '-framework ',
+        :weak_frameworks => '-weak_framework ',
+        :libraries => '-l',
+        :force_load => '-force_load',
+      }
+      [:libraries, :frameworks, :weak_frameworks, :force_load].each do |key|
+        modifier = modifiers[key]
+        sorted = other_linker_flags[key].to_a.sort
+        if key == :force_load
+          list += sorted.map { |l| %(#{modifier} #{l}) }
+        else
+          list += sorted.map { |l| %(#{modifier}"#{l}") }
+        end
+      end
+
+      result = attributes.dup
+      result['OTHER_LDFLAGS'] = list.join(' ') unless list.empty?
+      inherited = %w($(inherited) ${inherited}).freeze
+      result.reject! { |_, v| inherited.any? { |i| i == v.to_s.strip } }
+
       if prefix
-        Hash[hash.map {|k, v| [prefix + k, v]}]
+        Hash[result.map { |k, v| [prefix + k, v] }]
       else
-        hash
+        result
       end
     end
 
-    #-------------------------------------------------------------------------#
+    # @return [Set<String>] The list of the frameworks required by this
+    #         settings file.
+    #
+    def frameworks
+      other_linker_flags[:frameworks]
+    end
+
+    # @return [Set<String>] The list of the *weak* frameworks required by
+    #         this settings file.
+    #
+    def weak_frameworks
+      other_linker_flags[:weak_frameworks]
+    end
+
+    # @return [Set<String>] The list of the libraries required by this
+    #         settings file.
+    #
+    def libraries
+      other_linker_flags[:libraries]
+    end
 
     public
 
     # @!group Merging
+    #-------------------------------------------------------------------------#
 
     # Merges the given xcconfig representation in the receiver.
     #
@@ -139,29 +189,17 @@ module Xcodeproj
     def merge!(xcconfig)
       if xcconfig.is_a? Config
         merge_attributes!(xcconfig.attributes)
-        @libraries.merge(xcconfig.libraries)
-        @frameworks.merge(xcconfig.frameworks)
-        @weak_frameworks.merge(xcconfig.weak_frameworks)
+        other_linker_flags.keys.each do |key|
+          other_linker_flags[key].merge(xcconfig.other_linker_flags[key])
+        end
       else
         merge_attributes!(xcconfig.to_hash)
-
-        # Parse frameworks and libraries. Then remove them from the linker
-        # flags
-        flags = @attributes['OTHER_LDFLAGS']
-        return unless flags
-
-        frameworks = flags.scan(/(?:\A|\s)-framework\s+([^\s]+)/).map { |m| m[0] }
-        weak_frameworks = flags.scan(/(?:\A|\s)-weak_framework\s+([^\s]+)/).map { |m| m[0] }
-        libraries  = flags.scan(/(?:\A|\s)-l ?([^\s]+)/).map { |m| m[0] }
-        @frameworks.merge frameworks
-        @weak_frameworks.merge weak_frameworks
-        @libraries.merge libraries
-
-        new_flags = flags.dup
-        frameworks.each {|f| new_flags.gsub!("-framework #{f}", "") }
-        weak_frameworks.each {|f| new_flags.gsub!("-weak_framework #{f}", "") }
-        libraries.each  {|l| new_flags.gsub!("-l#{l}", ""); new_flags.gsub!("-l #{l}", "") }
-        @attributes['OTHER_LDFLAGS'] = new_flags.gsub("\w*", ' ').strip
+        if flags = attributes.delete('OTHER_LDFLAGS')
+          flags_by_key = OtherLinkerFlagsParser.parse(flags)
+          other_linker_flags.keys.each do |key|
+            other_linker_flags[key].merge(flags_by_key[key])
+          end
+        end
       end
     end
     alias_method :<<, :merge!
@@ -175,13 +213,13 @@ module Xcodeproj
     # @return [Config] the new xcconfig.
     #
     def merge(config)
-      self.dup.tap { |x| x.merge!(config) }
+      dup.tap { |x| x.merge!(config) }
     end
 
     # @return [Config] A copy of the receiver.
     #
     def dup
-      Xcodeproj::Config.new(self.to_hash.dup)
+      Xcodeproj::Config.new(to_hash.dup)
     end
 
     #-------------------------------------------------------------------------#
@@ -237,9 +275,9 @@ module Xcodeproj
     #
     def merge_attributes!(attributes)
       @attributes.merge!(attributes) do |_, v1, v2|
-        v1, v2 = v1.strip, v2.strip
-        existing = v1.strip.shellsplit
-        existing.include?(v2) ? v1 : "#{v1} #{v2}"
+        v1 = v1.strip
+        v2 = v2.strip
+        (v2.shellsplit - v1.shellsplit).empty? ? v1 : "#{v1} #{v2}"
       end
     end
 
@@ -277,8 +315,10 @@ module Xcodeproj
     #         entry is the value.
     #
     def extract_key_value(line)
-      key, value = line.split('=', 2)
-      if key && value
+      match = line.match(KEY_VALUE_PATTERN)
+      if match
+        key = match[1]
+        value = match[2]
         [key.strip, value.strip]
       else
         []
@@ -302,6 +342,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end

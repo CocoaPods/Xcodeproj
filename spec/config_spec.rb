@@ -1,142 +1,189 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 describe Xcodeproj::Config do
-
-  describe "In general" do
-
+  describe 'In general' do
     extend SpecHelper::TemporaryDirectory
 
     before do
-      @hash = { 'OTHER_LDFLAGS' => '-framework Foundation' }
+      @hash = { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
       @config = Xcodeproj::Config.new(@hash)
       @config_fixture = fixture_path('oneline-key-value.xcconfig')
     end
 
-    it "can be created with hash" do
+    it 'can be created with hash' do
       config = Xcodeproj::Config.new(@hash)
-      config.should.be.equal @hash
+      config.to_hash.should.be.equal @hash
     end
 
-    it "can be created with file path" do
+    it 'can be created with file path' do
       config = Xcodeproj::Config.new(@config_fixture)
-      config.should.be.equal @hash
+      config.to_hash.should.be.equal @hash
     end
 
-    it "can be created with File instance" do
+    it 'can be created with File instance' do
       xcconfig_file = File.new(@config_fixture)
       xcconfig = Xcodeproj::Config.new(xcconfig_file)
-      xcconfig.should.be.equal @hash
+      xcconfig.to_hash.should.be.equal @hash
     end
 
-    it "does not modifies the hash used for initialization" do
+    it 'does not equal if attributes change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.attributes['SOME_KEY'] = 'SOME_VALUE'
+      other_config.should.not == @config
+    end
+
+    it 'does not equal if other linker flags change change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.other_linker_flags[:simple].add '--some-option'
+      other_config.should.not == @config
+    end
+
+    it 'does not equal if includes change' do
+      other_config = @config.dup
+      other_config.should.be.equal @config
+      other_config.includes.push 'Somefile'
+      other_config.should.not == @config
+    end
+
+    it 'does not modifies the hash used for initialization' do
       original = @hash.dup
-      config = Xcodeproj::Config.new(@hash)
+      Xcodeproj::Config.new(@hash)
       @hash.should.be.equal original
     end
 
-    it "parses the frameworks and the libraries" do
+    it 'parses the frameworks and the libraries' do
       hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
       config = Xcodeproj::Config.new(hash)
-      config.frameworks.to_a.should.be.equal %w[ Foundation ]
-      config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
-      config.libraries.to_a.should.be.equal %w[ xml2.2.7.3 ]
+      config.frameworks.to_a.should.be.equal %w(Foundation)
+      config.weak_frameworks.to_a.should.be.equal %w(Twitter)
+      config.libraries.to_a.should.be.equal %w(xml2.2.7.3)
     end
 
-    it "doesn't parse a libraries flags containing the -library substring" do
-      hash = { 'OTHER_LDFLAGS' => '-finalize -prefinalized-library"' }
-      config = Xcodeproj::Config.new(hash)
-      config.libraries.to_a.should == []
-      config.to_hash.should == hash
+    it 'can be serialized with #to_s' do
+      @config.to_s.should.be.equal 'OTHER_LDFLAGS = -framework "Foundation"'
     end
 
-    it "can handle libraries specified as a separate argument" do
-      # see http://gcc.gnu.org/onlinedocs/gcc/Link-Options.html
-      hash = { 'OTHER_LDFLAGS' => '-framework Foundation -l xml2.2.7.3' }
-      config = Xcodeproj::Config.new(hash)
-      config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+    it 'strips trailing whitespace when serializing with #to_s' do
+      @config.attributes['FOO'] = 'BAR   '
+      @config.to_s.should == "FOO = BAR\nOTHER_LDFLAGS = -framework \"Foundation\""
     end
 
-    it "can be serialized with #to_s" do
-      @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework Foundation"
-    end
-
-    it "sorts the internal data by setting name when serializing with #to_s" do
+    it 'sorts the internal data by setting name when serializing with #to_s' do
       config = Xcodeproj::Config.new('Y' => '2', 'Z' => '3', 'X' => '1')
       config.to_s.should == "X = 1\nY = 2\nZ = 3"
     end
 
-    it "can be serialized with #to_hash" do
+    it 'can be serialized with #to_hash' do
       @config.to_hash.should.be.equal @hash
     end
 
-    it "can prefix values during serialization" do
+    it 'ignores settings that are only inherited in #to_hash' do
+      config = Xcodeproj::Config.new('Y' => '$(inherited)', 'Z' => '${inherited}', 'X' => '$(inherited) 1')
+      config.to_hash.should == { 'X' => '$(inherited) 1' }
+    end
+
+    it 'handles non-string settings in #to_s' do
+      config = Xcodeproj::Config.new('X' => true, 'Y' => 123)
+      config.to_s.should == <<-EOS.strip
+X = true
+Y = 123
+      EOS
+    end
+
+    it 'can prefix values during serialization' do
       @prefix_hash = { 'PODS_PREFIX_OTHER_LDFLAGS' => @hash['OTHER_LDFLAGS'] }
       @config.to_hash('PODS_PREFIX_').should.be.equal @prefix_hash
     end
 
-    it "does not serialize with #to_s when inspecting the object" do
+    it 'does not serialize with #to_s when inspecting the object' do
       @config.inspect.should == @config.to_hash.inspect
     end
 
-    it "can be compared with other instances" do
+    it 'can be compared with other instances' do
       config_dupe = Xcodeproj::Config.new(@hash)
       config_dupe.should.be.equal @config
     end
 
-    it "merges another config hash in place" do
+    it 'merges another config hash in place' do
       @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
-      @config.should == {
-        'OTHER_LDFLAGS' => '-framework Foundation',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+      @config.to_hash.should == {
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
     end
 
-    it "merges another config hash in place with the `<<` shortcut" do
+    it 'merges another config hash in place with the `<<` shortcut' do
       @config << { 'HEADER_SEARCH_PATHS' => '/some/path' }
-      @config.should == {
-        'OTHER_LDFLAGS' => '-framework Foundation',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+      @config.to_hash.should == {
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
     end
 
-    it "merges another hash in a new one" do
+    it 'merges another hash in a new one' do
       new = @config.merge('HEADER_SEARCH_PATHS' => '/some/path')
       new.object_id.should.not == @config.object_id
-      new.should == {
-        'OTHER_LDFLAGS' => '-framework Foundation',
-        'HEADER_SEARCH_PATHS' => '/some/path'
+      new.to_hash.should == {
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
+        'HEADER_SEARCH_PATHS' => '/some/path',
       }
-      @config.should == { 'OTHER_LDFLAGS' => '-framework Foundation' }
+      @config.to_hash.should == { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
     end
 
-    it "appends a value for the same key when merging" do
+    it 'appends a value for the same key when merging' do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
-      @config.should == {
-        'OTHER_LDFLAGS' => '-lxml2.2.7.3 -framework Foundation'
+      @config.to_hash.should == {
+        'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation"',
       }
     end
 
-    it "generates the config file with refs to all included xcconfigs" do
+    it 'de-duplicates values when merging' do
+      @config << { 'FOO' => 'bar $(baz)' }
+      @config.merge!('FOO' => 'bar $(baz)')
+      @config.to_hash.should == {
+        'FOO' => 'bar $(baz)',
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
+      }
+    end
+
+    it 'generates the config file with refs to all included xcconfigs' do
       @config.includes = ['Somefile.xcconfig']
       @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
     end
 
-    it "appends the extensiono to the included files if needed" do
+    it 'appends the extension to the included files if needed' do
       @config.includes = ['Somefile']
       @config.to_s.split("\n").first.should == '#include "Somefile.xcconfig"'
     end
 
-    it "creates the config file" do
+    it 'creates the config file' do
       @config.merge!('HEADER_SEARCH_PATHS' => '/some/path')
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.save_as(temporary_directory + 'Pods.xcconfig')
       (temporary_directory + 'Pods.xcconfig').read.split("\n").sort.should == [
-        "OTHER_LDFLAGS = -lxml2.2.7.3 -framework Foundation",
-        "HEADER_SEARCH_PATHS = /some/path"
+        'OTHER_LDFLAGS = -l"xml2.2.7.3" -framework "Foundation"',
+        'HEADER_SEARCH_PATHS = /some/path',
       ].sort
     end
 
-    it "contains file path refs to all included xcconfigs" do
+    it 'does not rewrite the config file if contents have not changed' do
+      filename = temporary_directory + 'Pods.xcconfig'
+
+      def filename.open(mode)
+        @writing_count ||= 0
+        @writing_count += 1
+
+        super
+      end
+
+      @config.save_as(filename)
+      @config.save_as(filename)
+      filename.instance_variable_get(:@writing_count).should == 1
+    end
+
+    it 'contains file path refs to all included xcconfigs' do
       config = Xcodeproj::Config.new(fixture_path('include.xcconfig'))
       config.includes.size.should.be.equal 1
       config.includes.first.should.be.equal 'Somefile'
@@ -144,17 +191,24 @@ describe Xcodeproj::Config do
 
     it 'can be created from multiline file' do
       config = Xcodeproj::Config.new(fixture_path('sample.xcconfig'))
-      config.should == {
+      config.to_hash.should == {
         'Key1' => 'Value1 Value2',
         'Key2' => 'Value3 Value4 Value5',
         'Key3' => 'Value6',
-        'Key4' => ''
+        'Key4' => '',
       }
     end
 
     it 'can be created from file with comments inside' do
       config = Xcodeproj::Config.new(fixture_path('with-comments.xcconfig'))
-      config.should == { 'Key' => 'Value' }
+      config.to_hash.should == { 'Key' => 'Value' }
+    end
+
+    it 'can be created from file with subscripts' do
+      config = Xcodeproj::Config.new(fixture_path('subscript.xcconfig'))
+      config.to_hash.should == {
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+      }
     end
 
     it "doesn't duplicate libraries and frameworks" do
@@ -164,10 +218,10 @@ describe Xcodeproj::Config do
       config.merge!(hash)
       config.frameworks.add 'Foundation'
       config.weak_frameworks.add 'Twitter'
-      config.libraries.add  'xml2.2.7.3'
-      config.frameworks.to_a.should.be.equal %w[ Foundation ]
-      config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
-      config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+      config.libraries.add 'xml2.2.7.3'
+      config.frameworks.to_a.should.be.equal %w(Foundation)
+      config.weak_frameworks.to_a.should.be.equal %w(Twitter)
+      config.libraries.to_a.should.be.equal %w(xml2.2.7.3)
     end
 
     it "doesn't duplicate other attribute values" do
@@ -180,34 +234,55 @@ describe Xcodeproj::Config do
     end
 
     it 'it preserves OTHER_LDFLAGS not related to libraries and frameworks' do
-      config1 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => %w{-ObjC -fobjc-arc}.join(' ') })
-      config2 = Xcodeproj::Config.new({ 'OTHER_LDFLAGS' => '-framework SystemConfiguration' })
+      config1 = Xcodeproj::Config.new('OTHER_LDFLAGS' => %w(-ObjC -fobjc-arc).join(' '))
+      config2 = Xcodeproj::Config.new('OTHER_LDFLAGS' => '-framework SystemConfiguration')
       config1.merge! config2
-      config1.to_hash['OTHER_LDFLAGS'].should == '-ObjC -fobjc-arc -framework SystemConfiguration'
+      config1.to_hash['OTHER_LDFLAGS'].should == '-ObjC -fobjc-arc -framework "SystemConfiguration"'
     end
 
-    it "merges frameworks and libraries from another Config instance" do
+    it 'merges frameworks and libraries from another Config instance' do
       hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
       config = Xcodeproj::Config.new
       config.merge!(Xcodeproj::Config.new(hash))
-      config.frameworks.to_a.should.be.equal %w[ Foundation ]
-      config.weak_frameworks.to_a.should.be.equal %w[ Twitter ]
-      config.libraries.to_a.should.be.equal  %w[ xml2.2.7.3 ]
+      config.frameworks.to_a.should.be.equal %w(Foundation)
+      config.weak_frameworks.to_a.should.be.equal %w(Twitter)
+      config.libraries.to_a.should.be.equal %w(xml2.2.7.3)
     end
 
+    it 'specifies libraries in the OTHER_LDFLAGS in a format compatible with libtool' do
+      hash = { 'OTHER_LDFLAGS' => '-lxml2.2.7.3' }
+      config = Xcodeproj::Config.new(hash)
+      config.to_hash['OTHER_LDFLAGS'].should.not == '-l "xml2.2.7.3"'
+      config.to_hash['OTHER_LDFLAGS'].should == '-l"xml2.2.7.3"'
+    end
+
+    it 'does not drop the -force_load argument in case of repeated use' do
+      config = Xcodeproj::Config.new
+      config.merge!('OTHER_LDFLAGS' => '-force_load a')
+      config.merge!('OTHER_LDFLAGS' => '-l"b"')
+      config.merge!('OTHER_LDFLAGS' => '-force_load c')
+      config.to_hash['OTHER_LDFLAGS'].should == '-l"b" -force_load a -force_load c'
+    end
+
+    it 'does not mix up the location of the -force_load argument' do
+      config = Xcodeproj::Config.new
+      config.merge!('OTHER_LDFLAGS' => '-ObjC')
+      config.merge!('OTHER_LDFLAGS' => '-force_load $(PODS_ROOT)/Intercom/Intercom/libIntercom.a')
+      config.merge!('OTHER_LDFLAGS' => '-l"Pods-GoogleAnalytics-iOS-SDK"')
+      config.merge!('OTHER_LDFLAGS' => '-l"Pods-Intercom"')
+      config.to_hash['OTHER_LDFLAGS'].should == '-ObjC -l"Pods-GoogleAnalytics-iOS-SDK" -l"Pods-Intercom" -force_load $(PODS_ROOT)/Intercom/Intercom/libIntercom.a'
+    end
   end
 
   #---------------------------------------------------------------------------#
 
-  describe "Private helpers" do
-
+  describe 'Private helpers' do
     before do
       @config = Xcodeproj::Config.new
     end
 
-    describe "#normalized_xcconfig_path" do
-
-      it "appends the extension if needed" do
+    describe '#normalized_xcconfig_path' do
+      it 'appends the extension if needed' do
         normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
         normalized_path.should == 'path/file.xcconfig'
       end
@@ -216,11 +291,8 @@ describe Xcodeproj::Config do
         normalized_path = @config.send(:normalized_xcconfig_path, 'path/file')
         normalized_path.should == 'path/file.xcconfig'
       end
-
     end
-
   end
 
   #---------------------------------------------------------------------------#
-
 end

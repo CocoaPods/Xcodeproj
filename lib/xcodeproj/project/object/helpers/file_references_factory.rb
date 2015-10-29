@@ -5,7 +5,6 @@ module Xcodeproj
     module Object
       class FileReferencesFactory
         class << self
-
           # Creates a new reference with the given path and adds it to the
           # given group. The reference is configured according to the extension
           # of the path.
@@ -23,11 +22,14 @@ module Xcodeproj
           # @return [PBXFileReference, XCVersionGroup] The new reference.
           #
           def new_reference(group, path, source_tree)
-            if File.extname(path).downcase == '.xcdatamodeld'
-              ref = new_xcdatamodeld(group, path, source_tree)
-            else
-              ref = new_file_reference(group, path, source_tree)
-            end
+            ref = case File.extname(path).downcase
+                  when '.xcdatamodeld'
+                    new_xcdatamodeld(group, path, source_tree)
+                  when '.xcodeproj'
+                    new_subproject(group, path, source_tree)
+                  else
+                    new_file_reference(group, path, source_tree)
+                  end
 
             configure_defaults_for_file_reference(ref)
             ref
@@ -69,10 +71,9 @@ module Xcodeproj
           def new_bundle(group, product_name)
             ref = new_reference(group, "#{product_name}.bundle", :built_products)
             ref.include_in_index = '0'
-            ref.set_explicit_file_type("wrapper.cfbundle")
+            ref.set_explicit_file_type('wrapper.cfbundle')
             ref
           end
-
 
           private
 
@@ -135,8 +136,7 @@ module Xcodeproj
             if path.exist?
               path.children.each do |child_path|
                 if File.extname(child_path) == '.xcdatamodel'
-                  child_ref = new_file_reference(ref, child_path, :group)
-                  last_child_ref = child_ref
+                  new_file_reference(ref, child_path, :group)
                 elsif File.basename(child_path) == '.xccurrentversion'
                   full_path = path + File.basename(child_path)
                   xccurrentversion = Xcodeproj.read_plist(full_path)
@@ -146,10 +146,63 @@ module Xcodeproj
 
               if current_version_name
                 ref.current_version = ref.children.find do |obj|
-                    obj.path.split('/').last == current_version_name
+                  obj.path.split('/').last == current_version_name
                 end
               end
             end
+
+            ref
+          end
+
+          # Creates a file reference to another Xcode subproject and setups the
+          # proxies to the targets.
+          #
+          # @param  [PBXGroup] group
+          #         The group to which to add the reference.
+          #
+          # @param  [#to_s] path
+          #         The, preferably absolute, path of the reference.
+          #
+          # @param  [Symbol] source_tree
+          #         The source tree key to use to configure the path (@see
+          #         GroupableHelper::SOURCE_TREES_BY_KEY).
+          #
+          # @note   To analyze the targets the given project is read and thus
+          #         it should already exist in the disk.
+          #
+          # @return [PBXFileReference] The new file reference.
+          #
+          def new_subproject(group, path, source_tree)
+            ref = new_file_reference(group, path, source_tree)
+            ref.include_in_index = nil
+
+            product_group_ref = group.project.new(PBXGroup)
+            product_group_ref.name = 'Products'
+            product_group_ref.source_tree = '<group>'
+
+            subproj = Project.open(path)
+            subproj.products_group.files.each do |product_reference|
+              container_proxy = group.project.new(PBXContainerItemProxy)
+              container_proxy.container_portal = ref.uuid
+              container_proxy.proxy_type = Constants::PROXY_TYPES[:reference]
+              container_proxy.remote_global_id_string = product_reference.uuid
+              container_proxy.remote_info = 'Subproject'
+
+              reference_proxy = group.project.new(PBXReferenceProxy)
+              extension = File.extname(product_reference.path)[1..-1]
+              reference_proxy.file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
+              reference_proxy.path = product_reference.path
+              reference_proxy.remote_ref = container_proxy
+              reference_proxy.source_tree = 'BUILT_PRODUCTS_DIR'
+
+              product_group_ref << reference_proxy
+            end
+
+            attribute = PBXProject.references_by_keys_attributes.find { |attrb| attrb.name == :project_references }
+            project_reference = ObjectDictionary.new(attribute, group.project.root_object)
+            project_reference[:project_ref] = ref
+            project_reference[:product_group] = product_group_ref
+            group.project.root_object.project_references << project_reference
 
             ref
           end
@@ -177,10 +230,8 @@ module Xcodeproj
           end
 
           #-------------------------------------------------------------------#
-
         end
       end
     end
   end
 end
-

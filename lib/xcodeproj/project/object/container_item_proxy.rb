@@ -1,7 +1,6 @@
 module Xcodeproj
   class Project
     module Object
-
       # Apparently a proxy for another object which might belong another
       # project contained in the same workspace of the project document.
       #
@@ -19,7 +18,6 @@ module Xcodeproj
       #        xcodeproj to raise because ti can't find the UUID.
       #
       class PBXContainerItemProxy < AbstractObject
-
         # @!group Attributes
 
         # @return [String] apparently the UUID of the root object
@@ -38,11 +36,13 @@ module Xcodeproj
         #         If this assumption is incorrect, there could be loss of
         #         information opening and saving an existing project.
         #
+        # @todo   This is the external reference that 'contains' other proxy
+        #         items.
         attribute :container_portal, String
 
         # @return [String] the type of the proxy.
         #
-        # @note   {PBXNativeTarget} is `1`.
+        # @note   @see {Constants::PROXY_TYPE.values} for valid values.
         #
         attribute :proxy_type, String
 
@@ -66,6 +66,27 @@ module Xcodeproj
         #
         attribute :remote_info, String
 
+        # Checks whether the reference points to a remote project.
+        #
+        # @return [Bool]
+        #
+        def remote?
+          project.root_object.uuid != container_portal
+        end
+
+        # Get the proxied object
+        #
+        # @return [AbstractObject]
+        #
+        def proxied_object
+          if remote?
+            container_portal_file_ref = project.objects_by_uuid[container_portal]
+            container_portal_object = Project.open(container_portal_file_ref.real_path)
+          else
+            container_portal_object = project
+          end
+          container_portal_object.objects_by_uuid[remote_global_id_string]
+        end
       end
     end
   end

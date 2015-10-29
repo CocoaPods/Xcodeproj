@@ -10,4 +10,11 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <Group
+      location = "container:"
+      name = "Test Group">
+      <FileRef
+         location = "group:ProjectInAGroup.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>

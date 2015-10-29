@@ -1,5 +1,4 @@
 module Xcodeproj
-
   # Computes the recursive diff of Hashes, Array and other objects.
   #
   # Useful to compare two projects. Inspired from
@@ -23,7 +22,6 @@ module Xcodeproj
   #
   #
   module Differ
-
     # Computes the recursive difference of two given values.
     #
     # @param  [Object] value_1
@@ -45,8 +43,8 @@ module Xcodeproj
     # @return [Nil] if the given values are equal.
     #
     def self.diff(value_1, value_2, options = {})
-      options[:key_1]  ||= 'value_1'
-      options[:key_2]  ||= 'value_2'
+      options[:key_1] ||= 'value_1'
+      options[:key_2] ||= 'value_2'
       options[:id_key] ||= nil
 
       if value_1.class == value_2.class
@@ -58,7 +56,7 @@ module Xcodeproj
       else
         method = :generic_diff
       end
-      self.send(method, value_1, value_2, options)
+      send(method, value_1, value_2, options)
     end
 
     # Optimized for reducing the noise from the tree hash of projects
@@ -138,8 +136,8 @@ module Xcodeproj
           end
         end
 
-        new_objects_value_1 = new_objects_value_1 - matched_value_1
-        new_objects_value_2 = new_objects_value_2 - matched_value_2
+        new_objects_value_1 -= matched_value_1
+        new_objects_value_2 -= matched_value_2
       end
 
       if new_objects_value_1.empty? && new_objects_value_2.empty?
@@ -166,7 +164,7 @@ module Xcodeproj
 
       {
         options[:key_1] => value_1,
-        options[:key_2] => value_2
+        options[:key_2] => value_2,
       }
     end
 
@@ -209,7 +207,7 @@ module Xcodeproj
         when Hash
           clean_hash!(value, key)
         when Array
-          value.each { |entry| clean_hash!(entry, key) if entry.is_a?(Hash)}
+          value.each { |entry| clean_hash!(entry, key) if entry.is_a?(Hash) }
         end
       end
     end
@@ -237,7 +235,5 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
-
   end
 end
-
