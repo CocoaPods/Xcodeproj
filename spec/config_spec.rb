@@ -65,6 +65,11 @@ describe Xcodeproj::Config do
       @config.to_s.should.be.equal 'OTHER_LDFLAGS = -framework "Foundation"'
     end
 
+    it 'strips trailing whitespace when serializing with #to_s' do
+      @config.attributes['FOO'] = 'BAR   '
+      @config.to_s.should == "FOO = BAR\nOTHER_LDFLAGS = -framework \"Foundation\""
+    end
+
     it 'sorts the internal data by setting name when serializing with #to_s' do
       config = Xcodeproj::Config.new('Y' => '2', 'Z' => '3', 'X' => '1')
       config.to_s.should == "X = 1\nY = 2\nZ = 3"
@@ -72,6 +77,19 @@ describe Xcodeproj::Config do
 
     it 'can be serialized with #to_hash' do
       @config.to_hash.should.be.equal @hash
+    end
+
+    it 'ignores settings that are only inherited in #to_hash' do
+      config = Xcodeproj::Config.new('Y' => '$(inherited)', 'Z' => '${inherited}', 'X' => '$(inherited) 1')
+      config.to_hash.should == { 'X' => '$(inherited) 1' }
+    end
+
+    it 'handles non-string settings in #to_s' do
+      config = Xcodeproj::Config.new('X' => true, 'Y' => 123)
+      config.to_s.should == <<-EOS.strip
+X = true
+Y = 123
+      EOS
     end
 
     it 'can prefix values during serialization' do
@@ -118,6 +136,15 @@ describe Xcodeproj::Config do
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.to_hash.should == {
         'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation"',
+      }
+    end
+
+    it 'de-duplicates values when merging' do
+      @config << { 'FOO' => 'bar $(baz)' }
+      @config.merge!('FOO' => 'bar $(baz)')
+      @config.to_hash.should == {
+        'FOO' => 'bar $(baz)',
+        'OTHER_LDFLAGS' => '-framework "Foundation"',
       }
     end
 

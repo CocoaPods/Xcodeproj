@@ -64,7 +64,8 @@ begin
     desc "Create a new empty project"
     task :new_project => [:prepare] do
       verbose false
-      Bundler.require 'xcodeproj'
+      Bundler.setup
+      require 'xcodeproj'
       title "Setup Boilerplate"
 
       confirm "Delete existing fixture project and all data"
@@ -80,7 +81,8 @@ begin
     desc "Interactive walkthrough for creating fixture targets"
     task :targets => [:prepare] do
       verbose false
-      Bundler.require 'xcodeproj'
+      Bundler.setup
+      require 'xcodeproj'
 
       title "Create Targets"
       subtitle "You will be guided how to *manually* create the needed targets."
@@ -88,18 +90,33 @@ begin
       confirm "Make sure you have nothing unsaved there"
 
       targets = {
-        "Objc_iOS_Native"         => { platform: :ios, type: :application,     language: :objc,  how: "iOS > Master-Detail Application > Language: Objective-C" },
-        "Swift_iOS_Native"        => { platform: :ios, type: :application,     language: :swift, how: "iOS > Master-Detail Application > Language: Swift" },
-        "Objc_iOS_Framework"      => { platform: :ios, type: :framework,       language: :objc,  how: "iOS > Cocoa Touch Framework > Language: Objective-C" },
-        "Swift_iOS_Framework"     => { platform: :ios, type: :framework,       language: :swift, how: "iOS > Cocoa Touch Framework > Language: Swift" },
-        "Objc_iOS_StaticLibrary"  => { platform: :ios, type: :static_library,  language: :objc,  how: "iOS > Cocoa Touch Static Library" },
-        "Objc_OSX_Native"         => { platform: :osx, type: :application,     language: :objc,  how: "OSX > Cocoa Application > Language: Objective-C" },
-        "Swift_OSX_Native"        => { platform: :osx, type: :application,     language: :swift, how: "OSX > Cocoa Application > Language: Swift" },
-        "Objc_OSX_Framework"      => { platform: :osx, type: :framework,       language: :objc,  how: "OSX > Cocoa Framework > Language: Objective-C" },
-        "Swift_OSX_Framework"     => { platform: :osx, type: :framework,       language: :swift, how: "OSX > Cocoa Framework > Language: Swift" },
-        "Objc_OSX_StaticLibrary"  => { platform: :osx, type: :static_library,  language: :objc,  how: "OSX > Library > Type: Static" },
-        "Objc_OSX_DynamicLibrary" => { platform: :osx, type: :dynamic_library, language: :objc,  how: "OSX > Library > Type: Dynamic" },
-        "OSX_Bundle"              => { platform: :osx, type: :bundle,                            how: "OSX > Bundle" },
+        "Objc_iOS_Native"                => { platform: :ios,     type: :application,      language: :objc,  how: "iOS > Master-Detail Application > Language: Objective-C" },
+        "Swift_iOS_Native"               => { platform: :ios,     type: :application,      language: :swift, how: "iOS > Master-Detail Application > Language: Swift" },
+        "Objc_iOS_Framework"             => { platform: :ios,     type: :framework,        language: :objc,  how: "iOS > Cocoa Touch Framework > Language: Objective-C" },
+        "Swift_iOS_Framework"            => { platform: :ios,     type: :framework,        language: :swift, how: "iOS > Cocoa Touch Framework > Language: Swift" },
+        "Objc_iOS_StaticLibrary"         => { platform: :ios,     type: :static_library,   language: :objc,  how: "iOS > Cocoa Touch Static Library" },
+
+        "Objc_OSX_Native"                => { platform: :osx,     type: :application,      language: :objc,  how: "OSX > Cocoa Application > Language: Objective-C" },
+        "Swift_OSX_Native"               => { platform: :osx,     type: :application,      language: :swift, how: "OSX > Cocoa Application > Language: Swift" },
+        "Objc_OSX_Framework"             => { platform: :osx,     type: :framework,        language: :objc,  how: "OSX > Cocoa Framework > Language: Objective-C" },
+        "Swift_OSX_Framework"            => { platform: :osx,     type: :framework,        language: :swift, how: "OSX > Cocoa Framework > Language: Swift" },
+        "Objc_OSX_StaticLibrary"         => { platform: :osx,     type: :static_library,   language: :objc,  how: "OSX > Library > Type: Static" },
+        "Objc_OSX_DynamicLibrary"        => { platform: :osx,     type: :dynamic_library,  language: :objc,  how: "OSX > Library > Type: Dynamic" },
+        "OSX_Bundle"                     => { platform: :osx,     type: :bundle,                             how: "OSX > Bundle" },
+
+        "Objc_watchOS_Native"            => { platform: :watchos, type: :watch2_app,       language: :objc,  how: "watchOS > WatchKit App > Language: Objective-C" },
+        "Objc_watchOS_Native Extension"  => { platform: :watchos, type: :watch2_extension, language: :objc,  how: "Already done!" },
+        "Swift_watchOS_Native"           => { platform: :watchos, type: :watch2_app,       language: :swift, how: "watchOS > WatchKit App > Language: Swift" },
+        "Swift_watchOS_Native Extension" => { platform: :watchos, type: :watch2_extension, language: :swift, how: "Already done!" },
+        "Objc_watchOS_Framework"         => { platform: :watchos, type: :framework,        language: :objc,  how: "watchOS > Watch Framework > Language: Objective-C" },
+        "Swift_watchOS_Framework"        => { platform: :watchos, type: :framework,        language: :swift, how: "watchOS > Watch Framework > Language: Swift" },
+        "Objc_watchOS_StaticLibrary"     => { platform: :watchos, type: :static_library,   language: :objc,  how: "watchOS > Watch Static Library > Language: Objective-C" },
+
+        "Objc_tvOS_Native"               => { platform: :tvos,    type: :application,      language: :objc,  how: "tvOS > Single View Application > Language: Objective-C" },
+        "Swift_tvOS_Native"              => { platform: :tvos,    type: :application,      language: :swift, how: "tvOS > Single View Application > Language: Swift" },
+        "Objc_tvOS_Framework"            => { platform: :tvos,    type: :framework,        language: :objc,  how: "tvOS > TV Framework > Language: Objective-C" },
+        "Swift_tvOS_Framework"           => { platform: :tvos,    type: :framework,        language: :swift, how: "tvOS > TV Framework > Language: Swift" },
+        "Objc_tvOS_StaticLibrary"        => { platform: :tvos,    type: :static_library,   language: :objc,  how: "tvOS > TV Static Library > Language: Objective-C" },
       }
 
       targets.each do |name, attributes|

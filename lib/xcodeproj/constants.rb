@@ -4,11 +4,17 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '8.3'
+    LAST_KNOWN_IOS_SDK = '9.1'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK  = '10.10'
+    LAST_KNOWN_OSX_SDK = '10.11'
+
+    # @return [String] The last known tvOS SDK (stable).
+    LAST_KNOWN_TVOS_SDK = '9.0'
+
+    # @return [String] The last known watchOS SDK (stable).
+    LAST_KNOWN_WATCHOS_SDK = '2.0'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -19,11 +25,19 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION  = 47
+    LAST_KNOWN_OBJECT_VERSION = 47
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK  = '0640'
+    LAST_UPGRADE_CHECK = '0700'
+
+    # @return [String] The last known object version to Xcodeproj.
+    #
+    LAST_SWIFT_UPGRADE_CHECK = '0710'
+
+    # @return [String] The version of `.xcscheme` files supported by Xcodeproj
+    #
+    XCSCHEME_FORMAT_VERSION = '1.3'
 
     # @return [Hash] The all the known ISAs grouped by superclass.
     #
@@ -97,21 +111,27 @@ module Xcodeproj
       :dynamic_library   => 'com.apple.product-type.library.dynamic',
       :static_library    => 'com.apple.product-type.library.static',
       :bundle            => 'com.apple.product-type.bundle',
+      :octest_bundle     => 'com.apple.product-type.bundle',
       :unit_test_bundle  => 'com.apple.product-type.bundle.unit-test',
       :app_extension     => 'com.apple.product-type.app-extension',
       :command_line_tool => 'com.apple.product-type.tool',
       :watch_app         => 'com.apple.product-type.application.watchapp',
+      :watch2_app        => 'com.apple.product-type.application.watchapp2',
       :watch_extension   => 'com.apple.product-type.watchkit-extension',
+      :watch2_extension  => 'com.apple.product-type.watchkit2-extension',
+      :tv_extension      => 'com.apple.product-type.tv-app-extension',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
     #
     PRODUCT_UTI_EXTENSIONS = {
-      :application     => 'app',
-      :framework       => 'framework',
-      :dynamic_library => 'dylib',
-      :static_library  => 'a',
-      :bundle          => 'bundle',
+      :application      => 'app',
+      :framework        => 'framework',
+      :dynamic_library  => 'dylib',
+      :static_library   => 'a',
+      :bundle           => 'bundle',
+      :octest_bundle    => 'octest',
+      :unit_test_bundle => 'xctest',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build
@@ -119,13 +139,17 @@ module Xcodeproj
     #
     COMMON_BUILD_SETTINGS = {
       :all => {
-        'PRODUCT_NAME'                      => '$(TARGET_NAME)',
         'ENABLE_STRICT_OBJC_MSGSEND'        => 'YES',
+        'GCC_NO_COMMON_BLOCKS'              => 'YES',
+        'PRODUCT_NAME'                      => '$(TARGET_NAME)',
       }.freeze,
       [:debug] => {
+        'DEBUG_INFORMATION_FORMAT'          => 'dwarf',
+        'ENABLE_TESTABILITY'                => 'YES',
         'MTL_ENABLE_DEBUG_INFO'             => 'YES',
       }.freeze,
       [:release] => {
+        'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
         'MTL_ENABLE_DEBUG_INFO'             => 'NO',
       }.freeze,
       [:ios] => {
@@ -134,17 +158,29 @@ module Xcodeproj
       [:osx] => {
         'SDKROOT'                           => 'macosx',
       }.freeze,
+      [:tvos] => {
+        'SDKROOT'                           => 'appletvos',
+      }.freeze,
+      [:watchos] => {
+        'SDKROOT'                           => 'watchos',
+      }.freeze,
       [:debug, :osx] => {
         # Empty?
       }.freeze,
       [:release, :osx] => {
-        'DEBUG_INFORMATION_FORMAT'          => 'dwarf-with-dsym',
+        # Empty?
       }.freeze,
       [:debug, :ios] => {
         # Empty?
       }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+      }.freeze,
+      [:debug, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+      }.freeze,
+      [:debug, :static_library, :swift] => {
+        'ENABLE_TESTABILITY'                => 'YES',
       }.freeze,
       [:framework] => {
         'VERSION_INFO_PREFIX'               => '',
@@ -165,25 +201,43 @@ module Xcodeproj
       [:osx, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/Frameworks'],
         'FRAMEWORK_VERSION'                 => 'A',
+        'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
+      }.freeze,
+      [:watchos, :framework] => {
+        'APPLICATION_EXTENSION_API_ONLY'    => 'YES',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '4',
+      }.freeze,
+      [:tvos, :framework] => {
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '3',
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
       }.freeze,
-      [:debug, :framework, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
-      }.freeze,
       [:osx, :static_library] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:ios, :static_library] => {
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+        'OTHER_LDFLAGS'                     => '-ObjC',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:watchos, :static_library] => {
+        'OTHER_LDFLAGS'                     => '-ObjC',
+        'SKIP_INSTALL'                      => 'YES',
+      }.freeze,
+      [:tvos, :static_library] => {
         'OTHER_LDFLAGS'                     => '-ObjC',
         'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:osx, :dynamic_library] => {
-        'EXECUTABLE_PREFIX'                 => 'lib',
+        'CODE_SIGN_IDENTITY'                => '-',
         'DYLIB_COMPATIBILITY_VERSION'       => '1',
         'DYLIB_CURRENT_VERSION'             => '1',
+        'EXECUTABLE_PREFIX'                 => 'lib',
       }.freeze,
       [:application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
@@ -191,11 +245,25 @@ module Xcodeproj
       [:ios, :application] => {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :application] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
         'CODE_SIGN_IDENTITY'                => '-',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks'],
+      }.freeze,
+      [:watchos, :application] => {
+        'SKIP_INSTALL'                      => 'YES',
+        'TARGETED_DEVICE_FAMILY'            => '4',
+      }.freeze,
+      [:watchos, :application, :swift] => {
+        'EMBEDDED_CONTENT_CONTAINS_SWIFT'   => 'YES',
+      }.freeze,
+      [:tvos, :application] => {
+        'ASSETCATALOG_COMPILER_APPICON_NAME' => 'App Icon & Top Shelf Image',
+        'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
+        'TARGETED_DEVICE_FAMILY'            => '3',
+        'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
       }.freeze,
       [:bundle] => {
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
@@ -206,9 +274,10 @@ module Xcodeproj
         'SDKROOT'                           => 'iphoneos',
       }.freeze,
       [:osx, :bundle] => {
+        'CODE_SIGN_IDENTITY'                => '-',
         'COMBINE_HIDPI_IMAGES'              => 'YES',
-        'SDKROOT'                           => 'macosx',
         'INSTALL_PATH'                      => '$(LOCAL_LIBRARY_DIR)/Bundles',
+        'SDKROOT'                           => 'macosx',
       }.freeze,
     }.freeze
 
@@ -278,6 +347,6 @@ module Xcodeproj
 
     # @return [Array] The extensions which are associated with header files.
     #
-    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp .tpp).freeze
+    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp .tpp .hxx).freeze
   end
 end

@@ -59,7 +59,7 @@ module Xcodeproj
         target.build_phases << project.new(PBXFrameworksBuildPhase)
 
         # Frameworks
-        framework_name = (platform == :ios) ? 'Foundation' : 'Cocoa'
+        framework_name = (platform == :osx) ? 'Cocoa' : 'Foundation'
         target.add_system_framework(framework_name)
 
         target
@@ -234,10 +234,11 @@ module Xcodeproj
         end
 
         if deployment_target
-          if platform == :ios
-            settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-          elsif platform == :osx
-            settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+          case platform
+          when :ios then settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+          when :osx then settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+          when :tvos then settings['TVOS_DEPLOYMENT_TARGET'] = deployment_target
+          when :watchos then settings['WATCHOS_DEPLOYMENT_TARGET'] = deployment_target
           end
         end
 

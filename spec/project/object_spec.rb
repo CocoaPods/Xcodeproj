@@ -223,8 +223,8 @@ module ProjectSpecs
 
     describe 'Concerning attributes' do
       class PBXTestClass < AbstractObject
-        attribute :value,   String
-        has_one :file,  Xcodeproj::Project::Object::PBXFileReference
+        attribute :value, String
+        has_one :file, Xcodeproj::Project::Object::PBXFileReference
         has_many :files, Xcodeproj::Project::Object::PBXFileReference
         attribute :value_with_default, String, 'default'
       end
@@ -281,8 +281,15 @@ module ProjectSpecs
         @test_instance.files << f
         f.referrers.should.include?(@test_instance)
       end
-    end
 
+      it 'sorts display_names case insensitively' do
+        @test_instance.files << @project.new_file('Classes/JSAnimatedImageView.m')
+        @test_instance.files << @project.new_file('Classes/MSWeakTimer.m')
+        @test_instance.files << @project.new_file('Classes/iRate.m')
+        @test_instance.sort
+        @test_instance.files.map(&:display_name).should == ['iRate.m', 'JSAnimatedImageView.m', 'MSWeakTimer.m']
+      end
+    end
     #-------------------------------------------------------------------------#
   end
 end

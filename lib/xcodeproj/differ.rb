@@ -43,8 +43,8 @@ module Xcodeproj
     # @return [Nil] if the given values are equal.
     #
     def self.diff(value_1, value_2, options = {})
-      options[:key_1]  ||= 'value_1'
-      options[:key_2]  ||= 'value_2'
+      options[:key_1] ||= 'value_1'
+      options[:key_2] ||= 'value_2'
       options[:id_key] ||= nil
 
       if value_1.class == value_2.class

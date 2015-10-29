@@ -136,6 +136,14 @@ module ProjectSpecs
         @project = Xcodeproj::Project.open(@path)
         @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
       end
+
+      it 'can load projects that have circular target dependencies' do
+        @path = @dir + 'Circular.xcodeproj'
+        @project = Xcodeproj::Project.open(@path)
+        target_a, target_b = *@project.targets
+        target_a.dependencies.first.target.should == target_b
+        target_b.dependencies.first.target.should == target_a
+      end
     end
 
     #-------------------------------------------------------------------------#
@@ -400,6 +408,56 @@ module ProjectSpecs
           'Targets' => [],
           'Build Configurations' => [],
         }
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe 'Deterministic UUID generation' do
+      it 'does not have duplicate UUIDS' do
+        @project.predictabilize_uuids
+        @project.uuids.size.should == @project.uuids.uniq.size
+      end
+
+      describe 'two projects created with the same steps' do
+        create_project = ->(i) do
+          project = Xcodeproj::Project.new("path#{i}.xcodeproj")
+          project.add_build_configuration('Config', :debug)
+          project.predictabilize_uuids
+          project
+        end
+
+        it 'have the same UUIDS' do
+          create_project[0].uuids.sort.should == create_project[1].uuids.sort
+        end
+
+        it 'always has the same root object UUID, even for different paths' do
+          project = Xcodeproj::Project.new('path1.xcodeproj')
+          project.add_build_configuration('Config', :debug)
+          project.predictabilize_uuids
+          project.root_object.uuid.should == 'D41D8CD98F00B204E9800998ECF8427E'
+
+          project = Xcodeproj::Project.new('path2.xcodeproj')
+          project.add_build_configuration('Config', :release)
+          project.predictabilize_uuids
+          project.root_object.uuid.should == 'D41D8CD98F00B204E9800998ECF8427E'
+        end
+
+        Pathname.glob("#{fixture_path}/**/*.xcodeproj").each do |path|
+          next if path.to_s.include?('ProjectInMergeConflict/')
+          open_project = ->() do
+            Xcodeproj::Project.open(path).tap(&:predictabilize_uuids)
+          end
+          describe path.basename do
+            it 'has predictable UUIDs' do
+              open_project[].should.eql open_project[]
+            end
+
+            it 'does not have duplicate UUIDS' do
+              open_project[].uuids.size.should == open_project[].uuids.uniq.size
+            end
+          end
+        end
       end
     end
 

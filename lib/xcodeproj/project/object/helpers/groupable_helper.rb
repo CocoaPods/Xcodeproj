@@ -11,7 +11,7 @@ module Xcodeproj
           def parent(object)
             referrers = object.referrers.uniq
             if referrers.count > 1
-              referrers = referrers.select { |obj| obj.isa == 'PBXGroup' }
+              referrers = referrers.grep(PBXGroup)
             end
 
             if referrers.count == 0
@@ -47,7 +47,9 @@ module Xcodeproj
           #
           def hierarchy_path(object)
             unless main_group?(object)
-              "#{parent(object).hierarchy_path}/#{object.display_name}"
+              parent = parent(object)
+              parent = parent.hierarchy_path if parent.respond_to?(:hierarchy_path)
+              "#{parent}/#{object.display_name}"
             end
           end
 

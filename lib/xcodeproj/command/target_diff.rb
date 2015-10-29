@@ -1,13 +1,7 @@
 module Xcodeproj
   class Command
     class TargetDiff < Command
-      def self.banner
-        %(Shows the difference between two targets:
-
-            $ targets-diff [target 1] [target 2]
-
-              Only supports build source files atm.)
-      end
+      self.summary = 'Shows the difference between two targets'
 
       def self.options
         [
@@ -15,13 +9,21 @@ module Xcodeproj
         ].concat(super)
       end
 
+      self.arguments = [
+        CLAide::Argument.new('TARGET1', true),
+        CLAide::Argument.new('TARGET2', true),
+      ]
+
       def initialize(argv)
         @target1 = argv.shift_argument
         @target2 = argv.shift_argument
-        if argv.option('--project')
-          @xcodeproj_path = File.expand_path(argv.shift_argument)
-        end
-        super unless argv.empty?
+        self.xcodeproj_path = argv.option('--project')
+        super
+      end
+
+      def validate!
+        super
+        open_project!
       end
 
       def run

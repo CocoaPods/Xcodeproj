@@ -59,7 +59,8 @@ module Xcodeproj
         # @visibility private
         #
         def initialize(project, uuid)
-          @project, @uuid = project, uuid
+          @project = project
+          @uuid = uuid
           @isa = self.class.isa
           @referrers = []
           unless @isa.match(/^(PBX|XC)/)
@@ -145,7 +146,7 @@ module Xcodeproj
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
             list.sort! do |x, y|
-              x.display_name <=> y.display_name
+              x.display_name.downcase <=> y.display_name.downcase
             end
           end
         end

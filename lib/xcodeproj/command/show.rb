@@ -1,45 +1,44 @@
 module Xcodeproj
   class Command
     class Show < Command
-      def self.banner
-        %(Shows an overview of a project in a YAML representation.'
-
-            $ show [PROJECT]
-
-              If no `PROJECT' is specified then the current work directory is searched
-              for one.)
-      end
+      self.summary = 'Shows an overview of a project in a YAML representation.'
 
       def self.options
         [
-          ['--format [hash|tree_hash|raw]', 'YAML output format, optional'],
+          ['--format=[hash|tree_hash|raw]', 'YAML output format'],
         ].concat(super)
       end
 
+      self.arguments = [
+        CLAide::Argument.new('PROJECT', false),
+      ]
+
       def initialize(argv)
-        xcodeproj_path = argv.shift_argument
-        @xcodeproj_path = File.expand_path(xcodeproj_path) if xcodeproj_path
+        self.xcodeproj_path = argv.shift_argument
+        @output_format = argv.option('format')
+        @output_format &&= @output_format.to_sym
+        super
+      end
 
-        if argv.option('--format')
-          @output_format = argv.shift_argument
+      def validate
+        super
+        unless [nil, :hash, :tree_hash, :raw].include?(@output_format)
+          help! "Unknown format `#{@output_format}`"
         end
-
-        super unless argv.empty?
+        open_project!
       end
 
       def run
         require 'yaml'
 
         if @output_format
-          case @output_format.to_sym
+          case @output_format
           when :hash
             puts xcodeproj.to_hash.to_yaml
           when :tree_hash
             puts xcodeproj.to_tree_hash.to_yaml
           when :raw
             puts xcodeproj.to_yaml
-          else
-            raise Informative, "Unknowh format #{@output_format}!"
           end
           return
         end
@@ -51,8 +50,8 @@ module Xcodeproj
           yaml = value.to_yaml
           yaml.gsub!(/^---$/, '')
           yaml.gsub!(/^-/, "\n-")
-          section << yaml
-          sections << section
+          yaml.prepend(section)
+          sections << yaml
         end
         puts sections * "\n\n"
       end

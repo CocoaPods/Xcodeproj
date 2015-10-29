@@ -81,7 +81,7 @@ module Xcodeproj
     #
     def to_s(prefix = nil)
       include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\"" }
-      settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}" }
+      settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}".strip }
       [include_lines + settings].join("\n")
     end
 
@@ -131,6 +131,8 @@ module Xcodeproj
 
       result = attributes.dup
       result['OTHER_LDFLAGS'] = list.join(' ') unless list.empty?
+      inherited = %w($(inherited) ${inherited}).freeze
+      result.reject! { |_, v| inherited.any? { |i| i == v.to_s.strip } }
 
       if prefix
         Hash[result.map { |k, v| [prefix + k, v] }]
@@ -273,9 +275,9 @@ module Xcodeproj
     #
     def merge_attributes!(attributes)
       @attributes.merge!(attributes) do |_, v1, v2|
-        v1, v2 = v1.strip, v2.strip
-        existing = v1.strip.shellsplit
-        existing.include?(v2) ? v1 : "#{v1} #{v2}"
+        v1 = v1.strip
+        v2 = v2.strip
+        (v2.shellsplit - v1.shellsplit).empty? ? v1 : "#{v1} #{v2}"
       end
     end
 
@@ -315,7 +317,8 @@ module Xcodeproj
     def extract_key_value(line)
       match = line.match(KEY_VALUE_PATTERN)
       if match
-        key, value = match[1], match[2]
+        key = match[1]
+        value = match[2]
         [key.strip, value.strip]
       else
         []

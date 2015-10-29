@@ -1,6 +1,203 @@
 # Xcodeproj Changelog
 
-## 0.24.3
+## Master
+
+##### Enhancements
+
+* Add accessors for working with Environment Variables in xcscheme files
+  [Justin Martin](https://github.com/justinseanmartin)
+  [Xcodeproj#326](https://github.com/CocoaPods/Xcodeproj/pull/326)
+
+* Add method to create new variant groups (groups for localized versions of the same file)  
+  [Tim Bodeit](https://github.com/timbodeit)
+  [Xcodeproj#315](https://github.com/CocoaPods/Xcodeproj/pull/315)
+
+* Added target type for TV application extensions.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#318](https://github.com/CocoaPods/Xcodeproj/pull/318)
+
+* Added .hxx to the list of recognized header file extensions.  
+  [Jason Vasquez](https://github.com/jasonvasquez)
+  [Xcodeproj#320](https://github.com/CocoaPods/Xcodeproj/pull/320)
+
+* Added basic Xcodeproj::Workspace APIs to support groups
+  [David Parton](https://github.com/dparton)
+  [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/322)
+
+##### Bug Fixes
+
+* Avoid duplicating settings with multiple values in common when merging.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#3652](https://github.com/CocoaPods/CocoaPods/issues/3652)
+
+
+## 0.28.2 (2015-10-09)
+
+##### Bug Fixes
+
+* Silence `dyld` warnings appearing on OS X 10.11.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#312](https://github.com/CocoaPods/Xcodeproj/pull/312)
+
+
+## 0.28.1 (2015-10-05)
+
+##### Bug Fixes
+
+* Handle non-string values when serializing an XCConfig.  
+  [Samuel Giddins](https://github.com/)
+  [CocoaPods#4291](https://github.com/CocoaPods/CocoaPods/issues/4291)
+
+
+## 0.28.0 (2015-10-01)
+
+##### Enhancements
+
+* Add `tvos` as a new platform.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#301](https://github.com/CocoaPods/Xcodeproj/pull/301)
+
+* Allow accessing the new Xcode 7's Clang code coverage setting on XCSchemes
+  ("Gather Code Coverage" checkbox).  
+  [Olivier Halligon](https://github.com/AliSoftware)
+  [#307](https://github.com/CocoaPods/Xcodeproj/pull/307)
+
+* Adds `Xcodeproj::XCScheme#save!` to save in place when
+  the `XCScheme` object was initialized from an existing file.  
+  [Olivier Halligon](https://github.com/AliSoftware)
+  [#308](https://github.com/CocoaPods/Xcodeproj/pull/308)
+
+##### Bug Fixes
+
+* Allow opening and saving projects that have circular target dependencies.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#4229](https://github.com/CocoaPods/CocoaPods/issues/4229)
+
+* Fix the generation of deterministic UUIDs for `.xcdatamodeld` bundles.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#4187](https://github.com/CocoaPods/CocoaPods/issues/4187)
+
+
+## 0.27.2 (2015-09-02)
+
+##### Enhancements
+
+* Cache some calculations in deterministic UUID generation.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
+## 0.27.1 (2015-08-28)
+
+##### Bug Fixes
+
+* This release fixes a file permissions error when using the RubyGem.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
+## 0.27.0 (2015-08-26)
+
+##### Enhancements
+
+* Added the ability to load an existing `.xcscheme` file and manipulate
+  it using `Xcodeproj::XCScheme`.  
+  [Olivier Halligon](https://github.com/AliSoftware)
+  [#288](https://github.com/CocoaPods/Xcodeproj/pull/288)
+
+ * Sorting is now done in a case-insensitive manner.  
+  [Emma Koszinowski](http://github.com/emkosz)
+  [CocoaPods#3684](https://github.com/CocoaPods/CocoaPods/issues/3684)
+
+* Trailing whitespace is stripped when serializing XCConfig files.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+* XCConfig values that are only `$(inherited)` will be omitted during
+  serialization.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
+## 0.26.3 (2015-07-26)
+
+##### Bug Fixes
+
+* Fix a crash when calling `xcodeproj config-dump`.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+* Reduces the number of cases un which deterministic UUIDs would yield
+  duplicates. Downgraded duplicate generated UUIDs to a warning from an
+  exception.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#3823](https://github.com/CocoaPods/CocoaPods/issues/3823)
+  [CocoaPods#3850](https://github.com/CocoaPods/CocoaPods/issues/3850)
+
+
+## 0.26.2 (2015-07-18)
+
+##### Bug Fixes
+
+* Fix a crash when using the `xcodeproj` CLI.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
+## 0.26.1 (2015-07-05)
+
+##### Enhancements
+
+* Vastly speed up deterministic UUID generation for large projects.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
+## 0.26.0 (2015-07-02)
+
+##### Enhancements
+
+* Allow transforming a project's UUIDs into predictable replacements.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#175](https://github.com/CocoaPods/Xcodeproj/issues/175)
+
+
+## 0.25.1 (2015-06-27)
+
+##### Bug Fixes
+
+* Allow `xcodeproj show` to accept `--no-color` as an option without crashing.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#267](https://github.com/CocoaPods/Xcodeproj/issues/267)
+
+* Actually fix crashing when using Xcode 7 betas 1 & 2.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
+
+
+## 0.25.0 (2015-06-27)
+
+##### Enhancements
+
+* Ensure that duplicate resources or source files aren't added to a target.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+* Support for native watch app targets.  
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#272](https://github.com/CocoaPods/Xcodeproj/pull/272)
+
+* Update default build and scheme settings for Xcode 7.0 beta 1/2.  
+  [Marius Rackwitz](https://github.com/mrackwitz)
+  [Boris Bügling](https://github.com/neonichu)
+  [Xcodeproj#271](https://github.com/CocoaPods/Xcodeproj/pull/271)
+
+##### Bug Fixes
+
+* Fix the help output for `xcodeproj config-dump`.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#274](https://github.com/CocoaPods/Xcodeproj/issues/274)
+
+* Add support for project serialization with Xcode 7 Beta 2.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [Boris Bügling](https://github.com/neonichu)
+  [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
+  [CocoaPods#3723](https://github.com/CocoaPods/CocoaPods/issues/3723)
+
+
+## 0.24.3 (2015-06-27)
 
 ##### Bug Fixes
 
@@ -9,16 +206,16 @@
   [#278](https://github.com/CocoaPods/Xcodeproj/issues/278)
 
 
-## 0.24.2
+## 0.24.2 (2015-05-27)
 
-#### Enhancements
+##### Enhancements
 
 * `Constants`: Adds support for Command Line Tool as a product type.  
   [Nick Jordan](https://github.com/nickkjordan)
   [Xcodeproj#268](https://github.com/CocoaPods/Xcodeproj/pull/264)
 
 
-## 0.24.1
+## 0.24.1 (2015-04-28)
 
 ##### Enhancements
 
@@ -27,7 +224,7 @@
   [Xcodeproj#253](https://github.com/CocoaPods/Xcodeproj/pull/253)
 
 
-## 0.24.0
+## 0.24.0 (2015-04-18)
 
 ##### Enhancements
 
@@ -58,7 +255,7 @@
   [CocoaPods#3387](https://github.com/CocoaPods/CocoaPods/issues/3387)
 
 
-## 0.23.1
+## 0.23.1 (2015-03-26)
 
 #### Bug Fixes
 
@@ -67,7 +264,7 @@
   [CocoaPods#3298](https://github.com/CocoaPods/CocoaPods/issues/3298)
 
 
-## 0.23.0
+## 0.23.0 (2015-03-10)
 
 ##### Enhancements
 
@@ -83,7 +280,7 @@
   [#243](https://github.com/CocoaPods/Xcodeproj/issues/243)
 
 
-## 0.22.0
+## 0.22.0 (2015-02-25)
 
 ##### Enhancements
 
@@ -109,14 +306,14 @@
   [banjun](https://github.com/banjun)
   [Xcodeproj#239](https://github.com/CocoaPods/Xcodeproj/pull/239)
 
-## 0.21.2
+## 0.21.2 (2015-01-27)
 
 ##### Bug Fixes
 
 * Include common build settings on custom build configurations.  
   [Kyle Fuller](https://github.com/kylef)
 
-## 0.21.1
+## 0.21.1 (2015-01-27)
 
 ##### Bug Fixes
 
@@ -133,7 +330,7 @@
   [Xcodeproj#225](https://github.com/CocoaPods/Xcodeproj/pull/225)
 
 
-## 0.21.0
+## 0.21.0 (2014-12-25)
 
 ##### Breaking
 
@@ -172,7 +369,7 @@
   [Xcodeproj#166](https://github.com/CocoaPods/Xcodeproj/pull/166)
 
 
-## 0.20.2
+## 0.20.2 (2014-11-15)
 
 ##### Bug Fixes
 
@@ -182,7 +379,7 @@
   [CocoaPods#2807](https://github.com/CocoaPods/CocoaPods/issues/2807)
 
 
-## 0.20.1
+## 0.20.1 (2014-10-28)
 
 ###### Minor Enhancements
 
@@ -211,7 +408,7 @@
   [CocoaPods#2739](https://github.com/CocoaPods/CocoaPods/issues/2739)
 
 
-## 0.20.0
+## 0.20.0 (2014-10-26)
 
 ###### Breaking
 
@@ -257,7 +454,7 @@
   [Xcodeproj#189](https://github.com/CocoaPods/Xcodeproj/pull/189)
 
 
-## 0.19.4
+## 0.19.4 (2014-10-15)
 
 ###### Bug Fixes
 
@@ -270,7 +467,7 @@
   [Boris Bügling](https://github.com/neonichu)
 
 
-## 0.19.3
+## 0.19.3 (2014-10-07)
 
 ###### Bug Fixes
 
@@ -287,7 +484,7 @@
   [Xcodeproj#200](https://github.com/CocoaPods/Xcodeproj/pull/200)
 
 
-## 0.19.2
+## 0.19.2 (2014-09-25)
 
 ###### Bug Fixes
 
@@ -297,7 +494,7 @@
   [CocoaPods#2502](https://github.com/CocoaPods/CocoaPods/issues/2502)
 
 
-## 0.19.1
+## 0.19.1 (2014-09-12)
 
 ###### Bug Fixes
 
@@ -305,7 +502,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
-## 0.19.0
+## 0.19.0 (2014-09-11)
 
 * `PlistHelper`: Now the `plutil` tool is used to save the files if available
   to produce output consistent with Xcode.  
@@ -345,7 +542,7 @@
 * `Project`: Fixed reference counting issue when deleting sub-projects.
 
 
-## 0.18.0
+## 0.18.0 (2014-07-24)
 
 ###### Enhancements
 
@@ -370,7 +567,7 @@
   [Xcodeproj#155](https://github.com/CocoaPods/Xcodeproj/pull/155)
 
 
-## 0.17.0
+## 0.17.0 (2014-05-19)
 
 ###### Enhancements
 
@@ -380,7 +577,7 @@
   [Xcodeproj#105](https://github.com/CocoaPods/Xcodeproj/pull/150)
 
 
-## 0.16.1
+## 0.16.1 (2014-04-15)
 
 ###### Minor Enhancements
 
@@ -393,7 +590,7 @@
   [jlj](https://github.com/jlj)
 
 
-## 0.16.0
+## 0.16.0 (2014-03-31)
 
 ###### Breaking
 
@@ -401,7 +598,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
-## 0.15.3
+## 0.15.3 (2014-03-29)
 
 ###### Bug Fixes
 
@@ -409,7 +606,7 @@
   [Eloy Durán](https://github.com/alloy)
 
 
-## 0.15.1
+## 0.15.1 (2014-03-29)
 
 ###### Bug Fixes
 
@@ -418,7 +615,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
-## 0.15.0
+## 0.15.0 (2014-03-27)
 
 ###### Breaking
 
@@ -445,7 +642,7 @@
   [Eloy Durán](https://github.com/alloy)
 
 
-## 0.14.1
+## 0.14.1 (2013-11-01)
 
 ###### Enhancements
 
@@ -470,7 +667,7 @@
   [#107](https://github.com/CocoaPods/Xcodeproj/issues/107)
 
 
-## 0.14.0
+## 0.14.0 (2013-10-24)
 
 ###### Bug Fixes
 
@@ -504,7 +701,7 @@
   [#101](https://github.com/CocoaPods/Xcodeproj/pull/101)
 
 
-## 0.13.1
+## 0.13.1 (2013-10-10)
 
 ###### Bug Fixes
 
@@ -528,7 +725,7 @@
   [CocoaPods/CocoaPods#1462](https://github.com/CocoaPods/CocoaPods/issues/1462)
 
 
-## 0.13.0
+## 0.13.0 (2013-10-09)
 
 ###### Breaking
 
@@ -550,7 +747,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
-## 0.12.0
+## 0.12.0 (2013-10-08)
 
 ###### Breaking
 
@@ -613,7 +810,7 @@
   [Fabio Pelosin](https://github.com/fabiopelosin)
 
 
-## 0.11.1
+## 0.11.1 (2013-09-21)
 
 ###### Bug Fixes
 
@@ -624,7 +821,7 @@
   [CocoaPods#1384](https://github.com/CocoaPods/CocoaPods/issues/1384)
 
 
-## 0.11.0
+## 0.11.0 (2013-09-20)
 
 ###### Breaking
 
@@ -682,7 +879,7 @@
   [jasonprado](https://github.com/jasonprado)
 
 
-## 0.10.1
+## 0.10.1 (2013-09-04)
 
 ###### Enhancements
 
@@ -690,7 +887,7 @@
   [CocoaPods/CocoaPods#1288](https://github.com/CocoaPods/CocoaPods/issues/1322),
 
 
-## 0.10.0
+## 0.10.0 (2013-09-04)
 
 ###### Breaking
 
@@ -745,7 +942,7 @@
 * [AbstractTarget] Added `#add_build_configuration`.
 
 
-## 0.9.0
+## 0.9.0 (2013-08-02)
 
 ###### Enhancements
 

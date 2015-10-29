@@ -1,22 +1,29 @@
+GIT
+  remote: https://github.com/CocoaPods/CLAide
+  revision: 675dd608cd5b3f8b62a4f34da48aff5d0b75d41f
+  specs:
+    claide (0.9.1)
+
 PATH
   remote: .
   specs:
-    xcodeproj (0.24.3)
+    xcodeproj (0.28.2)
       activesupport (>= 3)
+      claide (~> 0.9.1)
       colored (~> 1.2)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (4.2.2)
+    activesupport (4.2.4)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    ast (2.0.0)
-    astrolabe (1.3.0)
-      parser (>= 2.2.0.pre.3, < 3.0)
+    ast (2.1.0)
+    astrolabe (1.3.1)
+      parser (~> 2.2)
     bacon (1.2.0)
     codeclimate-test-reporter (0.4.1)
       simplecov (>= 0.7.1, < 1.0.0)
@@ -33,17 +40,16 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.7.0)
+    minitest (5.8.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
     multi_json (1.10.1)
     notify (0.5.2)
-    parser (2.2.0.pre.8)
+    parser (2.2.3.0)
       ast (>= 1.1, < 3.0)
-      slop (~> 3.4, >= 3.4.5)
-    powerpack (0.0.9)
+    powerpack (0.1.1)
     prettybacon (0.0.2)
       bacon (~> 1.2)
     rainbow (2.0.0)
@@ -53,19 +59,18 @@ GEM
       ffi (>= 0.5.0)
     rb-kqueue (0.2.3)
       ffi (>= 0.5.0)
-    rubocop (0.28.0)
+    rubocop (0.34.2)
       astrolabe (~> 1.3)
-      parser (>= 2.2.0.pre.7, < 3.0)
-      powerpack (~> 0.0.6)
+      parser (>= 2.2.2.5, < 3.0)
+      powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.4)
-    ruby-progressbar (1.7.1)
+    ruby-progressbar (1.7.5)
     simplecov (0.9.1)
       docile (~> 1.1.0)
       multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    slop (3.6.0)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -75,6 +80,7 @@ PLATFORMS
 
 DEPENDENCIES
   bacon
+  claide!
   codeclimate-test-reporter
   json (= 1.7.7)
   kicker
@@ -87,4 +93,4 @@ DEPENDENCIES
   xcodeproj!
 
 BUNDLED WITH
-   1.10.5
+   1.10.6

@@ -1,30 +1,38 @@
 module Xcodeproj
   class Command
     class ConfigDump < Command
-      def self.banner
-        <<-eos.strip_heredoc
+      self.description = <<-eos
         Dumps the build settings of all project targets for all configurations in
         directories named by the target in given output directory.
 
-            $ config-dump PROJECT OUTPUT
+        It extracts common build settings in a per target base.xcconfig file.
 
-              It extracts common build settings in a per target base.xcconfig file.
-              If no `PROJECT` is specified then the current work directory is searched
-              for one.
-              If no `OUTPUT` is specified then the project directory will be used.%)
+        If no `PROJECT` is specified then the current work directory is searched
+        for one.
+
+        If no `OUTPUT` is specified then the project directory will be used.
         eos
-      end
+
+      self.summary = 'Dumps the build settings of all project targets for ' \
+                     'all configurations in directories named by the target ' \
+                     'in the given output directory.'
+
+      self.arguments = [
+        CLAide::Argument.new('PROJECT', false),
+      ]
 
       def initialize(argv)
-        xcodeproj_path = argv.shift_argument
-        @xcodeproj_path = File.expand_path(xcodeproj_path) if xcodeproj_path
+        self.xcodeproj_path = argv.shift_argument
+        @output_path = Pathname(argv.shift_argument || '.')
 
-        @output_path  = Pathname(argv.shift_argument || '.')
-        unless @output_path.directory?
-          raise Informative, 'The output path must be a directory.'
-        end
+        super
+      end
 
-        super unless argv.empty?
+      def validate!
+        super
+
+        raise Informative, 'The output path must be a directory.' unless @output_path.directory?
+        open_project!
       end
 
       def run

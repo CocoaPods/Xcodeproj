@@ -89,29 +89,34 @@ module Xcodeproj
         # @return [Symbol] the name of the platform of the target.
         #
         def platform_name
+          return unless sdk
           if sdk.include? 'iphoneos'
             :ios
           elsif sdk.include? 'macosx'
             :osx
+          elsif sdk.include? 'appletvos'
+            :tvos
+          elsif sdk.include? 'watchos'
+            :watchos
           end
         end
 
         # @return [String] the version of the SDK.
         #
         def sdk_version
-          if sdk
-            sdk.scan(/[0-9.]+/).first
-          end
+          return unless sdk
+          sdk.scan(/[0-9.]+/).first
         end
 
         # @return [String] the deployment target of the target according to its
         #         platform.
         #
         def deployment_target
-          if platform_name == :ios
-            common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
-          else
-            common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          case platform_name
+          when :ios then common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
+          when :osx then common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
+          when :tvos then common_resolved_build_setting('TVOS_DEPLOYMENT_TARGET')
+          when :watchos then common_resolved_build_setting('WATCHOS_DEPLOYMENT_TARGET')
           end
         end
 
@@ -294,6 +299,14 @@ module Xcodeproj
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
+            when :tvos
+              group = project.frameworks_group['tvOS'] || project.frameworks_group.new_group('tvOS')
+              path_sdk_name = 'AppleTVOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_TVOS_SDK
+            when :watchos
+              group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
+              path_sdk_name = 'WatchOS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_WATCHOS_SDK
             else
               raise 'Unknown platform for target'
             end
@@ -398,7 +411,7 @@ module Xcodeproj
         #         the files references of the source files that should be added
         #         to the target.
         #
-        # @param  [Hash{String=>String}] compiler_flags
+        # @param  [String] compiler_flags
         #         the compiler flags for the source files.
         #
         # @yield_param [PBXBuildFile] each created build file.
@@ -407,18 +420,21 @@ module Xcodeproj
         #
         def add_file_references(file_references, compiler_flags = {})
           file_references.map do |file|
-            build_file = project.new(PBXBuildFile)
-            build_file.file_ref = file
-
             extension = File.extname(file.path).downcase
             header_extensions = Constants::HEADER_FILES_EXTENSIONS
-            if header_extensions.include?(extension)
-              headers_build_phase.files << build_file
-            else
-              if compiler_flags && !compiler_flags.empty?
-                build_file.settings = { 'COMPILER_FLAGS' => compiler_flags }
+            is_header_phase = header_extensions.include?(extension)
+            phase = is_header_phase ? headers_build_phase : source_build_phase
+
+            unless build_file = phase.build_file(file)
+              build_file = project.new(PBXBuildFile)
+              build_file.file_ref = file
+              phase.files << build_file
+            end
+
+            if compiler_flags && !compiler_flags.empty? && !is_header_phase
+              (build_file.settings ||= {}).merge!('COMPILER_FLAGS' => compiler_flags) do |_, old, new|
+                [old, new].compact.join(' ')
               end
-              source_build_phase.files << build_file
             end
 
             yield build_file if block_given?
@@ -436,6 +452,7 @@ module Xcodeproj
         #
         def add_resources(resource_file_references)
           resource_file_references.each do |file|
+            next if resources_build_phase.include?(file)
             build_file = project.new(PBXBuildFile)
             build_file.file_ref = file
             resources_build_phase.files << build_file
@@ -498,8 +515,8 @@ module Xcodeproj
           unless phase_class < AbstractBuildPhase
             raise ArgumentError, "#{phase_class} must be a subclass of #{AbstractBuildPhase.class}"
           end
-          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } \
-            || project.new(phase_class).tap { |bp| build_phases << bp }
+          @phases[phase_class] ||= build_phases.find { |bp| bp.class == phase_class } ||
+            project.new(phase_class).tap { |bp| build_phases << bp }
         end
 
         public
