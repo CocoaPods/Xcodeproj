@@ -19,3 +19,4 @@ xcuserdata
 rakelib/doccoverage/
 coverage/
 .coveralls.yml
+spec/plutil_helper/obj
