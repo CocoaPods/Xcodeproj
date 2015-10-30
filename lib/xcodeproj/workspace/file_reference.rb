@@ -54,8 +54,7 @@ module Xcodeproj
       #
       def to_node
         REXML::Element.new('FileRef').tap do |element|
-          cleaned_path = CGI.escapeHTML(path)
-          element.add_attribute('location', "#{type}:#{cleaned_path}")
+          element.add_attribute('location', "#{type}:#{path}")
         end
       end
 
