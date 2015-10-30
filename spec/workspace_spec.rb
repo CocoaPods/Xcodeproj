@@ -37,7 +37,7 @@ describe Xcodeproj::Workspace do
   describe 'converted to XML' do
     before do
       pods_project_file_reference = Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
-      project_file_reference = Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
+      project_file_reference = Xcodeproj::Workspace::FileReference.new('App&<>\'.xcodeproj')
       @workspace = Xcodeproj::Workspace.new(pods_project_file_reference, project_file_reference)
 
       file_reference_in_group = Xcodeproj::Workspace::FileReference.new('ProjectInGroup.xcodeproj')
@@ -55,7 +55,7 @@ describe Xcodeproj::Workspace do
     it 'refers to the projects in xml' do
       @doc.root.get_elements('/Workspace//FileRef').map do |node|
         node.attributes['location']
-      end.sort.should == ['group:App.xcodeproj', 'group:Pods/Pods.xcodeproj', 'group:ProjectInGroup.xcodeproj']
+      end.sort.should == ['group:App&<>\'.xcodeproj', 'group:Pods/Pods.xcodeproj', 'group:ProjectInGroup.xcodeproj']
     end
 
     it 'formats the XML consistently with Xcode' do
@@ -67,7 +67,7 @@ describe Xcodeproj::Workspace do
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:App.xcodeproj">
+      location = "group:App&amp;&lt;&gt;&apos;.xcodeproj">
    </FileRef>
    <Group
       location = "container:"
