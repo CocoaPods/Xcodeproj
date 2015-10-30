@@ -30,6 +30,9 @@
   [Samuel Giddins](https://github.com/segiddins)
   [CocoaPods#3652](https://github.com/CocoaPods/CocoaPods/issues/3652)
 
+* Escape XML entities in project names when writing workspace
+  [Caesar Wirth](https://github.com/cjwirth)
+  [CocoaPods#4446](https://github.com/CocoaPods/CocoaPods/issues/4446)
 
 ## 0.28.2 (2015-10-09)
 
