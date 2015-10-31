@@ -108,15 +108,34 @@ module Xcodeproj
           sdk.scan(/[0-9.]+/).first
         end
 
+        # @visibility private
+        #
+        # @return [Hash<Symbol, String>]
+        #         The name of the setting for the deployment target by platform
+        #         name.
+        #
+        DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME = {
+          :ios => 'IPHONEOS_DEPLOYMENT_TARGET',
+          :osx => 'MACOSX_DEPLOYMENT_TARGET',
+          :tvos => 'TVOS_DEPLOYMENT_TARGET',
+          :watchos => 'WATCHOS_DEPLOYMENT_TARGET',
+        }.freeze
+
         # @return [String] the deployment target of the target according to its
         #         platform.
         #
         def deployment_target
-          case platform_name
-          when :ios then common_resolved_build_setting('IPHONEOS_DEPLOYMENT_TARGET')
-          when :osx then common_resolved_build_setting('MACOSX_DEPLOYMENT_TARGET')
-          when :tvos then common_resolved_build_setting('TVOS_DEPLOYMENT_TARGET')
-          when :watchos then common_resolved_build_setting('WATCHOS_DEPLOYMENT_TARGET')
+          return unless setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
+          common_resolved_build_setting(setting)
+        end
+
+        # @param  [String] deployment_target the deployment target to set for
+        #         the target according to its platform.
+        #
+        def deployment_target=(deployment_target)
+          return unless setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
+          build_configurations.each do |config|
+            config.build_settings[setting] = deployment_target
           end
         end
 
