@@ -125,7 +125,7 @@ module Xcodeproj
         #         platform.
         #
         def deployment_target
-          setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
+          return unless setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
           common_resolved_build_setting(setting)
         end
 
@@ -133,7 +133,7 @@ module Xcodeproj
         #         the target according to its platform.
         #
         def deployment_target=(deployment_target)
-          setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
+          return unless setting = DEPLOYMENT_TARGET_SETTING_BY_PLATFORM_NAME[platform_name]
           build_configurations.each do |config|
             config.build_settings[setting] = deployment_target
           end
