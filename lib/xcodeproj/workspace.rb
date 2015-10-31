@@ -240,7 +240,7 @@ DOC
                    end
       contents = "<#{elem.name}"
       indent = '   ' * depth
-      attributes.each { |name| contents += "\n   #{name} = \"#{elem.attribute(name).value}\"" }
+      attributes.each { |name| contents += "\n   #{name} = \"#{elem.attribute(name)}\"" }
       contents.split("\n").map { |line| "#{indent}#{line}" }.join("\n") + ">\n"
     end
 
