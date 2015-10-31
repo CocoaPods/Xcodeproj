@@ -184,6 +184,36 @@ module ProjectSpecs
         end
       end
 
+      describe 'sets the deployment target in its build configuration' do
+        it 'works for iOS' do
+          ios_target = @project.new_target(:static_library, 'Pods', :ios)
+          ios_target.deployment_target = '8.4'
+          ios_target.build_configurations.first.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].should == '8.4'
+          ios_target.deployment_target.should == '8.4'
+        end
+
+        it 'works for OSX' do
+          osx_target = @project.new_target(:static_library, 'Pods', :osx)
+          osx_target.deployment_target = '10.10'
+          osx_target.build_configurations.first.build_settings['MACOSX_DEPLOYMENT_TARGET'].should == '10.10'
+          osx_target.deployment_target.should == '10.10'
+        end
+
+        it 'works for watchOS' do
+          watch_target = @project.new_target(:static_library, 'Pods', :watchos)
+          watch_target.deployment_target = '2.0'
+          watch_target.build_configurations.first.build_settings['WATCHOS_DEPLOYMENT_TARGET'].should == '2.0'
+          watch_target.deployment_target.should == '2.0'
+        end
+
+        it 'works for tvOS' do
+          tv_target = @project.new_target(:static_library, 'Pods', :tvos)
+          tv_target.deployment_target = '9.0'
+          tv_target.build_configurations.first.build_settings['TVOS_DEPLOYMENT_TARGET'].should == '9.0'
+          tv_target.deployment_target.should == '9.0'
+        end
+      end
+
       it 'returns the build configuration' do
         build_configurations = @target.build_configurations
         build_configurations.map(&:isa).uniq.should == ['XCBuildConfiguration']
