@@ -4,25 +4,26 @@
 
 ##### Enhancements
 
-* Add accessors for working with Environment Variables in xcscheme files
+* Add accessors for working with Environment Variables in `.xcscheme` files.  
   [Justin Martin](https://github.com/justinseanmartin)
-  [Xcodeproj#326](https://github.com/CocoaPods/Xcodeproj/pull/326)
+  [#326](https://github.com/CocoaPods/Xcodeproj/pull/326)
 
-* Add method to create new variant groups (groups for localized versions of the same file)  
+* Add method to create new variant groups (groups for localized versions of
+  the same file).  
   [Tim Bodeit](https://github.com/timbodeit)
-  [Xcodeproj#315](https://github.com/CocoaPods/Xcodeproj/pull/315)
+  [#315](https://github.com/CocoaPods/Xcodeproj/pull/315)
 
 * Added target type for TV application extensions.  
   [Boris Bügling](https://github.com/neonichu)
-  [Xcodeproj#318](https://github.com/CocoaPods/Xcodeproj/pull/318)
+  [#318](https://github.com/CocoaPods/Xcodeproj/pull/318)
 
 * Added .hxx to the list of recognized header file extensions.  
   [Jason Vasquez](https://github.com/jasonvasquez)
-  [Xcodeproj#320](https://github.com/CocoaPods/Xcodeproj/pull/320)
+  [#320](https://github.com/CocoaPods/Xcodeproj/pull/320)
 
-* Added basic Xcodeproj::Workspace APIs to support groups
+* Added basic `Xcodeproj::Workspace` APIs to support groups.  
   [David Parton](https://github.com/dparton)
-  [Xcodeproj#322](https://github.com/CocoaPods/Xcodeproj/pull/322)
+  [#322](https://github.com/CocoaPods/Xcodeproj/pull/322)
 
 ##### Bug Fixes
 
@@ -30,9 +31,10 @@
   [Samuel Giddins](https://github.com/segiddins)
   [CocoaPods#3652](https://github.com/CocoaPods/CocoaPods/issues/3652)
 
-* Escape XML entities in project names when writing workspace
+* Escape XML entities in project names when writing workspace.  
   [Caesar Wirth](https://github.com/cjwirth)
   [CocoaPods#4446](https://github.com/CocoaPods/CocoaPods/issues/4446)
+
 
 ## 0.28.2 (2015-10-09)
 
