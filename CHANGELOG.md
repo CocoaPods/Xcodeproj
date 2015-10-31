@@ -25,7 +25,7 @@
   [David Parton](https://github.com/dparton)
   [#322](https://github.com/CocoaPods/Xcodeproj/pull/322)
 
-# Added a helper to set the deployment target on a target based on its
+* Added a helper to set the deployment target on a target based on its
   platform.  
   [Samuel Giddins](https://github.com/segiddins)
 
