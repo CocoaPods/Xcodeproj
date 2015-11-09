@@ -133,5 +133,16 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :force_load => [],
       }
     end
+
+    it 'handles Array flags' do
+      flags = %w(-Objc -all_load -lsqlite3 -lz)
+      @parser.parse(flags).should == {
+        :frameworks => [],
+        :weak_frameworks => [],
+        :libraries => [],
+        :simple => ['-Objc', '-all_load', '-lsqlite3', '-lz'],
+        :force_load => [],
+      }
+    end
   end
 end
