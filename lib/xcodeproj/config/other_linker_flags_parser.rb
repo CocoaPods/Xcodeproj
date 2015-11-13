@@ -8,7 +8,7 @@ module Xcodeproj
       # @return [Hash{Symbol, Array[String]}] Splits the given
       #         other linker flags value by type.
       #
-      # @param  [String] flags
+      # @param  [String, Array] flags
       #         The other linker flags value.
       #
       def self.parse(flags)
@@ -21,7 +21,10 @@ module Xcodeproj
         }
 
         key = nil
-        split(flags).each do |token|
+        if flags.is_a? String
+          flags = split(flags)
+        end
+        flags.each do |token|
           case token
           when '-framework'
             key = :frameworks
