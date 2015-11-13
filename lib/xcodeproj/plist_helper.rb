@@ -531,7 +531,7 @@ module CoreFoundation
 
   def self.RubyStringToCFString(string)
     CFStringCreateWithCString(NULL,
-                              Fiddle::Pointer[string],
+                              Fiddle::Pointer[string.encode('UTF-8')],
                               KCFStringEncodingUTF8)
   end
 
