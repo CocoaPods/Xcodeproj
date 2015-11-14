@@ -182,7 +182,7 @@ module Xcodeproj
         return super if owner.project.dirty?
         previous = to_a
         super
-        owner.mark_project_as_dirty! if previous == to_a
+        owner.mark_project_as_dirty! unless previous == to_a
         self
       end
 
