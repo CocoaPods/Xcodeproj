@@ -99,6 +99,7 @@ module Xcodeproj
         # @return [void]
         #
         def remove_from_project
+          mark_project_as_dirty!
           project.objects_by_uuid.delete(uuid)
 
           referrers.dup.each do |referrer|
@@ -215,6 +216,7 @@ module Xcodeproj
         def remove_referrer(referrer)
           @referrers.delete(referrer)
           if @referrers.count == 0
+            mark_project_as_dirty!
             @project.objects_by_uuid.delete(uuid)
           end
         end
@@ -240,6 +242,10 @@ module Xcodeproj
             list = attrb.get_value(self)
             list.each { |dictionary| dictionary.remove_reference(object) }
           end
+        end
+
+        def mark_project_as_dirty!
+          project.mark_dirty!
         end
 
         #---------------------------------------------------------------------#

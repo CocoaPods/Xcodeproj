@@ -60,13 +60,14 @@ module Xcodeproj
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
-      unless skip_initialization
-        initialize_from_scratch
-        @object_version = object_version.to_s
-      end
+      @dirty           = true
       unless skip_initialization.is_a?(TrueClass) || skip_initialization.is_a?(FalseClass)
         raise ArgumentError, '[Xcodeproj] Initialization parameter expected to ' \
           "be a boolean #{skip_initialization}"
+      end
+      unless skip_initialization
+        initialize_from_scratch
+        @object_version = object_version.to_s
       end
     end
 
@@ -192,10 +193,11 @@ module Xcodeproj
       pbxproj_path = path + 'project.pbxproj'
       plist = Xcodeproj.read_plist(pbxproj_path.to_s)
       root_object.remove_referrer(self) if root_object
-      @root_object = new_from_plist(plist['rootObject'], plist['objects'], self)
-      @archive_version =  plist['archiveVersion']
-      @object_version  =  plist['objectVersion']
-      @classes         =  plist['classes']
+      @root_object     = new_from_plist(plist['rootObject'], plist['objects'], self)
+      @archive_version = plist['archiveVersion']
+      @object_version  = plist['objectVersion']
+      @classes         = plist['classes']
+      @dirty           = false
 
       unless root_object
         raise "[Xcodeproj] Unable to find a root object in #{pbxproj_path}."
@@ -318,9 +320,18 @@ module Xcodeproj
     #
     def save(save_path = nil)
       save_path ||= path
+      @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
       Xcodeproj.write_plist(to_hash, file)
+    end
+
+    def mark_dirty!
+      @dirty = true
+    end
+
+    def dirty?
+      @dirty == true
     end
 
     # Replaces all the UUIDs in the project with deterministic MD5 checksums.

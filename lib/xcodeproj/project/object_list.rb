@@ -151,6 +151,7 @@ module Xcodeproj
       # @return [void]
       #
       def move(object, new_index)
+        return if index(object) == new_index
         if obj = delete(object)
           insert(new_index, obj)
         else
@@ -169,11 +170,20 @@ module Xcodeproj
       # @return [void]
       #
       def move_from(current_index, new_index)
+        return if current_index == new_index
         if obj = delete_at(current_index)
           insert(new_index, obj)
         else
           raise "Attempt to move object from index `#{current_index}` which is beyond bounds of the list `#{inspect}`"
         end
+      end
+
+      def sort!
+        return super if owner.project.dirty?
+        previous = to_a
+        super
+        owner.mark_project_as_dirty! if previous == to_a
+        self
       end
 
       private
@@ -190,6 +200,7 @@ module Xcodeproj
       def perform_additions_operations(objects)
         objects = [objects] unless objects.is_a?(Array)
         objects.each do |obj|
+          owner.mark_project_as_dirty!
           obj.add_referrer(owner)
           attribute.validate_value(obj) unless obj.is_a?(ObjectDictionary)
         end
@@ -203,6 +214,7 @@ module Xcodeproj
       def perform_deletion_operations(objects)
         objects = [objects] unless objects.is_a?(Array)
         objects.each do |obj|
+          owner.mark_project_as_dirty!
           obj.remove_referrer(owner) unless obj.is_a?(ObjectDictionary)
         end
       end

@@ -187,6 +187,7 @@ module Xcodeproj
       # @return [void]
       #
       def perform_additions_operations(object, key)
+        owner.mark_project_as_dirty!
         object.add_referrer(owner)
         attribute.validate_value_for_key(object, key)
       end
@@ -197,6 +198,7 @@ module Xcodeproj
       # @return [void]
       #
       def perform_deletion_operations(objects)
+        owner.mark_project_as_dirty!
         objects.remove_referrer(owner)
       end
     end
