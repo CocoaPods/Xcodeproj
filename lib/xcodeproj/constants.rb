@@ -145,7 +145,6 @@ module Xcodeproj
       }.freeze,
       [:debug] => {
         'DEBUG_INFORMATION_FORMAT'          => 'dwarf',
-        'ENABLE_TESTABILITY'                => 'YES',
         'MTL_ENABLE_DEBUG_INFO'             => 'YES',
       }.freeze,
       [:release] => {
@@ -180,7 +179,6 @@ module Xcodeproj
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:debug, :static_library, :swift] => {
-        'ENABLE_TESTABILITY'                => 'YES',
       }.freeze,
       [:framework] => {
         'VERSION_INFO_PREFIX'               => '',
@@ -315,6 +313,7 @@ module Xcodeproj
       :debug => {
         'ONLY_ACTIVE_ARCH'                   => 'YES',
         'COPY_PHASE_STRIP'                   => 'NO',
+        'ENABLE_TESTABILITY'                 => 'YES',
         'GCC_DYNAMIC_NO_PIC'                 => 'NO',
         'GCC_OPTIMIZATION_LEVEL'             => '0',
         'GCC_PREPROCESSOR_DEFINITIONS'       => ['DEBUG=1', '$(inherited)'],
