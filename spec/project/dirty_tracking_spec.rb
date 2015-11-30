@@ -8,10 +8,9 @@ module ProjectSpecs
       raise 'should not be dirty' if project.dirty?
       attributes_method = AbstractObject.instance_method(:attributes)
       all_objects = project.objects_by_uuid.values
-      all_objects.each do |object|
-        attributes_method.bind(object).call.each do |attrb|
-          blk[project, object, attrb]
-        end
+      all_objects.flat_map { |object| attributes_method.bind(object).call.map { |a| [a, object] } }.
+        uniq(&:first).each do |attrb, object|
+        blk[project, object, attrb]
       end
     end
 
