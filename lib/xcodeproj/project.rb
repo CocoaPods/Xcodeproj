@@ -326,10 +326,17 @@ module Xcodeproj
       Xcodeproj.write_plist(to_hash, file)
     end
 
+    # Marks the project as dirty, that is, modified from what is on disk.
+    #
+    # @return [void]
+    #
     def mark_dirty!
       @dirty = true
     end
 
+    # @return [Boolean] Whether this project has been modified since read from
+    #         disk or saved.
+    #
     def dirty?
       @dirty == true
     end

@@ -244,6 +244,12 @@ module Xcodeproj
           end
         end
 
+        # Marks the project that this object belongs to as having been modified.
+        #
+        # @return [void]
+        #
+        # @visibility private
+        #
         def mark_project_as_dirty!
           project.mark_dirty!
         end
