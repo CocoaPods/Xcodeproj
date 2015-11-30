@@ -2,7 +2,6 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module ProjectSpecs
   describe Xcodeproj::Project do
-
     def each_attribute(blk)
       project = Xcodeproj::Project.open(fixture_path('Sample Project/Cocoa Application.xcodeproj'))
       raise 'should not be dirty' if project.dirty?
@@ -16,7 +15,6 @@ module ProjectSpecs
 
     describe 'does not mark as dirty' do
       describe 'when assigning an equal value' do
-
         each_attribute -> (project, object, attrb) do
           next unless attrb.type == :simple || attrb.type == :to_one
           it "#{attrb.owner.name}##{attrb.name}=" do
@@ -25,29 +23,25 @@ module ProjectSpecs
             project.should.not.be.dirty
           end
         end
-
       end
     end
 
-
     describe 'marks as dirty' do
       it 'when assigning an unequal value' do
-
         each_attribute -> (project, object, attrb) do
           next unless attrb.type == :simple || attrb.type == :to_one
           cls = attrb.classes.sample
           it "#{attrb.owner.name}##{attrb.name}=" do
             random = if cls < AbstractObject
-              project.new(Array(Xcodeproj::Constants::KNOWN_ISAS[cls.isa]).sample || cls)
-            else
-              cls.new
-            end
+                       project.new(Array(Xcodeproj::Constants::KNOWN_ISAS[cls.isa]).sample || cls)
+                     else
+                       cls.new
+                     end
             random = nil if random == attrb.get_value(object)
             project.expects(:mark_dirty!).at_least(1)
             object.send(:"#{attrb.name}=", random)
           end
         end
-
       end
     end
   end
