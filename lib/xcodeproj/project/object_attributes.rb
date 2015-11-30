@@ -318,7 +318,11 @@ module Xcodeproj
               attrb.validate_value(value)
 
               existing = @simple_attributes_hash[attrb.plist_name]
-              break value if existing == value
+              if existing.is_a?(Hash) && value.is_a?(Hash)
+                break value if existing.keys == value.keys && existing == value
+              elsif existing == value
+                break value if existing == value
+              end
               mark_project_as_dirty!
               @simple_attributes_hash[attrb.plist_name] = value
             end
