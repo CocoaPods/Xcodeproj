@@ -29,6 +29,10 @@
   platform.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Added support for projects tracking if they have been modified.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#202](https://github.com/CocoaPods/Xcodeproj/issues/202)
+
 ##### Bug Fixes
 
 * Avoid duplicating settings with multiple values in common when merging.  
