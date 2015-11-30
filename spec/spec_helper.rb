@@ -32,6 +32,8 @@ def fixture_path(*path)
   File.join(File.dirname(__FILE__), 'fixtures', *path)
 end
 
+Mocha::Configuration.prevent(:stubbing_non_existent_method)
+
 class Hash
   def recursive_diff(other, self_key = 'self', other_key = 'other')
     Xcodeproj::Differ.project_diff(self, other, self_key, other_key)
