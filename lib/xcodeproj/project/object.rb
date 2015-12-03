@@ -64,7 +64,7 @@ module Xcodeproj
           @isa = self.class.isa
           @referrers = []
           unless @isa.match(/^(PBX|XC)/)
-            raise '[Xcodeproj] Attempt to initialize an abstract class.'
+            raise "[Xcodeproj] Attempt to initialize an abstract class (#{self.class})."
           end
         end
 
@@ -99,6 +99,7 @@ module Xcodeproj
         # @return [void]
         #
         def remove_from_project
+          mark_project_as_dirty!
           project.objects_by_uuid.delete(uuid)
 
           referrers.dup.each do |referrer|
@@ -215,6 +216,7 @@ module Xcodeproj
         def remove_referrer(referrer)
           @referrers.delete(referrer)
           if @referrers.count == 0
+            mark_project_as_dirty!
             @project.objects_by_uuid.delete(uuid)
           end
         end
@@ -240,6 +242,16 @@ module Xcodeproj
             list = attrb.get_value(self)
             list.each { |dictionary| dictionary.remove_reference(object) }
           end
+        end
+
+        # Marks the project that this object belongs to as having been modified.
+        #
+        # @return [void]
+        #
+        # @visibility private
+        #
+        def mark_project_as_dirty!
+          project.mark_dirty!
         end
 
         #---------------------------------------------------------------------#

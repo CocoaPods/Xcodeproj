@@ -66,6 +66,7 @@ module Xcodeproj
       end
 
       def switch_uuids(objects)
+        @project.mark_dirty!
         objects.each do |object|
           next unless path = @paths_by_object[object]
           uuid = uuid_for_path(path)

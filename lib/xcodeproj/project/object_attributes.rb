@@ -316,6 +316,14 @@ module Xcodeproj
             define_method("#{attrb.name}=") do |value|
               @simple_attributes_hash ||= {}
               attrb.validate_value(value)
+
+              existing = @simple_attributes_hash[attrb.plist_name]
+              if existing.is_a?(Hash) && value.is_a?(Hash)
+                return value if existing.keys == value.keys && existing == value
+              elsif existing == value
+                return value if existing == value
+              end
+              mark_project_as_dirty!
               @simple_attributes_hash[attrb.plist_name] = value
             end
           end
@@ -352,6 +360,8 @@ module Xcodeproj
               attrb.validate_value(value)
 
               previous_value = send(attrb.name)
+              return value if previous_value == value
+              mark_project_as_dirty!
               previous_value.remove_referrer(self) if previous_value
               instance_variable_set("@#{attrb.name}", value)
               value.add_referrer(self) if value
