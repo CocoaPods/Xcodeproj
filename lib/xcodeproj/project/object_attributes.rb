@@ -319,9 +319,9 @@ module Xcodeproj
 
               existing = @simple_attributes_hash[attrb.plist_name]
               if existing.is_a?(Hash) && value.is_a?(Hash)
-                break value if existing.keys == value.keys && existing == value
+                return value if existing.keys == value.keys && existing == value
               elsif existing == value
-                break value if existing == value
+                return value if existing == value
               end
               mark_project_as_dirty!
               @simple_attributes_hash[attrb.plist_name] = value
@@ -360,7 +360,7 @@ module Xcodeproj
               attrb.validate_value(value)
 
               previous_value = send(attrb.name)
-              break value if previous_value == value
+              return value if previous_value == value
               mark_project_as_dirty!
               previous_value.remove_referrer(self) if previous_value
               instance_variable_set("@#{attrb.name}", value)
