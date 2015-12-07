@@ -55,6 +55,12 @@ module Xcodeproj
     # @example Creating a project
     #         Project.new("path/to/Project.xcodeproj")
     #
+    # @note When initializing the project, Xcodeproj mimics the Xcode behaviour
+    #       including the setup of a debug and release configuration. If you want a
+    #       clean project without any configurations, you should override the
+    #       `initialize_from_scratch` method to not add these configurations and
+    #       manually set the object version.
+    #
     def initialize(path, skip_initialization = false, object_version = Constants::DEFAULT_OBJECT_VERSION)
       @path = Pathname.new(path).expand_path
       @objects_by_uuid = {}
