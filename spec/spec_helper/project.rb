@@ -18,6 +18,7 @@ module ProjectSpecs
   # are defined. This is better than into the global namespace, which could
   # influence the behavior of other specs.
   include Xcodeproj::Project::Object
+  include Xcodeproj
 
   # Extend each context with SpecHelper::Project.
   def self.describe(description, &block)

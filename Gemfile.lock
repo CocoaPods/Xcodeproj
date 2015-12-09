@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: 675dd608cd5b3f8b62a4f34da48aff5d0b75d41f
+  revision: f16fb46831ae1ca77f0d1dc7e538a50044ee4951
   specs:
     claide (0.9.1)
 
@@ -15,7 +15,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (4.2.4)
+    activesupport (4.2.5)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -40,7 +40,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.8.1)
+    minitest (5.8.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
@@ -93,4 +93,4 @@ DEPENDENCIES
   xcodeproj!
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

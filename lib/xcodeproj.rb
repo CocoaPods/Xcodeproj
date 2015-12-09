@@ -20,7 +20,7 @@ module Xcodeproj
   autoload :Constants,        'xcodeproj/constants'
   autoload :Differ,           'xcodeproj/differ'
   autoload :Helper,           'xcodeproj/helper'
-  autoload :PlistHelper,      'xcodeproj/plist_helper'
+  autoload :Plist,            'xcodeproj/plist'
   autoload :Project,          'xcodeproj/project'
   autoload :Workspace,        'xcodeproj/workspace'
   autoload :XCScheme,         'xcodeproj/scheme'

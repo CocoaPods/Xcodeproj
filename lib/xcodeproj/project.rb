@@ -4,7 +4,7 @@ require 'securerandom'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/uuid_generator'
-require 'xcodeproj/plist_helper'
+require 'xcodeproj/plist'
 
 module Xcodeproj
   # This class represents a Xcode project document.
@@ -197,7 +197,7 @@ module Xcodeproj
     #
     def initialize_from_file
       pbxproj_path = path + 'project.pbxproj'
-      plist = Xcodeproj.read_plist(pbxproj_path.to_s)
+      plist = Plist.read_from_path(pbxproj_path.to_s)
       root_object.remove_referrer(self) if root_object
       @root_object     = new_from_plist(plist['rootObject'], plist['objects'], self)
       @archive_version = plist['archiveVersion']
@@ -329,7 +329,7 @@ module Xcodeproj
       @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
-      Xcodeproj.write_plist(to_hash, file)
+      Plist.write_to_path(to_hash, file)
     end
 
     # Marks the project as dirty, that is, modified from what is on disk.
@@ -760,7 +760,7 @@ module Xcodeproj
       end
 
       xcschememanagement_path = schemes_dir + 'xcschememanagement.plist'
-      Xcodeproj.write_plist(xcschememanagement, xcschememanagement_path)
+      Plist.write_to_path(xcschememanagement, xcschememanagement_path)
     end
 
     #-------------------------------------------------------------------------#
