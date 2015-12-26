@@ -60,10 +60,7 @@ module Xcodeproj
     #         The path of the file.
     #
     def self.file_in_conflict?(path)
-      file = File.open(path, 'r')
-      file.each_line.any? { |l| l.match(/^(<|=|>){7}/) }
-    ensure
-      file.close
+      File.read(path).match(/^(<|=|>){7}/)
     end
   end
 end
