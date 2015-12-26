@@ -7,10 +7,11 @@ module Xcodeproj
       autoload :DevToolsCore,   'xcodeproj/plist/ffi/dev_tools_core'
 
       class << self
-        def available?
-          @available ||= begin
+        def attempt_to_load!
+          return @attempt_to_load if defined?(@attempt_to_load)
+          @attempt_to_load = begin
             require 'fiddle'
-            true
+            nil
           rescue LoadError
             'Xcodeproj relies on a library called `fiddle` to read and write ' \
             'Xcode project files. Ensure your Ruby installation includes ' \

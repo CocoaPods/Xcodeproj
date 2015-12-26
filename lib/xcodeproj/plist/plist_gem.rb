@@ -1,11 +1,12 @@
 module Xcodeproj
   module Plist
     module PlistGem
-      def self.available?
-        @available ||= begin
+      def self.attempt_to_load!
+        return @attempt_to_load if defined?(@attempt_to_load)
+        @attempt_to_load = begin
           require 'plist/parser'
           require 'plist/generator'
-          true
+          nil
         rescue LoadError
           'Xcodeproj relies on a library called `plist` to read and write ' \
           'Xcode project files. Ensure you have the `plist` gem installed ' \

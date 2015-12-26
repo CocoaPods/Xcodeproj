@@ -30,7 +30,7 @@ module Xcodeproj
       implementation.write_to_path(hash, path)
     end
 
-    POSSIBLE_IMPLEMENTATIONS = [:FFI, :PlistGem]
+    KNOWN_IMPLEMENTATIONS = [:FFI, :PlistGem]
 
     class << self
       attr_accessor :implementation
@@ -40,17 +40,16 @@ module Xcodeproj
     end
 
     def self.autoload_implementation
-      failures = POSSIBLE_IMPLEMENTATIONS.map do |impl|
+      failures = KNOWN_IMPLEMENTATIONS.map do |impl|
         begin
           impl = Plist.const_get(impl)
-          available = impl.available?
-          return impl if available.is_a?(TrueClass)
-          available
+          failure = impl.attempt_to_load!
+          return impl if failure.nil?
+          failure
         rescue NameError, LoadError => e
           e.message
         end
-      end
-      failures.reject! { |i| i.is_a?(TrueClass) }
+      end.compact
       raise Informative, "Unable to load a plist implementation:\n\n#{failures.join("\n\n")}"
     end
 
