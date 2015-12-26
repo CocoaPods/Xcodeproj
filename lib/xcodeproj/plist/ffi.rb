@@ -1,12 +1,18 @@
 module Xcodeproj
   module Plist
-    # Provides support for loading and serializing property list files.
+    # Provides support for loading and serializing property list files via
+    # Fiddle and CoreFoundation / Xcode.
     #
     module FFI
       autoload :CoreFoundation, 'xcodeproj/plist/ffi/core_foundation'
       autoload :DevToolsCore,   'xcodeproj/plist/ffi/dev_tools_core'
 
       class << self
+        # Attempts to load the `fiddle` and Xcode based plist serializer.
+        #
+        # @return [String,Nil] The loading error message, or `nil` if loading
+        #         was successful.
+        #
         def attempt_to_load!
           return @attempt_to_load if defined?(@attempt_to_load)
           @attempt_to_load = begin

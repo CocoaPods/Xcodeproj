@@ -1,8 +1,16 @@
 module Xcodeproj
+  # Provides support for loading and serializing property list files.
+  #
   module Plist
     autoload :FFI, 'xcodeproj/plist/ffi'
     autoload :PlistGem, 'xcodeproj/plist/plist_gem'
 
+    # @return [Hash] Returns the native objects loaded from a property list
+    #         file.
+    #
+    # @param  [#to_s] path
+    #         The path of the file.
+    #
     def self.read_from_path(path)
       path = path.to_s
       unless File.exist?(path)
@@ -14,6 +22,14 @@ module Xcodeproj
       implementation.read_from_path(path)
     end
 
+    # Serializes a hash as an XML property list file.
+    #
+    # @param  [#to_hash] hash
+    #         The hash to store.
+    #
+    # @param  [#to_s] path
+    #         The path of the file.
+    #
     def self.write_to_path(hash, path)
       if hash.respond_to?(:to_hash)
         hash = hash.to_hash
@@ -30,15 +46,23 @@ module Xcodeproj
       implementation.write_to_path(hash, path)
     end
 
+    # The known modules that can serialize plists.
+    #
     KNOWN_IMPLEMENTATIONS = [:FFI, :PlistGem]
 
     class << self
+      # @return The module used to implement plist serialization.
+      #
       attr_accessor :implementation
       def implementation
         @implementation ||= autoload_implementation
       end
     end
 
+    # Attempts to autoload a known plist implementation.
+    #
+    # @return a successfully loaded plist serialization implementation.
+    #
     def self.autoload_implementation
       failures = KNOWN_IMPLEMENTATIONS.map do |impl|
         begin

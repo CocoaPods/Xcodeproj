@@ -1,5 +1,6 @@
 module Xcodeproj
   module Plist
+    # @visibility private
     module PlistGem
       def self.attempt_to_load!
         return @attempt_to_load if defined?(@attempt_to_load)
