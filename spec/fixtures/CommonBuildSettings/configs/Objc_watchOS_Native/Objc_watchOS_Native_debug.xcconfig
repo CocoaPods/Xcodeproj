@@ -1,4 +1,3 @@
 #include "Objc_watchOS_Native/Objc_watchOS_Native_base.xcconfig"
 DEBUG_INFORMATION_FORMAT = dwarf
-ENABLE_TESTABILITY = YES
 MTL_ENABLE_DEBUG_INFO = YES
