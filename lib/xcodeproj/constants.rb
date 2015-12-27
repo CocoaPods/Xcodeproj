@@ -4,17 +4,17 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '9.1'
+    LAST_KNOWN_IOS_SDK = '9.2'
 
     # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK = '10.11'
 
     # @return [String] The last known tvOS SDK (stable).
-    LAST_KNOWN_TVOS_SDK = '9.0'
+    LAST_KNOWN_TVOS_SDK = '9.1'
 
     # @return [String] The last known watchOS SDK (stable).
-    LAST_KNOWN_WATCHOS_SDK = '2.0'
+    LAST_KNOWN_WATCHOS_SDK = '2.1'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -33,7 +33,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0710'
+    LAST_SWIFT_UPGRADE_CHECK = '0720'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
