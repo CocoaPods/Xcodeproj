@@ -33,6 +33,15 @@
   [Samuel Giddins](https://github.com/segiddins)
   [#202](https://github.com/CocoaPods/Xcodeproj/issues/202)
 
+* The plist serializer can now be switched to different implementations,
+  which will get autoloaded on-demand.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+* Simply requiring `xcodeproj` on a ruby installation without the `fiddle` gem
+  will not cause an exception -- that exception has been delayed until actually
+  attempting to serialize / load a plist file.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Avoid duplicating settings with multiple values in common when merging.  
