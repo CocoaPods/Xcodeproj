@@ -52,6 +52,9 @@
   [Caesar Wirth](https://github.com/cjwirth)
   [CocoaPods#4446](https://github.com/CocoaPods/CocoaPods/issues/4446)
 
+* Serialized configs will now have a trailing newline appended.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 0.28.2 (2015-10-09)
 
