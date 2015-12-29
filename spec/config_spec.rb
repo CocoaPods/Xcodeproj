@@ -76,7 +76,7 @@ describe Xcodeproj::Config do
     end
 
     it 'can serialize an empty config' do
-      config = Xcodeproj::Config.new()
+      config = Xcodeproj::Config.new
       config.to_s.should == "\n"
     end
 
