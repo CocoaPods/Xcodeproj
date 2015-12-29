@@ -82,7 +82,7 @@ module Xcodeproj
     def to_s(prefix = nil)
       include_lines = includes.map { |path| "#include \"#{normalized_xcconfig_path(path)}\"" }
       settings = to_hash(prefix).sort_by(&:first).map { |k, v| "#{k} = #{v}".strip }
-      [include_lines + settings].join("\n")
+      (include_lines + settings).join("\n") << "\n"
     end
 
     # Writes the serialized representation of the internal data to the given

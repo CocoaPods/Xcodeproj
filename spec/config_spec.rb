@@ -62,17 +62,22 @@ describe Xcodeproj::Config do
     end
 
     it 'can be serialized with #to_s' do
-      @config.to_s.should.be.equal 'OTHER_LDFLAGS = -framework "Foundation"'
+      @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework \"Foundation\"\n"
     end
 
     it 'strips trailing whitespace when serializing with #to_s' do
       @config.attributes['FOO'] = 'BAR   '
-      @config.to_s.should == "FOO = BAR\nOTHER_LDFLAGS = -framework \"Foundation\""
+      @config.to_s.should == "FOO = BAR\nOTHER_LDFLAGS = -framework \"Foundation\"\n"
     end
 
     it 'sorts the internal data by setting name when serializing with #to_s' do
       config = Xcodeproj::Config.new('Y' => '2', 'Z' => '3', 'X' => '1')
-      config.to_s.should == "X = 1\nY = 2\nZ = 3"
+      config.to_s.should == "X = 1\nY = 2\nZ = 3\n"
+    end
+
+    it 'can serialize an empty config' do
+      config = Xcodeproj::Config.new()
+      config.to_s.should == "\n"
     end
 
     it 'can be serialized with #to_hash' do
@@ -86,7 +91,7 @@ describe Xcodeproj::Config do
 
     it 'handles non-string settings in #to_s' do
       config = Xcodeproj::Config.new('X' => true, 'Y' => 123)
-      config.to_s.should == <<-EOS.strip
+      config.to_s.should == <<-EOS
 X = true
 Y = 123
       EOS
