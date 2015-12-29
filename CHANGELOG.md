@@ -48,6 +48,9 @@
   [Samuel Giddins](https://github.com/segiddins)
   [CocoaPods#3652](https://github.com/CocoaPods/CocoaPods/issues/3652)
 
+* Avoid duplicating settings with common prefixes when merging.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 * Escape XML entities in project names when writing workspace.  
   [Caesar Wirth](https://github.com/cjwirth)
   [CocoaPods#4446](https://github.com/CocoaPods/CocoaPods/issues/4446)

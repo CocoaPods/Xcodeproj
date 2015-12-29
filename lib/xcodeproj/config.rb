@@ -277,7 +277,15 @@ module Xcodeproj
       @attributes.merge!(attributes) do |_, v1, v2|
         v1 = v1.strip
         v2 = v2.strip
-        (v2.shellsplit - v1.shellsplit).empty? ? v1 : "#{v1} #{v2}"
+        v1_split = v1.shellsplit
+        v2_split = v2.shellsplit
+        if (v2_split - v1_split).empty? || v1_split.first(v2_split.size) == v2_split
+          v1
+        elsif v2_split.first(v1_split.size) == v1_split
+          v2
+        else
+          "#{v1} #{v2}"
+        end
       end
     end
 
