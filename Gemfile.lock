@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (0.28.2)
+    xcodeproj (1.0.0.beta.1)
       activesupport (>= 3)
       claide (~> 0.9.1)
       colored (~> 1.2)
