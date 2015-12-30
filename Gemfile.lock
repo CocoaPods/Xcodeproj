@@ -1,15 +1,15 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: f16fb46831ae1ca77f0d1dc7e538a50044ee4951
+  revision: d5a7ef8f3e730f195ecb3dfd2ec5891d1c6988d7
   specs:
-    claide (0.9.1)
+    claide (1.0.0.beta.1)
 
 PATH
   remote: .
   specs:
     xcodeproj (1.0.0.beta.1)
       activesupport (>= 3)
-      claide (~> 0.9.1)
+      claide (>= 1.0.0.beta.1, < 2.0)
       colored (~> 1.2)
 
 GEM
