@@ -19,6 +19,7 @@ module Xcodeproj
 
       self.arguments = [
         CLAide::Argument.new('PROJECT', false),
+        CLAide::Argument.new('OUTPUT', false),
       ]
 
       def initialize(argv)
