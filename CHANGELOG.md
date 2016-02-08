@@ -1,5 +1,14 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Bug Fixes
+
+* Fix ASCII .xcodeproj serialization with Xcode 7.3.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#356](https://github.com/CocoaPods/Xcodeproj/pull/356)
+
+
 ## 1.0.0.beta.2 (2015-12-30)
 
 ##### Bug Fixes
