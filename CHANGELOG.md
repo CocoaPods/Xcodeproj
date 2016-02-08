@@ -8,6 +8,11 @@
   [Boris Bügling](https://github.com/neonichu)
   [#356](https://github.com/CocoaPods/Xcodeproj/pull/356)
 
+* Ensure that new targets have the right build settings for custom build
+  configurations.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#354](https://github.com/CocoaPods/Xcodeproj/issues/354)
+
 
 ## 1.0.0.beta.2 (2015-12-30)
 
