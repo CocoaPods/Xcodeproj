@@ -21,6 +21,34 @@ module ProjectSpecs
         @configuration.base_configuration_reference = xcconfig
         @configuration.base_configuration_reference.should.be.not.nil
       end
+
+      describe '#debug?' do
+        it 'returns false without build settings' do
+          @configuration.should.not.be.debug
+        end
+
+        it 'returns true when the preprocessor definitions include DEBUG=1' do
+          @configuration.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = ['Foo', 'DEBUG=1']
+          @configuration.should.be.debug
+        end
+
+        it 'returns false when the preprocessor definitions include DEBUG=0' do
+          @configuration.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = ['Foo', 'DEBUG=0']
+          @configuration.should.not.be.debug
+        end
+      end
+
+      describe '#type' do
+        it 'returns :debug when it is debug' do
+          @configuration.expects(:debug?).returns(true)
+          @configuration.type.should == :debug
+        end
+
+        it 'returns :release when it is not debug' do
+          @configuration.expects(:debug?).returns(false)
+          @configuration.type.should == :release
+        end
+      end
     end
 
     #-------------------------------------------------------------------------#

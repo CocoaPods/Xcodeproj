@@ -47,6 +47,21 @@ module Xcodeproj
           self.build_settings = sorted_build_settings
         end
 
+        # @return [Boolean] Whether this configuration is configured for
+        #         debugging.
+        #
+        def debug?
+          gcc_preprocessor_definitions = build_settings['GCC_PREPROCESSOR_DEFINITIONS']
+          gcc_preprocessor_definitions && gcc_preprocessor_definitions.include?('DEBUG=1')
+        end
+
+        # @return [Symbol] The symbolic type of this configuration, either
+        #         `:debug` or `:release`.
+        #
+        def type
+          debug? ? :debug : :release
+        end
+
         #---------------------------------------------------------------------#
 
         private
