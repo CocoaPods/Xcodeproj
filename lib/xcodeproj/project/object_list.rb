@@ -140,10 +140,10 @@ module Xcodeproj
         super
       end
 
-      # Moves the object at the given given index to the given position.
+      # Moves the given object to the given index.
       #
-      # @param [Fixnum] from
-      #        The current index of the object.
+      # @param [AbstractObject, ObjectDictionary] object
+      #        The object to move.
       #
       # @param [Fixnum] to
       #        The new index for the object.
@@ -159,7 +159,7 @@ module Xcodeproj
         end
       end
 
-      # Moves the object at the given given index to the given position.
+      # Moves the object at the given index to the given position.
       #
       # @param [Fixnum] from
       #        The current index of the object.
