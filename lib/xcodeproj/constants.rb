@@ -113,6 +113,7 @@ module Xcodeproj
       :bundle            => 'com.apple.product-type.bundle',
       :octest_bundle     => 'com.apple.product-type.bundle',
       :unit_test_bundle  => 'com.apple.product-type.bundle.unit-test',
+      :ui_testing_bundle => 'com.apple.product-type.bundle.ui-testing',
       :app_extension     => 'com.apple.product-type.app-extension',
       :command_line_tool => 'com.apple.product-type.tool',
       :watch_app         => 'com.apple.product-type.application.watchapp',
