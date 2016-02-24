@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.0.0.beta.3 (2016-02-24)
 
 ##### Bug Fixes
 
