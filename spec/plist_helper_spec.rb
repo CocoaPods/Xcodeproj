@@ -29,7 +29,6 @@ module ProjectSpecs
       end
 
       it 'saves a plist file to be consistent with Xcode' do
-        # rubocop:disable Style/Tab
         output = <<-PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -40,7 +39,6 @@ module ProjectSpecs
 </dict>
 </plist>
         PLIST
-        # rubocop:enable Style/Tab
 
         hash = { 'archiveVersion' => '1.0' }
         Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)

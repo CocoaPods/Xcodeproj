@@ -1,6 +1,5 @@
 require File.expand_path('../spec_helper', __FILE__)
 
-# rubocop:disable Style/Tab
 SPEC_XCODEBUILD_SAMPLE_SDK_OTPUT = <<-DOC
 OS X SDKs:
 	Mac OS X 10.7                 	-sdk macosx10.7
@@ -24,7 +23,6 @@ watchOS SDKs:
 watchOS Simulator SDKs:
   Simulator - Watch OS 2.0        -sdk watchsimulator2.0
 DOC
-# rubocop:enable Style/Tab
 
 module Xcodeproj
   describe XcodebuildHelper do

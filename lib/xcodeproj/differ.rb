@@ -47,15 +47,15 @@ module Xcodeproj
       options[:key_2] ||= 'value_2'
       options[:id_key] ||= nil
 
-      if value_1.class == value_2.class
-        method = case value_1
+      method = if value_1.class == value_2.class
+                 case value_1
                  when Hash  then :hash_diff
                  when Array then :array_diff
                  else :generic_diff
                  end
-      else
-        method = :generic_diff
-      end
+               else
+                 :generic_diff
+               end
       send(method, value_1, value_2, options)
     end
 
