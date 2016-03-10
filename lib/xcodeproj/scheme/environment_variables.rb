@@ -109,11 +109,11 @@ module Xcodeproj
           @xml_element.attributes['key'] = node_or_variable[:key]
           @xml_element.attributes['value'] = node_or_variable[:value]
 
-          if node_or_variable.key?(:enabled)
-            @xml_element.attributes['isEnabled'] = bool_to_string(node_or_variable[:enabled])
-          else
-            @xml_element.attributes['isEnabled'] = bool_to_string(true)
-          end
+          @xml_element.attributes['isEnabled'] = if node_or_variable.key?(:enabled)
+                                                   bool_to_string(node_or_variable[:enabled])
+                                                 else
+                                                   bool_to_string(true)
+                                                 end
         end
       end
 

@@ -300,11 +300,11 @@ module Xcodeproj
     #   scheme.save_as('path/to/Project.xcodeproj') #=> true
     #
     def save_as(project_path, name, shared = true)
-      if shared
-        scheme_folder_path = self.class.shared_data_dir(project_path)
-      else
-        scheme_folder_path = self.class.user_data_dir(project_path)
-      end
+      scheme_folder_path = if shared
+                             self.class.shared_data_dir(project_path)
+                           else
+                             self.class.user_data_dir(project_path)
+                           end
       scheme_folder_path.mkpath
       scheme_path = scheme_folder_path + "#{name}.xcscheme"
       File.open(scheme_path, 'w') do |f|

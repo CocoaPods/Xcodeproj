@@ -63,7 +63,7 @@ module Xcodeproj
           @uuid = uuid
           @isa = self.class.isa
           @referrers = []
-          unless @isa.match(/^(PBX|XC)/)
+          unless @isa =~ /^(PBX|XC)/
             raise "[Xcodeproj] Attempt to initialize an abstract class (#{self.class})."
           end
         end
