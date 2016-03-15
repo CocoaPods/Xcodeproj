@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add support for `outputFilesCompilerFlags` in a custom `PBXBuildRule`.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#362](https://github.com/CocoaPods/Xcodeproj/issues/362)
 
 ##### Bug Fixes
 
