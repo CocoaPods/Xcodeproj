@@ -60,11 +60,23 @@ module Xcodeproj
 
         # @!group Helpers
 
+        # Adds an output file with the specified compiler flags.
+        #
+        # @param  [PBXFileReference] file the file to add.
+        #
+        # @param  [String] compiler_flags the compiler flags for the file.
+        #
+        # @return [Void]
+        #
         def add_output_file(file, compiler_flags = '')
           (self.output_files ||= []) << file
           (self.output_files_compiler_flags ||= []) << compiler_flags
         end
 
+        # @return [Array<[PBXFileReference, String]>]
+        #         An array containing tuples of output files and their compiler
+        #         flags.
+        #
         def output_files_and_flags
           (output_files || []).zip(output_files_compiler_flags || [])
         end
