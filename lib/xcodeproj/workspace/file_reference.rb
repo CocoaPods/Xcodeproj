@@ -76,10 +76,9 @@ module Xcodeproj
         when 'absolute'
           File.expand_path(path)
         when 'developer'
-          raise 'Developer workspace file reference type is not yet ' \
-            "#{self}"
+          raise "Developer workspace file reference type is not yet supported (#{path})"
         else
-          raise "Unsupported workspace file reference type #{type}"
+          raise "Unsupported workspace file reference type `#{type}`"
         end
       end
     end

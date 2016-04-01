@@ -8,7 +8,10 @@
 
 ##### Bug Fixes
 
-* None.  
+* Improve the error when attempting to get the absolute path for a workspace
+  file reference of `developer` type.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#5107](https://github.com/CocoaPods/CocoaPods/issues/5107)
 
 
 ## 1.0.0.beta.3 (2016-02-24)
