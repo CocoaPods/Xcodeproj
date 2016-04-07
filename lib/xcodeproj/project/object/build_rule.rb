@@ -46,12 +46,40 @@ module Xcodeproj
         #
         attribute :output_files, Array
 
+        # @return [ObjectList<String>] the compiler flags used when creating the
+        #         respective output files.
+        #
+        attribute :output_files_compiler_flags, Array
+
         # @return [String] the content of the script to use for the build rule.
         #
         # @note   This attribute is present if the #{#compiler_spec} is
         #         `com.apple.compilers.proxy.script`
         #
         attribute :script, String
+
+        # @!group Helpers
+
+        # Adds an output file with the specified compiler flags.
+        #
+        # @param  [PBXFileReference] file the file to add.
+        #
+        # @param  [String] compiler_flags the compiler flags for the file.
+        #
+        # @return [Void]
+        #
+        def add_output_file(file, compiler_flags = '')
+          (self.output_files ||= []) << file
+          (self.output_files_compiler_flags ||= []) << compiler_flags
+        end
+
+        # @return [Array<[PBXFileReference, String]>]
+        #         An array containing tuples of output files and their compiler
+        #         flags.
+        #
+        def output_files_and_flags
+          (output_files || []).zip(output_files_compiler_flags || [])
+        end
       end
     end
   end

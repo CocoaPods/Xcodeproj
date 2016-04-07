@@ -34,9 +34,28 @@ module ProjectSpecs
       @rule.output_files.should.include?(f)
     end
 
+    it 'returns the output file compiler flags of the rule' do
+      @rule.output_files_compiler_flags = []
+      @rule.output_files_compiler_flags << '-w'
+      @rule.output_files_compiler_flags.should == %w(-w)
+    end
+
     it 'returns the script of the rule' do
       @rule.script = 'echo "BABY COOL"'
       @rule.script.should == 'echo "BABY COOL"'
+    end
+
+    it 'adds an output file and compiler flags' do
+      f = @project.new(PBXFileReference)
+      @rule.add_output_file(f, '-w')
+      @rule.output_files.should == [f]
+      @rule.output_files_compiler_flags.should == %w(-w)
+    end
+
+    it 'returns output files and compiler flags' do
+      f = @project.new(PBXFileReference)
+      @rule.add_output_file(f, '-w')
+      @rule.output_files_and_flags.should == [[f, '-w']]
     end
   end
 end
