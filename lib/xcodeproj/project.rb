@@ -526,6 +526,13 @@ module Xcodeproj
       root_object.targets.grep(PBXNativeTarget)
     end
 
+    def embedded_native_targets_for_native_target(target):
+      native_targets.select do |native_target|
+        (native_target.product_bundle_id != target.bundle_id &&
+         native_target.product_bundle_id.start_with? target.bundle_id)
+      end
+    end
+
     # @return [PBXGroup] The group which holds the product file references.
     #
     def products_group
