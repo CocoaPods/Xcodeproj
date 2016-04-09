@@ -607,5 +607,18 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
+
+    describe 'Extension target relationships' do
+      before do
+        dir = Pathname(fixture_path('Sample Project'))
+        path = dir + 'Extensions/Extensions.xcodeproj'
+        @project = Xcodeproj::Project.open(path)
+      end
+
+      it 'identifies hosts of extension targets' do
+      end
+    end
+
+    #-------------------------------------------------------------------------#
   end
 end

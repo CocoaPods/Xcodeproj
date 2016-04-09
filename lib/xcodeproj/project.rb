@@ -526,10 +526,11 @@ module Xcodeproj
       root_object.targets.grep(PBXNativeTarget)
     end
 
-    def embedded_native_targets_for_native_target(target):
-      native_targets.select do |native_target|
-        (native_target.product_bundle_id != target.bundle_id &&
-         native_target.product_bundle_id.start_with? target.bundle_id)
+    def host_target_for_extension_target(extension_target)
+      raise "#{target} is not an extension" unless native_target.extension?
+      native_targets.find do |native_target|
+        ((extension_target.product_bundle_id != native_target.product_bundle_id) &&
+         (extension_target.product_bundle_id.start_with? native_target.product_bundle_id))
       end
     end
 

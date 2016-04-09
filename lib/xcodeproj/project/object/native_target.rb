@@ -80,12 +80,12 @@ module Xcodeproj
           end
         end
 
-        def bundle_id
-          resolved_build_setting('BUNDLE_IDENTIFIER')
+        def extension?
+          common_resolved_build_setting('PACKAGE_TYPE') == 'com.apple.package-type.app-extension'
         end
 
         def product_bundle_id
-          resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER')
+          common_resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER')
         end
 
         # @return [String] the SDK that the target should use.
