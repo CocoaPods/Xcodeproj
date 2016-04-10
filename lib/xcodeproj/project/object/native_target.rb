@@ -80,8 +80,18 @@ module Xcodeproj
           end
         end
 
-        def extension?
-          common_resolved_build_setting('PACKAGE_TYPE') == 'com.apple.package-type.app-extension'
+        # Positively identifies the target as an app extension
+        # configurations or the value inheriting the value from the project
+        # ones if needed.
+        #
+        # @return True if the target would be an extension embedded in an
+        #         app target, otherwise false
+        #
+        # @note watchOS 2 extensions are extensions of a watch target, not
+        #       an app target, whereas this is not the case for watchOS 1
+        def app_extension?
+          extension_types = Set.new [:app_extension, :watch_extension]
+          extension_types.include? Constants::PRODUCT_TYPE_UTI.invert[product_type]
         end
 
         def product_bundle_id

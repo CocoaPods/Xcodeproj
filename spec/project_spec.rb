@@ -615,7 +615,27 @@ module ProjectSpecs
         @project = Xcodeproj::Project.open(path)
       end
 
-      it 'identifies hosts of extension targets' do
+      def target_for_product_bundle_id(product_bundle_id)
+        @project.native_targets.find do |target|
+          target.product_bundle_id == product_bundle_id
+        end
+      end
+
+      it 'identifies host of watch extension' do
+        watch_extension = target_for_product_bundle_id('cocoapods.Extensions.watchkitextension')
+        @project.host_target_for_app_extension_target(watch_extension).product_bundle_id.should == 'cocoapods.Extensions'
+      end
+
+      it 'identifies host of app extension' do
+        today_extension = target_for_product_bundle_id('cocoapods.Extensions.Today')
+        @project.host_target_for_app_extension_target(today_extension).product_bundle_id.should == 'cocoapods.Extensions'
+      end
+
+      it 'rejects identifying the host of targets that are not app extensions' do
+        watch_app = target_for_product_bundle_id('cocoapods.Extensions.watchkitapp')
+        should.raise ArgumentError do
+          @project.host_target_for_app_extension_target(watch_app)
+        end.message.should.equal "#{watch_app} is not an app extension"
       end
     end
 
