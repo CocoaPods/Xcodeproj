@@ -526,6 +526,23 @@ module Xcodeproj
       root_object.targets.grep(PBXNativeTarget)
     end
 
+    # Checks the native target for any targets in the project that are
+    # app extensions of that target
+    #
+    # @param  [PBXNativeTarget] native target to check for app extensions
+    #
+    #
+    # @return [ObjectList<PBXNativeTarget>] A list of all targets that are
+    #         app extensions of the passed in target.
+    #
+    def app_extensions_for_native_target(native_target)
+      return [] if native_target.app_extension?
+      native_targets.select do |target|
+        next unless target.app_extension?
+        host_target_for_app_extension_target(target).product_bundle_id == native_target.product_bundle_id
+      end
+    end
+
     # Returns the native target, in which the extension target is embedded.
     # This works by traversing the targets in descending order of the length
     # of each one's product_bundle_id. The idea is that for a target's

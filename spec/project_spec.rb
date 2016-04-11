@@ -637,6 +637,19 @@ module ProjectSpecs
           @project.host_target_for_app_extension_target(watch_app)
         end.message.should.equal "#{watch_app} is not an app extension"
       end
+
+      it 'identifies list of app extensions given a host target' do
+        main_app_target = target_for_product_bundle_id('cocoapods.Extensions')
+        app_extension_bundle_ids = @project.app_extensions_for_native_target(main_app_target).map(&:product_bundle_id)
+        app_extension_bundle_ids.should == ['cocoapods.Extensions.watchkitextension',
+                                            'cocoapods.Extensions.Today']
+      end
+
+      it 'returns an empty list app extensions given an app extension target' do
+        watch_extension = target_for_product_bundle_id('cocoapods.Extensions.watchkitextension')
+        app_extension_bundle_ids = @project.app_extensions_for_native_target(watch_extension).map(&:product_bundle_id)
+        app_extension_bundle_ids.should == []
+      end
     end
 
     #-------------------------------------------------------------------------#
