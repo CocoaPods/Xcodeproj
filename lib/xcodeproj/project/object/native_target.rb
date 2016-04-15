@@ -80,20 +80,6 @@ module Xcodeproj
           end
         end
 
-        # Positively identifies the target as an app extension
-        # configurations or the value inheriting the value from the project
-        # ones if needed.
-        #
-        # @return True if the target would be an extension embedded in an
-        #         app target, otherwise false
-        #
-        # @note watchOS 2 extensions are extensions of a watch target, not
-        #       an app target, whereas this is not the case for watchOS 1
-        def app_extension?
-          extension_types = Set.new [:app_extension, :watch_extension]
-          extension_types.include? Constants::PRODUCT_TYPE_UTI.invert[product_type]
-        end
-
         def product_bundle_id
           common_resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER')
         end
@@ -434,6 +420,19 @@ module Xcodeproj
         # @!group Helpers
         #--------------------------------------#
 
+        # Checks product_type to determine whether or not the recevier is a
+        #  an app extension
+        #
+        # @return True if the target would be an extension embedded in an
+        #         app target, otherwise false
+        #
+        # @note watchOS 2 extensions are extensions of a watch target, not
+        #       an app target, whereas this is not the case for watchOS 1
+        def app_extension?
+          extension_types = Set.new [:app_extension, :watch_extension]
+          extension_types.include? symbold_type
+        end
+
         # @return [Symbol] The type of the target expressed as a symbol.
         #
         def symbol_type
@@ -460,6 +459,12 @@ module Xcodeproj
           else
             false
           end
+        end
+
+        # @return [String] The build setting equivalent of WRAPPER_NAME
+        #
+        def wrapper_name
+          product_reference.display_name
         end
 
         # Adds source files to the target.
