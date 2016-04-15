@@ -430,7 +430,7 @@ module Xcodeproj
         #       an app target, whereas this is not the case for watchOS 1
         def app_extension?
           extension_types = Set.new [:app_extension, :watch_extension]
-          extension_types.include? symbold_type
+          extension_types.include? symbol_type
         end
 
         # @return [Symbol] The type of the target expressed as a symbol.
