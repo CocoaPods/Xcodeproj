@@ -6,12 +6,15 @@ module Xcodeproj
     # This class wraps the TestAction node of a .xcscheme XML file
     #
     class TestAction < AbstractSchemeAction
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [REXML::Element] node
       #        The 'TestAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(node = nil)
-        create_xml_element_with_fallback(node, 'TestAction') do
+      def initialize(scheme,node = nil)
+        create_xml_element_with_fallback(node, 'TestAction',scheme) do
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
           @xml_element.add_element('AdditionalOptions')
@@ -105,13 +108,16 @@ module Xcodeproj
       #-------------------------------------------------------------------------#
 
       class TestableReference < XMLElementWrapper
+        # @param [XScheme] scheme
+        #        The scheme this element belongs to.
+        #
         # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
         #        Either the Xcode target to reference,
         #        or an existing XML 'TestableReference' node element to reference,
         #        or nil to create an new, empty TestableReference
         #
-        def initialize(target_or_node = nil)
-          create_xml_element_with_fallback(target_or_node, 'TestableReference') do
+        def initialize(scheme,target_or_node = nil)
+          create_xml_element_with_fallback(target_or_node, 'TestableReference',scheme) do
             self.skipped = false
             add_buildable_reference BuildableReference.new(target_or_node) unless target_or_node.nil?
           end
