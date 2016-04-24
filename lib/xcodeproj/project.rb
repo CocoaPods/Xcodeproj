@@ -539,31 +539,24 @@ module Xcodeproj
       return [] if native_target.app_extension?
       native_targets.select do |target|
         next unless target.app_extension?
-        host_target_for_app_extension_target(target).product_bundle_id == native_target.product_bundle_id
+        host_targets_for_app_extension_target(target).map(&:uuid).include? native_target.uuid
       end
     end
 
     # Returns the native target, in which the extension target is embedded.
-    # This works by traversing the targets in descending order of the length
-    # of each one's product_bundle_id. The idea is that for a target's
-    # product_bundle_id com.org.app, the extension has the product_bundle_id
-    # com.org.app.extension. Therefore, the host target should be the nearest
-    # target (in the mentioned list order), where the product_bundle_id prefixes
-    # the extension target.
+    # This works by traversing the targets to find those where the extension
+    # target is a dependency.
     #
     # @param  [PBXNativeTarget] native target where target.app_extension?
     #                           is true
     #
-    # @return [PBXNativeTarget] the native target that hosts the extension
+    # @return [ObjectList<PBXNativeTarget>] the native targets that hosts the extension
     #
-    def host_target_for_app_extension_target(extension_target)
+    def host_targets_for_app_extension_target(extension_target)
       raise ArgumentError, "#{extension_target} is not an app extension" unless extension_target.app_extension?
-      sorted_targets = native_targets.sort do |target_a, target_b|
-        target_b.product_bundle_id.length <=> target_a.product_bundle_id.length
-      end
-      sorted_targets.find do |native_target|
-        ((extension_target.product_bundle_id != native_target.product_bundle_id) &&
-         (extension_target.product_bundle_id.start_with? native_target.product_bundle_id))
+      native_targets.find_all do |native_target|
+        ((extension_target.uuid != native_target.uuid) &&
+         (native_target.dependencies.map(&:target).map(&:uuid).include? extension_target.uuid))
       end
     end
 

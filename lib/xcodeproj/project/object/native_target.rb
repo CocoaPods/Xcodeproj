@@ -80,10 +80,6 @@ module Xcodeproj
           end
         end
 
-        def product_bundle_id
-          common_resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER')
-        end
-
         # @return [String] the SDK that the target should use.
         #
         def sdk

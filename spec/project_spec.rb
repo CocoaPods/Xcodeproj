@@ -615,39 +615,39 @@ module ProjectSpecs
         @project = Xcodeproj::Project.open(path)
       end
 
-      def target_for_product_bundle_id(product_bundle_id)
+      def target_for_target_name(name)
         @project.native_targets.find do |target|
-          target.product_bundle_id == product_bundle_id
+          target.name == name
         end
       end
 
       it 'identifies host of watch extension' do
-        watch_extension = target_for_product_bundle_id('cocoapods.Extensions.watchkitextension')
-        @project.host_target_for_app_extension_target(watch_extension).product_bundle_id.should == 'cocoapods.Extensions'
+        watch_extension = target_for_target_name('Extensions WatchKit 1 Extension')
+        @project.host_targets_for_app_extension_target(watch_extension).map(&:name).should == ['Extensions']
       end
 
       it 'identifies host of app extension' do
-        today_extension = target_for_product_bundle_id('cocoapods.Extensions.Today')
-        @project.host_target_for_app_extension_target(today_extension).product_bundle_id.should == 'cocoapods.Extensions'
+        today_extension = target_for_target_name('Today')
+        @project.host_targets_for_app_extension_target(today_extension).map(&:name).should == ['Extensions']
       end
 
       it 'rejects identifying the host of targets that are not app extensions' do
-        watch_app = target_for_product_bundle_id('cocoapods.Extensions.watchkitapp')
+        watch_app = target_for_target_name('Extensions WatchKit 1 App')
         should.raise ArgumentError do
-          @project.host_target_for_app_extension_target(watch_app)
+          @project.host_targets_for_app_extension_target(watch_app)
         end.message.should.equal "#{watch_app} is not an app extension"
       end
 
       it 'identifies list of app extensions given a host target' do
-        main_app_target = target_for_product_bundle_id('cocoapods.Extensions')
-        app_extension_bundle_ids = @project.app_extensions_for_native_target(main_app_target).map(&:product_bundle_id)
-        app_extension_bundle_ids.should == ['cocoapods.Extensions.watchkitextension',
-                                            'cocoapods.Extensions.Today']
+        main_app_target = target_for_target_name('Extensions')
+        app_extension_bundle_ids = @project.app_extensions_for_native_target(main_app_target).map(&:name)
+        app_extension_bundle_ids.should == ['Extensions WatchKit 1 Extension',
+                                            'Today']
       end
 
       it 'returns an empty list app extensions given an app extension target' do
-        watch_extension = target_for_product_bundle_id('cocoapods.Extensions.watchkitextension')
-        app_extension_bundle_ids = @project.app_extensions_for_native_target(watch_extension).map(&:product_bundle_id)
+        watch_extension = target_for_target_name('Extensions WatchKit 1 Extension')
+        app_extension_bundle_ids = @project.app_extensions_for_native_target(watch_extension).map(&:name)
         app_extension_bundle_ids.should == []
       end
     end
