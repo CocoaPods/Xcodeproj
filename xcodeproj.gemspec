@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'activesupport', '>= 3'
   s.add_runtime_dependency 'colored',       '~> 1.2'
-  s.add_runtime_dependency 'claide',        '>= 1.0.0.beta.1', '< 2.0'
+  s.add_runtime_dependency 'claide',        '1.0.0.rc.1'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = "1.6.2"
