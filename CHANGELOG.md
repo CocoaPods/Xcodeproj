@@ -8,7 +8,10 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix issue with initializing an existing workspace but missing `contents.xcworkspacedir`, triggering pod
+  installs to fail with undefined method `root` for nil:NilClass errors.
+  [Roger Hu](https://github.com/rogerhu)
+  [CocoaPods#4998](https://github.com/CocoaPods/CocoaPods/issues/4998)
 
 
 ## 1.0.0.rc.1 (2016-04-30)

@@ -32,6 +32,11 @@ describe Xcodeproj::Workspace do
       @workspace.group_references.should.include Xcodeproj::Workspace::GroupReference.new('Another Group')
       @workspace.file_references.should.include file_reference_in_group
     end
+
+    it 'can handle nil for a workspace document' do
+      @workspace = Xcodeproj::Workspace.new(nil)
+      @workspace.document.should.not.be.nil
+    end
   end
 
   describe 'converted to XML' do
