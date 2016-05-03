@@ -151,7 +151,21 @@ begin
         end
       end
 
-      puts green("All targets were been successfully created.")
+      Xcodeproj::Project.open(PROJECT_PATH).tap do |project|
+        project.sort
+        project.predictabilize_uuids
+        project.save
+        project.files.each do |file|
+          path = file.real_path
+          next unless path.file?
+          contents = path.read
+          contents.sub! %r{\A(//\s.+\n)+}, ''
+          contents.sub! /\A\s+/, ''
+          path.open('w') { |f| f.write(contents) }
+        end
+      end
+
+      puts green("All targets have been successfully created.")
     end
 
     desc "Dump the build settings of the fixture project to xcconfig files"

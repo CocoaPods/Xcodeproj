@@ -1,11 +1,3 @@
-//
-//  Swift_tvOS_Framework.h
-//  Swift_tvOS_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for Swift_tvOS_Framework.

@@ -1,11 +1,3 @@
-//
-//  Objc_tvOS_Framework.h
-//  Objc_tvOS_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for Objc_tvOS_Framework.

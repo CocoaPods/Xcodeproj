@@ -1,11 +1,3 @@
-//
-//  Objc_watchOS_Framework.h
-//  Objc_watchOS_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <WatchKit/WatchKit.h>
 
 //! Project version number for Objc_watchOS_Framework.
