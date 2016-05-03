@@ -32,8 +32,6 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
 	</dict>
-	<key>RemoteInterfacePrincipalClass</key>
-	<string>InterfaceController</string>
 	<key>WKExtensionDelegateClassName</key>
 	<string>ExtensionDelegate</string>
 </dict>
