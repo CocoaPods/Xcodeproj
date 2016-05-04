@@ -4,12 +4,14 @@
 
 ##### Enhancements
 
-* None.  
+* Update constants for Xcode 7.3.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#370](https://github.com/CocoaPods/Xcodeproj/issues/370)
 
 ##### Bug Fixes
 
-* Fix issue with initializing an existing workspace but missing `contents.xcworkspacedir`, triggering pod
-  installs to fail with undefined method `root` for nil:NilClass errors.
+* Support initializing a workspace that is missing a
+  `contents.xcworkspacedir`.  
   [Roger Hu](https://github.com/rogerhu)
   [CocoaPods#4998](https://github.com/CocoaPods/CocoaPods/issues/4998)
 

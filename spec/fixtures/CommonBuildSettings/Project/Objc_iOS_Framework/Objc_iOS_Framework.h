@@ -1,11 +1,3 @@
-//
-//  Objc_iOS_Framework.h
-//  Objc_iOS_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for Objc_iOS_Framework.

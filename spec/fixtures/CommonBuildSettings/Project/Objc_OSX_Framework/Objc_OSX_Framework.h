@@ -1,11 +1,3 @@
-//
-//  Objc_OSX_Framework.h
-//  Objc_OSX_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <Cocoa/Cocoa.h>
 
 //! Project version number for Objc_OSX_Framework.
