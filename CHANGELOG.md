@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Support for UI test bundles.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#372](https://github.com/CocoaPods/Xcodeproj/pull/372)
 
 ##### Bug Fixes
 

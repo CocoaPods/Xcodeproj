@@ -79,7 +79,9 @@ module Xcodeproj
             is_test_target = false
             is_app_target = false
             if target_or_node && target_or_node.is_a?(::Xcodeproj::Project::Object::PBXNativeTarget)
-              test_types = [Constants::PRODUCT_TYPE_UTI[:octest_bundle], Constants::PRODUCT_TYPE_UTI[:unit_test_bundle]]
+              test_types = [Constants::PRODUCT_TYPE_UTI[:octest_bundle],
+                            Constants::PRODUCT_TYPE_UTI[:unit_test_bundle],
+                            Constants::PRODUCT_TYPE_UTI[:ui_test_bundle]]
               app_types = [Constants::PRODUCT_TYPE_UTI[:application]]
               is_test_target = test_types.include?(target_or_node.product_type)
               is_app_target = app_types.include?(target_or_node.product_type)
