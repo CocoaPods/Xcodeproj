@@ -457,12 +457,6 @@ module Xcodeproj
           end
         end
 
-        # @return [String] The build setting equivalent of WRAPPER_NAME
-        #
-        def wrapper_name
-          product_reference.display_name
-        end
-
         # Adds source files to the target.
         #
         # @param  [Array<PBXFileReference>] file_references
