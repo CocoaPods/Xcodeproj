@@ -419,9 +419,29 @@ module Xcodeproj
         # @return [Symbol] The type of the target expressed as a symbol.
         #
         def symbol_type
-          pair = Constants::PRODUCT_TYPE_UTI.find { |_key, value| value == product_type }
-          return nil if pair.nil?
-          pair.first
+          Constants::PRODUCT_TYPE_UTI.key(product_type)
+        end
+
+        # @return [Boolean] Whether the target is a test target.
+        #
+        def test_target_type?
+          case symbol_type
+          when :octest_bundle, :unit_test_bundle, :ui_test_bundle
+            true
+          else
+            false
+          end
+        end
+
+        # @return [Boolean] Whether the target is an extension.
+        #
+        def extension_target_type?
+          case symbol_type
+          when :app_extension, :watch_extension, :watch2_extension, :tv_extension
+            true
+          else
+            false
+          end
         end
 
         # Adds source files to the target.

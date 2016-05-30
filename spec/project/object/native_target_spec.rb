@@ -566,6 +566,45 @@ module ProjectSpecs
         end
       end
 
+      describe '#test_target_type?' do
+        it 'returns true for test target types' do
+          @target.stubs(:symbol_type => :octest_bundle)
+          @target.should.be.test_target_type
+
+          @target.stubs(:symbol_type => :unit_test_bundle)
+          @target.should.be.test_target_type
+
+          @target.stubs(:symbol_type => :ui_test_bundle)
+          @target.should.be.test_target_type
+        end
+
+        it 'returns false for non-test target types' do
+          @target.stubs(:symbol_type => :application)
+          @target.should.not.be.test_target_type
+        end
+      end
+
+      describe '#extension_target_type?' do
+        it 'returns true for extension target types' do
+          @target.stubs(:symbol_type => :app_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :watch_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :watch2_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :tv_extension)
+          @target.should.be.extension_target_type
+        end
+
+        it 'returns false for non-extension target types' do
+          @target.stubs(:symbol_type => :application)
+          @target.should.not.be.extension_target_type
+        end
+      end
+
       it 'adds a list of source files to the target to the source build phase' do
         ref = @project.main_group.new_file('Class.m')
         @target.add_file_references([ref], '-fobjc-arc')
