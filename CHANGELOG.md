@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Add test target and extension target helpers to `PBXNativeTarget`.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 ##### Bug Fixes
 
