@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: e76d82aadde8f36b6b4511b869ea800f4118b5d1
+  revision: 47857d569b7121c354ad15c426be04bc90c5f7c7
   specs:
     claide (1.0.0)
 
 PATH
   remote: .
   specs:
-    xcodeproj (1.0.0)
+    xcodeproj (1.1.0)
       activesupport (>= 3)
       claide (>= 1.0.0, < 2.0)
       colored (~> 1.2)
@@ -38,7 +38,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.8.4)
+    minitest (5.9.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
