@@ -148,6 +148,49 @@ module Xcodeproj
           @xml_element.add_element(ref.xml_element)
         end
 
+        # @return [Array<SkippedTest>]
+        #         The list of SkippedTest this action will skip.
+        #
+        def skipped_tests
+          @xml_element.elements['SkippedTests'].get_elements('Test').map do |node|
+            TestableReference::SkippedTest.new(node)
+          end
+        end
+
+        # @param [SkippedTest] skipped_test
+        #         The SkippedTest to add to the list of tests this action will skip
+        #
+        def add_skipped_test(skipped_test)
+          entries = @xml_element.elements['SkippedTests'] || @xml_element.add_element('SkippedTests')
+          entries.add_element(skipped_test.xml_element)
+        end
+
+        class SkippedTest < XMLElementWrapper
+          # @param [REXML::Element] node
+          #        The 'Test' XML node that this object will wrap.
+          #        If nil, will create a default XML node to use.
+          #
+          def initialize(node = nil)
+            create_xml_element_with_fallback(node, 'Test') do
+              self.identifier = node.attributes['Identifier'] unless node.nil?
+            end
+          end
+
+          # @return [String]
+          #         Skipped test class name
+          #
+          def identifier
+            @xml_element.attributes['Identifier']
+          end
+
+          # @param [String] value
+          #        Set the name of the skipped test class name
+          #
+          def identifier=(value)
+            @xml_element.attributes['Identifier'] = value
+          end
+        end
+
         # @todo handle 'AdditionalOptions' tag
       end
     end

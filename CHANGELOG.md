@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add accessors for working with skipped tests inside TestAction  in `.xcscheme` files.  
+  [Eduard Panasiuk](https://github.com/somedev)
+  [#380](https://github.com/CocoaPods/Xcodeproj/pull/380)
 
 ##### Bug Fixes
 
