@@ -532,7 +532,7 @@ module Xcodeproj
     # @param  [PBXNativeTarget] native target to check for app extensions
     #
     #
-    # @return [ObjectList<PBXNativeTarget>] A list of all targets that are
+    # @return [Array<PBXNativeTarget>] A list of all targets that are
     #         app extensions of the passed in target.
     #
     def app_extensions_for_native_target(native_target)
@@ -550,11 +550,11 @@ module Xcodeproj
     # @param  [PBXNativeTarget] native target where target.app_extension?
     #                           is true
     #
-    # @return [ObjectList<PBXNativeTarget>] the native targets that hosts the extension
+    # @return [Array<PBXNativeTarget>] the native targets that hosts the extension
     #
     def host_targets_for_app_extension_target(extension_target)
       raise ArgumentError, "#{extension_target} is not an app extension" unless extension_target.app_extension?
-      native_targets.find_all do |native_target|
+      native_targets.select do |native_target|
         ((extension_target.uuid != native_target.uuid) &&
          (native_target.dependencies.map(&:target).map(&:uuid).include? extension_target.uuid))
       end
