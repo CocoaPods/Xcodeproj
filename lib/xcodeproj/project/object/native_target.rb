@@ -417,7 +417,7 @@ module Xcodeproj
         #--------------------------------------#
 
         # Checks product_type to determine whether or not the recevier is a
-        #  an app extension
+        # an app extension
         #
         # @return True if the target would be an extension embedded in an
         #         app target, otherwise false
