@@ -543,14 +543,14 @@ module Xcodeproj
       end
     end
 
-    # Returns the native target, in which the extension target is embedded.
+    # Returns the native targets, in which the extension target are embedded.
     # This works by traversing the targets to find those where the extension
     # target is a dependency.
     #
     # @param  [PBXNativeTarget] native target where target.extension_target_type?
     #                           is true
     #
-    # @return [Array<PBXNativeTarget>] the native targets that hosts the extension
+    # @return [Array<PBXNativeTarget>] the native targets that host the extension
     #
     def host_targets_for_extension_target(extension_target)
       raise ArgumentError, "#{extension_target} is not an extension" unless extension_target.extension_target_type?
