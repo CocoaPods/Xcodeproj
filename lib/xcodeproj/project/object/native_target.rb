@@ -416,19 +416,6 @@ module Xcodeproj
         # @!group Helpers
         #--------------------------------------#
 
-        # Checks product_type to determine whether or not the recevier is a
-        # an app extension
-        #
-        # @return True if the target would be an extension embedded in an
-        #         app target, otherwise false
-        #
-        # @note watchOS 2 extensions are extensions of a watch target, not
-        #       an app target, whereas this is not the case for watchOS 1
-        def app_extension?
-          extension_types = Set.new [:app_extension, :watch_extension]
-          extension_types.include? symbol_type
-        end
-
         # @return [Symbol] The type of the target expressed as a symbol.
         #
         def symbol_type

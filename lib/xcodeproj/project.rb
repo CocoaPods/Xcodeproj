@@ -527,19 +527,19 @@ module Xcodeproj
     end
 
     # Checks the native target for any targets in the project that are
-    # app extensions of that target
+    # extensions of that target
     #
-    # @param  [PBXNativeTarget] native target to check for app extensions
+    # @param  [PBXNativeTarget] native target to check for extensions
     #
     #
     # @return [Array<PBXNativeTarget>] A list of all targets that are
-    #         app extensions of the passed in target.
+    #         extensions of the passed in target.
     #
-    def app_extensions_for_native_target(native_target)
-      return [] if native_target.app_extension?
+    def extensions_for_native_target(native_target)
+      return [] if native_target.extension_target_type?
       native_targets.select do |target|
-        next unless target.app_extension?
-        host_targets_for_app_extension_target(target).map(&:uuid).include? native_target.uuid
+        next unless target.extension_target_type?
+        host_targets_for_extension_target(target).map(&:uuid).include? native_target.uuid
       end
     end
 
@@ -547,13 +547,13 @@ module Xcodeproj
     # This works by traversing the targets to find those where the extension
     # target is a dependency.
     #
-    # @param  [PBXNativeTarget] native target where target.app_extension?
+    # @param  [PBXNativeTarget] native target where target.extension_target_type?
     #                           is true
     #
     # @return [Array<PBXNativeTarget>] the native targets that hosts the extension
     #
-    def host_targets_for_app_extension_target(extension_target)
-      raise ArgumentError, "#{extension_target} is not an app extension" unless extension_target.app_extension?
+    def host_targets_for_extension_target(extension_target)
+      raise ArgumentError, "#{extension_target} is not an extension" unless extension_target.extension_target_type?
       native_targets.select do |native_target|
         ((extension_target.uuid != native_target.uuid) &&
          (native_target.dependencies.map(&:target).map(&:uuid).include? extension_target.uuid))

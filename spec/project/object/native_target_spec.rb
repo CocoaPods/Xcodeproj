@@ -672,24 +672,6 @@ module ProjectSpecs
         build_files = @target.resources_build_phase.files
         build_files.count.should == 1
       end
-
-      it 'positively identifies app extension targets' do
-        [:app_extension, :watch_extension].each do |type|
-          type_str = Xcodeproj::Constants::PRODUCT_TYPE_UTI[type]
-          @target.stubs(:product_type => type_str)
-          @target.app_extension?.should == true
-        end
-      end
-
-      it 'negatively identifies targets that are not app extensions' do
-        non_app_extension_type_strs = Xcodeproj::Constants::PRODUCT_TYPE_UTI.select do |key, _|
-          ![:app_extension, :watch_extension].include? key
-        end.values
-        non_app_extension_type_strs.each do |type_str|
-          @target.stubs(:product_type => type_str)
-          @target.app_extension?.should == false
-        end
-      end
     end
   end
 
