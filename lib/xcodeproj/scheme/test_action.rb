@@ -157,6 +157,18 @@ module Xcodeproj
           end
         end
 
+        # @param [Array<SkippedTest>] tests
+        #         Set the list of SkippedTest this action will skip.
+        #
+        def skipped_tests=(tests)
+          @xml_element.delete_element('SkippedTests') unless @xml_element.elements['SkippedTests'].nil?
+          return if tests.nil?
+          entries = @xml_element.add_element('SkippedTests')
+          tests.each do |skipped|
+            entries.add_element(skipped.xml_element)
+          end
+        end
+
         # @param [SkippedTest] skipped_test
         #         The SkippedTest to add to the list of tests this action will skip
         #
