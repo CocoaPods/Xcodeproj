@@ -203,6 +203,31 @@ module Xcodeproj
         test_ref.xml_element.elements['SkippedTests'].elements['Test'].should == skipped_test.xml_element
       end
 
+      it '#set_skipped_tests_nil' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new]
+        test_ref.skipped_tests.count.should == 1
+        test_ref.skipped_tests = nil
+        test_ref.xml_element.elements['SkippedTests'].should.nil?
+        test_ref.skipped_tests.count.should == 0
+      end
+
+      it '#set_skipped_tests' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+
+        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1.identifier = 'MyClassTests1'
+
+        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2.identifier = 'MyClassTests2'
+
+        test_ref.skipped_tests = [test1, test2]
+        test_ref.skipped_tests.count.should == 2
+        test_ref.skipped_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::SkippedTest }
+        test_ref.skipped_tests[0].xml_element.should == test1.xml_element
+        test_ref.skipped_tests[1].xml_element.should == test2.xml_element
+      end
+
       it '#skipped_tests' do
         test_ref = XCScheme::TestAction::TestableReference.new
 
