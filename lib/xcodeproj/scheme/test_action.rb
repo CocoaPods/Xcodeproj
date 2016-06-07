@@ -152,6 +152,7 @@ module Xcodeproj
         #         The list of SkippedTest this action will skip.
         #
         def skipped_tests
+          return [] if @xml_element.elements['SkippedTests'].nil?
           @xml_element.elements['SkippedTests'].get_elements('Test').map do |node|
             TestableReference::SkippedTest.new(node)
           end
@@ -162,7 +163,9 @@ module Xcodeproj
         #
         def skipped_tests=(tests)
           @xml_element.delete_element('SkippedTests') unless @xml_element.elements['SkippedTests'].nil?
-          return if tests.nil?
+          if tests.nil?
+            return
+          end
           entries = @xml_element.add_element('SkippedTests')
           tests.each do |skipped|
             entries.add_element(skipped.xml_element)
