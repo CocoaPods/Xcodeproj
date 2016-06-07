@@ -4,6 +4,11 @@
 
 ##### Enhancements
 
+* Add helpers to `Project` for finding an extension target's host targets
+  and a host target's extension targets.  
+  [Ben Asher](https://github.com/benasher44)
+  [#382](https://github.com/CocoaPods/Xcodeproj/pull/382)
+
 * Add accessors for working with skipped tests inside TestAction  in `.xcscheme` files.  
   [Eduard Panasiuk](https://github.com/somedev)
   [#380](https://github.com/CocoaPods/Xcodeproj/pull/380)
