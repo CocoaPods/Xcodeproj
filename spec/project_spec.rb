@@ -608,7 +608,7 @@ module ProjectSpecs
 
     #-------------------------------------------------------------------------#
 
-    describe 'Extension target relationships' do
+    describe 'Embedded target relationships' do
       before do
         dir = Pathname(fixture_path('Sample Project'))
         path = dir + 'Extensions/Extensions.xcodeproj'
@@ -623,32 +623,20 @@ module ProjectSpecs
 
       it 'identifies host of watch extension' do
         watch_extension = target_for_target_name('Extensions WatchKit 1 Extension')
-        @project.host_targets_for_extension_target(watch_extension).map(&:name).should == ['Extensions']
+        @project.host_targets_for_embedded_target(watch_extension).map(&:name).should == ['Extensions']
       end
 
       it 'identifies host of extension' do
         today_extension = target_for_target_name('Today')
-        @project.host_targets_for_extension_target(today_extension).map(&:name).should == ['Extensions']
+        @project.host_targets_for_embedded_target(today_extension).map(&:name).should == ['Extensions']
       end
 
-      it 'rejects identifying the host of targets that are not extensions' do
-        watch_app = target_for_target_name('Extensions WatchKit 1 App')
-        should.raise ArgumentError do
-          @project.host_targets_for_extension_target(watch_app)
-        end.message.should.equal "#{watch_app} is not an extension"
-      end
-
-      it 'identifies list of extensions given a host target' do
+      it 'identifies list of embedded targets given a host target' do
         main_app_target = target_for_target_name('Extensions')
-        extension_bundle_ids = @project.extensions_for_native_target(main_app_target).map(&:name)
+        extension_bundle_ids = @project.embedded_targets_in_native_target(main_app_target).map(&:name)
         extension_bundle_ids.should == ['Extensions WatchKit 1 Extension',
+                                        'WatchOS 2 App',
                                         'Today']
-      end
-
-      it 'returns an empty list extensions given an extension target' do
-        watch_extension = target_for_target_name('Extensions WatchKit 1 Extension')
-        extension_bundle_ids = @project.extensions_for_native_target(watch_extension).map(&:name)
-        extension_bundle_ids.should == []
       end
     end
 

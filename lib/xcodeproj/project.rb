@@ -526,37 +526,37 @@ module Xcodeproj
       root_object.targets.grep(PBXNativeTarget)
     end
 
-    # Checks the native target for any targets in the project that are
-    # extensions of that target
+    # Checks the native target for any targets in the project
+    # that are dependent on the native target and would be
+    # embedded in it at build time
     #
-    # @param  [PBXNativeTarget] native target to check for extensions
+    # @param  [PBXNativeTarget] native target to check for
+    #         embedded targets
     #
     #
-    # @return [Array<PBXNativeTarget>] A list of all targets that are
-    #         extensions of the passed in target.
+    # @return [Array<PBXNativeTarget>] A list of all targets that
+    #         are embedded in the passed in target
     #
-    def extensions_for_native_target(native_target)
-      return [] if native_target.extension_target_type?
+    def embedded_targets_in_native_target(native_target)
       native_targets.select do |target|
-        next unless target.extension_target_type?
-        host_targets_for_extension_target(target).map(&:uuid).include? native_target.uuid
+        host_targets_for_embedded_target(target).map(&:uuid).include? native_target.uuid
       end
     end
 
-    # Returns the native targets, in which the extension target are embedded.
-    # This works by traversing the targets to find those where the extension
-    # target is a dependency.
+    # Returns the native targets, in which the embedded target is
+    # embedded. This works by traversing the targets to find those
+    # where the target is a dependency.
     #
-    # @param  [PBXNativeTarget] native target where target.extension_target_type?
-    #                           is true
+    # @param  [PBXNativeTarget] native target that might be embedded
+    #         in another target
     #
-    # @return [Array<PBXNativeTarget>] the native targets that host the extension
+    # @return [Array<PBXNativeTarget>] the native targets that host the
+    #         embedded target
     #
-    def host_targets_for_extension_target(extension_target)
-      raise ArgumentError, "#{extension_target} is not an extension" unless extension_target.extension_target_type?
+    def host_targets_for_embedded_target(embedded_target)
       native_targets.select do |native_target|
-        ((extension_target.uuid != native_target.uuid) &&
-         (native_target.dependencies.map(&:target).map(&:uuid).include? extension_target.uuid))
+        ((embedded_target.uuid != native_target.uuid) &&
+         (native_target.dependencies.map(&:target).map(&:uuid).include? embedded_target.uuid))
       end
     end
 
