@@ -1,3 +1,4 @@
+require 'json'
 module Xcodeproj
   class Command
     class Show < Command
