@@ -1,17 +1,24 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
+
 
 module Xcodeproj
   describe XCScheme::BuildableProductRunnable do
-    describe 'Created from scratch' do
+      before do
+        node = REXML::Element.new('BuildableProductRunnable')
+        @sut = Xcodeproj::XCScheme::BuildAction.new(XCSchemeStub.new, node)
+      end
+
+      describe 'Created from scratch' do
       it 'Creates an initial, empty XML node' do
-        bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(nil)
+        bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme, nil)
         bpr.xml_element.name.should == 'BuildableProductRunnable'
         bpr.xml_element.attributes.count.should == 0
         bpr.xml_element.elements.count.should == 0
       end
 
       it 'Creates an initial, empty XML node with runnableDebuggingMode' do
-        bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(nil, 1)
+        bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme, nil, 1)
         bpr.xml_element.name.should == 'BuildableProductRunnable'
         bpr.xml_element.attributes.count.should == 1
         bpr.xml_element.attributes['runnableDebuggingMode'].should == '1'
@@ -24,13 +31,13 @@ module Xcodeproj
         node = REXML::Element.new('BuildableProductRunnable')
         ref = REXML::Element.new('BuildableReference')
         node.add_element(ref)
-        @bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(node)
+        @bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme, node)
       end
 
       it 'raises if invalid XML node' do
         node = REXML::Element.new('Foo')
         should.raise(Informative) do
-          Xcodeproj::XCScheme::BuildableProductRunnable.new(node)
+          Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme, node)
         end.message.should.match /Wrong XML tag name/
       end
 
@@ -39,7 +46,7 @@ module Xcodeproj
       end
 
       it '#buildable_reference=' do
-        other_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
+        other_ref = Xcodeproj::XCScheme::BuildableReference.new(@sut.scheme, nil)
         @bpr.buildable_reference = other_ref
         @bpr.xml_element.elements.count.should == 1
         @bpr.xml_element.elements['BuildableReference'].should == other_ref.xml_element
@@ -50,7 +57,7 @@ module Xcodeproj
       before do
         @project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         @target = @project.new_target(:application, 'FooApp', :ios)
-        @bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@target)
+        @bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme, @target)
       end
 
       it 'Uses the proper XML node' do
@@ -62,7 +69,7 @@ module Xcodeproj
       end
 
       it '#buildable_name=' do
-        other_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
+        other_ref = Xcodeproj::XCScheme::BuildableReference.new(@sut.scheme, nil)
         @bpr.buildable_reference = other_ref
         @bpr.xml_element.elements.count.should == 1
         @bpr.xml_element.elements['BuildableReference'].should == other_ref.xml_element

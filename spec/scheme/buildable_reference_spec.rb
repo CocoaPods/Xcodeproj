@@ -1,4 +1,6 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
+
 
 module Xcodeproj
   describe XCScheme::BuildableReference do
@@ -31,7 +33,7 @@ module Xcodeproj
       it 'raise if invalid XML node' do
         node = REXML::Element.new('Foo')
         should.raise(Informative) do
-          Xcodeproj::XCScheme::BuildableReference.new(node)
+          Xcodeproj::XCScheme::BuildableReference.new(XCSchemeStub.new, node)
         end.message.should.match /Wrong XML tag name/
       end
 
