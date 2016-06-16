@@ -194,7 +194,7 @@ module Xcodeproj
       }.freeze,
       [:ios, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
-        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
+        'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => '',
         'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :framework] => {
