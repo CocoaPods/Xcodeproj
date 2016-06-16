@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  Swift_tvOS_Native
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 import UIKit
 
 class ViewController: UIViewController {

@@ -4,6 +4,66 @@
 
 ##### Enhancements
 
+* Add helpers to `Project` for finding an extension target's host targets
+  and a host target's extension targets.  
+  [Ben Asher](https://github.com/benasher44)
+  [#382](https://github.com/CocoaPods/Xcodeproj/pull/382)
+
+* Add accessors for working with skipped tests inside TestAction  in `.xcscheme` files.  
+  [Eduard Panasiuk](https://github.com/somedev)
+  [#380](https://github.com/CocoaPods/Xcodeproj/pull/380)
+  [#383](https://github.com/CocoaPods/Xcodeproj/pull/383)
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.1.0 (2016-06-01)
+
+##### Enhancements
+
+* Add test target and extension target helpers to `PBXNativeTarget`.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.0.0 (2016-05-10)
+
+##### Enhancements
+
+* Support for UI test bundles.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#372](https://github.com/CocoaPods/Xcodeproj/pull/372)
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.0.0.rc.2 (2016-05-04)
+
+##### Enhancements
+
+* Update constants for Xcode 7.3.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#370](https://github.com/CocoaPods/Xcodeproj/issues/370)
+
+##### Bug Fixes
+
+* Support initializing a workspace that is missing a
+  `contents.xcworkspacedir`.  
+  [Roger Hu](https://github.com/rogerhu)
+  [CocoaPods#4998](https://github.com/CocoaPods/CocoaPods/issues/4998)
+
+
+## 1.0.0.rc.1 (2016-04-30)
+
+##### Enhancements
+
 * None.  
 
 ##### Bug Fixes

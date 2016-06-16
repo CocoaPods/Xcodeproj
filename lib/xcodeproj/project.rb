@@ -526,6 +526,40 @@ module Xcodeproj
       root_object.targets.grep(PBXNativeTarget)
     end
 
+    # Checks the native target for any targets in the project that are
+    # extensions of that target
+    #
+    # @param  [PBXNativeTarget] native target to check for extensions
+    #
+    #
+    # @return [Array<PBXNativeTarget>] A list of all targets that are
+    #         extensions of the passed in target.
+    #
+    def extensions_for_native_target(native_target)
+      return [] if native_target.extension_target_type?
+      native_targets.select do |target|
+        next unless target.extension_target_type?
+        host_targets_for_extension_target(target).map(&:uuid).include? native_target.uuid
+      end
+    end
+
+    # Returns the native targets, in which the extension target are embedded.
+    # This works by traversing the targets to find those where the extension
+    # target is a dependency.
+    #
+    # @param  [PBXNativeTarget] native target where target.extension_target_type?
+    #                           is true
+    #
+    # @return [Array<PBXNativeTarget>] the native targets that host the extension
+    #
+    def host_targets_for_extension_target(extension_target)
+      raise ArgumentError, "#{extension_target} is not an extension" unless extension_target.extension_target_type?
+      native_targets.select do |native_target|
+        ((extension_target.uuid != native_target.uuid) &&
+         (native_target.dependencies.map(&:target).map(&:uuid).include? extension_target.uuid))
+      end
+    end
+
     # @return [PBXGroup] The group which holds the product file references.
     #
     def products_group

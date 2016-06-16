@@ -120,6 +120,16 @@ module Xcodeproj
           entry.build_for_archiving?.should == false
           entry.build_for_analyzing?.should == true
         end
+
+        it 'Use proper defaults for UI test target' do
+          target = @project.new_target(:ui_test_bundle, 'FooUITests', :ios)
+          entry = Xcodeproj::XCScheme::BuildAction::Entry.new(target)
+          entry.build_for_testing?.should == true
+          entry.build_for_running?.should == false
+          entry.build_for_profiling?.should == false
+          entry.build_for_archiving?.should == false
+          entry.build_for_analyzing?.should == true
+        end
       end
 
       describe 'Map attributes to XML' do

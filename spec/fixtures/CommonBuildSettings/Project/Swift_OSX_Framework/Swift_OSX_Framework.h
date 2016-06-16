@@ -1,11 +1,3 @@
-//
-//  Swift_OSX_Framework.h
-//  Swift_OSX_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <Cocoa/Cocoa.h>
 
 //! Project version number for Swift_OSX_Framework.

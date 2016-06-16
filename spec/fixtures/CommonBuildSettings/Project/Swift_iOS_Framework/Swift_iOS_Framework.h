@@ -1,11 +1,3 @@
-//
-//  Swift_iOS_Framework.h
-//  Swift_iOS_Framework
-//
-//  Created by Samuel Giddins on 12/26/15.
-//
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for Swift_iOS_Framework.

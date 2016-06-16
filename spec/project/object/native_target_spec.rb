@@ -391,7 +391,7 @@ module ProjectSpecs
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/QuartzCore.framework'
+          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/QuartzCore.framework'
           file.source_tree.should == 'DEVELOPER_DIR'
         end
 
@@ -563,6 +563,45 @@ module ProjectSpecs
         it 'returns nil if the product type is unknown' do
           @target.stubs(:product_type => 'com.apple.product-type.new-stuff')
           @target.symbol_type.should.be.nil?
+        end
+      end
+
+      describe '#test_target_type?' do
+        it 'returns true for test target types' do
+          @target.stubs(:symbol_type => :octest_bundle)
+          @target.should.be.test_target_type
+
+          @target.stubs(:symbol_type => :unit_test_bundle)
+          @target.should.be.test_target_type
+
+          @target.stubs(:symbol_type => :ui_test_bundle)
+          @target.should.be.test_target_type
+        end
+
+        it 'returns false for non-test target types' do
+          @target.stubs(:symbol_type => :application)
+          @target.should.not.be.test_target_type
+        end
+      end
+
+      describe '#extension_target_type?' do
+        it 'returns true for extension target types' do
+          @target.stubs(:symbol_type => :app_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :watch_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :watch2_extension)
+          @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :tv_extension)
+          @target.should.be.extension_target_type
+        end
+
+        it 'returns false for non-extension target types' do
+          @target.stubs(:symbol_type => :application)
+          @target.should.not.be.extension_target_type
         end
       end
 

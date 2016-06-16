@@ -54,69 +54,69 @@ begin
   #-----------------------------------------------------------------------------#
 
   namespace :common_build_settings do
-    PROJECT_PATH = 'Project/Project.xcodeproj'
+    PROJECT_PATH = 'Project/Project.xcodeproj'.freeze
 
     task :prepare do
       verbose false
       cd 'spec/fixtures/CommonBuildSettings'
     end
 
-    desc "Create a new empty project"
+    desc 'Create a new empty project'
     task :new_project => [:prepare] do
       verbose false
       Bundler.setup
       require 'xcodeproj'
-      title "Setup Boilerplate"
+      title 'Setup Boilerplate'
 
-      confirm "Delete existing fixture project and all data"
+      confirm 'Delete existing fixture project and all data'
       rm_rf 'Project/*'
 
-      subtitle "Create a new fixture project"
+      subtitle 'Create a new fixture project'
       Xcodeproj::Project.new(PROJECT_PATH).save
 
       subtitle "Open the project …"
       sh 'open "Project/Project.xcodeproj"'
     end
 
-    desc "Interactive walkthrough for creating fixture targets"
+    desc 'Interactive walkthrough for creating fixture targets'
     task :targets => [:prepare] do
       verbose false
       Bundler.setup
       require 'xcodeproj'
 
-      title "Create Targets"
-      subtitle "You will be guided how to *manually* create the needed targets."
-      subtitle "Each target name will been copied to your clipboard."
-      confirm "Make sure you have nothing unsaved there"
+      title 'Create Targets'
+      subtitle 'You will be guided how to *manually* create the needed targets.'
+      subtitle 'Each target name will been copied to your clipboard.'
+      confirm 'Make sure you have nothing unsaved there'
 
       targets = {
-        "Objc_iOS_Native"                => { platform: :ios,     type: :application,      language: :objc,  how: "iOS > Master-Detail Application > Language: Objective-C" },
-        "Swift_iOS_Native"               => { platform: :ios,     type: :application,      language: :swift, how: "iOS > Master-Detail Application > Language: Swift" },
-        "Objc_iOS_Framework"             => { platform: :ios,     type: :framework,        language: :objc,  how: "iOS > Cocoa Touch Framework > Language: Objective-C" },
-        "Swift_iOS_Framework"            => { platform: :ios,     type: :framework,        language: :swift, how: "iOS > Cocoa Touch Framework > Language: Swift" },
-        "Objc_iOS_StaticLibrary"         => { platform: :ios,     type: :static_library,   language: :objc,  how: "iOS > Cocoa Touch Static Library" },
+        'Objc_iOS_Native'                => { :platform => :ios,     :type => :application,      :language => :objc,  :how => 'iOS > Master-Detail Application > Language: Objective-C' },
+        'Swift_iOS_Native'               => { :platform => :ios,     :type => :application,      :language => :swift, :how => 'iOS > Master-Detail Application > Language: Swift' },
+        'Objc_iOS_Framework'             => { :platform => :ios,     :type => :framework,        :language => :objc,  :how => 'iOS > Cocoa Touch Framework > Language: Objective-C' },
+        'Swift_iOS_Framework'            => { :platform => :ios,     :type => :framework,        :language => :swift, :how => 'iOS > Cocoa Touch Framework > Language: Swift' },
+        'Objc_iOS_StaticLibrary'         => { :platform => :ios,     :type => :static_library,   :language => :objc,  :how => 'iOS > Cocoa Touch Static Library' },
 
-        "Objc_OSX_Native"                => { platform: :osx,     type: :application,      language: :objc,  how: "OSX > Cocoa Application > Language: Objective-C" },
-        "Swift_OSX_Native"               => { platform: :osx,     type: :application,      language: :swift, how: "OSX > Cocoa Application > Language: Swift" },
-        "Objc_OSX_Framework"             => { platform: :osx,     type: :framework,        language: :objc,  how: "OSX > Cocoa Framework > Language: Objective-C" },
-        "Swift_OSX_Framework"            => { platform: :osx,     type: :framework,        language: :swift, how: "OSX > Cocoa Framework > Language: Swift" },
-        "Objc_OSX_StaticLibrary"         => { platform: :osx,     type: :static_library,   language: :objc,  how: "OSX > Library > Type: Static" },
-        "Objc_OSX_DynamicLibrary"        => { platform: :osx,     type: :dynamic_library,  language: :objc,  how: "OSX > Library > Type: Dynamic" },
-        "OSX_Bundle"                     => { platform: :osx,     type: :bundle,                             how: "OSX > Bundle" },
+        'Objc_OSX_Native'                => { :platform => :osx,     :type => :application,      :language => :objc,  :how => 'OSX > Cocoa Application > Language: Objective-C' },
+        'Swift_OSX_Native'               => { :platform => :osx,     :type => :application,      :language => :swift, :how => 'OSX > Cocoa Application > Language: Swift' },
+        'Objc_OSX_Framework'             => { :platform => :osx,     :type => :framework,        :language => :objc,  :how => 'OSX > Cocoa Framework > Language: Objective-C' },
+        'Swift_OSX_Framework'            => { :platform => :osx,     :type => :framework,        :language => :swift, :how => 'OSX > Cocoa Framework > Language: Swift' },
+        'Objc_OSX_StaticLibrary'         => { :platform => :osx,     :type => :static_library,   :language => :objc,  :how => 'OSX > Library > Type: Static' },
+        'Objc_OSX_DynamicLibrary'        => { :platform => :osx,     :type => :dynamic_library,  :language => :objc,  :how => 'OSX > Library > Type: Dynamic' },
+        'OSX_Bundle'                     => { :platform => :osx,     :type => :bundle, :how => 'OSX > Bundle' },
 
-        "Objc_watchOS_Native"            => { platform: :watchos, type: :watch2_app,       language: :objc,  how: "watchOS > WatchKit App > Language: Objective-C" },
-        "Objc_watchOS_Native Extension"  => { platform: :watchos, type: :watch2_extension, language: :objc,  how: "Already done!" },
-        "Swift_watchOS_Native"           => { platform: :watchos, type: :watch2_app,       language: :swift, how: "watchOS > WatchKit App > Language: Swift" },
-        "Swift_watchOS_Native Extension" => { platform: :watchos, type: :watch2_extension, language: :swift, how: "Already done!" },
-        "Objc_watchOS_Framework"         => { platform: :watchos, type: :framework,        language: :objc,  how: "watchOS > Watch Framework > Language: Objective-C" },
-        "Swift_watchOS_Framework"        => { platform: :watchos, type: :framework,        language: :swift, how: "watchOS > Watch Framework > Language: Swift" },
-        "Objc_watchOS_StaticLibrary"     => { platform: :watchos, type: :static_library,   language: :objc,  how: "watchOS > Watch Static Library > Language: Objective-C" },
+        'Objc_watchOS_Native'            => { :platform => :watchos, :type => :watch2_app,       :language => :objc,  :how => 'watchOS > WatchKit App > Language: Objective-C' },
+        'Objc_watchOS_Native Extension'  => { :platform => :watchos, :type => :watch2_extension, :language => :objc,  :how => 'Already done!' },
+        'Swift_watchOS_Native'           => { :platform => :watchos, :type => :watch2_app,       :language => :swift, :how => 'watchOS > WatchKit App > Language: Swift' },
+        'Swift_watchOS_Native Extension' => { :platform => :watchos, :type => :watch2_extension, :language => :swift, :how => 'Already done!' },
+        'Objc_watchOS_Framework'         => { :platform => :watchos, :type => :framework,        :language => :objc,  :how => 'watchOS > Watch Framework > Language: Objective-C' },
+        'Swift_watchOS_Framework'        => { :platform => :watchos, :type => :framework,        :language => :swift, :how => 'watchOS > Watch Framework > Language: Swift' },
+        'Objc_watchOS_StaticLibrary'     => { :platform => :watchos, :type => :static_library,   :language => :objc,  :how => 'watchOS > Watch Static Library > Language: Objective-C' },
 
-        "Objc_tvOS_Native"               => { platform: :tvos,    type: :application,      language: :objc,  how: "tvOS > Single View Application > Language: Objective-C" },
-        "Swift_tvOS_Native"              => { platform: :tvos,    type: :application,      language: :swift, how: "tvOS > Single View Application > Language: Swift" },
-        "Objc_tvOS_Framework"            => { platform: :tvos,    type: :framework,        language: :objc,  how: "tvOS > TV Framework > Language: Objective-C" },
-        "Swift_tvOS_Framework"           => { platform: :tvos,    type: :framework,        language: :swift, how: "tvOS > TV Framework > Language: Swift" },
-        "Objc_tvOS_StaticLibrary"        => { platform: :tvos,    type: :static_library,   language: :objc,  how: "tvOS > TV Static Library > Language: Objective-C" },
+        'Objc_tvOS_Native'               => { :platform => :tvos,    :type => :application,      :language => :objc,  :how => 'tvOS > Single View Application > Language: Objective-C' },
+        'Swift_tvOS_Native'              => { :platform => :tvos,    :type => :application,      :language => :swift, :how => 'tvOS > Single View Application > Language: Swift' },
+        'Objc_tvOS_Framework'            => { :platform => :tvos,    :type => :framework,        :language => :objc,  :how => 'tvOS > TV Framework > Language: Objective-C' },
+        'Swift_tvOS_Framework'           => { :platform => :tvos,    :type => :framework,        :language => :swift, :how => 'tvOS > TV Framework > Language: Swift' },
+        'Objc_tvOS_StaticLibrary'        => { :platform => :tvos,    :type => :static_library,   :language => :objc,  :how => 'tvOS > TV Static Library > Language: Objective-C' },
       }
 
       targets.each do |name, attributes|
@@ -134,16 +134,16 @@ begin
           raise "Type doesn't match."     unless target.symbol_type   == attributes[:type]
 
           debug_config = target.build_configurations.find { |c| c.name == 'Debug' }
-          raise "Debug configuration is missing" if debug_config.nil?
+          raise 'Debug configuration is missing' if debug_config.nil?
 
           release_config = target.build_configurations.find { |c| c.name == 'Release' }
-          raise "Release configuration is missing" if release_config.nil?
+          raise 'Release configuration is missing' if release_config.nil?
 
-          is_swift_present  = debug_config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] != nil
+          is_swift_present  = !debug_config.build_settings['SWIFT_OPTIMIZATION_LEVEL'].nil?
           is_swift_expected = attributes[:language] == :swift
           raise "Language doesn't match." unless is_swift_present == is_swift_expected
 
-          puts green("Target matches.")
+          puts green('Target matches.')
           puts
         rescue StandardError => e
           puts "#{red(e.message)} Try again."
@@ -151,16 +151,30 @@ begin
         end
       end
 
-      puts green("All targets were been successfully created.")
+      Xcodeproj::Project.open(PROJECT_PATH).tap do |project|
+        project.sort
+        project.predictabilize_uuids
+        project.save
+        project.files.each do |file|
+          path = file.real_path
+          next unless path.file?
+          contents = path.read
+          contents.sub! %r{\A(//\s.+\n)+}, ''
+          contents.sub! /\A\s+/, ''
+          path.open('w') { |f| f.write(contents) }
+        end
+      end
+
+      puts green('All targets have been successfully created.')
     end
 
-    desc "Dump the build settings of the fixture project to xcconfig files"
+    desc 'Dump the build settings of the fixture project to xcconfig files'
     task :dump => [:prepare] do
       verbose false
-      sh "../../../bin/xcodeproj config-dump Project/Project.xcodeproj configs"
+      sh '../../../bin/xcodeproj config-dump Project/Project.xcodeproj configs'
     end
 
-    desc "Recreate the xcconfig files for the fixture project targets from scratch"
+    desc 'Recreate the xcconfig files for the fixture project targets from scratch'
     task :rebuild => [
       :new_project,
       :targets,
@@ -200,7 +214,7 @@ begin
 
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new(:rubocop) do |task|
-    task.patterns = ['lib', 'spec']
+    task.patterns = %w(lib spec)
   end
 
 rescue LoadError, NameError => e
@@ -254,13 +268,13 @@ def cyan(string)
   "\n\033[0;36m#{string}\033[0m"
 end
 
-def confirm(message, decline_by_default=true)
-  options = ['y', 'n']
+def confirm(message, decline_by_default = true)
+  options = %w(y n)
   options[decline_by_default ? 1 : 0].upcase!
   print yellow("#{message}: [#{options.join('/')}] ")
   input = STDIN.gets.chomp
   if input == options[1].downcase || (input == '' && decline_by_default)
-    puts red("Aborted by user.")
+    puts red('Aborted by user.')
     exit 1
   end
 end

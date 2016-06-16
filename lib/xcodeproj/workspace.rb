@@ -42,7 +42,9 @@ module Xcodeproj
     #
     def initialize(document, *file_references)
       @schemes = {}
-      if document.nil? || document.is_a?(REXML::Document)
+      if document.nil?
+        @document = REXML::Document.new(root_xml(''))
+      elsif document.is_a?(REXML::Document)
         @document = document
       else
         @document = REXML::Document.new(root_xml(''))

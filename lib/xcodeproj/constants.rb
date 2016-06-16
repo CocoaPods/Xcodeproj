@@ -4,17 +4,17 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '9.2'
+    LAST_KNOWN_IOS_SDK = '9.3'
 
     # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK = '10.11'
 
     # @return [String] The last known tvOS SDK (stable).
-    LAST_KNOWN_TVOS_SDK = '9.1'
+    LAST_KNOWN_TVOS_SDK = '9.2'
 
     # @return [String] The last known watchOS SDK (stable).
-    LAST_KNOWN_WATCHOS_SDK = '2.1'
+    LAST_KNOWN_WATCHOS_SDK = '2.2'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -33,7 +33,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0720'
+    LAST_SWIFT_UPGRADE_CHECK = '0730'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -113,6 +113,7 @@ module Xcodeproj
       :bundle            => 'com.apple.product-type.bundle',
       :octest_bundle     => 'com.apple.product-type.bundle',
       :unit_test_bundle  => 'com.apple.product-type.bundle.unit-test',
+      :ui_test_bundle    => 'com.apple.product-type.bundle.ui-testing',
       :app_extension     => 'com.apple.product-type.app-extension',
       :command_line_tool => 'com.apple.product-type.tool',
       :watch_app         => 'com.apple.product-type.application.watchapp',
@@ -284,19 +285,20 @@ module Xcodeproj
     PROJECT_DEFAULT_BUILD_SETTINGS = {
       :all => {
         'ALWAYS_SEARCH_USER_PATHS'           => 'NO',
+        'CLANG_ANALYZER_NONNULL'             => 'YES',
         'CLANG_CXX_LANGUAGE_STANDARD'        => 'gnu++0x',
         'CLANG_CXX_LIBRARY'                  => 'libc++',
+        'CLANG_ENABLE_MODULES'               => 'YES',
         'CLANG_ENABLE_OBJC_ARC'              => 'YES',
+        'CLANG_WARN__DUPLICATE_METHOD_MATCH' => 'YES',
         'CLANG_WARN_BOOL_CONVERSION'         => 'YES',
         'CLANG_WARN_CONSTANT_CONVERSION'     => 'YES',
         'CLANG_WARN_DIRECT_OBJC_ISA_USAGE'   => 'YES',
-        'CLANG_WARN__DUPLICATE_METHOD_MATCH' => 'YES',
         'CLANG_WARN_EMPTY_BODY'              => 'YES',
         'CLANG_WARN_ENUM_CONVERSION'         => 'YES',
         'CLANG_WARN_INT_CONVERSION'          => 'YES',
         'CLANG_WARN_OBJC_ROOT_CLASS'         => 'YES',
         'CLANG_WARN_UNREACHABLE_CODE'        => 'YES',
-        'CLANG_ENABLE_MODULES'               => 'YES',
         'GCC_C_LANGUAGE_STANDARD'            => 'gnu99',
         'GCC_WARN_64_TO_32_BIT_CONVERSION'   => 'YES',
         'GCC_WARN_ABOUT_RETURN_TYPE'         => 'YES',
@@ -311,13 +313,13 @@ module Xcodeproj
         'VALIDATE_PRODUCT'                   => 'YES',
       }.freeze,
       :debug => {
-        'ONLY_ACTIVE_ARCH'                   => 'YES',
         'COPY_PHASE_STRIP'                   => 'NO',
         'ENABLE_TESTABILITY'                 => 'YES',
         'GCC_DYNAMIC_NO_PIC'                 => 'NO',
         'GCC_OPTIMIZATION_LEVEL'             => '0',
         'GCC_PREPROCESSOR_DEFINITIONS'       => ['DEBUG=1', '$(inherited)'],
         'GCC_SYMBOLS_PRIVATE_EXTERN'         => 'NO',
+        'ONLY_ACTIVE_ARCH'                   => 'YES',
       }.freeze,
     }.freeze
 
