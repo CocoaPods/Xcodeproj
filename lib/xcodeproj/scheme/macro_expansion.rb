@@ -13,7 +13,7 @@ module Xcodeproj
       #
       def initialize(scheme,target_or_node = nil)
         create_xml_element_with_fallback(target_or_node, 'MacroExpansion',scheme) do
-          self.buildable_reference = BuildableReference.new(target_or_node) if target_or_node
+          self.buildable_reference = BuildableReference.new(@scheme, target_or_node) if target_or_node
         end
       end
 
@@ -21,7 +21,7 @@ module Xcodeproj
       #         The BuildableReference this MacroExpansion refers to
       #
       def buildable_reference
-        @buildable_reference ||= BuildableReference.new @xml_element.elements['BuildableReference']
+        @buildable_reference ||= BuildableReference.new(@scheme, @xml_element.elements['BuildableReference'])
       end
 
       # @param [BuildableReference] ref

@@ -32,7 +32,7 @@ module Xcodeproj
 
       describe 'buildable_product_runnable' do
         it '#buildable_product_runnable' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 
@@ -43,7 +43,7 @@ module Xcodeproj
         end
 
         it '#buildable_product_runnable=' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 

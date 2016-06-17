@@ -95,7 +95,7 @@ module Xcodeproj
             self.build_for_running   = is_app_target
             self.build_for_profiling = is_app_target
             self.build_for_archiving = is_app_target
-            add_buildable_reference BuildableReference.new(@scheme,target_or_node) if target_or_node
+            add_buildable_reference BuildableReference.new(@scheme, target_or_node) if target_or_node
           end
         end
 
@@ -175,7 +175,7 @@ module Xcodeproj
         #
         def buildable_references
           @xml_element.get_elements('BuildableReference').map do |node|
-            BuildableReference.new(@scheme,node)
+            BuildableReference.new(@scheme, node)
           end
         end
 

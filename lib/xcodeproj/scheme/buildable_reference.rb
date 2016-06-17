@@ -13,8 +13,8 @@ module Xcodeproj
       #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableReference' node element to reference
       #
-      def initialize(scheme,target_or_node)
-        create_xml_element_with_fallback(target_or_node, 'BuildableReference',scheme) do
+      def initialize(scheme, target_or_node)
+        create_xml_element_with_fallback(target_or_node, 'BuildableReference', scheme) do
           @xml_element.attributes['BuildableIdentifier'] = 'primary'
           set_reference_target(target_or_node, true) if target_or_node
         end

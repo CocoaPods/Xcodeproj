@@ -1,9 +1,10 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::LaunchAction do
     it 'Creates a default XML node when created from scratch' do
-      action = Xcodeproj::XCScheme::LaunchAction.new(nil)
+      action = Xcodeproj::XCScheme::LaunchAction.new(XCSchemeStub.new, nil)
       action.xml_element.name.should == 'LaunchAction'
       action.xml_element.attributes.count.should == 9
       action.xml_element.attributes['selectedDebuggerIdentifier'].should == 'Xcode.DebuggerFoundation.Debugger.LLDB'
@@ -21,14 +22,14 @@ module Xcodeproj
     it 'raises if created with an invalid XML node' do
       node = REXML::Element.new('Foo')
       should.raise(Informative) do
-        Xcodeproj::XCScheme::LaunchAction.new(node)
+        Xcodeproj::XCScheme::LaunchAction.new(XCSchemeStub.new, node)
       end.message.should.match /Wrong XML tag name/
     end
 
     describe 'Map attributes to XML' do
       before do
         node = REXML::Element.new('LaunchAction')
-        @sut = Xcodeproj::XCScheme::LaunchAction.new(node)
+        @sut = Xcodeproj::XCScheme::LaunchAction.new(XCSchemeStub.new, node)
       end
 
       extend SpecHelper::XCScheme
@@ -36,9 +37,9 @@ module Xcodeproj
 
       describe 'buildable_product_runnable' do
         it '#buildable_product_runnable' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
-          bpr = XCScheme::BuildableProductRunnable.new(target)
+          bpr = XCScheme::BuildableProductRunnable.new(XCSchemeStub.new, target)
 
           node = bpr.xml_element
           @sut.xml_element.elements['BuildableProductRunnable'] = node
@@ -47,9 +48,9 @@ module Xcodeproj
         end
 
         it '#buildable_product_runnable=' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
-          bpr = XCScheme::BuildableProductRunnable.new(target)
+          bpr = XCScheme::BuildableProductRunnable.new(XCSchemeStub.new, target)
 
           @sut.buildable_product_runnable = bpr
           @sut.xml_element.elements['BuildableProductRunnable'].should == bpr.xml_element
@@ -71,16 +72,16 @@ module Xcodeproj
           env_vars_xml.add_element(var_node_name, 'isEnabled' => 'NO', 'key' => 'b', 'value' => '2')
 
           # Reload content from XML
-          @sut = XCScheme::LaunchAction.new(@sut.xml_element)
+          @sut = XCScheme::LaunchAction.new(XCSchemeStub.new, @sut.xml_element)
 
           @sut.environment_variables.to_a.should == [{ :key => 'a', :value => '1', :enabled => true },
                                                      { :key => 'b', :value => '2', :enabled => false }]
         end
 
         it 'reflects direct changes to xml' do
-          @sut.environment_variables = XCScheme::EnvironmentVariables.new([{ :key => 'a', :value => '1', :enabled => false },
-                                                                           { :key => 'b', :value => '2', :enabled => true },
-                                                                           { :key => 'c', :value => '3', :enabled => true }])
+          @sut.environment_variables = XCScheme::EnvironmentVariables.new(@sut.scheme, [{ :key => 'a', :value => '1', :enabled => false },
+                                                                                        { :key => 'b', :value => '2', :enabled => true },
+                                                                                        { :key => 'c', :value => '3', :enabled => true }])
           node_to_delete = @sut.environment_variables.xml_element.elements["#{var_node_name}[@key='b']"]
           @sut.environment_variables.xml_element.delete(node_to_delete)
           @sut.environment_variables.to_a.should == [{ :key => 'a', :value => '1', :enabled => false },
@@ -90,7 +91,7 @@ module Xcodeproj
         it 'can be assigned nil' do
           @sut.xml_element.get_elements(vars_node_name).count.should == 0
 
-          @sut.environment_variables = XCScheme::EnvironmentVariables.new
+          @sut.environment_variables = XCScheme::EnvironmentVariables.new(@sut.scheme)
           @sut.environment_variables.should.not.equal nil
           @sut.xml_element.get_elements(vars_node_name).count.should == 1
 
@@ -100,7 +101,7 @@ module Xcodeproj
         end
 
         it 'assigning an EnvironmentVariables object updates the xml' do
-          env_var = Xcodeproj::XCScheme::EnvironmentVariables.new([{ :key => 'a', :value => '1' }])
+          env_var = Xcodeproj::XCScheme::EnvironmentVariables.new(@sut.scheme, [{ :key => 'a', :value => '1' }])
           env_var.xml_element.elements.count.should == 1
 
           @sut.environment_variables = env_var

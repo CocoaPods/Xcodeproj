@@ -30,7 +30,7 @@ module Xcodeproj
       #         The key value pairs currently set in @xml_element
       #
       def all_variables
-        @all_variables ||= @xml_element.get_elements(VARIABLE_NODE).map { |variable| EnvironmentVariable.new(variable) }
+        @all_variables ||= @xml_element.get_elements(VARIABLE_NODE).map { |variable| EnvironmentVariable.new(@scheme, variable) }
       end
 
       # Adds a given variable to the set of environment variables, or replaces it if that key already exists
@@ -43,7 +43,7 @@ module Xcodeproj
       #         The new set of environment variables after addition
       #
       def assign_variable(variable)
-        env_var = variable.is_a?(EnvironmentVariable) ? variable : EnvironmentVariable.new(variable)
+        env_var = variable.is_a?(EnvironmentVariable) ? variable : EnvironmentVariable.new(@scheme, variable)
         all_variables.each { |existing_var| remove_variable(existing_var) if existing_var.key == env_var.key }
         @xml_element.add_element(env_var.xml_element)
         @all_variables << env_var

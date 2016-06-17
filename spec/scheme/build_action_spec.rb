@@ -42,7 +42,7 @@ module Xcodeproj
       end
 
       it '#entries' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
 
         target1 = project.new_target(:application, 'FooApp', :ios)
         entry1 = XCScheme::BuildAction::Entry.new(@sut.scheme)
@@ -89,7 +89,7 @@ module Xcodeproj
 
       describe 'Created from a target' do
         before do
-          @project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          @project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         end
         it 'Uses the proper XML node' do
           target = @project.new_target(:application, 'FooApp', :ios)
@@ -140,7 +140,9 @@ module Xcodeproj
 
       describe 'Map attributes to XML' do
         before do
-          @sut = Xcodeproj::XCScheme::BuildAction::Entry.new(@sut.scheme, nil)
+          node = REXML::Element.new('BuildAction')
+          @ba = Xcodeproj::XCScheme::BuildAction.new(XCSchemeStub.new, node)
+          @sut = Xcodeproj::XCScheme::BuildAction::Entry.new(@ba.scheme, nil)
         end
 
         extend SpecHelper::XCScheme
@@ -155,7 +157,7 @@ module Xcodeproj
       end
 
       it '#add_buildable_reference' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         entry = XCScheme::BuildAction::Entry.new(@sut.scheme)
 
         target = project.new_target(:application, 'FooApp', :ios)
@@ -166,7 +168,7 @@ module Xcodeproj
       end
 
       it '#buildable_references' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         entry = XCScheme::BuildAction::Entry.new(@sut.scheme)
 
         target1 = project.new_target(:application, 'FooApp', :ios)

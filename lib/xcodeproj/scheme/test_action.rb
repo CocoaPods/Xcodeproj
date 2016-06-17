@@ -119,7 +119,7 @@ module Xcodeproj
         def initialize(scheme,target_or_node = nil)
           create_xml_element_with_fallback(target_or_node, 'TestableReference',scheme) do
             self.skipped = false
-            add_buildable_reference BuildableReference.new(target_or_node) unless target_or_node.nil?
+            add_buildable_reference BuildableReference.new(@scheme, target_or_node) unless target_or_node.nil?
           end
         end
 
@@ -143,7 +143,7 @@ module Xcodeproj
         #
         def buildable_references
           @xml_element.get_elements('BuildableReference').map do |node|
-            BuildableReference.new(node)
+            BuildableReference.new(@scheme, node)
           end
         end
 
