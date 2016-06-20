@@ -29,7 +29,7 @@ module Xcodeproj
         }
         node.add_attributes(attributes)
         @scheme = XCScheme.new
-        @scheme.setBundlePathAndName('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
+        @scheme.set_bundle_path_and_name('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
         @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, node)
       end
 
@@ -89,7 +89,7 @@ module Xcodeproj
         @project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         @target = @project.new_target(:application, 'FooApp', :ios)
         @scheme = Xcodeproj::XCScheme.new
-        @scheme.setBundlePathAndName(@project.path, 'TestScheme')
+        @scheme.set_bundle_path_and_name(@project.path, 'TestScheme')
         @scheme.add_build_target(@target)
         @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, @target)
       end

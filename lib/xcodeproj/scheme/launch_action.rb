@@ -54,7 +54,7 @@ module Xcodeproj
       #         The BuildReference to launch when executing the Launch Action
       #
       def buildable_product_runnable
-        BuildableProductRunnable.new(@xml_element.elements['BuildableProductRunnable'])
+        BuildableProductRunnable.new(@scheme, @xml_element.elements['BuildableProductRunnable'])
       end
 
       # @param [BuildableProductRunnable] runnable
@@ -69,7 +69,7 @@ module Xcodeproj
       #         Returns the EnvironmentVariables that will be defined at app launch
       #
       def environment_variables
-        EnvironmentVariables.new(@xml_element.elements[XCScheme::VARIABLES_NODE])
+        EnvironmentVariables.new(@scheme, @xml_element.elements[XCScheme::VARIABLES_NODE])
       end
 
       # @param [EnvironmentVariables,nil] env_vars

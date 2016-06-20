@@ -45,7 +45,7 @@ module Xcodeproj
       #         The BuildableProductRunnable to launch when launching the Profile action
       #
       def buildable_product_runnable
-        BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
+        BuildableProductRunnable.new(@scheme, @xml_element.elements['BuildableProductRunnable'])
       end
 
       # @param [BuildableProductRunnable] runnable

@@ -26,7 +26,7 @@ module Xcodeproj
       it 'raises if invalid XML node' do
         node = REXML::Element.new('Foo')
         should.raise(Informative) do
-          Xcodeproj::XCScheme::MacroExpansion.new(node)
+          Xcodeproj::XCScheme::MacroExpansion.new(@macro_exp.scheme, node)
         end.message.should.match /Wrong XML tag name/
       end
 

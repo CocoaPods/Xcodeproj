@@ -194,6 +194,7 @@ module ProjectSpecs
         @ios_static_library_tests.stubs(:uuid).returns('806F6FC217EFAF47001051EE')
 
         @scheme = Xcodeproj::XCScheme.new
+        @scheme.set_bundle_path_and_name(@project.path, 'Release', true)
       end
 
       it 'Supports adding native build targets' do
@@ -227,13 +228,18 @@ module ProjectSpecs
       end
 
       it 'Constructs ReferencedContainer attributes correctly' do
-        project = Xcodeproj::Project.new('/project_dir/Project.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/project_dir/Project.xcodeproj')
+        scheme = XCScheme.new
+        scheme.set_bundle_path_and_name(project.path, 'Release', true)
         target = project.new_target(:application, 'iOS application', :osx)
-        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
-
+        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(scheme, nil)
         buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:Project.xcodeproj'
 
-        project.root_object.project_dir_path = '/a_dir'
+        project = Xcodeproj::Project.new('/tmp/project_dir/Project.xcodeproj')
+        scheme = XCScheme.new
+        scheme.set_bundle_path_and_name('/tmp/a_dir/Workspace.xcworkspace', 'Release', true)
+        target = project.new_target(:application, 'iOS application', :osx)
+        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(scheme, nil)
         buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:../project_dir/Project.xcodeproj'
       end
 

@@ -60,7 +60,7 @@ module Xcodeproj
         return [] unless @xml_element.elements['Testables']
 
         @xml_element.elements['Testables'].get_elements('TestableReference').map do |node|
-          TestableReference.new(node)
+          TestableReference.new(@scheme, node)
         end
       end
 
@@ -77,7 +77,7 @@ module Xcodeproj
       #
       def macro_expansions
         @xml_element.get_elements('MacroExpansion').map do |node|
-          MacroExpansion.new(node)
+          MacroExpansion.new(@scheme, node)
         end
       end
 
@@ -92,7 +92,7 @@ module Xcodeproj
       #         Returns the EnvironmentVariables that will be defined at test launch
       #
       def environment_variables
-        EnvironmentVariables.new(@xml_element.elements[XCScheme::VARIABLES_NODE])
+        EnvironmentVariables.new(@scheme, @xml_element.elements[XCScheme::VARIABLES_NODE])
       end
 
       # @param [EnvironmentVariables,nil] env_vars
@@ -160,7 +160,7 @@ module Xcodeproj
         def skipped_tests
           return [] if @xml_element.elements['SkippedTests'].nil?
           @xml_element.elements['SkippedTests'].get_elements('Test').map do |node|
-            TestableReference::SkippedTest.new(node)
+            TestableReference::SkippedTest.new(@scheme, node)
           end
         end
 

@@ -14,7 +14,6 @@ module Xcodeproj
       action.xml_element.attributes['ignoresPersistentStateOnLaunch'].should == 'NO'
       action.xml_element.attributes['debugDocumentVersioning'].should == 'YES'
       action.xml_element.attributes['debugServiceExtension'].should == 'internal'
-
       action.xml_element.attributes['buildConfiguration'].should == 'Debug'
       action.xml_element.attributes['allowLocationSimulation'].should == 'YES'
     end
@@ -29,7 +28,9 @@ module Xcodeproj
     describe 'Map attributes to XML' do
       before do
         node = REXML::Element.new('LaunchAction')
-        @sut = Xcodeproj::XCScheme::LaunchAction.new(XCSchemeStub.new, node)
+        @scheme = XCScheme.new
+        @scheme.set_bundle_path_and_name('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
+        @sut = Xcodeproj::XCScheme::LaunchAction.new(@scheme, node)
       end
 
       extend SpecHelper::XCScheme
@@ -50,7 +51,7 @@ module Xcodeproj
         it '#buildable_product_runnable=' do
           project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
-          bpr = XCScheme::BuildableProductRunnable.new(XCSchemeStub.new, target)
+          bpr = XCScheme::BuildableProductRunnable.new(@sut.scheme, target)
 
           @sut.buildable_product_runnable = bpr
           @sut.xml_element.elements['BuildableProductRunnable'].should == bpr.xml_element
@@ -72,8 +73,8 @@ module Xcodeproj
           env_vars_xml.add_element(var_node_name, 'isEnabled' => 'NO', 'key' => 'b', 'value' => '2')
 
           # Reload content from XML
-          @sut = XCScheme::LaunchAction.new(XCSchemeStub.new, @sut.xml_element)
-
+          @sut = XCScheme::LaunchAction.new(@sut.scheme, @sut.xml_element)
+          print @sut.environment_variables.to_a
           @sut.environment_variables.to_a.should == [{ :key => 'a', :value => '1', :enabled => true },
                                                      { :key => 'b', :value => '2', :enabled => false }]
         end
