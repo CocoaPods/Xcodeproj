@@ -195,8 +195,9 @@ module Xcodeproj
       end
 
       it '#add_skipped_test' do
-        test_ref = XCScheme::TestAction::TestableReference.new(XCSchemeStub.new)
-        skipped_test = XCScheme::TestAction::TestableReference::SkippedTest.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
+        skipped_test = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         skipped_test.identifier = 'MyClassTests'
         test_ref.add_skipped_test(skipped_test)
         test_ref.xml_element.elements['SkippedTests'].should.not.nil?
@@ -205,8 +206,9 @@ module Xcodeproj
       end
 
       it '#set_skipped_tests_nil' do
-        test_ref = XCScheme::TestAction::TestableReference.new(XCSchemeStub.new)
-        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new]
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
+        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)]
         test_ref.skipped_tests.count.should == 1
         test_ref.skipped_tests = nil
         test_ref.xml_element.elements['SkippedTests'].should.nil?
@@ -214,12 +216,13 @@ module Xcodeproj
       end
 
       it '#set_skipped_tests' do
-        test_ref = XCScheme::TestAction::TestableReference.new(XCSchemeStub.new)
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test1.identifier = 'MyClassTests1'
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test2.identifier = 'MyClassTests2'
 
         test_ref.skipped_tests = [test1, test2]
@@ -230,13 +233,14 @@ module Xcodeproj
       end
 
       it '#skipped_tests' do
-        test_ref = XCScheme::TestAction::TestableReference.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test1.identifier = 'MyClassTests1'
         test_ref.add_skipped_test(test1)
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test2.identifier = 'MyClassTests2'
         test_ref.add_skipped_test(test2)
 
@@ -248,25 +252,27 @@ module Xcodeproj
 
       it '#add_buildable_reference' do
         project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
-        test_ref = XCScheme::TestAction::TestableReference.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
         target = project.new_target(:application, 'FooApp', :ios)
-        ref = XCScheme::BuildableReference.new(target)
+        ref = XCScheme::BuildableReference.new(scheme, target)
         test_ref.add_buildable_reference(ref)
 
         test_ref.xml_element.elements['BuildableReference'].should == ref.xml_element
       end
 
       it '#buildable_references' do
+        scheme = XCSchemeStub.new
         project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
-        test_ref = XCScheme::TestAction::TestableReference.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        ref1 = XCScheme::BuildableReference.new(target1)
+        ref1 = XCScheme::BuildableReference.new(scheme, target1)
         test_ref.add_buildable_reference(ref1)
 
         target2 = project.new_target(:static_library, 'FooLib', :ios)
-        ref2 = XCScheme::BuildableReference.new(target2)
+        ref2 = XCScheme::BuildableReference.new(scheme, target2)
         test_ref.add_buildable_reference(ref2)
 
         test_ref.buildable_references.count.should == 2

@@ -12,8 +12,8 @@ module Xcodeproj
       #        The 'AnalyzeAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(scheme,node = nil)
-        create_xml_element_with_fallback(node, 'AnalyzeAction',scheme) do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'AnalyzeAction', scheme) do
           self.build_configuration = 'Debug'
         end
       end

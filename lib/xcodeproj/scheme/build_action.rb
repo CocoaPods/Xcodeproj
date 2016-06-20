@@ -15,8 +15,8 @@ module Xcodeproj
       #        The 'BuildAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(scheme,node = nil)
-        create_xml_element_with_fallback(node, 'BuildAction',scheme) do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'BuildAction', scheme) do
           self.parallelize_buildables = true
           self.build_implicit_dependencies = true
         end
@@ -56,7 +56,7 @@ module Xcodeproj
       #
       def entries
         @xml_element.elements['BuildActionEntries'].get_elements('BuildActionEntry').map do |entry_node|
-          BuildAction::Entry.new(@scheme,entry_node)
+          BuildAction::Entry.new(@scheme, entry_node)
         end
       end
 
@@ -76,8 +76,8 @@ module Xcodeproj
         #        or an existing XML 'BuildActionEntry' node element to reference,
         #        or nil to create an new, empty Entry with default values
         #
-        def initialize(scheme,target_or_node = nil)
-          create_xml_element_with_fallback(target_or_node, 'BuildActionEntry',scheme) do
+        def initialize(scheme, target_or_node = nil)
+          create_xml_element_with_fallback(target_or_node, 'BuildActionEntry', scheme) do
             # Check target type to configure the default entry attributes accordingly
             is_test_target = false
             is_app_target = false

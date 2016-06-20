@@ -39,7 +39,7 @@ module Xcodeproj
         it '#buildable_product_runnable' do
           project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
-          bpr = XCScheme::BuildableProductRunnable.new(XCSchemeStub.new, target)
+          bpr = XCScheme::BuildableProductRunnable.new(@sut.scheme, target)
 
           node = bpr.xml_element
           @sut.xml_element.elements['BuildableProductRunnable'] = node

@@ -27,7 +27,7 @@ module Xcodeproj
     #         or nil when the scheme file is not in a project or a workspace.
     #
     attr_reader :bundle_path
-    
+
     # Return the path to the .xcscheme file.
     #
     # @param [String] name
@@ -36,7 +36,7 @@ module Xcodeproj
     # @param [Boolean] shared
     #        true  => if the scheme must be a shared scheme (default value)
     #        false => if the scheme must be a user scheme
-    def file_path(name,shared=true)
+    def file_path(name, shared = true)
       scheme_folder_path = if shared
                              self.class.shared_data_dir(@bundle_path)
                            else
@@ -46,7 +46,6 @@ module Xcodeproj
       scheme_folder_path + "#{name}.xcscheme"
     end
 
-  
     # Sets the bundle_path and the file_path of the scheme
     #
     # @param [String, Pathname] path
@@ -74,11 +73,11 @@ module Xcodeproj
     #       scheme.add_build_target targets[0]
     #       scheme.save!
     #
-    def setBundlePathAndName(path,name,shared=true)
-      @bundle_path=Pathname.new(path)
-      @file_path=self.file_path(name,shared)
+    def set_bundle_path_and_name(path, name, shared = true)
+      @bundle_path = Pathname.new(path)
+      @file_path = file_path(name, shared)
     end
-    
+
     # Create a XCScheme either from scratch or using an existing file
     #
     # @param [String] file_path
@@ -87,7 +86,7 @@ module Xcodeproj
     def initialize(file_path = nil)
       if file_path
         @file_path = Pathname.new(file_path)
-        updateBundlePath
+        update_bundle_path
         @doc = REXML::Document.new(File.new(file_path))
         @doc.context[:attribute_quote] = :quote
 
@@ -122,12 +121,12 @@ module Xcodeproj
     #        The target to use for the 'Test' action
     #
     def configure_with_targets(runnable_target, test_target)
-      build_action.add_entry BuildAction::Entry.new(self,runnable_target) if runnable_target
-      build_action.add_entry BuildAction::Entry.new(self,test_target) if test_target
+      build_action.add_entry BuildAction::Entry.new(self, runnable_target) if runnable_target
+      build_action.add_entry BuildAction::Entry.new(self, test_target) if test_target
 
-      test_action.add_testable TestAction::TestableReference.new(self,test_target) if test_target
-      launch_action.buildable_product_runnable = BuildableProductRunnable.new(self,runnable_target, 0) if runnable_target
-      profile_action.buildable_product_runnable = BuildableProductRunnable.new(self,runnable_target) if runnable_target
+      test_action.add_testable TestAction::TestableReference.new(self, test_target) if test_target
+      launch_action.buildable_product_runnable = BuildableProductRunnable.new(self, runnable_target, 0) if runnable_target
+      profile_action.buildable_product_runnable = BuildableProductRunnable.new(self, runnable_target) if runnable_target
     end
 
     public
@@ -138,7 +137,7 @@ module Xcodeproj
     #         The Build Action associated with this scheme
     #
     def build_action
-      @build_action ||= BuildAction.new(self,@scheme.elements['BuildAction'])
+      @build_action ||= BuildAction.new(self, @scheme.elements['BuildAction'])
     end
 
     # @param [XCScheme::BuildAction] action
@@ -154,7 +153,7 @@ module Xcodeproj
     #         The Test Action associated with this scheme
     #
     def test_action
-      @test_action ||= TestAction.new(self,@scheme.elements['TestAction'])
+      @test_action ||= TestAction.new(self, @scheme.elements['TestAction'])
     end
 
     # @param [XCScheme::TestAction] action
@@ -170,7 +169,7 @@ module Xcodeproj
     #         The Launch Action associated with this scheme
     #
     def launch_action
-      @launch_action ||= LaunchAction.new(self,@scheme.elements['LaunchAction'])
+      @launch_action ||= LaunchAction.new(self, @scheme.elements['LaunchAction'])
     end
 
     # @param [XCScheme::LaunchAction] action
@@ -186,7 +185,7 @@ module Xcodeproj
     #         The Profile Action associated with this scheme
     #
     def profile_action
-      @profile_action ||= ProfileAction.new(self,@scheme.elements['ProfileAction'])
+      @profile_action ||= ProfileAction.new(self, @scheme.elements['ProfileAction'])
     end
 
     # @param [XCScheme::ProfileAction] action
@@ -202,7 +201,7 @@ module Xcodeproj
     #         The Analyze Action associated with this scheme
     #
     def analyze_action
-      @analyze_action ||= AnalyzeAction.new(self,@scheme.elements['AnalyzeAction'])
+      @analyze_action ||= AnalyzeAction.new(self, @scheme.elements['AnalyzeAction'])
     end
 
     # @param [XCScheme::AnalyzeAction] action
@@ -218,7 +217,7 @@ module Xcodeproj
     #         The Archive Action associated with this scheme
     #
     def archive_action
-      @archive_action ||= ArchiveAction.new(self,@scheme.elements['ArchiveAction'])
+      @archive_action ||= ArchiveAction.new(self, @scheme.elements['ArchiveAction'])
     end
 
     # @param [XCScheme::ArchiveAction] action
@@ -241,7 +240,7 @@ module Xcodeproj
     #        Whether to build this target in the launch action. Often false for test targets.
     #
     def add_build_target(build_target, build_for_running = true)
-      entry = BuildAction::Entry.new(self,build_target)
+      entry = BuildAction::Entry.new(self, build_target)
 
       entry.build_for_testing   = true
       entry.build_for_running   = build_for_running
@@ -258,7 +257,7 @@ module Xcodeproj
     #        A target used by scheme in the test step.
     #
     def add_test_target(test_target)
-      testable = TestAction::TestableReference.new(self,test_target)
+      testable = TestAction::TestableReference.new(self, test_target)
       test_action.add_testable(testable)
     end
 
@@ -268,13 +267,13 @@ module Xcodeproj
     #        A target used by scheme in the launch step.
     #
     def set_launch_target(build_target)
-      launch_runnable = BuildableProductRunnable.new(self,build_target, 0)
+      launch_runnable = BuildableProductRunnable.new(self, build_target, 0)
       launch_action.buildable_product_runnable = launch_runnable
 
-      profile_runnable = BuildableProductRunnable.new(self,build_target)
+      profile_runnable = BuildableProductRunnable.new(self, build_target)
       profile_action.buildable_product_runnable = profile_runnable
 
-      macro_exp = MacroExpansion.new(self,build_target)
+      macro_exp = MacroExpansion.new(self, build_target)
       test_action.add_macro_expansion(macro_exp)
     end
 
@@ -353,7 +352,7 @@ module Xcodeproj
     #        true  => if the scheme must be a shared scheme (default value)
     #        false => if the scheme must be a user scheme
     #
-    # @return [String or Pathname] the path of the scheme file.
+    # @return [Integer] result of File.open
     #
     # @example Saving a scheme
     #   scheme.save_as('path/to/Project.xcodeproj') #=> true
@@ -361,11 +360,10 @@ module Xcodeproj
     #
     def save_as(bundle_path, name, shared = true)
       @bundle_path = Pathname.new(bundle_path)
-      scheme_path = self.file_path(name,shared)
+      scheme_path = file_path(name, shared)
       File.open(scheme_path, 'w') do |f|
         f.write(to_s)
       end
-      scheme_path
     end
 
     # Serializes the current state of the object to the original ".xcscheme"
@@ -376,13 +374,12 @@ module Xcodeproj
     def save!
       raise Informative, 'This XCScheme object was not initialized ' \
         'using a file path. Use save_as instead.' unless @file_path
-      updateBundlePath # save_as may have been called before save!
+      update_bundle_path # save_as may have been called before save!
       File.open(@file_path, 'w') do |f|
         f.write(to_s)
       end
     end
 
-    
     #-------------------------------------------------------------------------#
 
     # XML formatter which closely mimics the output generated by Xcode.
@@ -418,21 +415,19 @@ module Xcodeproj
 
     private
 
-    def updateBundlePath
-      components=[]
-      @file_path.each_filename {|component| components.push(component) }
-      if (components[-3]=='xcuserdata') or
-          ((components[-2]=='xcschemes') and
-           (components[-3]=='xcshareddata')) then
+    def update_bundle_path
+      components = []
+      @file_path.each_filename { |component| components.push(component) }
+      if (components[-3] == 'xcuserdata') ||
+          ((components[-2] == 'xcschemes') &&
+           (components[-3] == 'xcshareddata'))
         @bundle_path = @file_path.dirname.dirname.dirname
-        if @bundle_path == '' ; then
+        if @bundle_path == ''
           @bundle_path = '.'
         end
       else
         @bundle_path = nil
       end
     end
-    
-
   end
 end

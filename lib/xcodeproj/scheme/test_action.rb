@@ -13,8 +13,8 @@ module Xcodeproj
       #        The 'TestAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(scheme,node = nil)
-        create_xml_element_with_fallback(node, 'TestAction',scheme) do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'TestAction', scheme) do
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
           @xml_element.add_element('AdditionalOptions')
@@ -116,8 +116,8 @@ module Xcodeproj
         #        or an existing XML 'TestableReference' node element to reference,
         #        or nil to create an new, empty TestableReference
         #
-        def initialize(scheme,target_or_node = nil)
-          create_xml_element_with_fallback(target_or_node, 'TestableReference',scheme) do
+        def initialize(scheme, target_or_node = nil)
+          create_xml_element_with_fallback(target_or_node, 'TestableReference', scheme) do
             self.skipped = false
             add_buildable_reference BuildableReference.new(@scheme, target_or_node) unless target_or_node.nil?
           end
@@ -191,8 +191,9 @@ module Xcodeproj
           #        The 'Test' XML node that this object will wrap.
           #        If nil, will create a default XML node to use.
           #
-          def initialize(node = nil)
-            create_xml_element_with_fallback(node, 'Test') do
+          def initialize(scheme, node = nil)
+            @scheme = scheme
+            create_xml_element_with_fallback(node, 'Test', @scheme) do
               self.identifier = node.attributes['Identifier'] unless node.nil?
             end
           end

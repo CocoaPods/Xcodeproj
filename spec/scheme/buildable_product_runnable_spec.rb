@@ -1,15 +1,14 @@
 require File.expand_path('../../spec_helper', __FILE__)
 require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
-
 module Xcodeproj
   describe XCScheme::BuildableProductRunnable do
-      before do
-        node = REXML::Element.new('BuildAction')
-        @sut = Xcodeproj::XCScheme::BuildAction.new(XCSchemeStub.new, node)
-      end
+    before do
+      node = REXML::Element.new('BuildAction')
+      @sut = Xcodeproj::XCScheme::BuildAction.new(XCSchemeStub.new, node)
+    end
 
-      describe 'Created from scratch' do
+    describe 'Created from scratch' do
       it 'Creates an initial, empty XML node' do
         bpr = Xcodeproj::XCScheme::BuildableProductRunnable.new(@sut.scheme.bundle_path, nil)
         bpr.xml_element.name.should == 'BuildableProductRunnable'

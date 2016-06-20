@@ -13,7 +13,7 @@ module Xcodeproj
       #         where the xscheme file contraining this element is saved.
       #
       attr_reader :scheme
-      
+
       # @return [String]
       #         The XML representation of the node this XMLElementWrapper wraps,
       #         formatted in the same way that Xcode would.
@@ -53,8 +53,8 @@ module Xcodeproj
       #        If the `node` parameter is a REXML::Element instance but the node's name
       #        doesn't match the one provided by the `tag_name` parameter.
       #
-      def create_xml_element_with_fallback(node, tag_name,scheme)
-        @scheme=scheme
+      def create_xml_element_with_fallback(node, tag_name, scheme)
+        @scheme = scheme
         if node && node.is_a?(REXML::Element)
           raise Informative, 'Wrong XML tag name' unless node.name == tag_name
           @xml_element = node

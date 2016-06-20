@@ -107,12 +107,12 @@ module Xcodeproj
       def construct_referenced_container_uri(target)
         project_path = target.project.path
         base = @scheme.bundle_path
-        if base == nil then
+        if base.nil?
           base = project_path
         end
         base = base.dirname
         relative_path = project_path.relative_path_from(base).to_s
-        relative_path = project_path.basename if relative_path == "."
+        relative_path = project_path.basename if relative_path == '.'
         "container:#{relative_path}"
       end
     end

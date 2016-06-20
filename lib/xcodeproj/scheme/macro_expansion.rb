@@ -11,8 +11,8 @@ module Xcodeproj
       #        or an existing XML 'MacroExpansion' node element
       #        or nil to create an empty MacroExpansion object
       #
-      def initialize(scheme,target_or_node = nil)
-        create_xml_element_with_fallback(target_or_node, 'MacroExpansion',scheme) do
+      def initialize(scheme, target_or_node = nil)
+        create_xml_element_with_fallback(target_or_node, 'MacroExpansion', scheme) do
           self.buildable_reference = BuildableReference.new(@scheme, target_or_node) if target_or_node
         end
       end

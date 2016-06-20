@@ -1,13 +1,12 @@
 require File.expand_path('../../spec_helper', __FILE__)
 require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
-
 module Xcodeproj
   describe XCScheme::BuildableReference do
     describe 'Created from scratch' do
       before do
-        @scheme=XCScheme.new
-        @scheme.setBundlePathAndName('/tmp/foo/bar/baz.xcodeproj','TestScheme')
+        @scheme = XCScheme.new
+        @scheme.set_bundle_path_and_name('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
         @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, nil)
       end
 
@@ -29,8 +28,8 @@ module Xcodeproj
           'ReferencedContainer' => 'container:baz.xcodeproj',
         }
         node.add_attributes(attributes)
-        @scheme=XCScheme.new
-        @scheme.setBundlePathAndName('/tmp/foo/bar/baz.xcodeproj','TestScheme')
+        @scheme = XCScheme.new
+        @scheme.setBundlePathAndName('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
         @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, node)
       end
 
@@ -69,8 +68,6 @@ module Xcodeproj
 
         @ref.target_name.should == 'FooLib'
         @ref.target_uuid.should == other_target.uuid
-        #print @ref.target_referenced_container
-        #container:foo/bar/baz.xcodeproj
         @ref.target_referenced_container.should == 'container:baz.xcodeproj'
         @ref.buildable_name.should == 'FooApp.app'
       end
@@ -91,7 +88,7 @@ module Xcodeproj
       before do
         @project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         @target = @project.new_target(:application, 'FooApp', :ios)
-        @scheme = Xcodeproj::XCScheme.new()
+        @scheme = Xcodeproj::XCScheme.new
         @scheme.setBundlePathAndName(@project.path, 'TestScheme')
         @scheme.add_build_target(@target)
         @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, @target)

@@ -19,8 +19,8 @@ module Xcodeproj
       #          - If an REXML::Element, it must be named 'EnvironmentVariables'
       #          - If an Array of objects or Hashes, they'll each be passed to {#assign_variable}
       #
-      def initialize(scheme,node_or_variables = nil)
-        create_xml_element_with_fallback(node_or_variables, VARIABLES_NODE,scheme) do
+      def initialize(scheme, node_or_variables = nil)
+        create_xml_element_with_fallback(node_or_variables, VARIABLES_NODE, scheme) do
           @all_variables = []
           node_or_variables.each { |var| assign_variable(var) } unless node_or_variables.nil?
         end
@@ -107,8 +107,8 @@ module Xcodeproj
       #        - If a REXML::Element, should be a <EnvironmentVariable> XML node to wrap
       #        - If a Hash, must contain keys :key and :value (Strings) and optionally :enabled (Boolean)
       #
-      def initialize(scheme,node_or_variable)
-        create_xml_element_with_fallback(node_or_variable, VARIABLE_NODE,scheme) do
+      def initialize(scheme, node_or_variable)
+        create_xml_element_with_fallback(node_or_variable, VARIABLE_NODE, scheme) do
           raise "Must pass a Hash with 'key' and 'value'!" unless node_or_variable.is_a?(Hash) &&
               node_or_variable.key?(:key) && node_or_variable.key?(:value)
 

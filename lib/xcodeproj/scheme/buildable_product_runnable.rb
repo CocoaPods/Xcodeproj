@@ -18,7 +18,7 @@ module Xcodeproj
       #        The debugging mode (usually '0')
       #
       def initialize(scheme, target_or_node = nil, runnable_debugging_mode = nil)
-        @scheme=scheme
+        @scheme = scheme
         create_xml_element_with_fallback(target_or_node, 'BuildableProductRunnable', @scheme) do
           self.buildable_reference = BuildableReference.new(@scheme, target_or_node) if target_or_node
           @xml_element.attributes['runnableDebuggingMode'] = runnable_debugging_mode.to_s if runnable_debugging_mode

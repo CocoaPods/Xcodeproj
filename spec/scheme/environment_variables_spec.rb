@@ -12,7 +12,6 @@ module Xcodeproj
   end
 
   describe XCScheme::EnvironmentVariables do
-
     describe '#initialize' do
       before do
         node = REXML::Element.new('BuildAction')
@@ -214,7 +213,6 @@ module Xcodeproj
   end
 
   describe XCScheme::EnvironmentVariable do
-
     describe '#initialize' do
       describe 'raises an initialization error nil' do
         before do

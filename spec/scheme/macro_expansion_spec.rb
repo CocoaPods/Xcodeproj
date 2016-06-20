@@ -44,7 +44,6 @@ module Xcodeproj
 
     describe 'Created from a target' do
       before do
-
         @project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
         @target = @project.new_target(:application, 'FooApp', :ios)
         @macro_exp = Xcodeproj::XCScheme::MacroExpansion.new(XCSchemeStub.new, @target)
