@@ -19,6 +19,10 @@
   [#380](https://github.com/CocoaPods/Xcodeproj/pull/380)
   [#383](https://github.com/CocoaPods/Xcodeproj/pull/383)
 
+* Add new Messages extension product types to constants.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#390](https://github.com/CocoaPods/Xcodeproj/pull/390)
+
 ##### Bug Fixes
 
 * None.  
