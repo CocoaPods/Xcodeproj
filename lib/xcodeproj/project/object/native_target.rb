@@ -437,7 +437,7 @@ module Xcodeproj
         #
         def extension_target_type?
           case symbol_type
-          when :app_extension, :watch_extension, :watch2_extension, :tv_extension
+          when :app_extension, :watch_extension, :watch2_extension, :tv_extension, :messages_extension
             true
           else
             false

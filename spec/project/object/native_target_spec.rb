@@ -597,6 +597,9 @@ module ProjectSpecs
 
           @target.stubs(:symbol_type => :tv_extension)
           @target.should.be.extension_target_type
+
+          @target.stubs(:symbol_type => :messages_extension)
+          @target.should.be.extension_target_type
         end
 
         it 'returns false for non-extension target types' do
