@@ -20,6 +20,15 @@ by performing the following command:
 
     $ [sudo] gem install xcodeproj
 
+## Quickstart
+
+To begin editing an xcodeproj file start by opening it as an Xcodeproj with:
+```
+require 'xcodeproj'
+project_path = "/your_path/your_project.xcodeproj"
+project = Xcodeproj::Project.open(project_path)
+```
+
 ## Collaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
