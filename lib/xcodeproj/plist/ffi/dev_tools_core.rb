@@ -60,6 +60,7 @@ module Xcodeproj
         end
 
         XCODE_PATH = Pathname.new(`xcrun xcode-select --print-path`.strip).dirname
+        XCODE_VERSION = Gem::Version.new(`xcodebuild -version`.split(' ')[1])
 
         def self.load_xcode_framework(framework)
           Fiddle.dlopen(XCODE_PATH.join(framework).to_s)
@@ -70,14 +71,22 @@ module Xcodeproj
         # @note The IB frameworks only seem to be necessary on Xcode 7+
         #
         def self.load_xcode_frameworks
+          is_80_or_later = XCODE_VERSION >= Gem::Version.new('8.0')
+
           DevToolsCore.silence_stderr do
             load_xcode_framework('SharedFrameworks/DVTFoundation.framework/DVTFoundation')
             load_xcode_framework('SharedFrameworks/DVTServices.framework/DVTServices')
             load_xcode_framework('SharedFrameworks/DVTPortal.framework/DVTPortal')
             load_xcode_framework('SharedFrameworks/DVTSourceControl.framework/DVTSourceControl')
-            load_xcode_framework('SharedFrameworks/CSServiceClient.framework/CSServiceClient')
+            load_xcode_framework('SharedFrameworks/CSServiceClient.framework/CSServiceClient') unless is_80_or_later
             load_xcode_framework('Frameworks/IBFoundation.framework/IBFoundation')
             load_xcode_framework('Frameworks/IBAutolayoutFoundation.framework/IBAutolayoutFoundation')
+            if is_80_or_later
+              load_xcode_framework('SharedFrameworks/DVTAnalyticsClient.framework/DVTAnalyticsClient')
+              load_xcode_framework('SharedFrameworks/DVTAnalytics.framework/DVTAnalytics')
+              load_xcode_framework('SharedFrameworks/DVTDocumentation.framework/DVTDocumentation')
+              load_xcode_framework('SharedFrameworks/SourceKit.framework/SourceKit')
+            end
             load_xcode_framework('Frameworks/IDEFoundation.framework/IDEFoundation')
             load_xcode_framework('PlugIns/Xcode3Core.ideplugin/Contents/MacOS/Xcode3Core')
           end

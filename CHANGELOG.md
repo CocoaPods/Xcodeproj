@@ -23,6 +23,11 @@
   [Boris Bügling](https://github.com/neonichu)
   [#390](https://github.com/CocoaPods/Xcodeproj/pull/390)
 
+* Fix plist serialization with Xcode 8 beta 1.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#389](https://github.com/CocoaPods/Xcodeproj/pull/389)
+
+
 ##### Bug Fixes
 
 * None.  
