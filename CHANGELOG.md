@@ -30,7 +30,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Avoid use of `activesupport` version 5 to stay compatible with macOS system Ruby.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#393](https://github.com/CocoaPods/Xcodeproj/pull/393)
 
 
 ## 1.1.0 (2016-06-01)
