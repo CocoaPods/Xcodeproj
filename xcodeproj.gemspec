@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.executables   = %w{ xcodeproj }
   s.require_paths = %w{ lib }
 
-  s.add_runtime_dependency 'activesupport', '>= 3', '< 5'
+  s.add_runtime_dependency 'activesupport', '>= 3'
   s.add_runtime_dependency 'colored',       '~> 1.2'
   s.add_runtime_dependency 'claide',        '>= 1.0.0', '< 2.0'
 
