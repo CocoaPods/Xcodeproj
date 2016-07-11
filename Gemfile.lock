@@ -4,6 +4,13 @@ GIT
   specs:
     claide (1.0.0)
 
+GIT
+  remote: https://github.com/segiddins/json.git
+  revision: a9588bc4334c2f5bf985f255b61c05eafdcd8907
+  branch: seg-1.7.7-ruby-2.2
+  specs:
+    json (1.7.7)
+
 PATH
   remote: .
   specs:
@@ -29,7 +36,6 @@ GEM
     docile (1.1.5)
     ffi (1.9.6)
     i18n (0.7.0)
-    json (1.7.7)
     kicker (3.0.0)
       listen (~> 1.3.0)
       notify (~> 0.5.2)
@@ -81,7 +87,7 @@ DEPENDENCIES
   bacon
   claide!
   codeclimate-test-reporter
-  json (= 1.7.7)
+  json!
   kicker
   mocha
   mocha-on-bacon
