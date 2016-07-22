@@ -21,6 +21,8 @@ before_install:
   # There is a bug in travis. When using system ruby, bundler is not installed
   # and causes the default install action to fail.
   - sudo gem install bundler
+  # RubyGems 2.0.14 isn't a fun time on system ruby
+  - if [ $TRAVIS_RUBY_VERSION = "system" ]; then sudo gem update --system; fi
 
 addons:
  code_climate:
