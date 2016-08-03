@@ -122,7 +122,7 @@ module Xcodeproj
       :watch2_extension     => 'com.apple.product-type.watchkit2-extension',
       :tv_extension         => 'com.apple.product-type.tv-app-extension',
       :messages_application => 'com.apple.product-type.application.messages',
-      :messages_extension   => 'com.apple.product-type.app-extensin.messages',
+      :messages_extension   => 'com.apple.product-type.app-extension.messages',
       :sticker_pack         => 'com.apple.product-type.app-extension.messages-sticker-pack',
     }.freeze
 
