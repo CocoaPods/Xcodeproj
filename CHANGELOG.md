@@ -92,7 +92,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add new Messages application product types to constants.  
+  [Ben Asher](https://github.com/benasher44)
+  [#400](https://github.com/CocoaPods/Xcodeproj/pull/400)
 
 ##### Bug Fixes
 
