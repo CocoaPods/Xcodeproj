@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add new Messages application product types to constants.  
+  [Ben Asher](https://github.com/benasher44)
+  [#400](https://github.com/CocoaPods/Xcodeproj/pull/400)
+
 * Add support for identify the host of an embedded target,
   when the embedded target belongs to a sub-project  
   [Ben Asher](https://github.com/benasher44)
