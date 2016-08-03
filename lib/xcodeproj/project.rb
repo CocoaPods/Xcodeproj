@@ -556,7 +556,7 @@ module Xcodeproj
     def host_targets_for_embedded_target(embedded_target)
       native_targets.select do |native_target|
         ((embedded_target.uuid != native_target.uuid) &&
-         (native_target.dependencies.map(&:target).map(&:uuid).include? embedded_target.uuid))
+         (native_target.dependencies.map(&:native_target_uuid).include? embedded_target.uuid))
       end
     end
 

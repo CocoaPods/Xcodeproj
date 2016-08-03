@@ -640,6 +640,27 @@ module ProjectSpecs
       end
     end
 
+    describe 'Remote embedded target relationships' do
+      before do
+        dir = Pathname(fixture_path('Sample Project'))
+        project_path = dir + 'ContainsSubproject/ContainsSubproject.xcodeproj'
+        subproject_path = dir + 'ReferencedProject/ReferencedProject.xcodeproj'
+        @project = Xcodeproj::Project.open(project_path)
+        @subproject = Xcodeproj::Project.open(subproject_path)
+      end
+
+      def subproject_target_for_target_name(name)
+        @subproject.native_targets.find do |target|
+          target.name == name
+        end
+      end
+
+      it 'identifies host of target from a sub-project' do
+        subproject_target = subproject_target_for_target_name('ReferencedProject')
+        @project.host_targets_for_embedded_target(subproject_target).map(&:name).should == ['ContainsSubproject']
+      end
+    end
+
     #-------------------------------------------------------------------------#
   end
 end

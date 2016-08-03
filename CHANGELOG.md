@@ -4,7 +4,10 @@
 
 ##### Enhancements
 
-* None.  
+* Add support for identify the host of an embedded target,
+  when the embedded target belongs to a sub-project  
+  [Ben Asher](https://github.com/benasher44)
+  [#396](https://github.com/CocoaPods/Xcodeproj/pull/396)
 
 ##### Bug Fixes
 

@@ -62,5 +62,36 @@ module ProjectSpecs
     end
 
     #----------------------------------------#
+
+    describe '#native_target_uuid' do
+      it "returns the target_proxy's remote_global_uuid_string" do
+        target = @project.new_target(:static, 'Pods', :ios)
+
+        proxy = @project.new(PBXContainerItemProxy)
+        proxy.container_portal = @project.root_object.uuid
+        proxy.remote_info = 'Pods'
+        proxy.proxy_type = '1'
+        proxy.remote_global_id_string = target.uuid
+
+        @target_dependency.target_proxy = proxy
+        @target_dependency.target_proxy.remote_global_id_string.nil?.should == false
+        @target_dependency.native_target_uuid.should == @target_dependency.target_proxy.remote_global_id_string
+      end
+
+      it "returns the target's uuid" do
+        target = @project.new_target(:static, 'Pods', :ios)
+        @target_dependency.target = target
+        @target_dependency.target.uuid.nil?.should == false
+        @target_dependency.native_target_uuid.should == @target_dependency.target.uuid
+      end
+
+      it "raises if target and target_proxy aren't set" do
+        @target_dependency.target.nil?.should == true
+        @target_dependency.target_proxy.nil?.should == true
+        should.raise do
+          @target_dependency.native_target_uuid
+        end.message.should.match /Expected target or target_proxy, from which to fetch a uuid/
+      end
+    end
   end
 end
