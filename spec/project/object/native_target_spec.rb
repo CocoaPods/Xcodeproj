@@ -605,6 +605,9 @@ module ProjectSpecs
         it 'returns false for non-extension target types' do
           @target.stubs(:symbol_type => :application)
           @target.should.not.be.extension_target_type
+
+          @target.stubs(:symbol_type => :messages_application)
+          @target.should.not.be.extension_target_type
         end
       end
 
