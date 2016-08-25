@@ -53,6 +53,7 @@ GEM
     notify (0.5.2)
     parser (2.3.0.6)
       ast (~> 2.2)
+    plist (3.2.0)
     powerpack (0.1.1)
     prettybacon (0.0.2)
       bacon (~> 1.2)
@@ -91,6 +92,7 @@ DEPENDENCIES
   kicker
   mocha
   mocha-on-bacon
+  plist
   prettybacon
   rake
   rubocop

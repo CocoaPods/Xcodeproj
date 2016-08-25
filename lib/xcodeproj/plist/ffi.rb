@@ -24,9 +24,9 @@ module Xcodeproj
                 return nil
               end
             rescue Fiddle::DLError
-              'Xcodeproj::Plist::FFI relies on a Xcode and  and CoreFoundation' \
-              'to read and write Xcode project files.'
             end
+            'Xcodeproj::Plist::FFI relies on Xcode and/or CoreFoundation' \
+            'to read and write Xcode project files.'
           rescue LoadError
             'Xcodeproj relies on a library called `fiddle` to read and write ' \
             'Xcode project files. Ensure your Ruby installation includes ' \

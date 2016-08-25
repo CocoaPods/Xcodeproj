@@ -19,6 +19,8 @@ group :development do
   gem 'codeclimate-test-reporter', :require => nil
   gem 'simplecov'
   gem 'rubocop'
+
+  gem 'plist'
 end
 
 group :debugging do

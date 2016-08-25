@@ -221,4 +221,37 @@ EOS
       end
     end
   end
+
+  describe 'Xcodeproj::PlistHelper implementation selection' do
+    describe 'Fallback implementation' do
+      extend SpecHelper::TemporaryDirectory
+
+      before do
+        Plist.implementation = nil
+        @plist = temporary_directory + 'plist'
+      end
+
+      def write_and_read_xml_plist
+        hash = { 'archiveVersion' => '1.0' }
+        Plist.write_to_path(hash, @plist)
+        result = Plist.read_from_path(@plist)
+        result.should == hash
+        @plist.read.should.include('?xml')
+      end
+
+      it 'will fallback to Plist implementation in abscence of Xcode and CF' do
+        Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
+        Plist::FFI::CoreFoundation.stubs(:image).returns(nil)
+        Plist.implementation.should == Plist::PlistGem
+        write_and_read_xml_plist
+      end
+
+      it 'will fallback to Plist implementation in if shared lib load fails' do
+        Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks) { raise Fiddle::DLError }
+        Plist::FFI::CoreFoundation.stubs(:image) { raise Fiddle::DLError }
+        Plist.implementation.should == Plist::PlistGem
+        write_and_read_xml_plist
+      end
+    end
+  end
 end
