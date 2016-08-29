@@ -36,9 +36,10 @@ module Xcodeproj
         def write_to_path(hash, path)
           raise ThreadError, 'Can only write plists from the main thread.' unless Thread.current == Thread.main
 
-          if DevToolsCore.load_xcode_frameworks && path.end_with?('pbxproj')
-            ruby_hash_write_xcode(hash, path)
-          else
+          path = File.expand_path(path)
+          success = ruby_hash_write_xcode(hash, path)
+
+          unless success
             CoreFoundation.RubyHashPropertyListWrite(hash, path)
             fix_encoding(path)
           end
@@ -96,7 +97,27 @@ module Xcodeproj
         #         The path of the file.
         #
         def ruby_hash_write_xcode(hash, path)
-          path = File.expand_path(path)
+          return false unless path.end_with?('pbxproj')
+
+          reader, writer = IO.pipe
+
+          Process.fork do
+            success = false
+            if DevToolsCore.load_xcode_frameworks
+              success = ruby_hash_write_devtoolscore(hash, path)
+            end
+            writer.write(success)
+          end
+          Process.waitall
+
+          writer.close
+          result = reader.read
+          reader.close
+
+          result == 'true'
+        end
+
+        def ruby_hash_write_devtoolscore(hash, path)
           success = true
 
           begin
@@ -111,7 +132,7 @@ module Xcodeproj
             success = false
           end
 
-          CoreFoundation.RubyHashPropertyListWrite(hash, path) unless success
+          success
         end
       end
     end
