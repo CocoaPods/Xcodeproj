@@ -208,7 +208,7 @@ module ProjectSpecs
       end
 
       it 'escapes non ASCII characters in the project' do
-        Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
+        Plist::FFI.stubs(:ruby_hash_write_xcode).returns(false)
 
         file_ref = @project.new_file('わくわく')
         file_ref.name = 'わくわく'
