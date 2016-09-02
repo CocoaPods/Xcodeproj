@@ -93,6 +93,15 @@ module ProjectSpecs
         @project.root_object.referrers.should.include?(@project)
       end
 
+      it 'initializes the root object products group also from projects that don\'t have an explicit reference' do
+        path = fixture_path('Cocoa Application Without productRefGroup.xcodeproj')
+        project = Xcodeproj::Project.open(path)
+
+        product_ref_group = project.root_object.product_ref_group
+        product_ref_group.class.should == PBXGroup
+        project.root_object.main_group.children.should.include?(product_ref_group)
+      end
+
       # It implicitly checks that all the attributes for the known ISAs.
       # Therefore, If a new isa or attribute is found it should added to the
       # sample project.
