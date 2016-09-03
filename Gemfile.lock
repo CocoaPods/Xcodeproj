@@ -22,17 +22,17 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (5.0.0.1)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+    activesupport (4.2.7.1)
       i18n (~> 0.7)
+      json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     ast (2.2.0)
     bacon (1.2.0)
     codeclimate-test-reporter (0.4.1)
       simplecov (>= 0.7.1, < 1.0.0)
     colored (1.2)
-    concurrent-ruby (1.0.2)
     docile (1.1.5)
     ffi (1.9.6)
     i18n (0.7.0)
@@ -49,7 +49,7 @@ GEM
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
-    multi_json (1.10.1)
+    multi_json (1.12.1)
     notify (0.5.2)
     parser (2.3.0.6)
       ast (~> 2.2)
@@ -84,6 +84,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 4.2)
   bacon
   claide!
   codeclimate-test-reporter
