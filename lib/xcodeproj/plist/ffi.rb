@@ -24,6 +24,8 @@ module Xcodeproj
                 return nil
               end
             rescue Fiddle::DLError
+              'Fallthrough to error which would happen if above methods' \
+              'returned nil instead of raising DLError'
             end
             'Xcodeproj::Plist::FFI relies on Xcode and/or CoreFoundation' \
             'to read and write Xcode project files.'
