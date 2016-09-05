@@ -227,8 +227,11 @@ EOS
       extend SpecHelper::TemporaryDirectory
 
       before do
-        Plist.implementation = nil
         @plist = temporary_directory + 'plist'
+      end
+
+      after do
+        Plist.implementation = Plist::FFI
       end
 
       def write_and_read_xml_plist
@@ -240,6 +243,7 @@ EOS
       end
 
       it 'will fallback to Plist implementation in abscence of Xcode and CF' do
+        Plist.implementation = nil
         Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Plist::FFI::CoreFoundation.stubs(:image).returns(nil)
         Plist.implementation.should == Plist::PlistGem
@@ -247,6 +251,7 @@ EOS
       end
 
       it 'will fallback to Plist implementation in if shared lib load fails' do
+        Plist.implementation = nil
         Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks) { raise Fiddle::DLError }
         Plist::FFI::CoreFoundation.stubs(:image) { raise Fiddle::DLError }
         Plist.implementation.should == Plist::PlistGem
