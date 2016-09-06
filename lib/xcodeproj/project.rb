@@ -216,6 +216,7 @@ module Xcodeproj
       if object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION
         raise '[Xcodeproj] Unknown object version.'
       end
+      root_object.product_ref_group = root_object.main_group['Products'] || root_object.main_group.new_group('Products')
     end
 
     public
