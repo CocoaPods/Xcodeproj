@@ -5,14 +5,11 @@ module Xcodeproj
     module FFI
       module DevToolsCore
         def self.silence_stderr
-          begin
-            orig_stderr = $stderr.clone
-            $stderr.reopen File.new('/dev/null', 'w')
-            retval = yield
-          ensure
-            $stderr.reopen orig_stderr
-          end
-          retval
+          orig_stderr = $stderr.clone
+          $stderr.reopen File.new('/dev/null', 'w')
+          yield
+        ensure
+          $stderr.reopen orig_stderr
         end
 
         # rubocop:disable Style/MethodName
