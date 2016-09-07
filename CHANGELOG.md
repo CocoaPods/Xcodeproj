@@ -8,7 +8,10 @@
 
 ##### Bug Fixes
 
-* None.  
+* Bump last known object version to support Xcode 8.0.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#412](https://github.com/CocoaPods/Xcodeproj/issues/412)
+  [#414](https://github.com/CocoaPods/Xcodeproj/pull/414)
 
 
 ## 1.3.0 (2016-09-02)
