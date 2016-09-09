@@ -1,5 +1,35 @@
 module Xcodeproj
   module Plist
+    module Extensions
+      # Since Xcode 8 beta 4, calling `PBXProject.projectWithFile` does break subsequent calls to
+      # `chdir`. While sounding ridiculous, this is unfortunately true and debugging it from the
+      # userland side showed no difference at all to successful calls to `chdir`, but the working
+      # directory is simply not changed in the end. This workaround is even more absurd, monkey
+      # patching all calls to `chdir` to use `__pthread_chdir` which does appear to work just fine.
+      module Dir
+        def self.chdir(path)
+          old_dir = Dir.getwd
+          res = actually_chdir(path)
+
+          if block_given?
+            begin
+              return yield
+            ensure
+              actually_chdir(old_dir)
+            end
+          end
+
+          res
+        end
+
+        def self.actually_chdir(path)
+          libc = Fiddle.dlopen '/usr/lib/libc.dylib'
+          f = Fiddle::Function.new(libc['__pthread_chdir'], [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+          f.call(path.to_s)
+        end
+      end
+    end
+
     # Provides support for loading and serializing property list files via
     # Fiddle and CoreFoundation / Xcode.
     #
@@ -37,7 +67,9 @@ module Xcodeproj
           raise ThreadError, 'Can only write plists from the main thread.' unless Thread.current == Thread.main
 
           path = File.expand_path(path)
-          success = ruby_hash_write_xcode(hash, path)
+
+          should_fork = ENV['FORK_XCODE_WRITING'] == true
+          success = ruby_hash_write_xcode(hash, path, should_fork)
 
           unless success
             CoreFoundation.RubyHashPropertyListWrite(hash, path)
@@ -96,10 +128,11 @@ module Xcodeproj
         # @param  [String] path
         #         The path of the file.
         #
-        def ruby_hash_write_xcode(hash, path)
+        def ruby_hash_write_xcode(hash, path, should_fork)
           return false unless path.end_with?('pbxproj')
-          require 'open3'
-          _output, status = Open3.capture2e(Gem.ruby, '-e', <<-RUBY, path, :stdin_data => Marshal.dump(hash))
+          if should_fork
+            require 'open3'
+            _output, status = Open3.capture2e(Gem.ruby, '-e', <<-RUBY, path, :stdin_data => Marshal.dump(hash))
             $LOAD_PATH.replace #{$LOAD_PATH}
             path = ARGV.first
             hash = Marshal.load(STDIN)
@@ -108,8 +141,15 @@ module Xcodeproj
             ffi = Xcodeproj::Plist::FFI
             success = ffi::DevToolsCore.load_xcode_frameworks && ffi.send(:ruby_hash_write_devtoolscore, hash, path)
             exit(success ? 0 : 1)
-          RUBY
-          status.success?
+            RUBY
+
+            status.success?
+          else
+            monkey_patch_chdir
+            success = DevToolsCore.load_xcode_frameworks && ruby_hash_write_devtoolscore(hash, path)
+
+            success
+          end
         end
 
         def ruby_hash_write_devtoolscore(hash, path)
@@ -128,6 +168,10 @@ module Xcodeproj
           end
 
           success
+        end
+
+        def monkey_patch_chdir
+          Dir.include Extensions::Dir
         end
       end
     end
