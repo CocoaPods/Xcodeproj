@@ -171,7 +171,7 @@ module Xcodeproj
         end
 
         def monkey_patch_chdir
-          Dir.include Extensions::Dir
+          Dir.send(:include, Extensions::Dir)
         end
       end
     end
