@@ -1,5 +1,16 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
 ## 1.3.1 (2016-09-10)
 
 ##### Enhancements
