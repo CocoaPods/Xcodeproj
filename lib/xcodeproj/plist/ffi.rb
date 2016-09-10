@@ -1,11 +1,11 @@
 module Xcodeproj
   module Plist
     module Extensions
-      # Since Xcode 8 beta 4, calling `PBXProject.projectWithFile` does break subsequent calls to
+      # Since Xcode 8 beta 4, calling `PBXProject.projectWithFile` breaks subsequent calls to
       # `chdir`. While sounding ridiculous, this is unfortunately true and debugging it from the
       # userland side showed no difference at all to successful calls to `chdir`, but the working
       # directory is simply not changed in the end. This workaround is even more absurd, monkey
-      # patching all calls to `chdir` to use `__pthread_chdir` which does appear to work just fine.
+      # patching all calls to `chdir` to use `__pthread_chdir` which appears to work.
       module Dir
         def self.chdir(path)
           old_dir = Dir.getwd
