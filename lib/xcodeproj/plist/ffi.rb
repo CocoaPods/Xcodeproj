@@ -68,7 +68,7 @@ module Xcodeproj
 
           path = File.expand_path(path)
 
-          should_fork = ENV['FORK_XCODE_WRITING'] == true
+          should_fork = ENV['FORK_XCODE_WRITING']
           success = ruby_hash_write_xcode(hash, path, should_fork)
 
           unless success
