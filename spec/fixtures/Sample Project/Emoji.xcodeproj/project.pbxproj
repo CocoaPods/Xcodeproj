@@ -152,8 +152,7 @@
 			outputFiles = (
 				"${INPUT_FILE_BASE}.css.c",
 			);
-			script = "test
-";
+			script = "test\n";
 		};
 		E552E0F916263968003ED1FE /* PBXBuildRule */ = {
 			isa = PBXBuildRule;

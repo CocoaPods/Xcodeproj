@@ -79,13 +79,36 @@ module Xcodeproj
         # @return [AbstractObject]
         #
         def proxied_object
+          container_portal_object.objects_by_uuid[remote_global_id_string]
+        end
+
+        def container_portal_object
           if remote?
             container_portal_file_ref = project.objects_by_uuid[container_portal]
-            container_portal_object = Project.open(container_portal_file_ref.real_path)
+            Project.open(container_portal_file_ref.real_path)
           else
-            container_portal_object = project
+            project
           end
-          container_portal_object.objects_by_uuid[remote_global_id_string]
+        end
+
+        def container_portal_annotation
+          if remote?
+            " #{File.basename(project.objects_by_uuid[container_portal].real_path)} "
+          else
+            project.root_object.ascii_plist_annotation
+          end
+        end
+
+        def to_hash_as(method = :to_hash)
+          hash = super
+          if method == :to_ascii_plist
+            hash['containerPortal'] = AsciiPlist::String.new(container_portal, container_portal_annotation)
+          end
+          hash
+        end
+
+        def ascii_plist_annotation
+          " #{isa} "
         end
       end
     end

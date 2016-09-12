@@ -237,24 +237,33 @@ module ProjectSpecs
 
       it 'can open a project and save it without altering any information' do
         plist = Plist.read_from_path(@path + 'project.pbxproj')
+        @project.mark_dirty!
         @project.save(@tmp_path)
         project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
         Plist.read_from_path(project_file).should == plist
       end
 
-      it 'escapes non ASCII characters in the project' do
-        Plist::FFI.stubs(:ruby_hash_write_xcode).returns(false)
+      it 'can open a project and save it without causing a diff' do
+        @project.mark_dirty!
+        @project.save(@tmp_path)
+        project_file = (temporary_directory + 'Pods.xcodeproj/project.pbxproj')
 
+        begin
+          File.read(project_file).should == File.read(@path + 'project.pbxproj')
+        rescue Bacon::Error => e
+          raise e.exception(`diff #{project_file.to_s.dump} #{@path.+('project.pbxproj').to_s.dump}`)
+        end
+      end
+
+      it 'saves non ASCII characters in the project' do
         file_ref = @project.new_file('わくわく')
         file_ref.name = 'わくわく'
         file_ref = @project.new_file('Cédric')
         file_ref.name = 'Cédric'
         @project.save(@tmp_path)
         contents = File.read(@tmp_path + 'project.pbxproj')
-        contents.should.not.include('わくわく')
-        contents.should.include('&#12431;&#12367;&#12431;&#12367;')
-        contents.should.not.include('Cédric')
-        contents.should.include('C&#233;dric')
+        contents.should.include('わくわく')
+        contents.should.include('Cédric')
       end
     end
 

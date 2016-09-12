@@ -5,6 +5,12 @@ GIT
     claide (1.0.1)
 
 GIT
+  remote: https://github.com/DanToml/ascii_plist.git
+  revision: be70c48fbff74de9f2669e61a21f35299d732e71
+  specs:
+    ascii_plist (0.1.0)
+
+GIT
   remote: https://github.com/segiddins/json.git
   revision: a9588bc4334c2f5bf985f255b61c05eafdcd8907
   branch: seg-1.7.7-ruby-2.2
@@ -16,8 +22,10 @@ PATH
   specs:
     xcodeproj (1.3.3)
       activesupport (>= 3)
+      ascii_plist (~> 0.1.0)
       claide (>= 1.0.1, < 2.0)
       colored (~> 1.2)
+      plist (~> 3.2)
 
 GEM
   remote: http://rubygems.org/
@@ -53,6 +61,7 @@ GEM
     notify (0.5.2)
     parser (2.3.0.6)
       ast (~> 2.2)
+    plist (3.2.0)
     powerpack (0.1.1)
     prettybacon (0.0.2)
       bacon (~> 1.2)
@@ -85,6 +94,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 4.2)
+  ascii_plist!
   bacon
   claide!
   codeclimate-test-reporter
@@ -99,4 +109,4 @@ DEPENDENCIES
   xcodeproj!
 
 BUNDLED WITH
-   1.12.5
+   1.13.3

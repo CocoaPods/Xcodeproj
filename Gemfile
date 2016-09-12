@@ -9,6 +9,8 @@ gem 'claide', :git => 'https://github.com/CocoaPods/CLAide'
 # so we use a fork that makes a trivial change to a macro invocation.
 gem 'json', :git => 'https://github.com/segiddins/json.git', :branch => 'seg-1.7.7-ruby-2.2'
 
+gem 'ascii_plist', :git => 'https://github.com/DanToml/ascii_plist.git'
+
 gem 'activesupport', '~> 4.2'
 
 group :development do

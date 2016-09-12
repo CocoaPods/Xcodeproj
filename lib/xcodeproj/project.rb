@@ -277,6 +277,24 @@ module Xcodeproj
       plist
     end
 
+    def to_ascii_plist
+      plist = {}
+      objects_dictionary = {}
+      objects
+        .sort_by { |o| [o.isa, o.uuid] }
+        .each do |obj|
+          key = AsciiPlist::String.new(obj.uuid, obj.ascii_plist_annotation)
+          value = obj.to_ascii_plist.tap { |a| a.annotation = nil }
+          objects_dictionary[key] = value
+        end
+      plist['archiveVersion'] =  archive_version.to_s
+      plist['classes']        =  classes
+      plist['objectVersion']  =  object_version.to_s
+      plist['objects']        =  objects_dictionary
+      plist['rootObject']     =  AsciiPlist::String.new(root_object.uuid, root_object.ascii_plist_annotation)
+      AsciiPlist::Plist.new.tap { |p| p.root_object = plist }
+    end
+
     # Converts the objects tree to a hash substituting the hash
     # of the referenced to their UUID reference. As a consequence the hash of
     # an object might appear multiple times and the information about their
@@ -332,7 +350,7 @@ module Xcodeproj
       @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
-      Plist.write_to_path(to_hash, file)
+      File.open(file, 'w') { |f| AsciiPlist::XcodeProjectWriter.new(to_ascii_plist, true, f).write }
     end
 
     # Marks the project as dirty, that is, modified from what is on disk.

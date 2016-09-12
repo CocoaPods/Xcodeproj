@@ -117,10 +117,14 @@ module Xcodeproj
         each do |key, obj|
           if obj
             plist_key = Object::CaseConverter.convert_to_plist(key, nil)
-            result[plist_key] = obj.uuid
+            result[plist_key] = AsciiPlist::String.new(obj.uuid, obj.ascii_plist_annotation)
           end
         end
         result
+      end
+
+      def to_ascii_plist
+        to_hash
       end
 
       # @return [Hash<String => String>] Returns a cascade representation of

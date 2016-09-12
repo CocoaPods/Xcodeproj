@@ -373,6 +373,10 @@ module Xcodeproj
         #       array.
         #
         def to_hash
+          to_hash_as
+        end
+
+        def to_hash_as(method = :to_hash)
           plist = {}
           plist['isa'] = isa
 
@@ -383,20 +387,38 @@ module Xcodeproj
 
           to_one_attributes.each do |attrb|
             obj = attrb.get_value(self)
-            plist[attrb.plist_name] = obj.uuid if obj
+            plist[attrb.plist_name] = nested_object_for_hash(obj, method) if obj
           end
 
           to_many_attributes.each do |attrb|
             list = attrb.get_value(self)
-            plist[attrb.plist_name] = list.uuids
+            plist[attrb.plist_name] = list.map { |o| nested_object_for_hash(o, method) }
           end
 
           references_by_keys_attributes.each do |attrb|
             list = attrb.get_value(self)
-            plist[attrb.plist_name] = list.map(&:to_hash)
+            plist[attrb.plist_name] = list.map(&method)
           end
 
           plist
+        end
+        private :to_hash_as
+
+        def nested_object_for_hash(object, method)
+          case method
+          when :to_ascii_plist
+            AsciiPlist::String.new(object.uuid, object.ascii_plist_annotation)
+          else
+            object.uuid
+          end
+        end
+
+        def ascii_plist_annotation
+          " #{display_name} "
+        end
+
+        def to_ascii_plist
+          AsciiPlist::Dictionary.new(to_hash_as(:to_ascii_plist), ascii_plist_annotation)
         end
 
         # Returns a cascade representation of the object without UUIDs.

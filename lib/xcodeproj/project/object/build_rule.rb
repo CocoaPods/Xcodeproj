@@ -80,6 +80,10 @@ module Xcodeproj
         def output_files_and_flags
           (output_files || []).zip(output_files_compiler_flags || [])
         end
+
+        def ascii_plist_annotation
+          " #{isa} "
+        end
       end
     end
   end

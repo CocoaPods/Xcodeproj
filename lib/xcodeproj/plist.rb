@@ -1,3 +1,6 @@
+autoload :Plist, 'plist'
+autoload :AsciiPlist, 'ascii_plist'
+
 module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
@@ -16,10 +19,16 @@ module Xcodeproj
       unless File.exist?(path)
         raise Informative, "The plist file at path `#{path}` doesn't exist."
       end
-      if file_in_conflict?(path)
+      contents = File.read(path)
+      if file_in_conflict?(contents)
         raise Informative, "The file `#{path}` is in a merge conflict."
       end
-      implementation.read_from_path(path)
+      case AsciiPlist::Reader.plist_type(contents)
+      when :xml
+        ::Plist.parse_xml(contents)
+      else
+        AsciiPlist::Reader.new(contents).parse!.as_ruby
+      end
     end
 
     # Serializes a hash as an XML property list file.
@@ -43,7 +52,8 @@ module Xcodeproj
       end
       path = path.to_s
       raise IOError, 'Empty path.' if path.empty?
-      implementation.write_to_path(hash, path)
+
+      ::Plist::Emit.save_plist(hash, path)
     end
 
     # The known modules that can serialize plists.
@@ -80,10 +90,10 @@ module Xcodeproj
     # @return [Bool] Checks whether there are merge conflicts in the file.
     #
     # @param  [#to_s] path
-    #         The path of the file.
+    #         The contents of the file.
     #
-    def self.file_in_conflict?(path)
-      File.read(path).match(/^(<|=|>){7}/)
+    def self.file_in_conflict?(contents)
+      contents.match(/^(<|=|>){7}/)
     end
   end
 end

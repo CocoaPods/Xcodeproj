@@ -90,7 +90,16 @@ module Xcodeproj
           end
         end
 
+        def target
+          return project.root_object if project.build_configuration_list.uuid == uuid
+          project.targets.find { |t| t.build_configuration_list.uuid == uuid }
+        end
+
         #---------------------------------------------------------------------#
+
+        def ascii_plist_annotation
+          " Build configuration list for #{target.isa} \"#{target}\" "
+        end
       end
     end
   end
