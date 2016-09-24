@@ -143,10 +143,8 @@ module Xcodeproj
 
         def monkey_patch_chdir
           require 'xcodeproj/plist/ffi/chdir_override'
-          Dir.class_eval do
-            class << Dir
-              alias_method :chdir, :cp_chdir
-            end
+          class << Dir
+            alias_method :chdir, :cp_chdir
           end
         end
       end
