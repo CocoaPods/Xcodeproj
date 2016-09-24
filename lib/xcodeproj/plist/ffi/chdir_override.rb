@@ -6,13 +6,13 @@
 class Dir
   def self.cp_chdir(path)
     old_dir = Dir.getwd
-    res = actually_chdir(path)
+    res = cp_actually_chdir(path)
 
     if block_given?
       begin
         return yield
       ensure
-        actually_chdir(old_dir)
+        cp_actually_chdir(old_dir)
       end
     end
 
