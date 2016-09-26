@@ -87,6 +87,15 @@ module ProjectSpecs
         @project = Xcodeproj::Project.open(@path)
       end
 
+      it 'does not break the chdir system call' do
+        require 'pathname'
+        Dir.mktmpdir do |dir|
+          Dir.chdir(dir) do
+            Pathname(dir).realpath.to_s.should == Dir.getwd
+          end
+        end
+      end
+
       it 'sets itself as the owner of the root object' do
         # The root object might be referenced by other objects like
         # the PBXContainerItemProxy

@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Cover more cases of the Dir.chdir breakages.  
+  [Danielle Tomlinson](https://github.com/dantoml)
+  [#421](https://github.com/CocoaPods/Xcodeproj/pull/421)
 
 
 ## 1.3.1 (2016-09-10)
