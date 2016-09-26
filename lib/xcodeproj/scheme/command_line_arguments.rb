@@ -40,10 +40,14 @@ module Xcodeproj
       #         The new set of command line arguments after addition
       #
       def assign_argument(argument)
-        env_var = argument.is_a?(CommandLineArgument) ? argument : CommandLineArgument.new(argument)
-        all_arguments.each { |existing_var| remove_argument(existing_var) if existing_var.argument == env_var.argument }
-        @xml_element.add_element(env_var.xml_element)
-        @all_arguments << env_var
+        command_line_arg = if argument.is_a?(CommandLineArgument)
+                             argument
+                           else
+                             CommandLineArgument.new(argument)
+                           end
+        all_arguments.each { |existing_var| remove_argument(existing_var) if existing_var.argument == command_line_arg.argument }
+        @xml_element.add_element(command_line_arg.xml_element)
+        @all_arguments << command_line_arg
       end
 
       # Removes a specified argument (by string or object) from the set of command line arguments
@@ -54,10 +58,14 @@ module Xcodeproj
       #         The new set of command line arguments after removal
       #
       def remove_argument(argument)
-        env_var = argument.is_a?(CommandLineArgument) ? argument : all_arguments.find { |var| var.argument == argument }
-        raise "Unexpected parameter type: #{env_var.class}" unless env_var.is_a?(CommandLineArgument)
-        @xml_element.delete_element(env_var.xml_element)
-        @all_arguments -= [env_var]
+        command_line_arg = if argument.is_a?(CommandLineArgument)
+                             argument
+                           else
+                             CommandLineArgument.new(argument)
+                           end
+        raise "Unexpected parameter type: #{command_line_arg.class}" unless command_line_arg.is_a?(CommandLineArgument)
+        @xml_element.delete_element(command_line_arg.xml_element)
+        @all_arguments -= [command_line_arg]
       end
 
       # @param [String] key
@@ -93,7 +101,7 @@ module Xcodeproj
 
     # This class wraps the CommandLineArgument node of a .xcscheme XML file.
     # Environment arguments are accessible via the NSDictionary returned from
-    # [[NSProcessInfo processInfo] environment] in your app code.
+    # [[NSProcessInfo processInfo] arguments] in your app code.
     #
     class CommandLineArgument < XMLElementWrapper
       # @param [nil,REXML::Element,Hash{Symbol => String,Bool}] node_or_argument
