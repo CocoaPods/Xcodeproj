@@ -7,7 +7,7 @@ module Xcodeproj
         If no `PROJECT' is specified then the current work directory is searched for one.
       eos
 
-      self.summary = 'Sorts the give project.'
+      self.summary = 'Sorts the given project.'
 
       self.arguments = [
         CLAide::Argument.new('PROJECT', false),
