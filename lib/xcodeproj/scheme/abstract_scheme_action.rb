@@ -1,4 +1,6 @@
 require 'xcodeproj/scheme/xml_element_wrapper'
+require 'xcodeproj/scheme/environment_variables'
+require 'xcodeproj/scheme/command_line_arguments'
 
 module Xcodeproj
   class XCScheme

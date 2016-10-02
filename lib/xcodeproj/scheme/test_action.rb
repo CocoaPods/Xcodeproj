@@ -1,5 +1,4 @@
 require 'xcodeproj/scheme/abstract_scheme_action'
-require 'xcodeproj/scheme/environment_variables'
 
 module Xcodeproj
   class XCScheme
