@@ -406,14 +406,14 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
         end
 
         it 'uses the last known tvOS SDK version if none is specified in the target' do
           @target.build_configuration_list.set_setting('SDKROOT', 'appletvos')
           @target.add_system_framework('TVServices')
           file = @project['Frameworks/tvOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
+          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do
