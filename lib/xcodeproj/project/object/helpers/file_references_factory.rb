@@ -132,7 +132,7 @@ module Xcodeproj
             GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
             ref.version_group_type = 'wrapper.xcdatamodel'
 
-            real_path = group.real_path.join(path) 
+            real_path = group.real_path.join(path)
             current_version_name = nil
             if real_path.exist?
               real_path.children.each do |child_path|
