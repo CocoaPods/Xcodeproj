@@ -4,17 +4,17 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '9.3'
+    LAST_KNOWN_IOS_SDK = '10.0'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK = '10.11'
+    LAST_KNOWN_OSX_SDK = '10.12'
 
     # @return [String] The last known tvOS SDK (stable).
-    LAST_KNOWN_TVOS_SDK = '9.2'
+    LAST_KNOWN_TVOS_SDK = '10.0'
 
     # @return [String] The last known watchOS SDK (stable).
-    LAST_KNOWN_WATCHOS_SDK = '2.2'
+    LAST_KNOWN_WATCHOS_SDK = '3.0'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -124,6 +124,7 @@ module Xcodeproj
       :messages_application => 'com.apple.product-type.application.messages',
       :messages_extension   => 'com.apple.product-type.app-extension.messages',
       :sticker_pack         => 'com.apple.product-type.app-extension.messages-sticker-pack',
+      :xpc_service          => 'com.apple.product-type.xpc-service',
     }.freeze
 
     # @return [Hash] The extensions or the various product UTIs.
