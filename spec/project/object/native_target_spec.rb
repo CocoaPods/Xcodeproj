@@ -26,9 +26,9 @@ module ProjectSpecs
 
       it 'uses default Release build configuration build settings for custom build configurations when adding a target' do
         @project.add_build_configuration('App Store', :release)
-        target = @project.new_target(:static_library, 'Pods', :ios, '9.0', @project.products_group)
+        target = @project.new_target(:static_library, 'Pods', :ios, '10.0', @project.products_group)
 
-        release_settings = Xcodeproj::Project::ProjectHelper.common_build_settings(:release, :ios, '9.0', :static_library)
+        release_settings = Xcodeproj::Project::ProjectHelper.common_build_settings(:release, :ios, '10.0', :static_library)
         target.build_settings('App Store').should == release_settings
       end
     end
@@ -391,7 +391,7 @@ module ProjectSpecs
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/QuartzCore.framework'
+          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/QuartzCore.framework'
           file.source_tree.should == 'DEVELOPER_DIR'
         end
 
@@ -406,14 +406,14 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('SDKROOT', 'iphoneos')
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
+          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_IOS_SDK
         end
 
         it 'uses the last known tvOS SDK version if none is specified in the target' do
           @target.build_configuration_list.set_setting('SDKROOT', 'appletvos')
           @target.add_system_framework('TVServices')
           file = @project['Frameworks/tvOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
+          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do
