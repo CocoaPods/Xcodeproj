@@ -218,9 +218,7 @@ module Xcodeproj
       end
 
       # Projects can have product_ref_groups that are not listed in the main_groups["Products"]
-      if root_object.product_ref_group.nil?
-        root_object.product_ref_group = root_object.main_group['Products'] || root_object.main_group.new_group('Products')
-      end
+      root_object.product_ref_group ||= root_object.main_group['Products'] || root_object.main_group.new_group('Products')
     end
 
     public
