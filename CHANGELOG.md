@@ -8,8 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Fix regression resulting in projecs existing product ref groups being altered
+  [Rashin Arab](https://github.com/rasharab)
+  [#429](https://github.com/CocoaPods/Xcodeproj/pull/429)
 
 ## 1.3.2 (2016-10-10)
 
