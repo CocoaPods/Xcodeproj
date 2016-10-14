@@ -102,6 +102,17 @@ module ProjectSpecs
         @project.root_object.referrers.should.include?(@project)
       end
 
+      it 'does not initialize the root object products group for projects that already have a root project group' do
+        expected_product_ref_group_uuid = 'D5DE4A8C17D611E20001B687'
+        path = fixture_path('Cocoa Application With productRefGroup.xcodeproj')
+        project = Xcodeproj::Project.open(path)
+
+        product_ref_group = project.root_object.product_ref_group
+        product_ref_group.should.not.nil?
+        product_ref_group.uuid.should == expected_product_ref_group_uuid
+        product_ref_group.class.should == PBXGroup
+      end
+
       it 'initializes the root object products group also from projects that don\'t have an explicit reference' do
         path = fixture_path('Cocoa Application Without productRefGroup.xcodeproj')
         project = Xcodeproj::Project.open(path)
