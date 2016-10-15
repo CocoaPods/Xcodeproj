@@ -5,9 +5,6 @@ module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
   module Plist
-    autoload :FFI, 'xcodeproj/plist/ffi'
-    autoload :PlistGem, 'xcodeproj/plist/plist_gem'
-
     # @return [Hash] Returns the native objects loaded from a property list
     #         file.
     #
@@ -58,33 +55,21 @@ module Xcodeproj
 
     # The known modules that can serialize plists.
     #
-    KNOWN_IMPLEMENTATIONS = [:FFI, :PlistGem]
+    KNOWN_IMPLEMENTATIONS = []
 
     class << self
-      # @return The module used to implement plist serialization.
+      # @deprecated This method will be removed in 2.0
+      #
+      # @return [Nil]
       #
       attr_accessor :implementation
-      def implementation
-        @implementation ||= autoload_implementation
-      end
     end
 
-    # Attempts to autoload a known plist implementation.
+    # @deprecated This method will be removed in 2.0
     #
-    # @return a successfully loaded plist serialization implementation.
+    # @return [Nil]
     #
     def self.autoload_implementation
-      failures = KNOWN_IMPLEMENTATIONS.map do |impl|
-        begin
-          impl = Plist.const_get(impl)
-          failure = impl.attempt_to_load!
-          return impl if failure.nil?
-          failure
-        rescue NameError, LoadError => e
-          e.message
-        end
-      end.compact
-      raise Informative, "Unable to load a plist implementation:\n\n#{failures.join("\n\n")}"
     end
 
     # @return [Bool] Checks whether there are merge conflicts in the file.

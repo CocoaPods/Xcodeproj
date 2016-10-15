@@ -5,7 +5,6 @@ require File.expand_path('../spec_helper', __FILE__)
 module ProjectSpecs
   describe 'Xcodeproj::PlistHelper' do
     before do
-      Plist.implementation = Plist::FFI
       @plist = temporary_directory + 'plist'
     end
 
@@ -14,7 +13,6 @@ module ProjectSpecs
 
       it 'writes an XML plist file' do
         hash = { 'archiveVersion' => '1.0' }
-        Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Plist.write_to_path(hash, @plist)
         result = Plist.read_from_path(@plist)
         result.should == hash
@@ -41,7 +39,6 @@ module ProjectSpecs
         PLIST
 
         hash = { 'archiveVersion' => '1.0' }
-        Plist::FFI::DevToolsCore.stubs(:load_xcode_frameworks).returns(nil)
         Plist.write_to_path(hash, @plist)
         @plist.read.should == output
       end
