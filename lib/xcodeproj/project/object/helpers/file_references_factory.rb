@@ -132,13 +132,14 @@ module Xcodeproj
             GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
             ref.version_group_type = 'wrapper.xcdatamodel'
 
+            real_path = group.real_path.join(path)
             current_version_name = nil
-            if path.exist?
-              path.children.each do |child_path|
+            if real_path.exist?
+              real_path.children.each do |child_path|
                 if File.extname(child_path) == '.xcdatamodel'
                   new_file_reference(ref, child_path, :group)
                 elsif File.basename(child_path) == '.xccurrentversion'
-                  full_path = path + File.basename(child_path)
+                  full_path = real_path + File.basename(child_path)
                   xccurrentversion = Plist.read_from_path(full_path)
                   current_version_name = xccurrentversion['_XCCurrentVersionName']
                 end

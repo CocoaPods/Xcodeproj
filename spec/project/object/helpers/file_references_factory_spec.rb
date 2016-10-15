@@ -170,6 +170,20 @@ module ProjectSpecs
         ref.current_version.source_tree.should == '<group>'
         @group.children.should.include(ref)
       end
+
+      it 'resolves path to models in subfolders' do
+        group_path = fixture_path('CoreData')
+        group = @group.new_group('CoreData', group_path)
+
+        path = 'VersionedModel.xcdatamodeld'
+        ref = @factory.send(:new_xcdatamodeld, group, path, :group)
+
+        ref.current_version.isa.should == 'PBXFileReference'
+        ref.current_version.path.should.include 'VersionedModel 2.xcdatamodel'
+        ref.current_version.last_known_file_type.should == 'wrapper.xcdatamodel'
+        ref.current_version.source_tree.should == '<group>'
+        group.children.should.include(ref)
+      end
     end
 
     #-------------------------------------------------------------------------#
