@@ -77,18 +77,82 @@ module ProjectSpecs
         @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
       end
 
-      it 'transforms string search paths to arrays' do
+      it 'transforms values with multiple values to arrays' do
         @configuration.build_settings = {
-          'FRAMEWORK_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
-          'HEADER_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
-          'LIBRARY_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
+          'ALTERNATE_PERMISSIONS_FILES' => 'a $(inherited) \'bc\' "de fg"',
+          'ARCHS' => 'a $(inherited) \'bc\' "de fg"',
+          'BUILD_VARIANTS' => 'a $(inherited) \'bc\' "de fg"',
+          'EXCLUDED_SOURCE_FILE_NAMES' => 'a $(inherited) \'bc\' "de fg"',
+          'FRAMEWORK_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'a $(inherited) \'bc\' "de fg"',
+          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => 'a $(inherited) \'bc\' "de fg"',
+          'HEADER_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => 'a $(inherited) \'bc\' "de fg"',
+          'LIBRARY_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+          'OTHER_CFLAGS' => 'a $(inherited) \'bc\' "de fg"',
+          'OTHER_CPLUSPLUSFLAGS' => 'a $(inherited) \'bc\' "de fg"',
+          'OTHER_LDFLAGS' => 'a $(inherited) \'bc\' "de fg"',
+
+          'BLARG_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
         }
         @configuration.to_hash.should == {
           'isa' => 'XCBuildConfiguration',
           'buildSettings' => {
-            'FRAMEWORK_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
-            'HEADER_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
-            'LIBRARY_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
+            'ALTERNATE_PERMISSIONS_FILES' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'ARCHS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'BUILD_VARIANTS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'EXCLUDED_SOURCE_FILE_NAMES' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'FRAMEWORK_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'GCC_PREPROCESSOR_DEFINITIONS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'HEADER_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'LIBRARY_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'OTHER_CFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'OTHER_CPLUSPLUSFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'OTHER_LDFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
+
+            'BLARG_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+          },
+        }
+      end
+
+      it 'keeps values with a single value as a string' do
+        @configuration.build_settings = {
+          'ALTERNATE_PERMISSIONS_FILES' => '"abcd"',
+          'ARCHS' => '"abcd"',
+          'BUILD_VARIANTS' => '"abcd"',
+          'EXCLUDED_SOURCE_FILE_NAMES' => '"abcd"',
+          'FRAMEWORK_SEARCH_PATHS' => '"abcd"',
+          'GCC_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => '"abcd"',
+          'HEADER_SEARCH_PATHS' => '"abcd"',
+          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+          'LIBRARY_SEARCH_PATHS' => '"abcd"',
+          'OTHER_CFLAGS' => '"abcd"',
+          'OTHER_CPLUSPLUSFLAGS' => '"abcd"',
+          'OTHER_LDFLAGS' => '"abcd"',
+
+          'BLARG_SEARCH_PATHS' => '"abcd"',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'ALTERNATE_PERMISSIONS_FILES' => '"abcd"',
+            'ARCHS' => '"abcd"',
+            'BUILD_VARIANTS' => '"abcd"',
+            'EXCLUDED_SOURCE_FILE_NAMES' => '"abcd"',
+            'FRAMEWORK_SEARCH_PATHS' => '"abcd"',
+            'GCC_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => '"abcd"',
+            'HEADER_SEARCH_PATHS' => '"abcd"',
+            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+            'LIBRARY_SEARCH_PATHS' => '"abcd"',
+            'OTHER_CFLAGS' => '"abcd"',
+            'OTHER_CPLUSPLUSFLAGS' => '"abcd"',
+            'OTHER_LDFLAGS' => '"abcd"',
+
+            'BLARG_SEARCH_PATHS' => '"abcd"',
           },
         }
       end

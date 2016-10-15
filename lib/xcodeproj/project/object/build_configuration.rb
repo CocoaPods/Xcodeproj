@@ -42,7 +42,7 @@ module Xcodeproj
 
         def to_hash_as(method = :to_hash)
           super.tap do |hash|
-            normalize_search_paths(hash['buildSettings'])
+            normalize_array_settings(hash['buildSettings'])
           end
         end
 
@@ -82,16 +82,32 @@ module Xcodeproj
           sorted
         end
 
-        def normalize_search_paths(settings)
+        def normalize_array_settings(settings)
           return unless settings
           # yes, they are case-sensitive.
           # no, Xcode doesn't do this for other PathList settings nor other
           # settings ending in SEARCH_PATHS.
-          keys = %w(FRAMEWORK_SEARCH_PATHS HEADER_SEARCH_PATHS LIBRARY_SEARCH_PATHS)
+          keys = %w(
+            ALTERNATE_PERMISSIONS_FILES
+            ARCHS
+            BUILD_VARIANTS
+            EXCLUDED_SOURCE_FILE_NAMES
+            FRAMEWORK_SEARCH_PATHS
+            GCC_PREPROCESSOR_DEFINITIONS
+            GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS
+            HEADER_SEARCH_PATHS
+            INFOPLIST_PREPROCESSOR_DEFINITIONS
+            LIBRARY_SEARCH_PATHS
+            OTHER_CFLAGS
+            OTHER_CPLUSPLUSFLAGS
+            OTHER_LDFLAGS
+          )
           keys.each do |key|
             next unless value = settings[key]
             next unless value.is_a?(String)
-            settings[key] = value.shellsplit
+            array_value = value.shellsplit
+            next unless array_value.size > 1
+            settings[key] = array_value
           end
         end
 
