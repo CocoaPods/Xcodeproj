@@ -1,6 +1,3 @@
-os:
-  - osx
-
 branches:
   only:
     - master
@@ -8,23 +5,16 @@ branches:
 language: ruby
 cache: bundler
 rvm:
+  # The latest ruby version
+  - 2.3
   # OS X 10.9.5-10.10.0 (2.0.0-p481)
-  - system
+  - 2.0.0-p481
   # OS X 10.9.3-10.9.4
   - 2.0.0-p451
   # OS X 10.9.0-10.9.2
   # TODO currently unavailable: https://github.com/travis-ci/travis-ci/issues/2918
   # - 2.0.0-p247
-  - 2.1
-
-before_install:
-  # There is a bug in travis. When using system ruby, bundler is not installed
-  # and causes the default install action to fail.
-  - sudo gem install bundler -v '1.12.5'
-  # RubyGems 2.0.14 isn't a fun time on system ruby
-  - if [ $TRAVIS_RUBY_VERSION = "system" ]; then sudo gem update --system; fi
 
 addons:
  code_climate:
-   repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152 
-
+   repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152
