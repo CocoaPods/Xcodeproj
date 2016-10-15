@@ -69,16 +69,28 @@ module ProjectSpecs
           },
         }
       end
-    end
 
-    #-------------------------------------------------------------------------#
-
-    describe 'AbstractObject Hooks' do
       it 'can be sorted' do
         @configuration.name = 'Release'
         @configuration.build_settings = { 'KEY_B' => 'B', 'KEY_A' => 'A' }
         @configuration.sort
         @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
+      end
+
+      it 'transforms string search paths to arrays' do
+        @configuration.build_settings = {
+          'FRAMEWORK_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
+          'HEADER_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
+          'LIBRARY_SEARCH_PATHS' => "a $(inherited) 'bc' \"de\"",
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'FRAMEWORK_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
+            'HEADER_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
+            'LIBRARY_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de'],
+          },
+        }
       end
     end
 

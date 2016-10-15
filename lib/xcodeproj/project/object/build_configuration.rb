@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module Xcodeproj
   class Project
     module Object
@@ -38,6 +40,12 @@ module Xcodeproj
           { name => data }
         end
 
+        def to_hash_as(method = :to_hash)
+          super.tap do |hash|
+            normalize_search_paths(hash['buildSettings'])
+          end
+        end
+
         # Sorts the build settings. Valid only in Ruby > 1.9.2 because in
         # previous versions the hash are not sorted.
         #
@@ -72,6 +80,19 @@ module Xcodeproj
             sorted[key] = build_settings[key]
           end
           sorted
+        end
+
+        def normalize_search_paths(settings)
+          return unless settings
+          # yes, they are case-sensitive.
+          # no, Xcode doesn't do this for other PathList settings nor other
+          # settings ending in SEARCH_PATHS.
+          keys = %w(FRAMEWORK_SEARCH_PATHS HEADER_SEARCH_PATHS LIBRARY_SEARCH_PATHS)
+          keys.each do |key|
+            next unless value = settings[key]
+            next unless value.is_a?(String)
+            settings[key] = value.shellsplit
+          end
         end
 
         #---------------------------------------------------------------------#
