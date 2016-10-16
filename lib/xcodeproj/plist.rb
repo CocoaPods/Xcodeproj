@@ -1,5 +1,5 @@
-autoload :Plist, 'plist'
 autoload :AsciiPlist, 'ascii_plist'
+autoload :CFPropertyList, 'cfpropertylist'
 
 module Xcodeproj
   # Provides support for loading and serializing property list files.
@@ -21,8 +21,8 @@ module Xcodeproj
         raise Informative, "The file `#{path}` is in a merge conflict."
       end
       case AsciiPlist::Reader.plist_type(contents)
-      when :xml
-        ::Plist.parse_xml(contents)
+      when :xml, :binary
+        CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
       else
         AsciiPlist::Reader.new(contents).parse!.as_ruby
       end
@@ -50,7 +50,17 @@ module Xcodeproj
       path = path.to_s
       raise IOError, 'Empty path.' if path.empty?
 
-      ::Plist::Emit.save_plist(hash, path)
+      # create CFPropertyList::List object
+      plist = CFPropertyList::List.new
+
+      # call CFPropertyList.guess() to create corresponding CFType values
+      plist.value = CFPropertyList.guess(hash)
+
+      xml = plist.to_str(CFPropertyList::List::FORMAT_XML, :formatted => true)
+      xml = reindent_xml_with_tabs(xml)
+      File.open(path, 'w') do |f|
+        f << xml
+      end
     end
 
     # The known modules that can serialize plists.
@@ -80,5 +90,21 @@ module Xcodeproj
     def self.file_in_conflict?(contents)
       contents.match(/^(<|=|>){7}/)
     end
+
+    def self.reindent_xml_with_tabs(xml)
+      regexp = %r{
+        ( # tag
+          <
+            (?:
+              /?\w+ |
+              plist\sversion="1\.0"
+            )
+          >\n
+        )
+        ([\x20]{2}+) # multiple spaces
+      }mox
+      xml.gsub(regexp) { Regexp.last_match(1) + "\t".*(Regexp.last_match(2).size./(2) - 1) }
+    end
+    private_class_method :reindent_xml_with_tabs
   end
 end

@@ -119,7 +119,7 @@ module ProjectSpecs
 </plist>
 EOS
         end
-        Plist.read_from_path(@plist).should == { 'uhoh' => DateTime.parse('2004-03-03T01:02:03Z') }
+        Plist.read_from_path(@plist).should == { 'uhoh' => Time.parse('2004-03-03T01:02:03Z') }
       end
 
       it 'raises when converting invalid strings' do
