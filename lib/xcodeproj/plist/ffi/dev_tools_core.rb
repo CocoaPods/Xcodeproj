@@ -147,10 +147,12 @@ module Xcodeproj
 
             if NSObject.respondsToSelector(PBXProject.objc_class, selector)
               projectWithFile = PBXProject.objc_msgSend([CoreFoundation::VoidPointer])
-              @project = projectWithFile.call(
-                PBXProject.objc_class,
-                CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
-                CoreFoundation.RubyStringToCFString(path))
+              DevToolsCore.silence_stderr do
+                @project = projectWithFile.call(
+                  PBXProject.objc_class,
+                  CoreFoundation.NSSelectorFromString(CoreFoundation.RubyStringToCFString(selector)),
+                  CoreFoundation.RubyStringToCFString(path))
+              end
             end
           end
 
