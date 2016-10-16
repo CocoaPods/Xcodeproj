@@ -122,6 +122,23 @@ EOS
         Plist.read_from_path(@plist).should == { 'uhoh' => Time.parse('2004-03-03T01:02:03Z') }
       end
 
+      it 'serializes dictionaries in order' do
+        Plist.write_to_path({ 'z' => 'z', 'a' => 'a' }, @plist)
+        expected = <<-EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+\t<key>a</key>
+\t<string>a</string>
+\t<key>z</key>
+\t<string>z</string>
+</dict>
+</plist>
+EOS
+        @plist.read.should == expected
+      end
+
       it 'raises when converting invalid strings' do
         lambda do
           Plist.write_to_path({ 'invalid' => "\xCA" }, @plist)

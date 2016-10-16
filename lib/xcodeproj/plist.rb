@@ -54,7 +54,7 @@ module Xcodeproj
       plist = CFPropertyList::List.new
 
       # call CFPropertyList.guess() to create corresponding CFType values
-      plist.value = CFPropertyList.guess(hash)
+      plist.value = CFPropertyList.guess(sort_hashes(hash))
 
       xml = plist.to_str(CFPropertyList::List::FORMAT_XML, :formatted => true)
       xml = reindent_xml_with_tabs(xml)
@@ -106,5 +106,21 @@ module Xcodeproj
       xml.gsub(regexp) { Regexp.last_match(1) + "\t".*(Regexp.last_match(2).size./(2) - 1) }
     end
     private_class_method :reindent_xml_with_tabs
+
+    def self.sort_hashes(plist)
+      case plist
+      when Hash
+        keys = plist.keys.sort_by(&:to_s)
+        keys.reduce({}) do |hash, key|
+          hash[key.to_s] = sort_hashes(plist[key])
+          hash
+        end
+      when Array
+        plist.each {|v| sort_hashes(v) }
+      else
+        plist
+      end
+    end
+    private_class_method :sort_hashes
   end
 end
