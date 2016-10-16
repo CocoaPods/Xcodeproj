@@ -139,10 +139,26 @@ EOS
         @plist.read.should == expected
       end
 
+      it 'supports multi-line strings' do
+        expected = <<-EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+\t<key>s</key>
+\t<string>multi\n\tline\u5897\t
+</string>
+</dict>
+</plist>
+EOS
+        Plist.write_to_path({ 's' => "multi\n\tline\u5897\t\n" }, @plist)
+        @plist.read.should == expected
+      end
+
       it 'raises when converting invalid strings' do
         lambda do
           Plist.write_to_path({ 'invalid' => "\xCA" }, @plist)
-        end.should.raise ArgumentError, 'invalid byte sequence in UTF-8'
+        end.should.raise(ArgumentError, 'invalid byte sequence in UTF-8')
       end
 
       it 'will not crash when using an empty path' do

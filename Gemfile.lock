@@ -5,8 +5,8 @@ GIT
     claide (1.0.1)
 
 GIT
-  remote: https://github.com/DanToml/ascii_plist.git
-  revision: be70c48fbff74de9f2669e61a21f35299d732e71
+  remote: https://github.com/CocoaPods/ascii_plist.git
+  revision: 5d14ead0ad06d533459cf9dfae3f421971a4806e
   specs:
     ascii_plist (0.1.0)
 
