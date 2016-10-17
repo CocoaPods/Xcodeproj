@@ -12,6 +12,10 @@
   [Rashin Arab](https://github.com/rasharab)
   [#429](https://github.com/CocoaPods/Xcodeproj/pull/429)
 
+* Fixed handling of xcdatamodeld packages in subfolders.  
+  [Simon Seyer](https://github.com/Eldorado234)
+  [#427](https://github.com/CocoaPods/Xcodeproj/pull/427)
+
 
 ## 1.3.2 (2016-10-10)
 
@@ -25,9 +29,6 @@
   [Danielle Tomlinson](https://github.com/dantoml)
   [#421](https://github.com/CocoaPods/Xcodeproj/pull/421)
 
-* Fixed handling of xcdatamodeld packages in subfolders.  
-  [Simon Seyer](https://github.com/Eldorado234)
-  [#427](https://github.com/CocoaPods/Xcodeproj/pull/427)
 
 ## 1.3.1 (2016-09-10)
 
