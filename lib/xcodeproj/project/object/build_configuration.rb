@@ -1,5 +1,3 @@
-require 'shellwords'
-
 module Xcodeproj
   class Project
     module Object
