@@ -101,6 +101,10 @@ module Xcodeproj
             OTHER_CFLAGS
             OTHER_CPLUSPLUSFLAGS
             OTHER_LDFLAGS
+            REZ_SEARCH_PATHS
+            SECTORDER_FLAGS
+            WARNING_CFLAGS
+            WARNING_LDFLAGS
           )
           keys.each do |key|
             next unless value = settings[key]
