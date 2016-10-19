@@ -156,6 +156,20 @@ module ProjectSpecs
           },
         }
       end
+
+      it 'turns array values into strings' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => ['-no'],
+          'RANDOM_BUILD_SETTING' => ['a', 'b', '"c"'],
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => '-no',
+            'RANDOM_BUILD_SETTING' => 'a b "c"',
+          },
+        }
+      end
     end
 
     #-------------------------------------------------------------------------#

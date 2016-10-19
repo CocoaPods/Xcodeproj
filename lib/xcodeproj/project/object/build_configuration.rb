@@ -82,36 +82,43 @@ module Xcodeproj
           sorted
         end
 
+        # yes, they are case-sensitive.
+        # no, Xcode doesn't do this for other PathList settings nor other
+        # settings ending in SEARCH_PATHS.
+        ARRAY_SETTINGS = %w(
+          ALTERNATE_PERMISSIONS_FILES
+          ARCHS
+          BUILD_VARIANTS
+          EXCLUDED_SOURCE_FILE_NAMES
+          FRAMEWORK_SEARCH_PATHS
+          GCC_PREPROCESSOR_DEFINITIONS
+          GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS
+          HEADER_SEARCH_PATHS
+          INFOPLIST_PREPROCESSOR_DEFINITIONS
+          LIBRARY_SEARCH_PATHS
+          OTHER_CFLAGS
+          OTHER_CPLUSPLUSFLAGS
+          OTHER_LDFLAGS
+          REZ_SEARCH_PATHS
+          SECTORDER_FLAGS
+          WARNING_CFLAGS
+          WARNING_LDFLAGS
+        ).freeze
+
         def normalize_array_settings(settings)
           return unless settings
-          # yes, they are case-sensitive.
-          # no, Xcode doesn't do this for other PathList settings nor other
-          # settings ending in SEARCH_PATHS.
-          keys = %w(
-            ALTERNATE_PERMISSIONS_FILES
-            ARCHS
-            BUILD_VARIANTS
-            EXCLUDED_SOURCE_FILE_NAMES
-            FRAMEWORK_SEARCH_PATHS
-            GCC_PREPROCESSOR_DEFINITIONS
-            GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS
-            HEADER_SEARCH_PATHS
-            INFOPLIST_PREPROCESSOR_DEFINITIONS
-            LIBRARY_SEARCH_PATHS
-            OTHER_CFLAGS
-            OTHER_CPLUSPLUSFLAGS
-            OTHER_LDFLAGS
-            REZ_SEARCH_PATHS
-            SECTORDER_FLAGS
-            WARNING_CFLAGS
-            WARNING_LDFLAGS
-          )
-          keys.each do |key|
+          settings.keys.each do |key|
             next unless value = settings[key]
-            next unless value.is_a?(String)
-            array_value = value.shellsplit
-            next unless array_value.size > 1
-            settings[key] = array_value
+            case value
+            when String
+              next unless ARRAY_SETTINGS.include?(key)
+              array_value = value.shellsplit
+              next unless array_value.size > 1
+              settings[key] = array_value
+            when Array
+              next if value.size > 1 && ARRAY_SETTINGS.include?(key)
+              settings[key] = value.join(' ')
+            end
           end
         end
 
