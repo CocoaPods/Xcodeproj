@@ -182,6 +182,18 @@ module ProjectSpecs
           },
         }
       end
+
+      it 'keeps empty strings when splitting arrays' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => %('' a ""),
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => ["''", 'a', '""'],
+          },
+        }
+      end
     end
 
     #-------------------------------------------------------------------------#

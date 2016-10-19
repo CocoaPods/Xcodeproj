@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/ascii_plist.git
-  revision: 5d14ead0ad06d533459cf9dfae3f421971a4806e
+  revision: 5a06628eb3585c390c298cb90227a53e695de31d
   specs:
     ascii_plist (0.1.0)
 
