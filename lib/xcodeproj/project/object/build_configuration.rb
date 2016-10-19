@@ -104,6 +104,7 @@ module Xcodeproj
           WARNING_CFLAGS
           WARNING_LDFLAGS
         ).freeze
+        private_constant :ARRAY_SETTINGS
 
         def normalize_array_settings(settings)
           return unless settings
