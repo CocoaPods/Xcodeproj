@@ -112,7 +112,7 @@ module Xcodeproj
             case value
             when String
               next unless ARRAY_SETTINGS.include?(key)
-              array_value = value.shellsplit
+              array_value = components_separated_by_unquoted_whitespace_preserving_quotes(value, ' ')
               next unless array_value.size > 1
               settings[key] = array_value
             when Array
@@ -120,6 +120,37 @@ module Xcodeproj
               settings[key] = value.join(' ')
             end
           end
+        end
+
+        def components_separated_by_unquoted_whitespace_preserving_quotes(string, split_character)
+          quote = nil
+          escape = false
+          split_character = split_character.ord
+          components = [[]]
+          string.bytes.each do |byte|
+            if escape
+              escape = false
+              components.last << byte
+              next
+            end
+            if byte == quote
+              quote = nil
+              components.last << byte
+              next
+            end
+            if byte == split_character && !quote && !components.last.empty?
+              components << []
+              next
+            end
+            if byte == 0x5c
+              escape = true
+            end
+            if byte == 0x27 || byte == 0x22
+              quote = byte
+            end
+            components.last << byte
+          end
+          components.map { |bytes| bytes.pack('U*') }
         end
 
         #---------------------------------------------------------------------#

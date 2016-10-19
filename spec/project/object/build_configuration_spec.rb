@@ -79,40 +79,40 @@ module ProjectSpecs
 
       it 'transforms values with multiple values to arrays' do
         @configuration.build_settings = {
-          'ALTERNATE_PERMISSIONS_FILES' => 'a $(inherited) \'bc\' "de fg"',
-          'ARCHS' => 'a $(inherited) \'bc\' "de fg"',
-          'BUILD_VARIANTS' => 'a $(inherited) \'bc\' "de fg"',
-          'EXCLUDED_SOURCE_FILE_NAMES' => 'a $(inherited) \'bc\' "de fg"',
-          'FRAMEWORK_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
-          'GCC_PREPROCESSOR_DEFINITIONS' => 'a $(inherited) \'bc\' "de fg"',
-          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => 'a $(inherited) \'bc\' "de fg"',
-          'HEADER_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
-          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => 'a $(inherited) \'bc\' "de fg"',
-          'LIBRARY_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
-          'OTHER_CFLAGS' => 'a $(inherited) \'bc\' "de fg"',
-          'OTHER_CPLUSPLUSFLAGS' => 'a $(inherited) \'bc\' "de fg"',
-          'OTHER_LDFLAGS' => 'a $(inherited) \'bc\' "de fg"',
+          'ALTERNATE_PERMISSIONS_FILES' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'ARCHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'BUILD_VARIANTS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'EXCLUDED_SOURCE_FILE_NAMES' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'FRAMEWORK_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'HEADER_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'LIBRARY_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_CFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_CPLUSPLUSFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_LDFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
 
-          'BLARG_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+          'BLARG_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
         }
         @configuration.to_hash.should == {
           'isa' => 'XCBuildConfiguration',
           'buildSettings' => {
-            'ALTERNATE_PERMISSIONS_FILES' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'ARCHS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'BUILD_VARIANTS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'EXCLUDED_SOURCE_FILE_NAMES' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'FRAMEWORK_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'GCC_PREPROCESSOR_DEFINITIONS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'HEADER_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'LIBRARY_SEARCH_PATHS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'OTHER_CFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'OTHER_CPLUSPLUSFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
-            'OTHER_LDFLAGS' => ['a', '$(inherited)', 'bc', 'de fg'],
+            'ALTERNATE_PERMISSIONS_FILES' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'ARCHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'BUILD_VARIANTS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'EXCLUDED_SOURCE_FILE_NAMES' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'FRAMEWORK_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'GCC_PREPROCESSOR_DEFINITIONS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'HEADER_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'LIBRARY_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_CFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_CPLUSPLUSFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_LDFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
 
-            'BLARG_SEARCH_PATHS' => 'a $(inherited) \'bc\' "de fg"',
+            'BLARG_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
           },
         }
       end
@@ -167,6 +167,18 @@ module ProjectSpecs
           'buildSettings' => {
             'OTHER_LDFLAGS' => '-no',
             'RANDOM_BUILD_SETTING' => 'a b "c"',
+          },
+        }
+      end
+
+      it 'keeps quotes when splitting arrays' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => 'a "bc def" g"h"',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => ['a', '"bc def"', 'g"h"'],
           },
         }
       end
