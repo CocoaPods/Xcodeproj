@@ -18,7 +18,18 @@ module Xcodeproj
           return @attempt_to_load if defined?(@attempt_to_load)
           @attempt_to_load = begin
             require 'fiddle'
-            nil
+            begin
+              if DevToolsCore.load_xcode_frameworks
+                return nil
+              elsif CoreFoundation.image
+                return nil
+              end
+            rescue Fiddle::DLError
+              'Fallthrough to error which would happen if above methods' \
+              'returned nil instead of raising DLError'
+            end
+            'Xcodeproj::Plist::FFI relies on Xcode and/or CoreFoundation' \
+            'to read and write Xcode project files.'
           rescue LoadError
             'Xcodeproj relies on a library called `fiddle` to read and write ' \
             'Xcode project files. Ensure your Ruby installation includes ' \
