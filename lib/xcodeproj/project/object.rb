@@ -407,7 +407,7 @@ module Xcodeproj
         def nested_object_for_hash(object, method)
           case method
           when :to_ascii_plist
-            AsciiPlist::String.new(object.uuid, object.ascii_plist_annotation)
+            Nanaimo::String.new(object.uuid, object.ascii_plist_annotation)
           else
             object.uuid
           end
@@ -418,7 +418,7 @@ module Xcodeproj
         end
 
         def to_ascii_plist
-          AsciiPlist::Dictionary.new(to_hash_as(:to_ascii_plist), ascii_plist_annotation)
+          Nanaimo::Dictionary.new(to_hash_as(:to_ascii_plist), ascii_plist_annotation)
         end
 
         # Returns a cascade representation of the object without UUIDs.

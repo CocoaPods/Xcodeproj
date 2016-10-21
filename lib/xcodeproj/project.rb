@@ -283,7 +283,7 @@ module Xcodeproj
       objects
         .sort_by { |o| [o.isa, o.uuid] }
         .each do |obj|
-          key = AsciiPlist::String.new(obj.uuid, obj.ascii_plist_annotation)
+          key = Nanaimo::String.new(obj.uuid, obj.ascii_plist_annotation)
           value = obj.to_ascii_plist.tap { |a| a.annotation = nil }
           objects_dictionary[key] = value
         end
@@ -291,8 +291,8 @@ module Xcodeproj
       plist['classes']        =  classes
       plist['objectVersion']  =  object_version.to_s
       plist['objects']        =  objects_dictionary
-      plist['rootObject']     =  AsciiPlist::String.new(root_object.uuid, root_object.ascii_plist_annotation)
-      AsciiPlist::Plist.new.tap { |p| p.root_object = plist }
+      plist['rootObject']     =  Nanaimo::String.new(root_object.uuid, root_object.ascii_plist_annotation)
+      Nanaimo::Plist.new.tap { |p| p.root_object = plist }
     end
 
     # Converts the objects tree to a hash substituting the hash
@@ -350,7 +350,7 @@ module Xcodeproj
       @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
-      File.open(file, 'w') { |f| AsciiPlist::XcodeProjectWriter.new(to_ascii_plist, true, f).write }
+      File.open(file, 'w') { |f| Nanaimo::XcodeProjectWriter.new(to_ascii_plist, true, f).write }
     end
 
     # Marks the project as dirty, that is, modified from what is on disk.

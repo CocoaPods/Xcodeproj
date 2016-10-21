@@ -1,4 +1,4 @@
-autoload :AsciiPlist, 'ascii_plist'
+autoload :Nanaimo, 'nanaimo'
 autoload :CFPropertyList, 'cfpropertylist'
 
 module Xcodeproj
@@ -20,11 +20,11 @@ module Xcodeproj
       if file_in_conflict?(contents)
         raise Informative, "The file `#{path}` is in a merge conflict."
       end
-      case AsciiPlist::Reader.plist_type(contents)
+      case Nanaimo::Reader.plist_type(contents)
       when :xml, :binary
         CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
       else
-        AsciiPlist::Reader.new(contents).parse!.as_ruby
+        Nanaimo::Reader.new(contents).parse!.as_ruby
       end
     end
 
@@ -51,8 +51,8 @@ module Xcodeproj
       raise IOError, 'Empty path.' if path.empty?
 
       File.open(path, 'w') do |f|
-        plist = AsciiPlist::Plist.new(hash, :xml)
-        AsciiPlist::Writer::XMLWriter.new(plist, true, f).write
+        plist = Nanaimo::Plist.new(hash, :xml)
+        Nanaimo::Writer::XMLWriter.new(plist, true, f).write
       end
     end
 

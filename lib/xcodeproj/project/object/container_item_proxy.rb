@@ -102,7 +102,7 @@ module Xcodeproj
         def to_hash_as(method = :to_hash)
           hash = super
           if method == :to_ascii_plist
-            hash['containerPortal'] = AsciiPlist::String.new(container_portal, container_portal_annotation)
+            hash['containerPortal'] = Nanaimo::String.new(container_portal, container_portal_annotation)
           end
           hash
         end

@@ -117,7 +117,7 @@ module Xcodeproj
         each do |key, obj|
           if obj
             plist_key = Object::CaseConverter.convert_to_plist(key, nil)
-            result[plist_key] = AsciiPlist::String.new(obj.uuid, obj.ascii_plist_annotation)
+            result[plist_key] = Nanaimo::String.new(obj.uuid, obj.ascii_plist_annotation)
           end
         end
         result
