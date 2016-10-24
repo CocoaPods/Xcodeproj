@@ -103,7 +103,7 @@ module Xcodeproj
           return false unless path.end_with?('pbxproj')
           if should_fork
             require 'open3'
-            _output, status = Open3.capture2e(Gem.ruby, '-e', <<-RUBY, path, :stdin_data => Marshal.dump(hash))
+            _output, status = Open3.capture2e(Gem.ruby, '-e', <<-RUBY, path, :stdin_data => Marshal.dump(hash), :binmode => true)
             $LOAD_PATH.replace #{$LOAD_PATH}
             path = ARGV.first
             hash = Marshal.load(STDIN)
