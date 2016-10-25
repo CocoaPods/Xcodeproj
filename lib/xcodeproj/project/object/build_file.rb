@@ -59,6 +59,10 @@ module Xcodeproj
           end
         end
 
+        def ascii_plist_annotation
+          " #{display_name} in #{GroupableHelper.parent(self).display_name} "
+        end
+
         #---------------------------------------------------------------------#
       end
     end

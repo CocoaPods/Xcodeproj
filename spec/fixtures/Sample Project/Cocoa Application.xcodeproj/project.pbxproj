@@ -150,8 +150,7 @@
 			outputFiles = (
 				"${INPUT_FILE_BASE}.css.c",
 			);
-			script = "test
-";
+			script = "test\nabc\n\"foo\"\n";
 		};
 		E552E0F916263968003ED1FE /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -1179,6 +1178,7 @@
 				E5DCFBD916285415002C6803 /* Headers */,
 				E5DCFBDB16285429002C6803 /* Custom name copy */,
 				E5DCFBDC16285431002C6803 /* Custom name */,
+				C087E0631D86E535006A02A2 /* ShellScript */,
 			);
 			buildRules = (
 				E552E0F916263968003ED1FE /* PBXBuildRule */,
@@ -1724,6 +1724,9 @@
 					806F6FC217EFAF47001051EE = {
 						TestTargetID = E525238B16245A900012E2BA;
 					};
+					E525238B16245A900012E2BA = {
+						LastSwiftMigration = 0800;
+					};
 				};
 			};
 			buildConfigurationList = E525238616245A900012E2BA /* Build configuration list for PBXProject "Cocoa Application" */;
@@ -2071,6 +2074,19 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C087E0631D86E535006A02A2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "a\nb\nc\n\"abcd\"\necit!";
+		};
 		E52523B116245A910012E2BA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2772,13 +2788,17 @@
 		E52523E716245A910012E2BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Cocoa Application/Cocoa Application.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa Application/Cocoa Application-Prefix.pch";
 				INFOPLIST_FILE = "Cocoa Application/Cocoa Application-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2786,13 +2806,16 @@
 		E52523E816245A910012E2BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Cocoa Application/Cocoa Application.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cocoa Application/Cocoa Application-Prefix.pch";
 				INFOPLIST_FILE = "Cocoa Application/Cocoa Application-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

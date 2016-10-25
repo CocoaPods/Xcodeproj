@@ -39,6 +39,10 @@ module Xcodeproj
           return target_proxy.remote_info if target_proxy
         end
 
+        def ascii_plist_annotation
+          " #{isa} "
+        end
+
         # @return [String] uuid of the target, if the dependency
         #         is a native target, otherwise the uuid of the
         #         target in the sub-project if the dependency is

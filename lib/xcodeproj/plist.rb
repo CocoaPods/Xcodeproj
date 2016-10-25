@@ -1,10 +1,10 @@
+autoload :Nanaimo, 'nanaimo'
+autoload :CFPropertyList, 'cfpropertylist'
+
 module Xcodeproj
   # Provides support for loading and serializing property list files.
   #
   module Plist
-    autoload :FFI, 'xcodeproj/plist/ffi'
-    autoload :PlistGem, 'xcodeproj/plist/plist_gem'
-
     # @return [Hash] Returns the native objects loaded from a property list
     #         file.
     #
@@ -16,10 +16,16 @@ module Xcodeproj
       unless File.exist?(path)
         raise Informative, "The plist file at path `#{path}` doesn't exist."
       end
-      if file_in_conflict?(path)
+      contents = File.read(path)
+      if file_in_conflict?(contents)
         raise Informative, "The file `#{path}` is in a merge conflict."
       end
-      implementation.read_from_path(path)
+      case Nanaimo::Reader.plist_type(contents)
+      when :xml, :binary
+        CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
+      else
+        Nanaimo::Reader.new(contents).parse!.as_ruby
+      end
     end
 
     # Serializes a hash as an XML property list file.
@@ -43,47 +49,39 @@ module Xcodeproj
       end
       path = path.to_s
       raise IOError, 'Empty path.' if path.empty?
-      implementation.write_to_path(hash, path)
+
+      File.open(path, 'w') do |f|
+        plist = Nanaimo::Plist.new(hash, :xml)
+        Nanaimo::Writer::XMLWriter.new(plist, true, f).write
+      end
     end
 
     # The known modules that can serialize plists.
     #
-    KNOWN_IMPLEMENTATIONS = [:FFI, :PlistGem]
+    KNOWN_IMPLEMENTATIONS = []
 
     class << self
-      # @return The module used to implement plist serialization.
+      # @deprecated This method will be removed in 2.0
+      #
+      # @return [Nil]
       #
       attr_accessor :implementation
-      def implementation
-        @implementation ||= autoload_implementation
-      end
     end
 
-    # Attempts to autoload a known plist implementation.
+    # @deprecated This method will be removed in 2.0
     #
-    # @return a successfully loaded plist serialization implementation.
+    # @return [Nil]
     #
     def self.autoload_implementation
-      failures = KNOWN_IMPLEMENTATIONS.map do |impl|
-        begin
-          impl = Plist.const_get(impl)
-          failure = impl.attempt_to_load!
-          return impl if failure.nil?
-          failure
-        rescue NameError, LoadError => e
-          e.message
-        end
-      end.compact
-      raise Informative, "Unable to load a plist implementation:\n\n#{failures.join("\n\n")}"
     end
 
     # @return [Bool] Checks whether there are merge conflicts in the file.
     #
     # @param  [#to_s] path
-    #         The path of the file.
+    #         The contents of the file.
     #
-    def self.file_in_conflict?(path)
-      File.read(path).match(/^(<|=|>){7}/)
+    def self.file_in_conflict?(contents)
+      contents.match(/^(<|=|>){7}/)
     end
   end
 end

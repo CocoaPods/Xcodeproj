@@ -67,6 +67,20 @@ module Xcodeproj
         has_many_references_by_keys :project_references,
                                     :project_ref   => PBXFileReference,
                                     :product_group => PBXGroup
+
+        def name
+          project.path.basename('.xcodeproj').to_s
+        end
+
+        def ascii_plist_annotation
+          ' Project object '
+        end
+
+        def to_ascii_plist
+          plist = super
+          plist.value.delete('projectReferences') if plist.value['projectReferences'].empty?
+          plist
+        end
       end
     end
   end

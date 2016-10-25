@@ -127,6 +127,14 @@ module Xcodeproj
           end
         end
         alias_method :clear_build_files, :clear
+
+        def display_name
+          super.gsub(/BuildPhase$/, '')
+        end
+
+        def ascii_plist_annotation
+          " #{display_name} "
+        end
       end
 
       #-----------------------------------------------------------------------#

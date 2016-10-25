@@ -38,6 +38,12 @@ module Xcodeproj
           { name => data }
         end
 
+        def to_hash_as(method = :to_hash)
+          super.tap do |hash|
+            normalize_array_settings(hash['buildSettings'])
+          end
+        end
+
         # Sorts the build settings. Valid only in Ruby > 1.9.2 because in
         # previous versions the hash are not sorted.
         #
@@ -72,6 +78,52 @@ module Xcodeproj
             sorted[key] = build_settings[key]
           end
           sorted
+        end
+
+        # yes, they are case-sensitive.
+        # no, Xcode doesn't do this for other PathList settings nor other
+        # settings ending in SEARCH_PATHS.
+        ARRAY_SETTINGS = %w(
+          ALTERNATE_PERMISSIONS_FILES
+          ARCHS
+          BUILD_VARIANTS
+          EXCLUDED_SOURCE_FILE_NAMES
+          FRAMEWORK_SEARCH_PATHS
+          GCC_PREPROCESSOR_DEFINITIONS
+          GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS
+          HEADER_SEARCH_PATHS
+          INFOPLIST_PREPROCESSOR_DEFINITIONS
+          LIBRARY_SEARCH_PATHS
+          OTHER_CFLAGS
+          OTHER_CPLUSPLUSFLAGS
+          OTHER_LDFLAGS
+          REZ_SEARCH_PATHS
+          SECTORDER_FLAGS
+          WARNING_CFLAGS
+          WARNING_LDFLAGS
+        ).freeze
+        private_constant :ARRAY_SETTINGS
+
+        def normalize_array_settings(settings)
+          return unless settings
+          settings.keys.each do |key|
+            next unless value = settings[key]
+            case value
+            when String
+              next unless ARRAY_SETTINGS.include?(key)
+              array_value = split_build_setting_array_to_string(value)
+              next unless array_value.size > 1
+              settings[key] = array_value
+            when Array
+              next if value.size > 1 && ARRAY_SETTINGS.include?(key)
+              settings[key] = value.join(' ')
+            end
+          end
+        end
+
+        def split_build_setting_array_to_string(string)
+          regexp = / *((['"]?).*?[^\\]\2)(?=( |\z))/
+          string.scan(regexp).map(&:first)
         end
 
         #---------------------------------------------------------------------#

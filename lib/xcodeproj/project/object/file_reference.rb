@@ -123,7 +123,13 @@ module Xcodeproj
         #         needed.
         #
         def display_name
-          name || (File.basename(path) if path)
+          if name
+            name
+          elsif (class << GroupableHelper; self; end)::SOURCE_TREES_BY_KEY[:built_products] == source_tree
+            path
+          elsif path
+            File.basename(path)
+          end
         end
 
         # @return [PBXGroup, PBXProject] the parent of the file.

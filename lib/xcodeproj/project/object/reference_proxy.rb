@@ -48,6 +48,10 @@ module Xcodeproj
         end
 
         #---------------------------------------------------------------------#
+
+        def ascii_plist_annotation
+          " #{name || path && File.basename(path)} "
+        end
       end
     end
   end

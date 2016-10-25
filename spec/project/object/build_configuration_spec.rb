@@ -69,16 +69,130 @@ module ProjectSpecs
           },
         }
       end
-    end
 
-    #-------------------------------------------------------------------------#
-
-    describe 'AbstractObject Hooks' do
       it 'can be sorted' do
         @configuration.name = 'Release'
         @configuration.build_settings = { 'KEY_B' => 'B', 'KEY_A' => 'A' }
         @configuration.sort
         @configuration.build_settings.keys.should == %w(KEY_A KEY_B)
+      end
+
+      it 'transforms values with multiple values to arrays' do
+        @configuration.build_settings = {
+          'ALTERNATE_PERMISSIONS_FILES' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'ARCHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'BUILD_VARIANTS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'EXCLUDED_SOURCE_FILE_NAMES' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'FRAMEWORK_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'GCC_PREPROCESSOR_DEFINITIONS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'HEADER_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'LIBRARY_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_CFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_CPLUSPLUSFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          'OTHER_LDFLAGS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+
+          'BLARG_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'ALTERNATE_PERMISSIONS_FILES' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'ARCHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'BUILD_VARIANTS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'EXCLUDED_SOURCE_FILE_NAMES' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'FRAMEWORK_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'GCC_PREPROCESSOR_DEFINITIONS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'HEADER_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'LIBRARY_SEARCH_PATHS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_CFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_CPLUSPLUSFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+            'OTHER_LDFLAGS' => ['foo', '$(inherited)', '"YYYYY BOO"', 'h"g"', '\\"ab', 'c\\"', 'foo\\ bar'],
+
+            'BLARG_SEARCH_PATHS' => 'foo $(inherited) "YYYYY BOO" h"g" \"ab c\" foo\ bar',
+          },
+        }
+      end
+
+      it 'keeps values with a single value as a string' do
+        @configuration.build_settings = {
+          'ALTERNATE_PERMISSIONS_FILES' => '"abcd"',
+          'ARCHS' => '"abcd"',
+          'BUILD_VARIANTS' => '"abcd"',
+          'EXCLUDED_SOURCE_FILE_NAMES' => '"abcd"',
+          'FRAMEWORK_SEARCH_PATHS' => '"abcd"',
+          'GCC_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+          'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => '"abcd"',
+          'HEADER_SEARCH_PATHS' => '"abcd"',
+          'INFOPLIST_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+          'LIBRARY_SEARCH_PATHS' => '"abcd"',
+          'OTHER_CFLAGS' => '"abcd"',
+          'OTHER_CPLUSPLUSFLAGS' => '"abcd"',
+          'OTHER_LDFLAGS' => '"abcd"',
+
+          'BLARG_SEARCH_PATHS' => '"abcd"',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'ALTERNATE_PERMISSIONS_FILES' => '"abcd"',
+            'ARCHS' => '"abcd"',
+            'BUILD_VARIANTS' => '"abcd"',
+            'EXCLUDED_SOURCE_FILE_NAMES' => '"abcd"',
+            'FRAMEWORK_SEARCH_PATHS' => '"abcd"',
+            'GCC_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+            'GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS' => '"abcd"',
+            'HEADER_SEARCH_PATHS' => '"abcd"',
+            'INFOPLIST_PREPROCESSOR_DEFINITIONS' => '"abcd"',
+            'LIBRARY_SEARCH_PATHS' => '"abcd"',
+            'OTHER_CFLAGS' => '"abcd"',
+            'OTHER_CPLUSPLUSFLAGS' => '"abcd"',
+            'OTHER_LDFLAGS' => '"abcd"',
+
+            'BLARG_SEARCH_PATHS' => '"abcd"',
+          },
+        }
+      end
+
+      it 'turns array values into strings' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => ['-no'],
+          'RANDOM_BUILD_SETTING' => ['a', 'b', '"c"'],
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => '-no',
+            'RANDOM_BUILD_SETTING' => 'a b "c"',
+          },
+        }
+      end
+
+      it 'keeps quotes when splitting arrays' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => 'a "bc def" g"h"',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => ['a', '"bc def"', 'g"h"'],
+          },
+        }
+      end
+
+      it 'keeps empty strings when splitting arrays' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => %('' a ""),
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => ["''", 'a', '""'],
+          },
+        }
       end
     end
 
