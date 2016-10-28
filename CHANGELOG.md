@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Use Nanaimo for native ruby ASCII plist parsing and serialization.
+  Removes the dependency on Xcode, FFI, and macOS.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 ##### Bug Fixes
 
