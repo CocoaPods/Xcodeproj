@@ -52,7 +52,7 @@ module Xcodeproj
 
       File.open(path, 'w') do |f|
         plist = Nanaimo::Plist.new(hash, :xml)
-        Nanaimo::Writer::XMLWriter.new(plist, true, f).write
+        Nanaimo::Writer::XMLWriter.new(plist, :pretty => true, :output => f, :strict => false).write
       end
     end
 

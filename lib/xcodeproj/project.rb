@@ -350,7 +350,7 @@ module Xcodeproj
       @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
       file = File.join(save_path, 'project.pbxproj')
-      File.open(file, 'w') { |f| Nanaimo::XcodeProjectWriter.new(to_ascii_plist, true, f).write }
+      File.open(file, 'w') { |f| Nanaimo::Writer::PBXProjWriter.new(to_ascii_plist, :pretty => true, :output => f, :strict => false).write }
     end
 
     # Marks the project as dirty, that is, modified from what is on disk.
