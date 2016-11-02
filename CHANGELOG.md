@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.4.1 (2016-11-02)
 
 ##### Enhancements
 
