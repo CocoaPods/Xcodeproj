@@ -19,7 +19,7 @@ PATH
       activesupport (>= 3)
       claide (>= 1.0.1, < 2.0)
       colored (~> 1.2)
-      nanaimo (~> 0.2.0)
+      nanaimo (~> 0.2.1)
 
 GEM
   remote: http://rubygems.org/
@@ -53,7 +53,7 @@ GEM
     mocha-on-bacon (0.2.2)
       mocha (>= 0.13.0)
     multi_json (1.12.1)
-    nanaimo (0.2.0)
+    nanaimo (0.2.1)
     notify (0.5.2)
     parser (2.3.0.6)
       ast (~> 2.2)
