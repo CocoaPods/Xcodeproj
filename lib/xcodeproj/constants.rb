@@ -137,6 +137,9 @@ module Xcodeproj
       :bundle           => 'bundle',
       :octest_bundle    => 'octest',
       :unit_test_bundle => 'xctest',
+      :app_extension    => 'appex',
+      :watch2_extension => 'appex',
+      :watch2_app       => 'app',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build
