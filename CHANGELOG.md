@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Require 'colored' in xcodeproj.rb  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#374](https://github.com/CocoaPods/Xcodeproj/issues/374)
 
 
 ## 1.4.1 (2016-11-02)
