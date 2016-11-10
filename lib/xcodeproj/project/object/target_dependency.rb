@@ -51,7 +51,8 @@ module Xcodeproj
         def native_target_uuid
           return target.uuid if target
           return target_proxy.remote_global_id_string if target_proxy
-          raise 'Expected target or target_proxy, from which to fetch a uuid'
+          raise "Expected target or target_proxy, from which to fetch a uuid for target '#{display_name}'." \
+            "Find and clear the PBXTargetDependency entry with uuid '#{@uuid}' in your .xcodeproj."
         end
 
         # @note This override is necessary because Xcode allows for circular

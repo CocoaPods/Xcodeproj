@@ -86,11 +86,13 @@ module ProjectSpecs
       end
 
       it "raises if target and target_proxy aren't set" do
+        @target_dependency.name = 'TargetName'
         @target_dependency.target.nil?.should == true
         @target_dependency.target_proxy.nil?.should == true
         should.raise do
           @target_dependency.native_target_uuid
-        end.message.should.match /Expected target or target_proxy, from which to fetch a uuid/
+        end.message.should.include "Expected target or target_proxy, from which to fetch a uuid for target 'TargetName'." \
+          "Find and clear the PBXTargetDependency entry with uuid '#{@target_dependency.uuid}' in your .xcodeproj."
       end
     end
   end
