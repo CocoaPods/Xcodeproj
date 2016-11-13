@@ -179,6 +179,15 @@ module ProjectSpecs
         target_a.dependencies.first.target.should == target_b
         target_b.dependencies.first.target.should == target_a
       end
+
+      it 'can load projects that have no classes attributes' do
+        @path = @dir + '8.0-format.xcodeproj'
+        contents = File.read(@path + 'project.pbxproj').sub!(/classes\s*=\s*{\s*}\s*;/m, '')
+        raise 'sub failed' unless contents
+        File.expects(:read).with(@path.join('project.pbxproj').to_s).returns(contents)
+        @project = Xcodeproj::Project.open(@path)
+        @project.classes.should == {}
+      end
     end
 
     #-------------------------------------------------------------------------#

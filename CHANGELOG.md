@@ -14,6 +14,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#374](https://github.com/CocoaPods/Xcodeproj/issues/374)
 
+* Allow initializing an Xcode project without the `classes` attribute.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#446](https://github.com/CocoaPods/Xcodeproj/issues/446)
+
 
 ## 1.4.1 (2016-11-02)
 

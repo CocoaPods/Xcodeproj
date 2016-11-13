@@ -202,7 +202,7 @@ module Xcodeproj
       @root_object     = new_from_plist(plist['rootObject'], plist['objects'], self)
       @archive_version = plist['archiveVersion']
       @object_version  = plist['objectVersion']
-      @classes         = plist['classes']
+      @classes         = plist['classes'] || {}
       @dirty           = false
 
       unless root_object
