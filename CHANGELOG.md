@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Better error message when a target_dependency is invalid.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#448](https://github.com/CocoaPods/Xcodeproj/pull/448)
 
 ##### Bug Fixes
 
