@@ -189,7 +189,7 @@ module Xcodeproj
         # @!group Build Phases Helpers
 
         # @return [PBXFrameworksBuildPhase]
-        #         the copy files build phases of the target.
+        #         the frameworks build phases of the target.
         #
         def frameworks_build_phases
           build_phases.find { |bp| bp.class == PBXFrameworksBuildPhase }
@@ -203,7 +203,7 @@ module Xcodeproj
         end
 
         # @return [Array<PBXShellScriptBuildPhase>]
-        #         the copy files build phases of the target.
+        #         the shell script build phases of the target.
         #
         def shell_script_build_phases
           build_phases.grep(PBXShellScriptBuildPhase)
