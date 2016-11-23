@@ -101,6 +101,24 @@ module Xcodeproj
         env_vars
       end
 
+      # @todo handle 'AdditionalOptions' tag
+
+      # @return [CommandLineArguments]
+      #         Returns the CommandLineArguments that will be passed at app launch
+      #
+      def command_line_arguments
+        CommandLineArguments.new(@xml_element.elements[XCScheme::COMMAND_LINE_ARGS_NODE])
+      end
+
+      # @return [CommandLineArguments] arguments
+      #         Sets the CommandLineArguments that will be passed at app launch
+      #
+      def command_line_arguments=(arguments)
+        @xml_element.delete_element(XCScheme::COMMAND_LINE_ARGS_NODE)
+        @xml_element.add_element(arguments.xml_element) if arguments
+        arguments
+      end
+
       #-------------------------------------------------------------------------#
 
       class TestableReference < XMLElementWrapper
