@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (1.4.1)
+    xcodeproj (1.4.2)
       CFPropertyList (~> 2.3.3)
       activesupport (>= 3)
       claide (>= 1.0.1, < 2.0)
@@ -47,7 +47,7 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     metaclass (0.0.4)
-    minitest (5.9.1)
+    minitest (5.10.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     mocha-on-bacon (0.2.2)
