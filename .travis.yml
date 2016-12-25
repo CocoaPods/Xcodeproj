@@ -6,7 +6,7 @@ language: ruby
 cache: bundler
 rvm:
   # The latest ruby version
-  - 2.3
+  - 2.4.0
   # OS X 10.9.5-10.10.0 (2.0.0-p481)
   - 2.0.0-p481
   # OS X 10.9.3-10.9.4
