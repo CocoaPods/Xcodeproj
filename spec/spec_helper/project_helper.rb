@@ -37,7 +37,7 @@ module SpecHelper
 
         # Build pretty description for what is going on
         description = []
-        description << "Doesn't match build settings for #{params.to_s.bold}"
+        description << "Doesn't match build settings for \e[1m#{params}\e[0m"
 
         if wrong_settings.count > 0
           description << 'Wrong build settings:'
