@@ -1,6 +1,6 @@
 require File.expand_path('../../spec_helper', __FILE__)
 require 'active_support'
-require 'active_support/core_ext'
+require 'active_support/core_ext/object/try'
 
 module ProjectHelperSpecs
   describe Xcodeproj::Project::ProjectHelper do
