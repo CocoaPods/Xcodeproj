@@ -1,5 +1,5 @@
 module Xcodeproj
-  require 'colored'
+  require 'colored2'
   require 'claide'
 
   class Command < CLAide::Command
