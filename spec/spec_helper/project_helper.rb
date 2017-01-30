@@ -1,4 +1,4 @@
-require 'colored'
+require 'colored2'
 
 module SpecHelper
   module ProjectHelper
