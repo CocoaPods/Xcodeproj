@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add more Xcode file type references by file extension.  
+  [Keith Smiley](https://github.com/keith)
+  [#465](https://github.com/CocoaPods/Xcodeproj/pull/465)
 
 ##### Bug Fixes
 
