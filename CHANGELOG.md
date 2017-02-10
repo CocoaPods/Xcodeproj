@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Return file references when adding system frameworks to a target.  
+  [Keith Smiley](https://github.com/keith)
+  [#466](https://github.com/CocoaPods/Xcodeproj/pull/466)
+
 * Add more Xcode file type references by file extension.  
   [Keith Smiley](https://github.com/keith)
   [#465](https://github.com/CocoaPods/Xcodeproj/pull/465)
