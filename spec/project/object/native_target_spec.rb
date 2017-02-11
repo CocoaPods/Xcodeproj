@@ -445,6 +445,11 @@ module ProjectSpecs
           names = @target.frameworks_build_phase.file_display_names
           names.should == ['CoreData.framework', 'QuartzCore.framework']
         end
+
+        it 'returns the newly created file references' do
+          references = @target.add_system_frameworks(%w(CoreData QuartzCore))
+          references.map(&:display_name).should == ['CoreData.framework', 'QuartzCore.framework']
+        end
       end
 
       #----------------------------------------#

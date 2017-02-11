@@ -305,10 +305,11 @@ module Xcodeproj
         #         this reason the new Xcodeproj behaviour is to add the
         #         frameworks in a subgroup according to the platform.
         #
-        # @return [void]
+        # @return [Array<PBXFileReference>] An array of the newly created file
+        #         references.
         #
         def add_system_framework(names)
-          Array(names).each do |name|
+          Array(names).map do |name|
             case platform_name
             when :ios
               group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')
