@@ -198,6 +198,12 @@ module Xcodeproj
       [:debug, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
+      [:release, :application, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
+      }.freeze,
+      [:release, :swift] => {
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
+      }.freeze,
       [:debug, :static_library, :swift] => {
       }.freeze,
       [:framework] => {
@@ -318,6 +324,9 @@ module Xcodeproj
         'CLANG_WARN_INT_CONVERSION'          => 'YES',
         'CLANG_WARN_OBJC_ROOT_CLASS'         => 'YES',
         'CLANG_WARN_UNREACHABLE_CODE'        => 'YES',
+        'CLANG_WARN_DOCUMENTATION_COMMENTS'  => 'YES',
+        'CLANG_WARN_INFINITE_RECURSION'      => 'YES',
+        'CLANG_WARN_SUSPICIOUS_MOVE'         => 'YES',
         'GCC_C_LANGUAGE_STANDARD'            => 'gnu99',
         'GCC_WARN_64_TO_32_BIT_CONVERSION'   => 'YES',
         'GCC_WARN_ABOUT_RETURN_TYPE'         => 'YES',
