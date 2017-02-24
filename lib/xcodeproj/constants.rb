@@ -202,9 +202,6 @@ module Xcodeproj
         'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
         'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
       }.freeze,
-      [:release, :application, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
-      }.freeze,
       [:release, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
       }.freeze,
