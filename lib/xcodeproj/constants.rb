@@ -193,13 +193,14 @@ module Xcodeproj
         # Empty?
       }.freeze,
       [:swift] => {
-        'SWIFT_VERSION'                     => '3.0',
+        'SWIFT_VERSION'                       => '3.0',
       }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
       [:debug, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+        'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
       }.freeze,
       [:release, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
@@ -224,6 +225,7 @@ module Xcodeproj
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'TARGETED_DEVICE_FAMILY'            => '1,2',
+        'CODE_SIGN_IDENTITY'                => '',
       }.freeze,
       [:osx, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/../Frameworks', '@loader_path/Frameworks'],
@@ -235,6 +237,7 @@ module Xcodeproj
         'APPLICATION_EXTENSION_API_ONLY'    => 'YES',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
         'TARGETED_DEVICE_FAMILY'            => '4',
+        'CODE_SIGN_IDENTITY'                => '',
       }.freeze,
       [:tvos, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
@@ -273,7 +276,6 @@ module Xcodeproj
       [:ios, :application] => {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
-        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :application] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
@@ -289,6 +291,9 @@ module Xcodeproj
         'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
         'TARGETED_DEVICE_FAMILY'            => '3',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
+      }.freeze,
+      [:watchos, :application, :swift] => {
+        'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES',
       }.freeze,
       [:bundle] => {
         'PRODUCT_NAME'                      => '$(TARGET_NAME)',
