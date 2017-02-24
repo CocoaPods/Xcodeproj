@@ -29,7 +29,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '0821'
+    LAST_UPGRADE_CHECK = '0700'
 
     # @return [String] The last known object version to Xcodeproj.
     #
@@ -192,6 +192,9 @@ module Xcodeproj
       [:debug, :ios] => {
         # Empty?
       }.freeze,
+      [:swift] => {
+        'SWIFT_VERSION'                     => '3.0',
+      }.freeze,
       [:debug, :application, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
       }.freeze,
@@ -236,6 +239,7 @@ module Xcodeproj
       [:tvos, :framework] => {
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks', '@loader_path/Frameworks'],
         'TARGETED_DEVICE_FAMILY'            => '3',
+        'CODE_SIGN_IDENTITY'                => '',
       }.freeze,
       [:framework, :swift] => {
         'DEFINES_MODULE'                    => 'YES',
@@ -279,9 +283,6 @@ module Xcodeproj
       [:watchos, :application] => {
         'SKIP_INSTALL'                      => 'YES',
         'TARGETED_DEVICE_FAMILY'            => '4',
-      }.freeze,
-      [:watchos, :application, :swift] => {
-        'EMBEDDED_CONTENT_CONTAINS_SWIFT'   => 'YES',
       }.freeze,
       [:tvos, :application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'App Icon & Top Shelf Image',
