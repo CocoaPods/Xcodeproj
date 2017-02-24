@@ -32,8 +32,8 @@ GEM
       tzinfo (~> 1.1)
     ast (2.3.0)
     bacon (1.2.0)
-    codeclimate-test-reporter (1.0.6)
-      simplecov
+    codeclimate-test-reporter (0.4.8)
+      simplecov (>= 0.7.1, < 1.0.0)
     colored2 (3.1.2)
     docile (1.1.5)
     ffi (1.9.17)
@@ -90,7 +90,7 @@ DEPENDENCIES
   activesupport (~> 4.2)
   bacon
   claide!
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 0.4.1)
   json!
   kicker
   mocha
