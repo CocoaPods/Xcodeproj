@@ -3,16 +3,16 @@
 @implementation ViewController
 
 - (void)viewDidLoad {
-	[super viewDidLoad];
+    [super viewDidLoad];
 
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
 }
 
 
 - (void)setRepresentedObject:(id)representedObject {
-	[super setRepresentedObject:representedObject];
+    [super setRepresentedObject:representedObject];
 
-	// Update the view, if already loaded.
+    // Update the view, if already loaded.
 }
 
 
