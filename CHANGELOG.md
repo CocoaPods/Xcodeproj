@@ -14,7 +14,10 @@
 
 ##### Bug Fixes
 
-* None.  
+* Reference proxy display name always returns "ReferenceProxy".
+  Behavior corrected to return the name or path of the reference.  
+  [Barak Weiss](https://github.com/barakwei)
+  [#472](https://github.com/CocoaPods/Xcodeproj/issues/472)
 
 
 ## 1.4.2 (2016-12-19)

@@ -52,6 +52,15 @@ module Xcodeproj
         def ascii_plist_annotation
           " #{name || path && File.basename(path)} "
         end
+
+        # @return [String] A name suitable for displaying the object to the
+        #         user.
+        #
+        def display_name
+          return name if name
+          return path if path
+          super
+        end
       end
     end
   end
