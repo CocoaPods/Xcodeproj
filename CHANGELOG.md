@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Updated Common Build Settings with Xcode 8.2.1.  
+  [Louis D'hauwe](https://github.com/louisdh)
+  [#468](https://github.com/CocoaPods/Xcodeproj/pull/468)
+
 * Return file references when adding system frameworks to a target.  
   [Keith Smiley](https://github.com/keith)
   [#466](https://github.com/CocoaPods/Xcodeproj/pull/466)
