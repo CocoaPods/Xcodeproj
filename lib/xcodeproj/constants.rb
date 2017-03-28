@@ -4,17 +4,17 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '10.2'
+    LAST_KNOWN_IOS_SDK = '10.3'
 
     # @return [String] The last known OS X SDK (stable).
     #
     LAST_KNOWN_OSX_SDK = '10.12'
 
     # @return [String] The last known tvOS SDK (stable).
-    LAST_KNOWN_TVOS_SDK = '10.1'
+    LAST_KNOWN_TVOS_SDK = '10.2'
 
     # @return [String] The last known watchOS SDK (stable).
-    LAST_KNOWN_WATCHOS_SDK = '3.1'
+    LAST_KNOWN_WATCHOS_SDK = '3.2'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -33,7 +33,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0821'
+    LAST_SWIFT_UPGRADE_CHECK = '0830'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -273,6 +273,7 @@ module Xcodeproj
       [:ios, :application] => {
         'CODE_SIGN_IDENTITY[sdk=iphoneos*]' => 'iPhone Developer',
         'LD_RUNPATH_SEARCH_PATHS'           => ['$(inherited)', '@executable_path/Frameworks'],
+        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :application] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
@@ -337,6 +338,7 @@ module Xcodeproj
         'GCC_WARN_UNINITIALIZED_AUTOS'       => 'YES',
         'GCC_WARN_UNUSED_FUNCTION'           => 'YES',
         'GCC_WARN_UNUSED_VARIABLE'           => 'YES',
+        'CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION' => 'YES',
       },
       :release => {
         'COPY_PHASE_STRIP'                   => 'YES',

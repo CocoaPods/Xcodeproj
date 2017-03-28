@@ -1,7 +1,7 @@
 #import "InterfaceController.h"
 
 
-@interface InterfaceController()
+@interface InterfaceController ()
 
 @end
 
