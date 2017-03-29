@@ -1,7 +1,7 @@
 #import "NotificationController.h"
 
 
-@interface NotificationController()
+@interface NotificationController ()
 
 @end
 
