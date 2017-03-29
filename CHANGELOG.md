@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Updated Common Build Settings with Xcode 8.3.  
+  [Louis D'hauwe](https://github.com/louisdh)
+  [#474](https://github.com/CocoaPods/Xcodeproj/pull/474)
+
 * Updated Common Build Settings with Xcode 8.2.1.  
   [Louis D'hauwe](https://github.com/louisdh)
   [#468](https://github.com/CocoaPods/Xcodeproj/pull/468)
