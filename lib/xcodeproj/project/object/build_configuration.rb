@@ -68,9 +68,32 @@ module Xcodeproj
           debug? ? :debug : :release
         end
 
+        # @!group Helpers
+        #---------------------------------------------------------------------#
+
+        # Gets the value for the given build setting considering any configuration
+        # file present and resolving inheritance between them
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @return [String] The value of the build setting
+        #
+        def resolve_build_setting(key)
+          return build_settings[key] if base_configuration_reference.nil?
+          return config[key] if build_settings[key].nil?
+          return expand_build_setting(build_settings[key], config[key]) if build_settings[key].include? '$(inherited)'
+          build_settings[key]
+        end
+
         #---------------------------------------------------------------------#
 
         private
+
+        def expand_build_setting(build_setting_value, config_value)
+          inherited = config_value || ''
+          build_setting_value.gsub('$(inherited)', inherited)
+        end
 
         def sorted_build_settings
           sorted = {}
@@ -124,6 +147,10 @@ module Xcodeproj
         def split_build_setting_array_to_string(string)
           regexp = / *((['"]?).*?[^\\]\2)(?=( |\z))/
           string.scan(regexp).map(&:first)
+        end
+
+        def config
+          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash
         end
 
         #---------------------------------------------------------------------#

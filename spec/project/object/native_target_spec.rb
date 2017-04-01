@@ -58,6 +58,37 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('ARCHS', 'arm64')
           @target.resolved_build_setting('ARCHS').should == { 'Release' => 'arm64', 'Debug' => 'arm64' }
         end
+
+        it 'returns the resolved build settings for a given key considering inheritance between project and target settings' do
+          @project.build_configuration_list.set_setting('USER_DEFINED', 'PROJECT')
+          @target.build_configuration_list.set_setting('USER_DEFINED', '$(inherited) TARGET')
+          @target.resolved_build_setting('USER_DEFINED', true).should == { 'Release' => 'PROJECT TARGET', 'Debug' => 'PROJECT TARGET' }
+        end
+
+        it 'returns the resolved build settings for a given key considering inherited between project, target and associated base configuration references' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @project.build_configuration_list.set_setting('USER_DEFINED', '$(inherited) PROJECT')
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.build_configuration_list.set_setting('USER_DEFINED', '$(inherited) TARGET')
+          expected_value = 'PROJECT_XCCONFIG_VALUE PROJECT TARGET_XCCONFIG_VALUE TARGET'
+          @target.resolved_build_setting('USER_DEFINED', true).should == { 'Release' => expected_value, 'Debug' => expected_value }
+        end
+
+        it 'returns the resolved build settings for a given key considering proper precedence between target and associated base configuration reference' do
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.build_configuration_list.set_setting('USER_DEFINED', 'TARGET')
+          @target.resolved_build_setting('USER_DEFINED', true).should == { 'Release' => 'TARGET', 'Debug' => 'TARGET' }
+        end
+
+        it 'returns the resolved build settings for a given key considering proper precedence between project and associated base configuration reference' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @project.build_configuration_list.set_setting('USER_DEFINED', 'PROJECT')
+          @target.resolved_build_setting('USER_DEFINED', true).should == { 'Release' => 'PROJECT', 'Debug' => 'PROJECT' }
+        end
       end
 
       #----------------------------------------#
