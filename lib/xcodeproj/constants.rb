@@ -200,7 +200,7 @@ module Xcodeproj
       }.freeze,
       [:debug, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => ['$(inherited)', 'DEBUG'],
       }.freeze,
       [:release, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
