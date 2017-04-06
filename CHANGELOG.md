@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Remove the dependency upon `activesupport`.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 ##### Bug Fixes
 
