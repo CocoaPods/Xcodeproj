@@ -119,8 +119,7 @@ module ProjectSpecs
       end
 
       it 'indents the string representation as Xcode' do
-        require 'active_support/core_ext/string/strip.rb'
-        @scheme.to_s[0..190].should == <<-DOC.strip_heredoc
+        expected = <<-DOC.gsub(/^ {8}/, '').strip
         <?xml version="1.0" encoding="UTF-8"?>
         <Scheme
            LastUpgradeVersion = "0700"
@@ -129,6 +128,7 @@ module ProjectSpecs
               parallelizeBuildables = "YES"
               buildImplicitDependencies = "YES">
         DOC
+        @scheme.to_s.should.start_with(expected)
       end
 
       it 'saves in place when initialized from file' do

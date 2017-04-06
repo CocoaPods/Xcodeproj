@@ -12,8 +12,6 @@ module Xcodeproj
       #       validated before serialization ?
       #
       class AbstractObjectAttribute
-        require 'active_support/inflector'
-
         # @return [Symbol] the type of the attribute. It can be `:simple`,
         #   `:to_one`, `:to_many`.
         #

@@ -16,12 +16,11 @@ Gem::Specification.new do |s|
     support for Xcode workspaces (.xcworkspace) and configuration files (.xcconfig).
   ).strip.gsub(/\s+/, ' ')
 
-  s.files         = %w( README.md LICENSE ) + Dir['lib/**/*.rb']
+  s.files         = %w(README.md LICENSE) + Dir['lib/**/*.rb']
 
-  s.executables   = %w( xcodeproj )
-  s.require_paths = %w( lib )
+  s.executables   = %w(xcodeproj)
+  s.require_paths = %w(lib)
 
-  s.add_runtime_dependency 'activesupport',  '>= 3'
   s.add_runtime_dependency 'CFPropertyList', '~> 2.3.3'
   s.add_runtime_dependency 'claide',         '>= 1.0.1', '< 2.0'
   s.add_runtime_dependency 'colored2',       '~> 3.1'
