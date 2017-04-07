@@ -18,6 +18,7 @@ group :development do
 
   gem 'codeclimate-test-reporter', '~> 0.4.1', :require => nil
   gem 'rubocop'
+  gem 'danger'
   gem 'simplecov'
 end
 
