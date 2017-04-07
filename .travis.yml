@@ -15,6 +15,15 @@ rvm:
   # TODO currently unavailable: https://github.com/travis-ci/travis-ci/issues/2918
   # - 2.0.0-p247
 
+matrix:
+  include:
+  - rvm: 2.4.0
+    env: COCOAPODS_CI_TASKS=LINT
+
+script:
+  - bundle exec rake spec:all
+  - if [ "$COCOAPODS_CI_TASKS" = "LINT" ]; then bundle exec danger; fi
+
 addons:
  code_climate:
    repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152
