@@ -9,18 +9,16 @@ gem 'claide', :git => 'https://github.com/CocoaPods/CLAide'
 # so we use a fork that makes a trivial change to a macro invocation.
 gem 'json', :git => 'https://github.com/segiddins/json.git', :branch => 'seg-1.7.7-ruby-2.2'
 
-gem 'activesupport', '~> 4.2'
-
 group :development do
-  gem 'mocha'
   gem 'bacon'
+  gem 'mocha'
   gem 'mocha-on-bacon'
   gem 'prettybacon'
   gem 'rake'
 
   gem 'codeclimate-test-reporter', '~> 0.4.1', :require => nil
-  gem 'simplecov'
   gem 'rubocop'
+  gem 'simplecov'
 end
 
 group :debugging do

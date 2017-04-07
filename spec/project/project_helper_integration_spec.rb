@@ -1,6 +1,4 @@
 require File.expand_path('../../spec_helper', __FILE__)
-require 'active_support'
-require 'active_support/core_ext/object/try'
 
 module ProjectHelperSpecs
   describe Xcodeproj::Project::ProjectHelper do
@@ -39,9 +37,10 @@ module ProjectHelperSpecs
 
     shared 'configuration settings' do
       extend SpecHelper::ProjectHelper
-      built_settings = subject.common_build_settings(configuration, platform, nil, product_type, try(:language))
+      lang = language if respond_to?(:language)
+      built_settings = subject.common_build_settings(configuration, platform, nil, product_type, lang)
       built_settings = apply_exclusions(built_settings, fixture_settings[:base]) if configuration != :base
-      compare_settings(built_settings, fixture_settings[configuration], [configuration, platform, product_type, try(:language)])
+      compare_settings(built_settings, fixture_settings[configuration], [configuration, platform, product_type, lang])
     end
 
     shared 'target settings' do

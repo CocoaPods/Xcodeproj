@@ -21,7 +21,7 @@ module ProjectSpecs
     it 'caches plist names to speed up the conversion' do
       CaseConverter.stubs(:plist_cache).returns({})
       CaseConverter.convert_to_plist(:source_tree, :lower)
-      String.any_instance.expects(:camelize).never
+      CaseConverter.expects(:camelize).never
       CaseConverter.convert_to_plist(:source_tree, :lower)
     end
 
