@@ -55,8 +55,9 @@ module Xcodeproj
           target_settings = build_configuration_list.get_setting(key, resolve_against_xcconfig)
           project_settings = project.build_configuration_list.get_setting(key, resolve_against_xcconfig)
           target_settings.merge(project_settings) do |_key, target_val, proj_val|
-            if target_val && target_val.include?('$(inherited)') && !proj_val.nil?
-              target_val.gsub('$(inherited)', proj_val)
+            target_includes_inherited = Constants::INHERITED_KEYWORDS.any? { |keyword| target_val.include?(keyword) } if target_val
+            if target_includes_inherited && proj_val
+              target_val.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), proj_val)
             else
               target_val || proj_val
             end

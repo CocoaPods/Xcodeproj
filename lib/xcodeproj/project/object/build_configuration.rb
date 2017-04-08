@@ -82,7 +82,8 @@ module Xcodeproj
         def resolve_build_setting(key)
           return build_settings[key] if base_configuration_reference.nil?
           return config[key] if build_settings[key].nil?
-          return expand_build_setting(build_settings[key], config[key]) if build_settings[key].include? '$(inherited)'
+          includes_inherited_keyword = Constants::INHERITED_KEYWORDS.any? { |keyword| build_settings[key].include?(keyword) }
+          return expand_build_setting(build_settings[key], config[key]) if includes_inherited_keyword
           build_settings[key]
         end
 
@@ -92,7 +93,7 @@ module Xcodeproj
 
         def expand_build_setting(build_setting_value, config_value)
           inherited = config_value || ''
-          build_setting_value.gsub('$(inherited)', inherited)
+          build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited)
         end
 
         def sorted_build_settings
