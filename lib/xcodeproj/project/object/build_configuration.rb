@@ -92,8 +92,10 @@ module Xcodeproj
         private
 
         def expand_build_setting(build_setting_value, config_value)
-          inherited = config_value || ''
-          build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited)
+          default = build_setting_value.is_a?(String) ? '' : []
+          inherited = config_value || default
+          return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
+          build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
         end
 
         def sorted_build_settings
@@ -151,7 +153,9 @@ module Xcodeproj
         end
 
         def config
-          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash
+          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash.tap do |hash|
+            normalize_array_settings(hash)
+          end
         end
 
         #---------------------------------------------------------------------#
