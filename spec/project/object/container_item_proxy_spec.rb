@@ -12,8 +12,8 @@ module ProjectSpecs
     end
 
     it 'returns the type of the proxy' do
-      @proxy.proxy_type = '1'
-      @proxy.proxy_type.should == '1'
+      @proxy.proxy_type = 1
+      @proxy.proxy_type.should == 1
     end
 
     it 'returns the remote global id string' do
