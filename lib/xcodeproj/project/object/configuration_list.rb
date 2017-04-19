@@ -98,7 +98,11 @@ module Xcodeproj
         #---------------------------------------------------------------------#
 
         def ascii_plist_annotation
-          " Build configuration list for #{target.isa} \"#{target}\" "
+          if target.respond_to?(:isa)
+            " Build configuration list for #{target.isa} \"#{target}\" "
+          else
+            $stderr.puts "#{uuid} was not found, target doesn't respond to `isa`."
+          end
         end
       end
     end
