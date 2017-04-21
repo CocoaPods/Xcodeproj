@@ -62,13 +62,17 @@ module Xcodeproj
         # @param [String] key
         #        the key of the build setting.
         #
+        # @param [Bool] resolve_against_xcconfig
+        #        wether the retrieved setting should take in consideration any
+        #        configuration file present.
+        #
         # @return [Hash{String => String}] The value of the build setting
         #         grouped by the name of the build configuration.
         #
-        def get_setting(key)
+        def get_setting(key, resolve_against_xcconfig = false)
           result = {}
           build_configurations.each do |bc|
-            result[bc.name] = bc.build_settings[key]
+            result[bc.name] = resolve_against_xcconfig ? bc.resolve_build_setting(key) : bc.build_settings[key]
           end
           result
         end

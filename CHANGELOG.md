@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Make build settings parsing optionally take into account any associated xcconfig files.  
+  [Renzo Crisóstomo](https://github.com/ruenzuo)
+  [#180](https://github.com/CocoaPods/Xcodeproj/pull/180)
 
 ##### Bug Fixes
 

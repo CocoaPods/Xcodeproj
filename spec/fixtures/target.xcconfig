@@ -1,0 +1,2 @@
+USER_DEFINED = ${inherited} TARGET_XCCONFIG_VALUE
+OTHER_LDFLAGS = ${inherited} -framework CoreAnimation

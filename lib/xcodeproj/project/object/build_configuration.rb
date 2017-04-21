@@ -68,9 +68,35 @@ module Xcodeproj
           debug? ? :debug : :release
         end
 
+        # @!group Helpers
+        #---------------------------------------------------------------------#
+
+        # Gets the value for the given build setting considering any configuration
+        # file present and resolving inheritance between them
+        #
+        # @param [String] key
+        #        the key of the build setting.
+        #
+        # @return [String] The value of the build setting
+        #
+        def resolve_build_setting(key)
+          return build_settings[key] if base_configuration_reference.nil?
+          return config[key] if build_settings[key].nil?
+          includes_inherited_keyword = Constants::INHERITED_KEYWORDS.any? { |keyword| build_settings[key].include?(keyword) }
+          return expand_build_setting(build_settings[key], config[key]) if includes_inherited_keyword
+          build_settings[key]
+        end
+
         #---------------------------------------------------------------------#
 
         private
+
+        def expand_build_setting(build_setting_value, config_value)
+          default = build_setting_value.is_a?(String) ? '' : []
+          inherited = config_value || default
+          return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
+          build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
+        end
 
         def sorted_build_settings
           sorted = {}
@@ -124,6 +150,12 @@ module Xcodeproj
         def split_build_setting_array_to_string(string)
           regexp = / *((['"]?).*?[^\\]\2)(?=( |\z))/
           string.scan(regexp).map(&:first)
+        end
+
+        def config
+          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash.tap do |hash|
+            normalize_array_settings(hash)
+          end
         end
 
         #---------------------------------------------------------------------#

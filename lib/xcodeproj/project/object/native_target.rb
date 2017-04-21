@@ -41,18 +41,30 @@ module Xcodeproj
         # @param [String] key
         #        the key of the build setting.
         #
+        # @param [Bool] resolve_against_xcconfig
+        #        wether the resolved setting should take in consideration any
+        #        configuration file present.
+        #
         # @return [Hash{String => String}] The value of the build setting
         #         grouped by the name of the build configuration.
         #
         # TODO:   Full support for this would require to take into account
-        #         any associated xcconfig and the default values for the
-        #         platform.
+        #         the default values for the platform.
         #
-        def resolved_build_setting(key)
-          target_settings = build_configuration_list.get_setting(key)
-          project_settings = project.build_configuration_list.get_setting(key)
+        def resolved_build_setting(key, resolve_against_xcconfig = false)
+          target_settings = build_configuration_list.get_setting(key, resolve_against_xcconfig)
+          project_settings = project.build_configuration_list.get_setting(key, resolve_against_xcconfig)
           target_settings.merge(project_settings) do |_key, target_val, proj_val|
-            target_val || proj_val
+            target_includes_inherited = Constants::INHERITED_KEYWORDS.any? { |keyword| target_val.include?(keyword) } if target_val
+            if target_includes_inherited && proj_val
+              if target_val.is_a? String
+                target_val.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), proj_val)
+              else
+                target_val.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? proj_val : value }.flatten
+              end
+            else
+              target_val || proj_val
+            end
           end
         end
 
