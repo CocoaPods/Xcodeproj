@@ -5,12 +5,15 @@ module Xcodeproj
     # This class wraps the LaunchAction node of a .xcscheme XML file
     #
     class LaunchAction < AbstractSchemeAction
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [REXML::Element] node
       #        The 'LaunchAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(node = nil)
-        create_xml_element_with_fallback(node, 'LaunchAction') do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'LaunchAction', scheme) do
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
@@ -51,7 +54,7 @@ module Xcodeproj
       #         The BuildReference to launch when executing the Launch Action
       #
       def buildable_product_runnable
-        BuildableProductRunnable.new(@xml_element.elements['BuildableProductRunnable'], 0)
+        BuildableProductRunnable.new(@scheme, @xml_element.elements['BuildableProductRunnable'])
       end
 
       # @param [BuildableProductRunnable] runnable
@@ -66,7 +69,7 @@ module Xcodeproj
       #         Returns the EnvironmentVariables that will be defined at app launch
       #
       def environment_variables
-        EnvironmentVariables.new(@xml_element.elements[XCScheme::VARIABLES_NODE])
+        EnvironmentVariables.new(@scheme, @xml_element.elements[XCScheme::VARIABLES_NODE])
       end
 
       # @param [EnvironmentVariables,nil] env_vars

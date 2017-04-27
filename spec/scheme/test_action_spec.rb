@@ -1,9 +1,10 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::TestAction do
     it 'Creates a default XML node when created from scratch' do
-      test_action = Xcodeproj::XCScheme::TestAction.new(nil)
+      test_action = Xcodeproj::XCScheme::TestAction.new(XCSchemeStub.new, nil)
       test_action.xml_element.name.should == 'TestAction'
       test_action.xml_element.attributes.count.should == 4
       test_action.xml_element.attributes['selectedDebuggerIdentifier'].should == 'Xcode.DebuggerFoundation.Debugger.LLDB'
@@ -15,14 +16,14 @@ module Xcodeproj
     it 'raises if created with an invalid XML node' do
       node = REXML::Element.new('Foo')
       should.raise(Informative) do
-        Xcodeproj::XCScheme::TestAction.new(node)
+        Xcodeproj::XCScheme::TestAction.new(XCSchemeStub.new, node)
       end.message.should.match /Wrong XML tag name/
     end
 
     describe 'Map attributes to XML' do
       before do
         node = REXML::Element.new('TestAction')
-        @sut = Xcodeproj::XCScheme::TestAction.new(node)
+        @sut = Xcodeproj::XCScheme::TestAction.new(XCSchemeStub.new, node)
       end
 
       extend SpecHelper::XCScheme
@@ -30,15 +31,15 @@ module Xcodeproj
       specs_for_bool_attr(:code_coverage_enabled => 'codeCoverageEnabled')
 
       it '#testables' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         @sut.xml_element.add_element('Testables')
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
+        test_ref1 = XCScheme::TestAction::TestableReference.new(@sut.scheme, target1)
         @sut.xml_element.elements['Testables'].add_element(test_ref1.xml_element)
 
         target2 = project.new_target(:application, 'FooApp', :ios)
-        test_ref2 = XCScheme::TestAction::TestableReference.new(target2)
+        test_ref2 = XCScheme::TestAction::TestableReference.new(@sut.scheme, target2)
         @sut.xml_element.elements['Testables'].add_element(test_ref2.xml_element)
 
         @sut.testables.count.should == 2
@@ -48,14 +49,14 @@ module Xcodeproj
       end
 
       it '#add_testables' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
+        test_ref1 = XCScheme::TestAction::TestableReference.new(@sut.scheme, target1)
         @sut.add_testable(test_ref1)
 
         target2 = project.new_target(:application, 'FooApp', :ios)
-        test_ref2 = XCScheme::TestAction::TestableReference.new(target2)
+        test_ref2 = XCScheme::TestAction::TestableReference.new(@sut.scheme, target2)
         @sut.add_testable(test_ref2)
 
         @sut.xml_element.elements['Testables'].count.should == 2
@@ -64,15 +65,15 @@ module Xcodeproj
       end
 
       it '#macro_expansions' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         @sut.xml_element.add_element('Testables')
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        macro1 = XCScheme::MacroExpansion.new(target1)
+        macro1 = XCScheme::MacroExpansion.new(@sut.scheme, target1)
         @sut.xml_element.add_element(macro1.xml_element)
 
         target2 = project.new_target(:application, 'FooApp', :ios)
-        macro2 = XCScheme::MacroExpansion.new(target2)
+        macro2 = XCScheme::MacroExpansion.new(@sut.scheme, target2)
         @sut.xml_element.add_element(macro2.xml_element)
 
         @sut.macro_expansions.count.should == 2
@@ -82,14 +83,14 @@ module Xcodeproj
       end
 
       it '#add_macro_expansion' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        macro1 = XCScheme::MacroExpansion.new(target1)
+        macro1 = XCScheme::MacroExpansion.new(@sut.scheme, target1)
         @sut.add_macro_expansion(macro1)
 
         target2 = project.new_target(:application, 'FooApp', :ios)
-        macro2 = XCScheme::MacroExpansion.new(target2)
+        macro2 = XCScheme::MacroExpansion.new(@sut.scheme, target2)
         @sut.add_macro_expansion(macro2)
 
         @sut.xml_element.get_elements('MacroExpansion').count.should == 2
@@ -112,16 +113,16 @@ module Xcodeproj
           env_vars_xml.add_element(var_node_name, 'isEnabled' => 'NO', 'key' => 'b', 'value' => '2')
 
           # Reload content from XML
-          @sut = XCScheme::TestAction.new(@sut.xml_element)
+          @sut = XCScheme::TestAction.new(XCSchemeStub.new, @sut.xml_element)
 
           @sut.environment_variables.to_a.should == [{ :key => 'a', :value => '1', :enabled => true },
                                                      { :key => 'b', :value => '2', :enabled => false }]
         end
 
         it 'reflects direct changes to xml' do
-          @sut.environment_variables = XCScheme::EnvironmentVariables.new([{ :key => 'a', :value => '1', :enabled => false },
-                                                                           { :key => 'b', :value => '2', :enabled => true },
-                                                                           { :key => 'c', :value => '3', :enabled => true }])
+          @sut.environment_variables = XCScheme::EnvironmentVariables.new(@sut.scheme, [{ :key => 'a', :value => '1', :enabled => false },
+                                                                                        { :key => 'b', :value => '2', :enabled => true },
+                                                                                        { :key => 'c', :value => '3', :enabled => true }])
           node_to_delete = @sut.environment_variables.xml_element.elements["#{var_node_name}[@key='b']"]
           @sut.environment_variables.xml_element.delete(node_to_delete)
           @sut.environment_variables.to_a.should == [{ :key => 'a', :value => '1', :enabled => false },
@@ -131,7 +132,7 @@ module Xcodeproj
         it 'can be assigned nil' do
           @sut.xml_element.get_elements(vars_node_name).count.should == 0
 
-          @sut.environment_variables = XCScheme::EnvironmentVariables.new
+          @sut.environment_variables = XCScheme::EnvironmentVariables.new(@sut.scheme)
           @sut.environment_variables.should.not.equal nil
           @sut.xml_element.get_elements(vars_node_name).count.should == 1
 
@@ -141,7 +142,7 @@ module Xcodeproj
         end
 
         it 'assigning an EnvironmentVariables object updates the xml' do
-          env_var = Xcodeproj::XCScheme::EnvironmentVariables.new([{ :key => 'a', :value => '1' }])
+          env_var = Xcodeproj::XCScheme::EnvironmentVariables.new(@sut.scheme, [{ :key => 'a', :value => '1' }])
           env_var.xml_element.elements.count.should == 1
 
           @sut.environment_variables = env_var
@@ -159,7 +160,7 @@ module Xcodeproj
 
     describe XCScheme::TestAction::TestableReference do
       it 'Creates a default XML node when created from scratch' do
-        test_ref = Xcodeproj::XCScheme::TestAction::TestableReference.new(nil)
+        test_ref = Xcodeproj::XCScheme::TestAction::TestableReference.new(XCSchemeStub.new, nil)
 
         test_ref.xml_element.name.should == 'TestableReference'
         test_ref.xml_element.attributes.count.should == 1
@@ -169,14 +170,14 @@ module Xcodeproj
       it 'raises if created with an invalid XML node' do
         node = REXML::Element.new('Foo')
         should.raise(Informative) do
-          Xcodeproj::XCScheme::TestAction::TestableReference.new(node)
+          Xcodeproj::XCScheme::TestAction::TestableReference.new(XCSchemeStub.new, node)
         end.message.should.match /Wrong XML tag name/
       end
 
       it 'Uses the proper XML node when created from a target' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         target = project.new_target(:application, 'FooApp', :ios)
-        test_ref = Xcodeproj::XCScheme::TestAction::TestableReference.new(target)
+        test_ref = Xcodeproj::XCScheme::TestAction::TestableReference.new(XCSchemeStub.new, target)
         test_ref.xml_element.name.should == 'TestableReference'
       end
 
@@ -184,7 +185,7 @@ module Xcodeproj
         extend SpecHelper::XCScheme
 
         before do
-          @sut = Xcodeproj::XCScheme::TestAction::TestableReference.new(nil)
+          @sut = Xcodeproj::XCScheme::TestAction::TestableReference.new(XCSchemeStub.new, nil)
         end
 
         attributes = {
@@ -194,8 +195,9 @@ module Xcodeproj
       end
 
       it '#add_skipped_test' do
-        test_ref = XCScheme::TestAction::TestableReference.new
-        skipped_test = XCScheme::TestAction::TestableReference::SkippedTest.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
+        skipped_test = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         skipped_test.identifier = 'MyClassTests'
         test_ref.add_skipped_test(skipped_test)
         test_ref.xml_element.elements['SkippedTests'].should.not.nil?
@@ -204,8 +206,9 @@ module Xcodeproj
       end
 
       it '#set_skipped_tests_nil' do
-        test_ref = XCScheme::TestAction::TestableReference.new
-        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new]
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
+        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)]
         test_ref.skipped_tests.count.should == 1
         test_ref.skipped_tests = nil
         test_ref.xml_element.elements['SkippedTests'].should.nil?
@@ -213,12 +216,13 @@ module Xcodeproj
       end
 
       it '#set_skipped_tests' do
-        test_ref = XCScheme::TestAction::TestableReference.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test1.identifier = 'MyClassTests1'
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test2.identifier = 'MyClassTests2'
 
         test_ref.skipped_tests = [test1, test2]
@@ -229,13 +233,14 @@ module Xcodeproj
       end
 
       it '#skipped_tests' do
-        test_ref = XCScheme::TestAction::TestableReference.new
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test1.identifier = 'MyClassTests1'
         test_ref.add_skipped_test(test1)
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new(scheme)
         test2.identifier = 'MyClassTests2'
         test_ref.add_skipped_test(test2)
 
@@ -246,26 +251,28 @@ module Xcodeproj
       end
 
       it '#add_buildable_reference' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
-        test_ref = XCScheme::TestAction::TestableReference.new
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
+        scheme = XCSchemeStub.new
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
         target = project.new_target(:application, 'FooApp', :ios)
-        ref = XCScheme::BuildableReference.new(target)
+        ref = XCScheme::BuildableReference.new(scheme, target)
         test_ref.add_buildable_reference(ref)
 
         test_ref.xml_element.elements['BuildableReference'].should == ref.xml_element
       end
 
       it '#buildable_references' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
-        test_ref = XCScheme::TestAction::TestableReference.new
+        scheme = XCSchemeStub.new
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
+        test_ref = XCScheme::TestAction::TestableReference.new(scheme)
 
         target1 = project.new_target(:application, 'FooApp', :ios)
-        ref1 = XCScheme::BuildableReference.new(target1)
+        ref1 = XCScheme::BuildableReference.new(scheme, target1)
         test_ref.add_buildable_reference(ref1)
 
         target2 = project.new_target(:static_library, 'FooLib', :ios)
-        ref2 = XCScheme::BuildableReference.new(target2)
+        ref2 = XCScheme::BuildableReference.new(scheme, target2)
         test_ref.add_buildable_reference(ref2)
 
         test_ref.buildable_references.count.should == 2

@@ -8,12 +8,15 @@ module Xcodeproj
     # a special case of action (with no build_configuration, etc)
     #
     class BuildAction < XMLElementWrapper
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [REXML::Element] node
       #        The 'BuildAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(node = nil)
-        create_xml_element_with_fallback(node, 'BuildAction') do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'BuildAction', scheme) do
           self.parallelize_buildables = true
           self.build_implicit_dependencies = true
         end
@@ -53,7 +56,7 @@ module Xcodeproj
       #
       def entries
         @xml_element.elements['BuildActionEntries'].get_elements('BuildActionEntry').map do |entry_node|
-          BuildAction::Entry.new(entry_node)
+          BuildAction::Entry.new(@scheme, entry_node)
         end
       end
 
@@ -73,8 +76,8 @@ module Xcodeproj
         #        or an existing XML 'BuildActionEntry' node element to reference,
         #        or nil to create an new, empty Entry with default values
         #
-        def initialize(target_or_node = nil)
-          create_xml_element_with_fallback(target_or_node, 'BuildActionEntry') do
+        def initialize(scheme, target_or_node = nil)
+          create_xml_element_with_fallback(target_or_node, 'BuildActionEntry', scheme) do
             # Check target type to configure the default entry attributes accordingly
             is_test_target = false
             is_app_target = false
@@ -92,8 +95,7 @@ module Xcodeproj
             self.build_for_running   = is_app_target
             self.build_for_profiling = is_app_target
             self.build_for_archiving = is_app_target
-
-            add_buildable_reference BuildableReference.new(target_or_node) if target_or_node
+            add_buildable_reference BuildableReference.new(@scheme, target_or_node) if target_or_node
           end
         end
 
@@ -173,7 +175,7 @@ module Xcodeproj
         #
         def buildable_references
           @xml_element.get_elements('BuildableReference').map do |node|
-            BuildableReference.new(node)
+            BuildableReference.new(@scheme, node)
           end
         end
 

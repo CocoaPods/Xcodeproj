@@ -10,14 +10,17 @@ module Xcodeproj
     # LaunchAction or TestAction scheme group.
     #
     class EnvironmentVariables < XMLElementWrapper
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [nil,REXML::Element,Array<EnvironmentVariable>,Array<Hash{Symbol => String,Bool}>] node_or_variables
       #        The 'EnvironmentVariables' XML node, or list of environment variables, that this object represents.
       #          - If nil, an empty 'EnvironmentVariables' XML node will be created
       #          - If an REXML::Element, it must be named 'EnvironmentVariables'
       #          - If an Array of objects or Hashes, they'll each be passed to {#assign_variable}
       #
-      def initialize(node_or_variables = nil)
-        create_xml_element_with_fallback(node_or_variables, VARIABLES_NODE) do
+      def initialize(scheme, node_or_variables = nil)
+        create_xml_element_with_fallback(node_or_variables, VARIABLES_NODE, scheme) do
           @all_variables = []
           node_or_variables.each { |var| assign_variable(var) } unless node_or_variables.nil?
         end
@@ -27,7 +30,7 @@ module Xcodeproj
       #         The key value pairs currently set in @xml_element
       #
       def all_variables
-        @all_variables ||= @xml_element.get_elements(VARIABLE_NODE).map { |variable| EnvironmentVariable.new(variable) }
+        @all_variables ||= @xml_element.get_elements(VARIABLE_NODE).map { |variable| EnvironmentVariable.new(@scheme, variable) }
       end
 
       # Adds a given variable to the set of environment variables, or replaces it if that key already exists
@@ -40,7 +43,7 @@ module Xcodeproj
       #         The new set of environment variables after addition
       #
       def assign_variable(variable)
-        env_var = variable.is_a?(EnvironmentVariable) ? variable : EnvironmentVariable.new(variable)
+        env_var = variable.is_a?(EnvironmentVariable) ? variable : EnvironmentVariable.new(@scheme, variable)
         all_variables.each { |existing_var| remove_variable(existing_var) if existing_var.key == env_var.key }
         @xml_element.add_element(env_var.xml_element)
         @all_variables << env_var
@@ -96,13 +99,16 @@ module Xcodeproj
     # [[NSProcessInfo processInfo] environment] in your app code.
     #
     class EnvironmentVariable < XMLElementWrapper
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [nil,REXML::Element,Hash{Symbol => String,Bool}] node_or_variable
       #        - If nil, it will create a default XML node to use
       #        - If a REXML::Element, should be a <EnvironmentVariable> XML node to wrap
       #        - If a Hash, must contain keys :key and :value (Strings) and optionally :enabled (Boolean)
       #
-      def initialize(node_or_variable)
-        create_xml_element_with_fallback(node_or_variable, VARIABLE_NODE) do
+      def initialize(scheme, node_or_variable)
+        create_xml_element_with_fallback(node_or_variable, VARIABLE_NODE, scheme) do
           raise "Must pass a Hash with 'key' and 'value'!" unless node_or_variable.is_a?(Hash) &&
               node_or_variable.key?(:key) && node_or_variable.key?(:value)
 

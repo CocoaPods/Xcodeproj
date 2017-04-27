@@ -1,4 +1,5 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::ProfileAction do
@@ -16,7 +17,7 @@ module Xcodeproj
     it 'raises if created with an invalid XML node' do
       node = REXML::Element.new('Foo')
       should.raise(Informative) do
-        Xcodeproj::XCScheme::ProfileAction.new(node)
+        Xcodeproj::XCScheme::ProfileAction.new(XCSchemeStub.new, node)
       end.message.should.match /Wrong XML tag name/
     end
 
@@ -31,7 +32,7 @@ module Xcodeproj
 
       describe 'buildable_product_runnable' do
         it '#buildable_product_runnable' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 
@@ -42,7 +43,7 @@ module Xcodeproj
         end
 
         it '#buildable_product_runnable=' do
-          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+          project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
           target = project.new_target(:application, 'FooApp', :ios)
           bpr = XCScheme::BuildableProductRunnable.new(target)
 

@@ -6,12 +6,15 @@ module Xcodeproj
     # typically is synonymous for an Xcode target)
     #
     class BuildableReference < XMLElementWrapper
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
       #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableReference' node element to reference
       #
-      def initialize(target_or_node)
-        create_xml_element_with_fallback(target_or_node, 'BuildableReference') do
+      def initialize(scheme, target_or_node)
+        create_xml_element_with_fallback(target_or_node, 'BuildableReference', scheme) do
           @xml_element.attributes['BuildableIdentifier'] = 'primary'
           set_reference_target(target_or_node, true) if target_or_node
         end
@@ -44,7 +47,7 @@ module Xcodeproj
       end
 
       # Set the BlueprintIdentifier (target.uuid), BlueprintName (target.name)
-      #     and TerefencedContainer (URI pointing to target's projet) all at once
+      #     and RerefencedContainer (URI pointing to target's projet) all at once
       #
       # @param [Xcodeproj::Project::Object::AbstractTarget] target
       #        The target this BuildableReference refers to.
@@ -97,13 +100,19 @@ module Xcodeproj
       # @param [Xcodeproj::Project::Object::AbstractTarget] target
       #
       # @return [String] A string in the format "container:[path to the project
-      #                  file relative to the project_dir_path, always ending with
+      #                  file relative to the bundle containing this scheme file
+      #                  (ie. either a project or a workspace), always ending with
       #                  the actual project directory name]"
       #
       def construct_referenced_container_uri(target)
-        project = target.project
-        relative_path = project.path.relative_path_from(project.path + project.root_object.project_dir_path).to_s
-        relative_path = project.path.basename if relative_path == '.'
+        project_path = target.project.path
+        base = @scheme.bundle_path
+        if base.nil?
+          base = project_path
+        end
+        base = base.dirname
+        relative_path = project_path.relative_path_from(base).to_s
+        relative_path = project_path.basename if relative_path == '.'
         "container:#{relative_path}"
       end
     end

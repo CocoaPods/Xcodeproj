@@ -1,10 +1,13 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::BuildableReference do
     describe 'Created from scratch' do
       before do
-        @ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
+        @scheme = XCScheme.new
+        @scheme.set_bundle_path_and_name('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
+        @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, nil)
       end
 
       it 'Creates an initial, quite empty XML node' do
@@ -25,13 +28,15 @@ module Xcodeproj
           'ReferencedContainer' => 'container:baz.xcodeproj',
         }
         node.add_attributes(attributes)
-        @ref = Xcodeproj::XCScheme::BuildableReference.new(node)
+        @scheme = XCScheme.new
+        @scheme.set_bundle_path_and_name('/tmp/foo/bar/baz.xcodeproj', 'TestScheme')
+        @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, node)
       end
 
       it 'raise if invalid XML node' do
         node = REXML::Element.new('Foo')
         should.raise(Informative) do
-          Xcodeproj::XCScheme::BuildableReference.new(node)
+          Xcodeproj::XCScheme::BuildableReference.new(XCSchemeStub.new, node)
         end.message.should.match /Wrong XML tag name/
       end
 
@@ -57,7 +62,7 @@ module Xcodeproj
       end
 
       it '#set_reference_target without overriding buildable_name' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         other_target = project.new_target(:static_library, 'FooLib', :ios)
         @ref.set_reference_target(other_target, false)
 
@@ -68,7 +73,7 @@ module Xcodeproj
       end
 
       it '#set_reference_target with overriding of buildable_name' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         other_target = project.new_target(:static_library, 'FooLib', :ios)
         @ref.set_reference_target(other_target, true)
 
@@ -81,9 +86,12 @@ module Xcodeproj
 
     describe 'Created from a target' do
       before do
-        @project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        @project = Xcodeproj::Project.new('/tmp/foo/bar/baz.xcodeproj')
         @target = @project.new_target(:application, 'FooApp', :ios)
-        @ref = Xcodeproj::XCScheme::BuildableReference.new(@target)
+        @scheme = Xcodeproj::XCScheme.new
+        @scheme.set_bundle_path_and_name(@project.path, 'TestScheme')
+        @scheme.add_build_target(@target)
+        @ref = Xcodeproj::XCScheme::BuildableReference.new(@scheme, @target)
       end
 
       it 'Uses the proper XML node' do

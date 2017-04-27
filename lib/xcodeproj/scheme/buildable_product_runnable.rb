@@ -6,6 +6,9 @@ module Xcodeproj
     # (it contains a BuildableReference) and runnable (it can be launched and debugged)
     #
     class BuildableProductRunnable < XMLElementWrapper
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [Xcodeproj::Project::Object::AbstractTarget, REXML::Element] target_or_node
       #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableProductRunnable' node element to reference
@@ -14,9 +17,10 @@ module Xcodeproj
       # @param [#to_s] runnable_debugging_mode
       #        The debugging mode (usually '0')
       #
-      def initialize(target_or_node = nil, runnable_debugging_mode = nil)
-        create_xml_element_with_fallback(target_or_node, 'BuildableProductRunnable') do
-          self.buildable_reference = BuildableReference.new(target_or_node) if target_or_node
+      def initialize(scheme, target_or_node = nil, runnable_debugging_mode = nil)
+        @scheme = scheme
+        create_xml_element_with_fallback(target_or_node, 'BuildableProductRunnable', @scheme) do
+          self.buildable_reference = BuildableReference.new(@scheme, target_or_node) if target_or_node
           @xml_element.attributes['runnableDebuggingMode'] = runnable_debugging_mode.to_s if runnable_debugging_mode
         end
       end
@@ -39,7 +43,7 @@ module Xcodeproj
       #         The Buildable Reference this Buildable Product Runnable is gonna build and run
       #
       def buildable_reference
-        @buildable_reference ||= BuildableReference.new @xml_element.elements['BuildableReference']
+        @buildable_reference ||= BuildableReference.new(@scheme, @xml_element.elements['BuildableReference'])
       end
 
       # @param [BuildableReference] ref

@@ -5,12 +5,15 @@ module Xcodeproj
     # This class wraps the ProfileAction node of a .xcscheme XML file
     #
     class ProfileAction < AbstractSchemeAction
+      # @param [XScheme] scheme
+      #        The scheme this element belongs to.
+      #
       # @param [REXML::Element] node
       #        The 'ProfileAction' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
       #
-      def initialize(node = nil)
-        create_xml_element_with_fallback(node, 'ProfileAction') do
+      def initialize(scheme, node = nil)
+        create_xml_element_with_fallback(node, 'ProfileAction', scheme) do
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
           @xml_element.attributes['savedToolIdentifier'] = ''
           @xml_element.attributes['useCustomWorkingDirectory'] = bool_to_string(false)
@@ -42,7 +45,7 @@ module Xcodeproj
       #         The BuildableProductRunnable to launch when launching the Profile action
       #
       def buildable_product_runnable
-        BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
+        BuildableProductRunnable.new(@scheme, @xml_element.elements['BuildableProductRunnable'])
       end
 
       # @param [BuildableProductRunnable] runnable

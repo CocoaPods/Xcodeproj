@@ -1,4 +1,5 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::AnalyzeAction do
@@ -12,7 +13,7 @@ module Xcodeproj
     it 'raises if created with an invalid XML node' do
       node = REXML::Element.new('Foo')
       should.raise(Informative) do
-        Xcodeproj::XCScheme::AnalyzeAction.new(node)
+        Xcodeproj::XCScheme::AnalyzeAction.new(XCSchemeStub.new, node)
       end.message.should.match /Wrong XML tag name/
     end
   end

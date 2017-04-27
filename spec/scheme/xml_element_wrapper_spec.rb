@@ -1,15 +1,17 @@
 require File.expand_path('../../spec_helper', __FILE__)
+require File.expand_path('../../xcscheme_spec_helper', __FILE__)
 
 module Xcodeproj
   describe XCScheme::XMLElementWrapper do
     before do
+      @scheme = XCSchemeStub.new
       @wrapper = Xcodeproj::XCScheme::XMLElementWrapper.new
     end
 
     describe '#create_xml_element_with_fallback' do
       it 'uses node when tag match' do
         node = REXML::Element.new('Expected')
-        @wrapper.send(:create_xml_element_with_fallback, node, 'Expected') do
+        @wrapper.send(:create_xml_element_with_fallback, node, 'Expected', @scheme) do
           raise 'Block should not be executed'
         end
         @wrapper.xml_element.should == node
@@ -18,14 +20,14 @@ module Xcodeproj
       it 'raise when tag mismatch' do
         node = REXML::Element.new('BadTagName')
         should.raise Xcodeproj::Informative do
-          @wrapper.send(:create_xml_element_with_fallback, node, 'Expected')
+          @wrapper.send(:create_xml_element_with_fallback, node, 'Expected', @scheme)
         end.message.should.match /Wrong XML tag name/
         @wrapper.xml_element.should.nil?
       end
 
       it 'create a new node when target is not a node itself' do
         block_executed = false
-        @wrapper.send(:create_xml_element_with_fallback, 'NotANode', 'Expected') do
+        @wrapper.send(:create_xml_element_with_fallback, 'NotANode', 'Expected', @scheme) do
           block_executed = true
         end
         @wrapper.xml_element.class.should == REXML::Element
@@ -34,7 +36,7 @@ module Xcodeproj
       end
 
       it 'accept nil input and no block' do
-        @wrapper.send(:create_xml_element_with_fallback, nil, 'Expected')
+        @wrapper.send(:create_xml_element_with_fallback, nil, 'Expected', @scheme)
         @wrapper.xml_element.class.should == REXML::Element
         @wrapper.xml_element.name.should == 'Expected'
       end
