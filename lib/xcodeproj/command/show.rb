@@ -1,3 +1,4 @@
+require 'json'
 module Xcodeproj
   class Command
     class Show < Command
@@ -46,6 +47,19 @@ module Xcodeproj
         pretty_print = xcodeproj.pretty_print
         sections = []
         pretty_print.each do |key, value|
+          if key == 'Targets'
+            value.each do |item1|
+              item1.each do |key1, value1|
+                aFile = File.new(Dir.pwd+"/"+key1+".json", "w")
+                if aFile
+                  tempstring = JSON.pretty_generate(value1)
+                  aFile.syswrite(tempstring.gsub(/📦 /) { '' })
+                else
+                  puts "Unable to open file!"
+                end
+              end
+            end
+          end
           section = key.green
           yaml = value.to_yaml
           yaml.gsub!(/^---$/, '')
