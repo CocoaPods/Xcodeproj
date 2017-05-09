@@ -622,6 +622,32 @@ module ProjectSpecs
           plist = Plist.read_from_path(manifest.to_s)
           plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == false
         end
+
+        it 'adds test target to scheme for ui test bundle' do
+          sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
+          sut.new_target(:application, 'Xcode', :ios)
+          sut.new_target(:ui_test_bundle, 'XcodeTests', :ios)
+          sut.recreate_user_schemes(false)
+          schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
+          schemes_dir.children.map { |f| f.basename.to_s }.sort.should == ['Xcode.xcscheme', 'XcodeTests.xcscheme', 'xcschememanagement.plist']
+          test_scheme = @scheme = Xcodeproj::XCScheme.new(schemes_dir + 'XcodeTests.xcscheme')
+          test_scheme.test_action.testables.count.should == 1
+          test_scheme.test_action.testables.first.buildable_references.count.should == 1
+          test_scheme.test_action.testables.first.buildable_references.first.target_name.should == 'XcodeTests'
+        end
+
+        it 'adds test target to scheme for unit test bundle' do
+          sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
+          sut.new_target(:application, 'Xcode', :ios)
+          sut.new_target(:unit_test_bundle, 'XcodeTests', :ios)
+          sut.recreate_user_schemes(false)
+          schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
+          schemes_dir.children.map { |f| f.basename.to_s }.sort.should == ['Xcode.xcscheme', 'XcodeTests.xcscheme', 'xcschememanagement.plist']
+          test_scheme = @scheme = Xcodeproj::XCScheme.new(schemes_dir + 'XcodeTests.xcscheme')
+          test_scheme.test_action.testables.count.should == 1
+          test_scheme.test_action.testables.first.buildable_references.count.should == 1
+          test_scheme.test_action.testables.first.buildable_references.first.target_name.should == 'XcodeTests'
+        end
       end
     end
 

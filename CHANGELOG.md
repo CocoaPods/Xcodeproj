@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add test reference to xcscheme if target is of type test  
+  [Dimitris Koutsogiorga](https://github.com/dnkoutso)
+  [#485](https://github.com/CocoaPods/Xcodeproj/pull/485)
+
 * Make build settings parsing optionally take into account any associated xcconfig files.  
   [Renzo Crisóstomo](https://github.com/ruenzuo)
   [#180](https://github.com/CocoaPods/Xcodeproj/pull/180)
