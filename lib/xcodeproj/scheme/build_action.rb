@@ -52,7 +52,9 @@ module Xcodeproj
       #         Each entry represent a target to build and tells for which action it's needed to be built.
       #
       def entries
-        @xml_element.elements['BuildActionEntries'].get_elements('BuildActionEntry').map do |entry_node|
+        entries = @xml_element.elements['BuildActionEntries']
+        return nil unless entries
+        entries.get_elements('BuildActionEntry').map do |entry_node|
           BuildAction::Entry.new(entry_node)
         end
       end

@@ -40,23 +40,30 @@ module Xcodeproj
         @sut.xml_element.elements['BuildActionEntries'].elements['BuildActionEntry'].should == entry.xml_element
       end
 
-      it '#entries' do
-        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+      describe '#entries' do
+        it 'when there are no entries' do
+          @sut.xml_element.elements['BuildActionEntries'].should.nil?
+          @sut.entries.should.nil?
+        end
 
-        target1 = project.new_target(:application, 'FooApp', :ios)
-        entry1 = XCScheme::BuildAction::Entry.new
-        entry1.add_buildable_reference(XCScheme::BuildableReference.new(target1))
-        @sut.add_entry(entry1)
+        it 'when there are entries' do
+          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
 
-        target2 = project.new_target(:static_library, 'FooLib', :ios)
-        entry2 = XCScheme::BuildAction::Entry.new
-        entry2.add_buildable_reference(XCScheme::BuildableReference.new(target2))
-        @sut.add_entry(entry2)
+          target1 = project.new_target(:application, 'FooApp', :ios)
+          entry1 = XCScheme::BuildAction::Entry.new
+          entry1.add_buildable_reference(XCScheme::BuildableReference.new(target1))
+          @sut.add_entry(entry1)
 
-        @sut.entries.count.should == 2
-        @sut.entries.all? { |e| e.class.should == XCScheme::BuildAction::Entry }
-        @sut.entries[0].xml_element.should == entry1.xml_element
-        @sut.entries[1].xml_element.should == entry2.xml_element
+          target2 = project.new_target(:static_library, 'FooLib', :ios)
+          entry2 = XCScheme::BuildAction::Entry.new
+          entry2.add_buildable_reference(XCScheme::BuildableReference.new(target2))
+          @sut.add_entry(entry2)
+
+          @sut.entries.count.should == 2
+          @sut.entries.all? { |e| e.class.should == XCScheme::BuildAction::Entry }
+          @sut.entries[0].xml_element.should == entry1.xml_element
+          @sut.entries[1].xml_element.should == entry2.xml_element
+        end
       end
     end
 

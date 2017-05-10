@@ -14,7 +14,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Do not crash when there are no `BuildActionEntries` in a scheme.  
+  [Danielle Tomlinson](https://github.com/dantoml)
+  [#486](https://github.com/CocoaPods/Xcodeproj/pull/486)
 
 
 ## 1.4.4 (2017-04-07)
