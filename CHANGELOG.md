@@ -4,8 +4,12 @@
 
 ##### Enhancements
 
+* Use `test_target_type?` when adding testable reference  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#487](https://github.com/CocoaPods/Xcodeproj/pull/487)
+
 * Add test reference to xcscheme if target is of type test  
-  [Dimitris Koutsogiorga](https://github.com/dnkoutso)
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#485](https://github.com/CocoaPods/Xcodeproj/pull/485)
 
 * Make build settings parsing optionally take into account any associated xcconfig files.  
