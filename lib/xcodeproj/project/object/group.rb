@@ -335,7 +335,7 @@ module Xcodeproj
           child = children.find { |c| c.display_name == child_name }
           if child.nil?
             if should_create
-              child = new_group(child_name)
+              child = new_group(child_name,child_name)
             else
               return nil
             end
