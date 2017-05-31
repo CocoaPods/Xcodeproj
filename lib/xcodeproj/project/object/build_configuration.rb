@@ -57,7 +57,7 @@ module Xcodeproj
         #         debugging.
         #
         def debug?
-          gcc_preprocessor_definitions = build_settings['GCC_PREPROCESSOR_DEFINITIONS']
+          gcc_preprocessor_definitions = resolve_build_setting('GCC_PREPROCESSOR_DEFINITIONS')
           gcc_preprocessor_definitions && gcc_preprocessor_definitions.include?('DEBUG=1')
         end
 
