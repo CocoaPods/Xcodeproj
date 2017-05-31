@@ -32,6 +32,13 @@ module ProjectSpecs
           @configuration.should.be.debug
         end
 
+        it 'returns true when the preprocessor definitions in the config include DEBUG=1' do
+          @configuration.name = 'Debug'
+          @project.build_settings(@configuration.name)['GCC_PREPROCESSOR_DEFINITIONS'] = ['DEBUG=1']
+          @configuration.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = ['$(inherited)', 'foo']
+          @configuration.should.be.debug
+        end
+
         it 'returns false when the preprocessor definitions include DEBUG=0' do
           @configuration.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = ['Foo', 'DEBUG=0']
           @configuration.should.not.be.debug

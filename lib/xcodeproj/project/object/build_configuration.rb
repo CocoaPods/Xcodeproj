@@ -57,7 +57,7 @@ module Xcodeproj
         #         debugging.
         #
         def debug?
-          gcc_preprocessor_definitions = build_settings['GCC_PREPROCESSOR_DEFINITIONS']
+          gcc_preprocessor_definitions = resolve_build_setting('GCC_PREPROCESSOR_DEFINITIONS')
           gcc_preprocessor_definitions && gcc_preprocessor_definitions.include?('DEBUG=1')
         end
 
@@ -80,11 +80,16 @@ module Xcodeproj
         # @return [String] The value of the build setting
         #
         def resolve_build_setting(key)
-          return build_settings[key] if base_configuration_reference.nil?
-          return config[key] if build_settings[key].nil?
-          includes_inherited_keyword = Constants::INHERITED_KEYWORDS.any? { |keyword| build_settings[key].include?(keyword) }
-          return expand_build_setting(build_settings[key], config[key]) if includes_inherited_keyword
-          build_settings[key]
+          setting = build_settings[key]
+          config_setting = base_configuration_reference && config[key]
+
+          project_setting = project.build_configuration_list[name]
+          project_setting = nil if project_setting == self
+          project_setting &&= project_setting.resolve_build_setting(key)
+
+          [project_setting, config_setting, setting].compact.reduce do |inherited, value|
+            expand_build_setting(value, inherited)
+          end
         end
 
         #---------------------------------------------------------------------#
@@ -153,7 +158,7 @@ module Xcodeproj
         end
 
         def config
-          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash.tap do |hash|
+          @config ||= Xcodeproj::Config.new(base_configuration_reference.real_path).to_hash.tap do |hash|
             normalize_array_settings(hash)
           end
         end

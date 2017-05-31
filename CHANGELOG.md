@@ -12,7 +12,8 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#485](https://github.com/CocoaPods/Xcodeproj/pull/485)
 
-* Make build settings parsing optionally take into account any associated xcconfig files.  
+* Make build settings parsing optionally take into account any associated
+  xcconfig files and project settings.  
   [Renzo Crisóstomo](https://github.com/ruenzuo)
   [#180](https://github.com/CocoaPods/Xcodeproj/pull/180)
 
