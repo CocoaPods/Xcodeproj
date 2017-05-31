@@ -153,7 +153,7 @@ module Xcodeproj
         end
 
         def config
-          @config ||= Xcodeproj::Config.new(File.new(base_configuration_reference.real_path)).to_hash.tap do |hash|
+          @config ||= Xcodeproj::Config.new(base_configuration_reference.real_path).to_hash.tap do |hash|
             normalize_array_settings(hash)
           end
         end
