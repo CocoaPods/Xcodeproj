@@ -810,6 +810,7 @@ module Xcodeproj
         scheme = XCScheme.new
         scheme.add_build_target(target)
         scheme.add_test_target(target) if target.test_target_type?
+        yield scheme, target if block_given?
         scheme.save_as(path, target.name, false)
         xcschememanagement['SchemeUserState']["#{target.name}.xcscheme"] = {}
         xcschememanagement['SchemeUserState']["#{target.name}.xcscheme"]['isShown'] = visible

@@ -614,6 +614,15 @@ module ProjectSpecs
           plist['SchemeUserState']['Xcode.xcscheme']['isShown'].should == true
         end
 
+        it 'can recreate the user schemes using a block' do
+          sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
+          sut.new_target(:application, 'Xcode', :ios)
+          sut.recreate_user_schemes { |scheme, target| scheme.add_build_target(target) }
+          schemes_dir = sut.path + "xcuserdata/#{ENV['USER']}.xcuserdatad/xcschemes"
+          scheme = @scheme = Xcodeproj::XCScheme.new(schemes_dir + 'Xcode.xcscheme')
+          scheme.build_action.entries.count.should == 2
+        end
+
         it 'can hide the recreated user schemes' do
           sut = Xcodeproj::Project.new(SpecHelper.temporary_directory + 'Pods.xcodeproj')
           sut.new_target(:application, 'Xcode', :ios)

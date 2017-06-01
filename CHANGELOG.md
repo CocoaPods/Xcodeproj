@@ -8,6 +8,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#491](https://github.com/CocoaPods/Xcodeproj/pull/491)
 
+* Provide ability to update schemes as they are being recreated  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#490](https://github.com/CocoaPods/Xcodeproj/pull/490)
+
 * Use `test_target_type?` when adding testable reference  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#487](https://github.com/CocoaPods/Xcodeproj/pull/487)
