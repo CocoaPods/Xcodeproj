@@ -124,6 +124,23 @@ module ProjectSpecs
 
         target.build_phases.count.should == 0
       end
+
+      it 'creates a new legacy target' do
+        target = @helper.new_legacy_target(@project, 'Pods')
+        target.name.should == 'Pods'
+        target.build_tool_path.should == '/usr/bin/make'
+        target.build_arguments_string.should == '$(ACTION)'
+        target.build_working_directory.should.be.nil
+        target.pass_build_settings_in_environment.should == '1'
+
+        target.build_configuration_list.should.not.be.nil
+        configurations = target.build_configuration_list.build_configurations
+        configurations.map(&:name).sort.should == %w(Debug Release)
+
+        @project.targets.should.include target
+
+        target.build_phases.count.should == 0
+      end
     end
 
     #-------------------------------------------------------------------------#
