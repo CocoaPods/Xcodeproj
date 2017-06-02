@@ -97,6 +97,63 @@ module Xcodeproj
         @sut.xml_element.elements['MacroExpansion[2]'].should == macro2.xml_element
       end
 
+      describe '#command_line_arguments' do
+        vars_node_name = XCScheme::COMMAND_LINE_ARGS_NODE
+        var_node_name = XCScheme::COMMAND_LINE_ARG_NODE
+
+        it 'starts as nil if no xml exists' do
+          @sut.xml_element.elements[vars_node_name].should.equal nil
+          @sut.command_line_arguments.to_a.should.equal []
+        end
+
+        it 'picks up an existing node if exists in the XML' do
+          env_vars_xml = @sut.xml_element.add_element(vars_node_name)
+          env_vars_xml.add_element(var_node_name, 'isEnabled' => 'NO', 'argument' => '-com.foo.bar 1')
+          env_vars_xml.add_element(var_node_name, 'isEnabled' => 'YES', 'argument' => '-org.foo.bar 1')
+
+          # Reload content from XML
+          @sut = XCScheme::TestAction.new(@sut.xml_element)
+
+          @sut.command_line_arguments.to_a.should == [{ :argument => '-com.foo.bar 1', :enabled => false },
+                                                      { :argument => '-org.foo.bar 1', :enabled => true }]
+        end
+
+        it 'reflects direct changes to xml' do
+          @sut.command_line_arguments = XCScheme::CommandLineArguments.new([{ :argument => '-com.foo.bar 1', :enabled => false },
+                                                                            { :argument => '-org.foo.bar 1', :enabled => true }])
+          node_to_delete = @sut.command_line_arguments.xml_element.elements["#{var_node_name}[@argument='-com.foo.bar 1']"]
+          @sut.command_line_arguments.xml_element.delete(node_to_delete)
+          @sut.command_line_arguments.to_a.should == [{ :argument => '-org.foo.bar 1', :enabled => true }]
+        end
+
+        it 'can be assigned nil' do
+          @sut.xml_element.get_elements(vars_node_name).count.should == 0
+
+          @sut.command_line_arguments = XCScheme::CommandLineArguments.new
+          @sut.command_line_arguments.should.not.equal nil
+          @sut.xml_element.get_elements(vars_node_name).count.should == 1
+
+          @sut.command_line_arguments = nil
+          @sut.command_line_arguments.to_a.should.equal []
+          @sut.xml_element.elements[vars_node_name].should.be.nil
+        end
+
+        it 'assigning an CommandLineArguments object updates the xml' do
+          cl_arg = XCScheme::CommandLineArguments.new([{ :argument => '-com.foo.bar 1', :enabled => false }])
+          cl_arg.xml_element.elements.count.should == 1
+
+          @sut.command_line_arguments = cl_arg
+          @sut.command_line_arguments.to_a.should == [{ :argument => '-com.foo.bar 1', :enabled => false }]
+          @sut.command_line_arguments.xml_element.should == cl_arg.xml_element
+
+          xml_out = ''
+          xml_formatter = REXML::Formatters::Pretty.new(0)
+          xml_formatter.compact = true
+          xml_formatter.write(@sut.command_line_arguments.xml_element, xml_out)
+          xml_out.should == "<CommandLineArguments>\n<CommandLineArgument argument='-com.foo.bar 1' isEnabled='NO'/>\n</CommandLineArguments>"
+        end
+      end
+
       describe '#environment_variables' do
         vars_node_name = XCScheme::VARIABLES_NODE
         var_node_name = XCScheme::VARIABLE_NODE
