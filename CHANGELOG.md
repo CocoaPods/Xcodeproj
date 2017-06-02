@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add add_legacy_target method to ProjectHelper  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#491](https://github.com/CocoaPods/Xcodeproj/pull/491)
+
 * Use `test_target_type?` when adding testable reference  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#487](https://github.com/CocoaPods/Xcodeproj/pull/487)

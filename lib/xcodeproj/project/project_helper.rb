@@ -143,6 +143,43 @@ module Xcodeproj
         target
       end
 
+      # Creates a new legacy target and adds it to the project.
+      #
+      # The target is configured for the given platform.
+      #
+      # @param  [Project] project
+      #         the project to which the target should be added.
+      #
+      # @param  [String] name
+      #         the name of the aggregate target.
+      #
+      # @param  [String] build_tool_path
+      #         the build tool path to use for this target.
+      #
+      # @param  [String] build_arguments_string
+      #         the build arguments string to use for this target.
+      #
+      # @param  [String] build_working_directory
+      #         the build working directory to use for this target.
+      #
+      # @param  [String] pass_build_settings_in_environment
+      #         whether to pass build settings in the environment during execution of this target.
+      #
+      # @return [PBXLegacyTarget] the target.
+      #
+      def self.new_legacy_target(project, name, build_tool_path = '/usr/bin/make', build_arguments_string = '$(ACTION)',
+                                 build_working_directory = nil, pass_build_settings_in_environment = '1')
+        target = project.new(PBXLegacyTarget)
+        project.targets << target
+        target.name = name
+        target.build_configuration_list = configuration_list(project)
+        target.build_tool_path = build_tool_path
+        target.build_arguments_string = build_arguments_string
+        target.build_working_directory = build_working_directory
+        target.pass_build_settings_in_environment = pass_build_settings_in_environment
+        target
+      end
+
       # @!group Private Helpers
 
       #-----------------------------------------------------------------------#
