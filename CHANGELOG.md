@@ -21,6 +21,11 @@
   [Renzo Crisóstomo](https://github.com/ruenzuo)
   [#180](https://github.com/CocoaPods/Xcodeproj/pull/180)
 
+* Add command_line_arguments to TestAction.  
+  [Brently Jones](https://github.com/brentleyjones)
+  [Danielle Tomlinson](https://github.com/dantoml)
+  [#492](https://github.com/CocoaPods/Xcodeproj/pull/492)
+
 ##### Bug Fixes
 
 * Do not crash when there are no `BuildActionEntries` in a scheme.  
