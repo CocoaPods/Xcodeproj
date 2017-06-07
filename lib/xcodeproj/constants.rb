@@ -301,6 +301,7 @@ module Xcodeproj
       }.freeze,
       [:ios, :bundle] => {
         'SDKROOT'                           => 'iphoneos',
+        'TARGETED_DEVICE_FAMILY'            => '1,2',
       }.freeze,
       [:osx, :bundle] => {
         'CODE_SIGN_IDENTITY'                => '-',
