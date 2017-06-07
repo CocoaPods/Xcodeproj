@@ -1,5 +1,5 @@
 autoload :Nanaimo, 'nanaimo'
-autoload :CFPropertyList, 'cfpropertylist'
+autoload :CFPropertyList, 'CFPropertyList'
 
 module Xcodeproj
   # Provides support for loading and serializing property list files.
