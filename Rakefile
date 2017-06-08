@@ -72,7 +72,13 @@ begin
       rm_rf 'Project/*'
 
       subtitle 'Create a new fixture project'
-      Xcodeproj::Project.new(PROJECT_PATH).save
+      Xcodeproj::Project.new(PROJECT_PATH).tap do |project|
+        project.main_group.indent_width = '4'
+        project.main_group.tab_width = '4'
+        project.main_group.uses_tabs = '0'
+        project.main_group.wraps_lines = '0'
+        project.save
+      end
 
       subtitle "Open the project …"
       sh 'open "Project/Project.xcodeproj"'
@@ -159,8 +165,9 @@ begin
           path = file.real_path
           next unless path.file?
           contents = path.read
-          contents.sub! %r{\A(//\s.+\n)+}, ''
+          contents.sub! %r{\A(//.*\n)+}, ''
           contents.sub! /\A\s+/, ''
+          contents << "\n" unless contents.end_with?("\n")
           path.open('w') { |f| f.write(contents) }
         end
       end
