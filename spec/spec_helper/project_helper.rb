@@ -4,11 +4,13 @@ module SpecHelper
   module ProjectHelper
     # Keys which are excluded from comparison
     EXCLUDED_KEYS = %w(
+      CODE_SIGN_ENTITLEMENTS
       IBSC_MODULE
       INFOPLIST_FILE
       IPHONEOS_DEPLOYMENT_TARGET
       MACOSX_DEPLOYMENT_TARGET
       PRODUCT_BUNDLE_IDENTIFIER
+      SWIFT_VERSION
       TVOS_DEPLOYMENT_TARGET
       WATCHOS_DEPLOYMENT_TARGET
     ).freeze
