@@ -1,3 +1,1 @@
 #include "Objc_iOS_Framework/Objc_iOS_Framework_base.xcconfig"
-DEBUG_INFORMATION_FORMAT = dwarf
-MTL_ENABLE_DEBUG_INFO = YES

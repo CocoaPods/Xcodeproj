@@ -29,8 +29,8 @@ module SpecHelper
     def compare_settings(produced, expected, params)
       it 'should match build settings' do
         # Find faulty settings in different categories
-        missing_settings    = expected.keys.select { |k| produced[k].nil? }
-        unexpected_settings = produced.keys.select { |k| expected[k].nil? }
+        missing_settings    = expected.keys.reject { |k| produced.key?(k) }
+        unexpected_settings = produced.keys.reject { |k| expected.key?(k) }
         wrong_settings      = (expected.keys - missing_settings).select do |k|
           produced_setting = produced[k]
           produced_setting = produced_setting.join(' ') if produced_setting.respond_to? :join
@@ -87,7 +87,10 @@ module SpecHelper
 
       # Filter exclusions
       settings = apply_exclusions(settings, EXCLUDED_KEYS)
-      settings = apply_exclusions(settings, Xcodeproj::Constants::PROJECT_DEFAULT_BUILD_SETTINGS[type != :base ? type : :all])
+      project_defaults_by_config = Xcodeproj::Constants::PROJECT_DEFAULT_BUILD_SETTINGS
+      project_defaults = project_defaults_by_config[:all]
+      project_defaults.merge(project_defaults_by_config[type]) unless type == :base
+      settings = apply_exclusions(settings, project_defaults)
 
       settings
     end
@@ -101,14 +104,21 @@ module SpecHelper
     # @param  [Hash{String => String}] settings
     #         the build settings, where to apply the exclusions.
     #
-    # @param  [Array<String>] exclusions
+    # @param  [Array<String>, Hash{String => String}] exclusions
     #         the list of settings keys, which should been excluded.
     #
     # @return [Hash{String => String}]
     #         the filtered build settings
     #
     def apply_exclusions(settings, exclusions)
-      settings.reject { |k, _| exclusions.include?(k) }
+      by_value = !exclusions.is_a?(Array)
+      settings.reject do |k, v|
+        if by_value
+          exclusions[k] == v
+        else
+          exclusions.include?(k)
+        end
+      end
     end
   end
 end

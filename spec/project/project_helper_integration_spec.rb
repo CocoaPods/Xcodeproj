@@ -39,7 +39,10 @@ module ProjectHelperSpecs
       extend SpecHelper::ProjectHelper
       lang = language if respond_to?(:language)
       built_settings = subject.common_build_settings(configuration, platform, nil, product_type, lang)
-      built_settings = apply_exclusions(built_settings, fixture_settings[:base]) if configuration != :base
+      if configuration != :base
+        base_built_settings = subject.common_build_settings(:base, platform, nil, product_type, lang)
+        built_settings = apply_exclusions(built_settings, base_built_settings)
+      end
       compare_settings(built_settings, fixture_settings[configuration], [configuration, platform, product_type, lang])
     end
 
@@ -76,6 +79,29 @@ module ProjectHelperSpecs
     end
 
     describe '::common_build_settings' do
+      describe 'the project settings' do
+        define :product_type => nil
+        define :platform => nil
+        define :language => nil
+        define :path => 'Project'
+        define :fixture_settings => Hash[[:base, :debug, :release].map do |c|
+          base_path = Pathname(fixture_path("CommonBuildSettings/configs/#{path}"))
+          config_fixture = base_path + "#{path}_#{c}.xcconfig"
+          config = Xcodeproj::Config.new(config_fixture)
+          settings = config.to_hash
+          [c, settings]
+        end]
+
+        %i(base debug release).each do |configuration|
+          describe 'in base configuration' do
+            extend SpecHelper::ProjectHelper
+            defaults = Xcodeproj::Constants::PROJECT_DEFAULT_BUILD_SETTINGS
+            built_settings = defaults[configuration == :base ? :all : configuration]
+            compare_settings(built_settings, fixture_settings[configuration], ['Project', configuration])
+          end
+        end
+      end
+
       describe 'on platform OSX' do
         define :platform => :osx
 

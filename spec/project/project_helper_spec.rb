@@ -101,7 +101,6 @@ module ProjectSpecs
         configurations.map(&:name).sort.should == %w(Debug Release)
         build_settings = configurations.first.build_settings
         build_settings['SDKROOT'].should == 'iphoneos'
-        build_settings['PRODUCT_NAME'].should == '$(TARGET_NAME)'
         build_settings['WRAPPER_EXTENSION'].should == 'bundle'
         build_settings['SKIP_INSTALL'].should == 'YES'
 
@@ -153,12 +152,12 @@ module ProjectSpecs
     describe '::common_build_settings' do
       it 'returns the build settings for an application by default' do
         settings = @helper.common_build_settings(:release, :ios, nil, nil)
-        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
+        settings['CODE_SIGN_IDENTITY'].should == 'iPhone Developer'
       end
 
       it 'returns the build settings for an application' do
         settings = @helper.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
-        settings['CODE_SIGN_IDENTITY[sdk=iphoneos*]'].should == 'iPhone Developer'
+        settings['CODE_SIGN_IDENTITY'].should == 'iPhone Developer'
       end
 
       it 'returns the build settings for a bundle' do

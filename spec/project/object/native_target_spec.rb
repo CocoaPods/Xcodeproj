@@ -313,7 +313,7 @@ module ProjectSpecs
       #----------------------------------------#
 
       it 'returns the build settings of the configuration with the given name' do
-        @target.build_settings('Debug')['PRODUCT_NAME'].should == '$(TARGET_NAME)'
+        @target.build_settings('Debug')['SKIP_INSTALL'].should == 'YES'
       end
 
       describe '#add_dependency' do
