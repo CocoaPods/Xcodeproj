@@ -1,0 +1,166 @@
+#!/usr/bin/env ruby
+
+require 'xcodeproj'
+require 'pp'
+
+class Template
+  def initialize(plist)
+    @plist = plist
+  end
+
+  def self.all_by_identifier
+    @all_by_identifier ||= {}
+  end
+
+  def identifier
+    @plist['Identifier']
+  end
+
+  def summary
+    @plist['Summary']
+  end
+
+  def inspect
+    PP.pp @plist, ''
+  end
+
+  def ancestors
+    Array(@plist['Ancestors']).map { |a| self.class.all_by_identifier[a] }.compact
+  end
+
+  def shared_settings(configuration: nil, options: {})
+    options_targets = options.flat_map do |(ident, value)|
+      next [] unless option = Array(@plist['Options']).find { |o| o['Identifier'] == ident }
+      option.dig('Units', value) || [{}]
+    end
+
+    targets = [@plist, *options_targets]
+    shared_settings = targets.reverse_each.flat_map do |target_host|
+      targets = (begin
+                   target_host['Targets']
+                 rescue
+                   nil
+                 end) || []
+      if project = (begin
+                      target_host['Project']
+                    rescue
+                      nil
+                    end)
+        targets << project
+      end
+
+      targets.flat_map do |target|
+        settings = (begin
+                      target['SharedSettings']
+                    rescue
+                      nil
+                    end) || {}
+        settings = settings.merge((begin
+                                     target['Configurations'][configuration]
+                                   rescue
+                                     nil
+                                   end) || {})
+        if sdk = target['SDK']
+          settings['SDKROOT'] ||= sdk
+        end
+        settings
+      end
+    end.compact.reduce({}, &:merge)
+    shared_settings = expand_macros(shared_settings)
+
+    ancestors
+      .reverse_each
+      .map do |a|
+        a.shared_settings(:configuration => configuration, :options => options)
+      end.reduce({}, &:merge).merge(shared_settings)
+  end
+
+  def expand_macros(settings)
+    copy = {}
+    macros = {
+      'DEFAULT_MACOS_CODE_SIGN_IDENTITY' => '-', # from -[IDETemplateInstantiationContext additionalMacroExpansions]
+    }
+    Array(@plist['Options']).each do |option|
+      next unless identifier = option['Identifier']
+      next unless default = option['Default']
+      macros["VARIABLE_#{identifier}"] = default
+    end
+    settings.each do |k, v|
+      copy[k] = v.gsub(/___(#{Regexp.union macros.keys})___/) { macros[Regexp.last_match(1)] }
+    end
+    copy
+  end
+end
+
+xcode = ARGV[0] || '/Applications/Xcode.app'
+
+Dir["#{xcode}/Contents/Developer/Platforms/**/*.xctemplate/TemplateInfo.plist", "#{xcode}/Contents/Developer/Library/Xcode/**/*.xctemplate/TemplateInfo.plist"].map do |template|
+  plist = Xcodeproj::Plist.read_from_path(template)
+  template = Template.new(plist)
+  Template.all_by_identifier[template.identifier] = template if template.identifier
+end.compact
+
+targets = {
+  'Project'                        => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.base' },
+
+  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
+  'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
+  'Objc_iOS_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaTouchFramework' },
+  'Swift_iOS_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaTouchFramework' },
+  'Objc_iOS_StaticLibrary'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaTouchStaticLibrary' },
+
+  'Objc_OSX_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaApplication' },
+  'Swift_OSX_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaApplication' },
+  'Objc_OSX_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaFramework' },
+  'Swift_OSX_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaFramework' },
+  'Objc_OSX_StaticLibrary'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.osxLibrary', 'libraryType' => 'Static' },
+  'Objc_OSX_DynamicLibrary'        => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.osxLibrary', 'libraryType' => 'Dynamic' },
+  'OSX_Bundle'                     => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.osxbundle' },
+
+  'Objc_watchOS_Native'            => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitapp' },
+  'Objc_watchOS_Native Extension'  => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitextension' },
+  'Swift_watchOS_Native'           => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitapp' },
+  'Swift_watchOS_Native Extension' => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitextension' },
+  'Objc_watchOS_Framework'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchosFramework' },
+  'Swift_watchOS_Framework'        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchosFramework' },
+  'Objc_watchOS_StaticLibrary'     => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchosStaticLibrary' },
+
+  'Objc_tvOS_Native'               => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.tvosApplication' },
+  'Swift_tvOS_Native'              => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.tvosApplication' },
+  'Objc_tvOS_Framework'            => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.tvosFramework' },
+  'Swift_tvOS_Framework'           => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.tvosFramework' },
+  'Objc_tvOS_StaticLibrary'        => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.tvosStaticLibrary' },
+}
+
+def extract_common_settings!(all_configs, project_configs)
+  # Grasp all common build settings
+  common_build_settings = Hash[all_configs.values.map(&:to_a).reduce(:&)]
+  all_configs['Base'] = common_build_settings
+
+  # Remove all common build settings from each configuration specific build settings
+  all_configs.each do |name, settings|
+    common = name == 'Base' ? {} : common_build_settings
+    common = project_configs['Base'].merge(project_configs[name]).merge(common) if project_configs
+    settings.reject! { |key, val| common[key] == val }
+  end
+end
+
+project = nil
+targets.each do |name, options|
+  template_identifier = options.delete(:template_identifier)
+  configs = Hash[%w(Debug Release).map do |configuration|
+    settings = Template.all_by_identifier[template_identifier].shared_settings(:configuration => configuration, :options => options)
+    [configuration, settings]
+  end]
+
+  extract_common_settings!(configs, project)
+
+  configs.each do |configuration, settings|
+    path = File.expand_path('../configs', __FILE__)
+    config = Xcodeproj::Config.new(settings)
+    config.includes << "#{name}/#{name}_base.xcconfig" unless configuration == 'Base'
+    config.save_as(Pathname("#{path}/#{name}/#{name}_#{configuration.downcase}.xcconfig"))
+  end
+
+  project = configs if name == 'Project'
+end
