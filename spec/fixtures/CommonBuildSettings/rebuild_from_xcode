@@ -149,7 +149,11 @@ project = nil
 targets.each do |name, options|
   template_identifier = options.delete(:template_identifier)
   configs = Hash[%w(Debug Release).map do |configuration|
-    settings = Template.all_by_identifier[template_identifier].shared_settings(:configuration => configuration, :options => options)
+    unless template = Template.all_by_identifier[template_identifier]
+      warn "No template #{template_identifier} for #{name} could be found"
+      next [configuration, {}]
+    end
+    settings = template.shared_settings(:configuration => configuration, :options => options)
     [configuration, settings]
   end]
 
