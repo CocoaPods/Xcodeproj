@@ -80,9 +80,6 @@ module ProjectHelperSpecs
 
     describe '::common_build_settings' do
       describe 'the project settings' do
-        define :product_type => nil
-        define :platform => nil
-        define :language => nil
         define :path => 'Project'
         define :fixture_settings => Hash[[:base, :debug, :release].map do |c|
           base_path = Pathname(fixture_path("CommonBuildSettings/configs/#{path}"))
@@ -93,7 +90,7 @@ module ProjectHelperSpecs
         end]
 
         %i(base debug release).each do |configuration|
-          describe 'in base configuration' do
+          describe "in #{configuration} configuration" do
             extend SpecHelper::ProjectHelper
             defaults = Xcodeproj::Constants::PROJECT_DEFAULT_BUILD_SETTINGS
             built_settings = defaults[configuration == :base ? :all : configuration]
