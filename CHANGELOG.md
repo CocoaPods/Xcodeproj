@@ -8,8 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Narrows regex for SCM conflict marker detection
+  [allenhumphreys](https://github.com/allenhumphreys)
+  [#495](https://github.com/CocoaPods/Xcodeproj/pull/495)
 
 ## 1.5.0 (2017-06-06)
 
