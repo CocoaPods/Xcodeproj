@@ -77,11 +77,18 @@ module Xcodeproj
 
     # @return [Bool] Checks whether there are merge conflicts in the file.
     #
-    # @param  [#to_s] path
+    # @param  [#to_s] contents
     #         The contents of the file.
     #
     def self.file_in_conflict?(contents)
-      contents.match(/^(<|=|>){7}/)
+      conflict_regex = /
+        ^<{7}(?!<) # Exactly 7 left arrows at the beginning of the line
+        [\w\W]* # Anything
+        ^={7}(?!=) # Exactly 7 equality symbols at the beginning of the line
+        [\w\W]* # Anything
+        ^>{7}(?!>) # Exactly 7 right arrows at the beginning of the line
+      /xm
+      contents.match(conflict_regex)
     end
   end
 end

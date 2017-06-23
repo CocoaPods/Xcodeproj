@@ -166,6 +166,21 @@ EOS
           Plist.write_to_path({}, '')
         end.should.raise IOError
       end
+
+      it 'raises when a merge conflict is detected' do
+        path = 'Sample Project/ProjectInMergeConflict/ProjectInMergeConflict.xcodeproj'
+        lambda do
+          Plist.read_from_path(path)
+        end.should.raise(Xcodeproj::Informative)
+      end
+
+      it 'has reasonably strict detection of conflict markers' do
+        very_similar = "\n<<<<<<<<\nwords and stuff go here\n========\nother, different words go here\n>>>>>>>>"
+        Plist.write_to_path({ 'FooterText' => very_similar }, @plist)
+        lambda do
+          Plist.read_from_path(@plist)
+        end.should.not.raise
+      end
     end
   end
 end
