@@ -122,6 +122,18 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('OTHER_LDFLAGS', %w(-framework UIKit))
           @target.resolved_build_setting('OTHER_LDFLAGS', true).should == { 'Release' => %w(-framework UIKit), 'Debug' => %w(-framework UIKit) }
         end
+
+        it 'returns the resolved build setting string value for a given key considering value substitution recursively' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @target.resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER', true).should == { 'Release' => 'com.cocoapods.app', 'Debug' => 'com.cocoapods.app.dev' }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering value substitution' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @target.resolved_build_setting('DEVELOPMENT_TEAM', true).should == { 'Release' => 'PROJECT_XCCONFIG_VALUE', 'Debug' => 'PROJECT_XCCONFIG_VALUE' }
+        end
       end
 
       #----------------------------------------#

@@ -81,7 +81,9 @@ module Xcodeproj
         #
         def resolve_build_setting(key)
           setting = build_settings[key]
+          setting = resolve_variable_substitution(setting) if !setting.nil? && setting.is_a?(String)
           config_setting = base_configuration_reference && config[key]
+          config_setting = resolve_variable_substitution(config_setting) if !config_setting.nil? && config_setting.is_a?(String)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if project_setting == self
@@ -101,6 +103,16 @@ module Xcodeproj
           inherited = config_value || default
           return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
           build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
+        end
+
+        def resolve_variable_substitution(config_setting)
+          expression = /\$[\(|{]([^inherited].*)[\)|}]/
+          match_data = config_setting.match(expression)
+          if match_data.nil?
+            return name if config_setting.eql?('CONFIGURATION')
+            return resolve_build_setting(config_setting) || config_setting
+          end
+          resolve_variable_substitution(config_setting.gsub(expression, resolve_variable_substitution(match_data.captures.first)))
         end
 
         def sorted_build_settings
