@@ -129,6 +129,18 @@ module ProjectSpecs
           @target.resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER', true).should == { 'Release' => 'com.cocoapods.app', 'Debug' => 'com.cocoapods.app.dev' }
         end
 
+        it 'returns the resolved build setting string value for a given key considering variable substitution appending' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @target.resolved_build_setting('CONFIG_APPEND', true).should == { 'Release' => 'PROJECT_XCCONFIG_VALUE_Release', 'Debug' => 'PROJECT_XCCONFIG_VALUE_Debug' }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution in same level' do
+          @target.build_configuration_list.set_setting('TARGET_USER_DEFINED', '${TARGET_USER_DEFINED_2}')
+          @target.build_configuration_list.set_setting('TARGET_USER_DEFINED_2', 'TARGET_USER_DEFINED_VALUE')
+          @target.resolved_build_setting('TARGET_USER_DEFINED', true).should == { 'Release' => 'TARGET_USER_DEFINED_VALUE', 'Debug' => 'TARGET_USER_DEFINED_VALUE' }
+        end
+
         it 'returns the resolved build setting string value for a given key considering variable substitution' do
           project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
           @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }

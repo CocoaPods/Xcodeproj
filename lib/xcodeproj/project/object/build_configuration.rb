@@ -106,13 +106,13 @@ module Xcodeproj
         end
 
         def resolve_variable_substitution(config_setting)
-          expression = /\$[\(|{]([^inherited].*)[\)|}]/
+          expression = /\$[{(]([^inherited][$(){}_a-zA-Z0-9]*?)[})]/
           match_data = config_setting.match(expression)
           if match_data.nil?
             return name if config_setting.eql?('CONFIGURATION')
             return resolve_build_setting(config_setting) || config_setting
           end
-          resolve_variable_substitution(config_setting.gsub(expression, resolve_variable_substitution(match_data.captures.first)))
+          resolve_variable_substitution(config_setting.sub(expression, resolve_variable_substitution(match_data.captures.first)))
         end
 
         def sorted_build_settings
