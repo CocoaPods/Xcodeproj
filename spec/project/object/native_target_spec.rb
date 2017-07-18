@@ -193,6 +193,12 @@ module ProjectSpecs
           @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
           @target.resolved_build_setting('PROJECT_REFERENCE_PROJECT', true).should == { 'Release' => 'PROJECT_USER_DEFINED_VALUE', 'Debug' => 'PROJECT_USER_DEFINED_VALUE' }
         end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: project referencing target' do
+          @project.build_configuration_list.set_setting('PROJECT_REFERENCE_TARGET', '$(TARGET_USER_DEFINED)')
+          @target.build_configuration_list.set_setting('TARGET_USER_DEFINED', 'TARGET_USER_DEFINED_VALUE')
+          @target.resolved_build_setting('PROJECT_REFERENCE_TARGET', true).should == { 'Release' => 'TARGET_USER_DEFINED_VALUE', 'Debug' => 'TARGET_USER_DEFINED_VALUE' }
+        end
       end
 
       #----------------------------------------#

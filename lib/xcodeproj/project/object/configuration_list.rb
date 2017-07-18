@@ -66,13 +66,16 @@ module Xcodeproj
         #        wether the retrieved setting should take in consideration any
         #        configuration file present.
         #
+        # @param [PBXNativeTarget] root_target
+        #        use this to resolve complete recursion between project and targets
+        #
         # @return [Hash{String => String}] The value of the build setting
         #         grouped by the name of the build configuration.
         #
-        def get_setting(key, resolve_against_xcconfig = false)
+        def get_setting(key, resolve_against_xcconfig = false, root_target = nil)
           result = {}
           build_configurations.each do |bc|
-            result[bc.name] = resolve_against_xcconfig ? bc.resolve_build_setting(key) : bc.build_settings[key]
+            result[bc.name] = resolve_against_xcconfig ? bc.resolve_build_setting(key, root_target) : bc.build_settings[key]
           end
           result
         end

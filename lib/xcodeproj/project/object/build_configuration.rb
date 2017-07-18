@@ -77,17 +77,20 @@ module Xcodeproj
         # @param [String] key
         #        the key of the build setting.
         #
+        # @param [PBXNativeTarget] root_target
+        #        use this to resolve complete recursion between project and targets
+        #
         # @return [String] The value of the build setting
         #
-        def resolve_build_setting(key)
+        def resolve_build_setting(key, root_target = nil)
           setting = build_settings[key]
-          setting = resolve_variable_substitution(setting) if !setting.nil? && setting.is_a?(String)
+          setting = resolve_variable_substitution(setting, root_target) if !setting.nil? && setting.is_a?(String)
           config_setting = base_configuration_reference && config[key]
-          config_setting = resolve_variable_substitution(config_setting) if !config_setting.nil? && config_setting.is_a?(String)
+          config_setting = resolve_variable_substitution(config_setting, root_target) if !config_setting.nil? && config_setting.is_a?(String)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if project_setting == self
-          project_setting &&= project_setting.resolve_build_setting(key)
+          project_setting &&= project_setting.resolve_build_setting(key, root_target)
 
           [project_setting, config_setting, setting].compact.reduce do |inherited, value|
             expand_build_setting(value, inherited)
@@ -105,14 +108,18 @@ module Xcodeproj
           build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
         end
 
-        def resolve_variable_substitution(config_setting)
+        def resolve_variable_substitution(config_setting, root_target)
           expression = /\$[{(]([^inherited][$(){}_a-zA-Z0-9]*?)[})]/
           match_data = config_setting.match(expression)
           if match_data.nil?
             return name if config_setting.eql?('CONFIGURATION')
-            return resolve_build_setting(config_setting) || config_setting
+            if root_target
+              return root_target.build_configuration_list[name].resolve_build_setting(config_setting, root_target) || config_setting
+            else
+              return resolve_build_setting(config_setting, root_target) || config_setting
+            end
           end
-          resolve_variable_substitution(config_setting.sub(expression, resolve_variable_substitution(match_data.captures.first)))
+          resolve_variable_substitution(config_setting.sub(expression, resolve_variable_substitution(match_data.captures.first, root_target)), root_target)
         end
 
         def sorted_build_settings
