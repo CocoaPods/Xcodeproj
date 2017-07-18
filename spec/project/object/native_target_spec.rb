@@ -123,16 +123,63 @@ module ProjectSpecs
           @target.resolved_build_setting('OTHER_LDFLAGS', true).should == { 'Release' => %w(-framework UIKit), 'Debug' => %w(-framework UIKit) }
         end
 
-        it 'returns the resolved build setting string value for a given key considering value substitution recursively' do
+        it 'returns the resolved build setting string value for a given key considering variable substitution recursively' do
           project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
           @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
           @target.resolved_build_setting('PRODUCT_BUNDLE_IDENTIFIER', true).should == { 'Release' => 'com.cocoapods.app', 'Debug' => 'com.cocoapods.app.dev' }
         end
 
-        it 'returns the resolved build setting string value for a given key considering value substitution' do
+        it 'returns the resolved build setting string value for a given key considering variable substitution' do
           project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
           @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
           @target.resolved_build_setting('DEVELOPMENT_TEAM', true).should == { 'Release' => 'PROJECT_XCCONFIG_VALUE', 'Debug' => 'PROJECT_XCCONFIG_VALUE' }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: target xcconfig referencing target xcconfig' do
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          expected_value_release = 'User Defined xcconfig target Release'
+          expected_value_debug = 'User Defined xcconfig target Debug'
+          @target.resolved_build_setting('TARGET_REFERENCE_XCCONFIG_TARGET', true).should == { 'Release' => expected_value_release, 'Debug' => expected_value_debug }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: target xcconfig referencing target' do
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.build_configuration_list.set_setting('TARGET_USER_DEFINED', 'TARGET_USER_DEFINED_VALUE')
+          @target.resolved_build_setting('TARGET_REFERENCE_TARGET', true).should == { 'Release' => 'TARGET_USER_DEFINED_VALUE', 'Debug' => 'TARGET_USER_DEFINED_VALUE' }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: target xcconfig referencing project xcconfig' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          expected_value_debug = 'User Defined xcconfig project Debug'
+          expected_value_release = 'User Defined xcconfig project Release'
+          @target.resolved_build_setting('TARGET_REFERENCE_XCCONFIG_PROJECT', true).should == { 'Release' => expected_value_release, 'Debug' => expected_value_debug }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: target xcconfig referencing project' do
+          @project.build_configuration_list.set_setting('PROJECT_USER_DEFINED', 'PROJECT_USER_DEFINED_VALUE')
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.resolved_build_setting('TARGET_REFERENCE_PROJECT', true).should == { 'Release' => 'PROJECT_USER_DEFINED_VALUE', 'Debug' => 'PROJECT_USER_DEFINED_VALUE' }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: project xcconfig referencing project xcconfig' do
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          expected_value_release = 'User Defined xcconfig project Release'
+          expected_value_debug = 'User Defined xcconfig project Debug'
+          @target.resolved_build_setting('PROJECT_REFERENCE_XCCONFIG_PROJECT', true).should == { 'Release' => expected_value_release, 'Debug' => expected_value_debug }
+        end
+
+        it 'returns the resolved build setting string value for a given key considering variable substitution: target xcconfig referencing project' do
+          @project.build_configuration_list.set_setting('PROJECT_USER_DEFINED', 'PROJECT_USER_DEFINED_VALUE')
+          project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
+          @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }
+          @target.resolved_build_setting('PROJECT_REFERENCE_PROJECT', true).should == { 'Release' => 'PROJECT_USER_DEFINED_VALUE', 'Debug' => 'PROJECT_USER_DEFINED_VALUE' }
         end
       end
 
