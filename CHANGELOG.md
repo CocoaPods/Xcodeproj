@@ -1,5 +1,16 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
 ## 1.5.1 (2017-07-19)
 
 ##### Enhancements
