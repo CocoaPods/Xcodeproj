@@ -99,6 +99,8 @@ module ProjectSpecs
         target.build_configuration_list.should.not.be.nil
         configurations = target.build_configuration_list.build_configurations
         configurations.map(&:name).sort.should == %w(Debug Release)
+        configurations[0].build_settings.should.not.equal? configurations[1].build_settings
+
         build_settings = configurations.first.build_settings
         build_settings['SDKROOT'].should == 'iphoneos'
         build_settings['PRODUCT_NAME'].should == '$(TARGET_NAME)'
