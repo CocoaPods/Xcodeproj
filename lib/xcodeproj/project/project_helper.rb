@@ -95,18 +95,16 @@ module Xcodeproj
         target.product_name = name
         target.product_type = Constants::PRODUCT_TYPE_UTI[:bundle]
 
-        build_settings = common_build_settings(nil, platform, nil, target.product_type)
-
         # Configuration List
         cl = project.new(XCConfigurationList)
         cl.default_configuration_is_visible = '0'
         cl.default_configuration_name = 'Release'
         release_conf = project.new(XCBuildConfiguration)
         release_conf.name = 'Release'
-        release_conf.build_settings = build_settings
+        release_conf.build_settings = common_build_settings(nil, platform, nil, target.product_type)
         debug_conf = project.new(XCBuildConfiguration)
         debug_conf.name = 'Debug'
-        debug_conf.build_settings = build_settings
+        debug_conf.build_settings = common_build_settings(nil, platform, nil, target.product_type)
         cl.build_configurations << release_conf
         cl.build_configurations << debug_conf
         target.build_configuration_list = cl

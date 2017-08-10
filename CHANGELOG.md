@@ -8,8 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Don’t share build settings between resources bundle configurations  
+  [jmesmith](https://github.com/jmesmith)
+  [#502](https://github.com/CocoaPods/Xcodeproj/pull/502)
 
 ## 1.5.1 (2017-07-19)
 
