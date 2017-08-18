@@ -52,7 +52,7 @@ module Xcodeproj
         #         the default values for the platform.
         #
         def resolved_build_setting(key, resolve_against_xcconfig = false)
-          target_settings = build_configuration_list.get_setting(key, resolve_against_xcconfig)
+          target_settings = build_configuration_list.get_setting(key, resolve_against_xcconfig, self)
           project_settings = project.build_configuration_list.get_setting(key, resolve_against_xcconfig)
           target_settings.merge(project_settings) do |_key, target_val, proj_val|
             target_includes_inherited = Constants::INHERITED_KEYWORDS.any? { |keyword| target_val.include?(keyword) } if target_val

@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Resolve variable substitution for xcconfig declared build settings
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#501](https://github.com/CocoaPods/CocoaPods/issues/501)
 
 ##### Bug Fixes
 

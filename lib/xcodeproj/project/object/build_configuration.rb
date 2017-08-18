@@ -77,15 +77,20 @@ module Xcodeproj
         # @param [String] key
         #        the key of the build setting.
         #
+        # @param [PBXNativeTarget] root_target
+        #        use this to resolve complete recursion between project and targets
+        #
         # @return [String] The value of the build setting
         #
-        def resolve_build_setting(key)
+        def resolve_build_setting(key, root_target = nil)
           setting = build_settings[key]
+          setting = resolve_variable_substitution(setting, root_target) if setting.is_a?(String)
           config_setting = base_configuration_reference && config[key]
+          config_setting = resolve_variable_substitution(config_setting, root_target) if config_setting.is_a?(String)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if project_setting == self
-          project_setting &&= project_setting.resolve_build_setting(key)
+          project_setting &&= project_setting.resolve_build_setting(key, root_target)
 
           [project_setting, config_setting, setting].compact.reduce do |inherited, value|
             expand_build_setting(value, inherited)
@@ -96,11 +101,40 @@ module Xcodeproj
 
         private
 
+        CAPTURE_VARIABLE_IN_BUILD_CONFIG = /
+            \$ # matches dollar sign literally
+            [{(] # matches a single caracter on this list
+              ( # capture block
+              [^inherited] # ignore if match characters in this list
+              [$(){}_a-zA-Z0-9]*? # non-greedy lookup for everything that contains this list
+              )
+            [})] # matches a single caracter on this list
+          /x
+
         def expand_build_setting(build_setting_value, config_value)
           default = build_setting_value.is_a?(String) ? '' : []
           inherited = config_value || default
           return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
           build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
+        end
+
+        def resolve_variable_substitution(config_setting, root_target)
+          variable = match_variable(config_setting)
+          if variable.nil?
+            return name if config_setting.eql?('CONFIGURATION')
+            if root_target
+              return root_target.build_configuration_list[name].resolve_build_setting(config_setting, root_target) || config_setting
+            else
+              return resolve_build_setting(config_setting, root_target) || config_setting
+            end
+          end
+          resolve_variable_substitution(config_setting.sub(CAPTURE_VARIABLE_IN_BUILD_CONFIG, resolve_variable_substitution(variable, root_target)), root_target)
+        end
+
+        def match_variable(config_setting)
+          match_data = config_setting.match(CAPTURE_VARIABLE_IN_BUILD_CONFIG)
+          return match_data.captures.first unless match_data.nil?
+          match_data
         end
 
         def sorted_build_settings
