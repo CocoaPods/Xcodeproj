@@ -4,9 +4,26 @@
 
 ##### Enhancements
 
+* Resolve variable substitution for xcconfig declared build settings
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#501](https://github.com/CocoaPods/CocoaPods/issues/501)
+
 * Support `*.cc` extension file as a header.
   [seungha](https://github.com/sharkpc0813)
   [#499](https://github.com/CocoaPods/Xcodeproj/pull/499)
+  
+##### Bug Fixes
+
+* Don’t share build settings between resources bundle configurations  
+  [jmesmith](https://github.com/jmesmith)
+  [#502](https://github.com/CocoaPods/Xcodeproj/pull/502)
+
+## 1.5.1 (2017-07-19)
+
+##### Enhancements
+
+* None.  
+
 
 ##### Bug Fixes
 
