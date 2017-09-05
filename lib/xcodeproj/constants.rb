@@ -347,6 +347,8 @@ module Xcodeproj
         'CLANG_WARN_ENUM_CONVERSION'              => 'YES',
         'CLANG_WARN_INFINITE_RECURSION'           => 'YES',
         'CLANG_WARN_INT_CONVERSION'               => 'YES',
+        'CLANG_WARN_NON_LITERAL_NULL_CONVERSION'  => 'YES',
+        'CLANG_WARN_OBJC_LITERAL_CONVERSION'      => 'YES',
         'CLANG_WARN_OBJC_ROOT_CLASS'              => 'YES_ERROR',
         'CLANG_WARN_RANGE_LOOP_ANALYSIS'          => 'YES',
         'CLANG_WARN_STRICT_PROTOTYPES'            => 'YES',
