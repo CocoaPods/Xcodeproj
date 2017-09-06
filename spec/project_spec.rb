@@ -64,7 +64,7 @@ module ProjectSpecs
         configurations = list.build_configurations
         configurations.map(&:name).sort.should == %w(Debug Release)
         list.build_settings('Debug')['ONLY_ACTIVE_ARCH'].should == 'YES'
-        list.build_settings('Release')['VALIDATE_PRODUCT'].should == 'YES'
+        list.build_settings('Release')['ENABLE_NS_ASSERTIONS'].should == 'NO'
       end
 
       it 'adds the frameworks group' do
@@ -433,7 +433,7 @@ module ProjectSpecs
         list.default_configuration_name.should == 'Release'
         list.default_configuration_is_visible.should == '0'
         list.build_settings('Debug')['ONLY_ACTIVE_ARCH'].should == 'YES'
-        list.build_settings('Release')['VALIDATE_PRODUCT'].should == 'YES'
+        list.build_settings('Release')['ENABLE_NS_ASSERTIONS'].should == 'NO'
       end
 
       it 'returns a succinct diff representation of the project' do

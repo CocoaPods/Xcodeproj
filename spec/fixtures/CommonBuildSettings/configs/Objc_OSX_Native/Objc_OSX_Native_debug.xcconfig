@@ -1,3 +1,1 @@
 #include "Objc_OSX_Native/Objc_OSX_Native_base.xcconfig"
-DEBUG_INFORMATION_FORMAT = dwarf
-MTL_ENABLE_DEBUG_INFO = YES
