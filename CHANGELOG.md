@@ -24,7 +24,6 @@
 
 * None.  
 
-
 ##### Bug Fixes
 
 * Narrows regex for SCM conflict marker detection
