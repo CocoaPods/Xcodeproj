@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (1.5.1)
+    xcodeproj (1.5.2)
       CFPropertyList (~> 2.3.3)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
