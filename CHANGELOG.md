@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* [Config] Make #to_bash include import statements  
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#505](https://github.com/CocoaPods/Xcodeproj/issues/505)
 
 
 ## 1.5.2 (2017-09-24)
@@ -17,7 +19,7 @@
 
 * Resolve variable substitution for xcconfig declared build settings
   [Ruenzuo](https://github.com/Ruenzuo)
-  [#501](https://github.com/CocoaPods/CocoaPods/issues/501)
+  [#501](https://github.com/CocoaPods/Xcodeproj/issues/501)
 
 ##### Bug Fixes
 

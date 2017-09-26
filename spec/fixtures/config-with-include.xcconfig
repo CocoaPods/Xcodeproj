@@ -1,0 +1,4 @@
+#include "another-config-with-include.xcconfig"
+
+FIRST_BUILD_SETTING = YES
+A_BUILD_SETTING = OVERRIDE
