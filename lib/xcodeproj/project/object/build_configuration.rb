@@ -72,7 +72,8 @@ module Xcodeproj
         #---------------------------------------------------------------------#
 
         # Gets the value for the given build setting considering any configuration
-        # file present and resolving inheritance between them
+        # file present and resolving inheritance between them. It also takes in
+        # consideration environment variables.
         #
         # @param [String] key
         #        the key of the build setting.
@@ -92,7 +93,7 @@ module Xcodeproj
           project_setting = nil if project_setting == self
           project_setting &&= project_setting.resolve_build_setting(key, root_target)
 
-          [project_setting, config_setting, setting].compact.reduce do |inherited, value|
+          [project_setting, config_setting, setting, ENV[key]].compact.reduce do |inherited, value|
             expand_build_setting(value, inherited)
           end
         end

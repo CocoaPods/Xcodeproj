@@ -206,6 +206,21 @@ module ProjectSpecs
           @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
           @target.resolved_build_setting('A_BUILD_SETTING_WITH_VALUE', true).should == { 'Release' => 'Some value', 'Debug' => 'Some value' }
         end
+
+        it 'returns the resolved build setting considering environment variables' do
+          ENV['TARGET_REFERENCE_ENVIRONMENT'] = 'ENVIRONMENT_VARIABLE_VALUE'
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.resolved_build_setting('TARGET_REFERENCE_ENVIRONMENT', true).should == { 'Release' => 'ENVIRONMENT_VARIABLE_VALUE', 'Debug' => 'ENVIRONMENT_VARIABLE_VALUE' }
+        end
+
+        it 'returns the resolved build setting considering environment variables and variable substitution' do
+          ENV['DEFINED_IN_ENVIRONMENT'] = 'ENVIRONMENT_VARIABLE_VALUE'
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          expected_value = { 'Release' => 'ENVIRONMENT_VARIABLE_VALUE', 'Debug' => 'ENVIRONMENT_VARIABLE_VALUE' }
+          @target.resolved_build_setting('TARGET_REFERENCE_ENVIRONMENT_SUBSTITUTION', true).should == expected_value
+        end
       end
 
       #----------------------------------------#
