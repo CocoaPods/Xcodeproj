@@ -134,6 +134,15 @@ module Xcodeproj
       inherited = %w($(inherited) ${inherited}).freeze
       result.reject! { |_, v| inherited.any? { |i| i == v.to_s.strip } }
 
+      result = @includes.map do |incl|
+        path = File.expand_path(incl, @filepath.dirname)
+        if File.readable? path
+          Xcodeproj::Config.new(path).to_hash
+        else
+          {}
+        end
+      end.inject(&:merge).merge(result) unless @filepath.nil? || @includes.empty?
+
       if prefix
         Hash[result.map { |k, v| [prefix + k, v] }]
       else
@@ -237,8 +246,10 @@ module Xcodeproj
     #
     def extract_hash(argument)
       if argument.respond_to? :read
+        @filepath = Pathname.new(argument.to_path)
         hash_from_file_content(argument.read)
       elsif File.readable?(argument.to_s)
+        @filepath = Pathname.new(argument.to_s)
         hash_from_file_content(File.read(argument))
       else
         argument
