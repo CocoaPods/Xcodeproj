@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Verify container portal when checking dependency target membership.  
+  [izaakschroeder](https://github.com/izaakschroeder)
+  [#513](https://github.com/CocoaPods/Xcodeproj/issues/513)
 
 
 ## 1.5.3 (2017-10-24)
