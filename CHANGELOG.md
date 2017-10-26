@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Support `*.cc` extension file as a header.
+ [seungha](https://github.com/sharkpc0813)
+ [#514](https://github.com/CocoaPods/Xcodeproj/pull/514)  
 
 ##### Bug Fixes
 
