@@ -264,7 +264,9 @@ module Xcodeproj
         def dependency_for_target(target)
           dependencies.find do |dep|
             if dep.target_proxy.remote?
-              dep.target_proxy.remote_global_id_string == target.uuid
+              subproject_reference = project.reference_for_path(target.project.path)
+              uuid = subproject_reference.uuid if subproject_reference
+              dep.target_proxy.remote_global_id_string == target.uuid && dep.target_proxy.container_portal == uuid
             else
               dep.target == target
             end
