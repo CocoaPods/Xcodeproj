@@ -34,6 +34,13 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:allow_location_simulation => 'allowLocationSimulation')
 
+      describe 'launch_automatically_substyle' do
+        it '#launch_automatically_substyle=' do
+          @sut.launch_automatically_substyle = '2'
+          @sut.xml_element.attributes['launchAutomaticallySubstyle'].should == '2'
+        end
+      end
+
       describe 'buildable_product_runnable' do
         it '#buildable_product_runnable' do
           project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
