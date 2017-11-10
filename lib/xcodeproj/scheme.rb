@@ -307,6 +307,7 @@ module Xcodeproj
                            end
       scheme_folder_path.mkpath
       scheme_path = scheme_folder_path + "#{name}.xcscheme"
+      @file_path = scheme_path
       File.open(scheme_path, 'w') do |f|
         f.write(to_s)
       end
