@@ -161,7 +161,9 @@
 
 ##### Enhancements
 
-* None.  
+* Added RemoteRunnable wrapper to achieve Apple Watch compatibility  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#518](https://github.com/CocoaPods/CocoaPods/issues/518)
 
 ##### Bug Fixes
 
