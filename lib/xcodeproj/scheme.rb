@@ -8,6 +8,7 @@ require 'xcodeproj/scheme/analyze_action'
 require 'xcodeproj/scheme/archive_action'
 
 require 'xcodeproj/scheme/buildable_product_runnable'
+require 'xcodeproj/scheme/remote_runnable'
 require 'xcodeproj/scheme/buildable_reference'
 require 'xcodeproj/scheme/macro_expansion'
 
