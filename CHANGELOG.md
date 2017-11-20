@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Made it possible to configure a scheme to launch a Today extension  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#520](https://github.com/CocoaPods/CocoaPods/issues/520)
 
 ##### Bug Fixes
 

@@ -47,6 +47,20 @@ module Xcodeproj
         @xml_element.attributes['allowLocationSimulation'] = bool_to_string(flag)
       end
 
+      # @return [String]
+      #         The launch automatically substyle
+      #
+      def launch_automatically_substyle
+        @xml_element.attributes['launchAutomaticallySubstyle']
+      end
+
+      # @param [String] flag
+      #        Set the launch automatically substyle ('2' for extensions)
+      #
+      def launch_automatically_substyle=(value)
+        @xml_element.attributes['launchAutomaticallySubstyle'] = value.to_s
+      end
+
       # @return [BuildableProductRunnable]
       #         The BuildReference to launch when executing the Launch Action
       #
