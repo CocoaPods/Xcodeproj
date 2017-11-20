@@ -19,7 +19,9 @@
 
 ##### Enhancements
 
-* None.  
+* Allowed to simply save a scheme after it was saved with a path before  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#519](https://github.com/CocoaPods/CocoaPods/issues/519)
 
 ##### Bug Fixes
 
