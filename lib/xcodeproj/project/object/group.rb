@@ -413,7 +413,7 @@ module Xcodeproj
         end
 
         def ascii_plist_annotation
-          super unless self.equal?(project.main_group)
+          super
         end
 
         # Sorts the to many attributes of the object according to the display
