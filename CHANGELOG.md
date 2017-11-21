@@ -14,6 +14,9 @@
   [izaakschroeder](https://github.com/izaakschroeder)
   [#513](https://github.com/CocoaPods/Xcodeproj/issues/513)
 
+* Don't remove the main_group annotations on a save
+  [c29reid](https://github.com/c29reid)
+  [#524](https://github.com/CocoaPods/Xcodeproj/issues/524)
 
 ## 1.5.3 (2017-10-24)
 
