@@ -10,6 +10,7 @@ require 'xcodeproj/scheme/archive_action'
 require 'xcodeproj/scheme/buildable_product_runnable'
 require 'xcodeproj/scheme/buildable_reference'
 require 'xcodeproj/scheme/macro_expansion'
+require 'xcodeproj/scheme/remote_runnable'
 
 module Xcodeproj
   # This class represents a Scheme document represented by a ".xcscheme" file
@@ -307,6 +308,7 @@ module Xcodeproj
                            end
       scheme_folder_path.mkpath
       scheme_path = scheme_folder_path + "#{name}.xcscheme"
+      @file_path = scheme_path
       File.open(scheme_path, 'w') do |f|
         f.write(to_s)
       end

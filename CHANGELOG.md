@@ -5,12 +5,33 @@
 ##### Enhancements
 
 * Support `*.cc` extension file as a header.
- [seungha](https://github.com/sharkpc0813)
+ [sharkpc0813](https://github.com/sharkpc0813)
  [#514](https://github.com/CocoaPods/Xcodeproj/pull/514)  
+
+* Made it possible to configure a scheme to launch a Today extension  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#520](https://github.com/CocoaPods/CocoaPods/issues/520)
 
 ##### Bug Fixes
 
-* None.  
+* Verify container portal when checking dependency target membership.  
+  [izaakschroeder](https://github.com/izaakschroeder)
+  [#513](https://github.com/CocoaPods/Xcodeproj/issues/513)
+
+
+## 1.5.3 (2017-10-24)
+
+##### Enhancements
+
+* Allowed to simply save a scheme after it was saved with a path before  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#519](https://github.com/CocoaPods/CocoaPods/issues/519)
+
+##### Bug Fixes
+
+* [Config] Make #to_bash include import statements  
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#505](https://github.com/CocoaPods/Xcodeproj/issues/505)
 
 
 ## 1.5.2 (2017-09-24)
@@ -19,7 +40,7 @@
 
 * Resolve variable substitution for xcconfig declared build settings
   [Ruenzuo](https://github.com/Ruenzuo)
-  [#501](https://github.com/CocoaPods/CocoaPods/issues/501)
+  [#501](https://github.com/CocoaPods/Xcodeproj/issues/501)
 
 ##### Bug Fixes
 
@@ -144,7 +165,9 @@
 
 ##### Enhancements
 
-* None.  
+* Added RemoteRunnable wrapper to achieve Apple Watch compatibility  
+  [Eldorado234](https://github.com/Eldorado234)
+  [#518](https://github.com/CocoaPods/CocoaPods/issues/518)
 
 ##### Bug Fixes
 

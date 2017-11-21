@@ -150,6 +150,20 @@ module ProjectSpecs
           @scheme.save!
         end.message.should.match /This XCScheme object was not initialized using a file path/
       end
+
+      it 'saves in place when file path was specificed by calling save_as ' do
+        scheme_name = 'TestScheme'
+        scheme_file = File.join temporary_directory, 'xcshareddata', 'xcschemes', scheme_name + '.xcscheme'
+
+        @scheme.save_as(temporary_directory, 'TestScheme', true)
+        File.exist?(scheme_file).should.be.true
+
+        FileUtils.rm_r scheme_file
+        @scheme.save!
+
+        File.exist?(scheme_file).should.be.true
+        File.read(scheme_file).should == @scheme.to_s
+      end
     end
 
     #-------------------------------------------------------------------------#

@@ -8,6 +8,7 @@ describe Xcodeproj::Config do
       @hash = { 'OTHER_LDFLAGS' => '-framework "Foundation"' }
       @config = Xcodeproj::Config.new(@hash)
       @config_fixture = fixture_path('oneline-key-value.xcconfig')
+      @config_with_include_fixture = fixture_path('config-with-include.xcconfig')
     end
 
     it 'can be created with hash' do
@@ -285,6 +286,18 @@ Y = 123
       config.merge!('OTHER_LDFLAGS' => '-l"Pods-GoogleAnalytics-iOS-SDK"')
       config.merge!('OTHER_LDFLAGS' => '-l"Pods-Intercom"')
       config.to_hash['OTHER_LDFLAGS'].should == '-ObjC -l"Pods-GoogleAnalytics-iOS-SDK" -l"Pods-Intercom" -force_load $(PODS_ROOT)/Intercom/Intercom/libIntercom.a'
+    end
+
+    it 'processes include statements if initialized with filepath' do
+      xcconfig_file = File.new(@config_with_include_fixture)
+      xcconfig = Xcodeproj::Config.new(xcconfig_file)
+      xcconfig.to_hash.should == {
+        'FIRST_BUILD_SETTING' => 'YES',
+        'SECOND_BUILD_SETTING' => 'YES',
+        'THIRD_BUILD_SETTING' => 'YES',
+        'A_BUILD_SETTING' => 'OVERRIDE',
+        'ANOTHER_BUILD_SETTING' => 'SHOULD_PRECEDE',
+      }
     end
   end
 

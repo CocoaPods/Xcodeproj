@@ -447,6 +447,23 @@ module ProjectSpecs
           @target.add_dependency(dependency_target)
           @target.dependencies.count.should == 1
         end
+
+        it 'adds duplicate cross-dependencies' do
+          group = @project.new_group('SubProjects')
+          unknown_project1 = Xcodeproj::Project.new(temporary_directory + 'OtherProject1.xcodeproj')
+          unknown_project2 = Xcodeproj::Project.new(temporary_directory + 'OtherProject2.xcodeproj')
+          cross_target1 = unknown_project1.new_target(:static_library, 'SubTarget1', :ios)
+          cross_target2 = unknown_project2.new_target(:static_library, 'SubTarget2', :ios)
+          cross_target2.instance_variable_set(:@uuid, cross_target1.uuid)
+          cross_target1.uuid.should == cross_target2.uuid
+          unknown_project1.save
+          unknown_project2.save
+          group.new_file(unknown_project1.path)
+          group.new_file(unknown_project2.path)
+          @target.add_dependency(cross_target1)
+          @target.add_dependency(cross_target2)
+          @target.dependencies.count.should == 2
+        end
       end
 
       describe '#dependency_for_target' do
