@@ -14,6 +14,10 @@
   [izaakschroeder](https://github.com/izaakschroeder)
   [#513](https://github.com/CocoaPods/Xcodeproj/issues/513)
 
+* [XCBuildConfiguration] Fix infinite recursion in #resolve_build_setting  
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#511](https://github.com/CocoaPods/Xcodeproj/issues/511)
+
 
 ## 1.5.3 (2017-10-24)
 

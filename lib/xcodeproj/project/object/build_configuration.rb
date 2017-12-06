@@ -84,9 +84,9 @@ module Xcodeproj
         #
         def resolve_build_setting(key, root_target = nil)
           setting = build_settings[key]
-          setting = resolve_variable_substitution(setting, root_target) if setting.is_a?(String)
+          setting = resolve_variable_substitution(key, setting, root_target) if setting.is_a?(String)
           config_setting = base_configuration_reference && config[key]
-          config_setting = resolve_variable_substitution(config_setting, root_target) if config_setting.is_a?(String)
+          config_setting = resolve_variable_substitution(key, config_setting, root_target) if config_setting.is_a?(String)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if project_setting == self
@@ -118,17 +118,18 @@ module Xcodeproj
           build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
         end
 
-        def resolve_variable_substitution(config_setting, root_target)
-          variable = match_variable(config_setting)
+        def resolve_variable_substitution(key, value, root_target)
+          variable = match_variable(value)
+          return nil if key.eql?(variable)
           if variable.nil?
-            return name if config_setting.eql?('CONFIGURATION')
+            return name if value.eql?('CONFIGURATION')
             if root_target
-              return root_target.build_configuration_list[name].resolve_build_setting(config_setting, root_target) || config_setting
+              return root_target.build_configuration_list[name].resolve_build_setting(value, root_target) || value
             else
-              return resolve_build_setting(config_setting, root_target) || config_setting
+              return resolve_build_setting(value, root_target) || value
             end
           end
-          resolve_variable_substitution(config_setting.sub(CAPTURE_VARIABLE_IN_BUILD_CONFIG, resolve_variable_substitution(variable, root_target)), root_target)
+          resolve_variable_substitution(key, value.sub(CAPTURE_VARIABLE_IN_BUILD_CONFIG, resolve_variable_substitution(key, variable, root_target)), root_target)
         end
 
         def match_variable(config_setting)
