@@ -408,7 +408,7 @@ module Xcodeproj
 
     # @return [Array] The extensions which are associated with header files.
     #
-    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp .tpp .hxx .def).freeze
+    HEADER_FILES_EXTENSIONS = %w(.h .hh .hpp .ipp .tpp .hxx .def .inl).freeze
 
     # @return [Array] The keywords Xcode use to identify a build setting can
     #                 inherit values from a previous precedence level
