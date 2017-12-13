@@ -18,6 +18,9 @@
   [Ruenzuo](https://github.com/Ruenzuo)
   [#511](https://github.com/CocoaPods/Xcodeproj/issues/511)
 
+* Add .inl as a recognized header file ending  
+  [bes](https://github.com/bes)
+  [#7283](https://github.com/CocoaPods/CocoaPods/issues/7283)
 
 ## 1.5.3 (2017-10-24)
 
