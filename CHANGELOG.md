@@ -14,12 +14,14 @@
 ## 1.5.4 (2017-12-16)
 
 ##### Enhancements
-
 * Made it possible to configure a scheme to launch a Today extension  
   [Eldorado234](https://github.com/Eldorado234)
   [#520](https://github.com/CocoaPods/CocoaPods/issues/520)
 
 ##### Bug Fixes
+* Fixing the method recreate_user_scheme for targets other than type PBXNativeTarget.
+  [Yadir Hernandez](https://github.com/yadirhb)
+  [#531](https://github.com/CocoaPods/CocoaPods/issues/531)
 
 * Verify container portal when checking dependency target membership.  
   [izaakschroeder](https://github.com/izaakschroeder)
