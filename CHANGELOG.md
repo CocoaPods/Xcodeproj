@@ -20,7 +20,10 @@
   [#520](https://github.com/CocoaPods/CocoaPods/issues/520)
 
 ##### Bug Fixes
-
+* Fixing the method recreate_user_scheme for targets other than type PBXNativeTarget.
+  [Yadir Hernandez](https://github.com/yadirhb)
+  [#531](https://github.com/CocoaPods/CocoaPods/issues/531)
+  
 * Verify container portal when checking dependency target membership.  
   [izaakschroeder](https://github.com/izaakschroeder)
   [#513](https://github.com/CocoaPods/Xcodeproj/issues/513)
