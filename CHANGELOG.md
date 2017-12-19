@@ -21,7 +21,7 @@
 
 ##### Bug Fixes
 
-* Fixing the method recreate_user_scheme for targets other than type PBXNativeTarget.
+* Fixing the method recreate_user_scheme for targets other than type PBXNativeTarget.  
   [Yadir Hernandez](https://github.com/yadirhb)
   [#531](https://github.com/CocoaPods/CocoaPods/issues/531)
 
