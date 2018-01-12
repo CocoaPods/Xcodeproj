@@ -8,7 +8,8 @@
 
 ##### Bug Fixes
 
-* None.  
+* Save `.xcscheme` files with double-quoted strings, consistent with Xcode.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 
 ## 1.5.4 (2017-12-16)

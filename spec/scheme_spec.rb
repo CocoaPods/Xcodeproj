@@ -119,7 +119,7 @@ module ProjectSpecs
       end
 
       it 'indents the string representation as Xcode' do
-        expected = <<-DOC.gsub(/^ {8}/, '').strip
+        expected = <<-XML.gsub(/^ {8}/, '')
         <?xml version="1.0" encoding="UTF-8"?>
         <Scheme
            LastUpgradeVersion = "0700"
@@ -127,8 +127,76 @@ module ProjectSpecs
            <BuildAction
               parallelizeBuildables = "YES"
               buildImplicitDependencies = "YES">
-        DOC
-        @scheme.to_s.should.start_with(expected)
+           </BuildAction>
+           <TestAction
+              selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+              selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+              shouldUseLaunchSchemeArgsEnv = "YES"
+              buildConfiguration = "Debug">
+              <AdditionalOptions>
+              </AdditionalOptions>
+              <MacroExpansion>
+                 <BuildableReference
+                    BuildableIdentifier = "primary"
+                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintName = "iOS application"
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
+                    BuildableName = "iOS application.app">
+                 </BuildableReference>
+              </MacroExpansion>
+           </TestAction>
+           <LaunchAction
+              selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+              selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+              launchStyle = "0"
+              useCustomWorkingDirectory = "NO"
+              ignoresPersistentStateOnLaunch = "NO"
+              debugDocumentVersioning = "YES"
+              debugServiceExtension = "internal"
+              buildConfiguration = "Debug"
+              allowLocationSimulation = "YES">
+              <AdditionalOptions>
+              </AdditionalOptions>
+              <BuildableProductRunnable
+                 runnableDebuggingMode = "0">
+                 <BuildableReference
+                    BuildableIdentifier = "primary"
+                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintName = "iOS application"
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
+                    BuildableName = "iOS application.app">
+                 </BuildableReference>
+              </BuildableProductRunnable>
+           </LaunchAction>
+           <ProfileAction
+              savedToolIdentifier = ""
+              useCustomWorkingDirectory = "NO"
+              debugDocumentVersioning = "YES"
+              buildConfiguration = "Release"
+              shouldUseLaunchSchemeArgsEnv = "YES">
+              <BuildableProductRunnable>
+                 <BuildableReference
+                    BuildableIdentifier = "primary"
+                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintName = "iOS application"
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
+                    BuildableName = "iOS application.app">
+                 </BuildableReference>
+              </BuildableProductRunnable>
+           </ProfileAction>
+           <AnalyzeAction
+              buildConfiguration = "Debug">
+           </AnalyzeAction>
+           <ArchiveAction
+              buildConfiguration = "Release"
+              revealArchiveInOrganizer = "YES">
+           </ArchiveAction>
+        </Scheme>
+        XML
+
+        actual = @scheme.to_s
+        [actual, expected].each { |s| s.gsub!(/BlueprintIdentifier = "\w+"/, 'BlueprintIdentifier = "IDENTIFIER"') }
+        actual.should == expected
       end
 
       it 'saves in place when initialized from file' do

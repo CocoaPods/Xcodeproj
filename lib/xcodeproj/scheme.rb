@@ -338,6 +338,7 @@ module Xcodeproj
         output << "<#{node.expanded_name}"
 
         @level += @indentation
+        node.context = node.parent.context # HACK: to ensure strings are properly quoted
         node.attributes.each_attribute do |attr|
           output << "\n"
           output << ' ' * @level
