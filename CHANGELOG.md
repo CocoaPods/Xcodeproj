@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Atomically write `project.pbxproj` files, so that Xcode will never see them
+  in a half-written state.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 ##### Bug Fixes
 
