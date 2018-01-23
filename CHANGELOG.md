@@ -13,6 +13,10 @@
 * Save `.xcscheme` files with double-quoted strings, consistent with Xcode.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* [XCBuildConfiguration] Support environment variables in #resolve_build_setting  
+  [Ruenzuo](https://github.com/Ruenzuo)
+  [#510](https://github.com/CocoaPods/Xcodeproj/issues/510)
+
 
 ## 1.5.4 (2017-12-16)
 
@@ -53,7 +57,6 @@
 * [Config] Make #to_bash include import statements  
   [Ruenzuo](https://github.com/Ruenzuo)
   [#505](https://github.com/CocoaPods/Xcodeproj/issues/505)
-
 
 ## 1.5.2 (2017-09-24)
 
