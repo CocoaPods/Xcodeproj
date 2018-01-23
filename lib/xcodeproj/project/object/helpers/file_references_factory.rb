@@ -126,7 +126,11 @@ module Xcodeproj
           # @return [XCVersionGroup] The new reference.
           #
           def new_xcdatamodeld(group, path, source_tree)
-            path = Pathname.new(path)
+            if group.parent.path
+              path = Pathname.new(group.parent.path).realpath.join(group.path).join(path)
+            else
+              path = Pathname.new(path)
+            end
             ref = group.project.new(XCVersionGroup)
             group.children << ref
             GroupableHelper.set_path_with_source_tree(ref, path, source_tree)
