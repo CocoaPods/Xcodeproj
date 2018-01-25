@@ -8,6 +8,9 @@
   in a half-written state.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Update default build settings for Xcode 9.3.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Save `.xcscheme` files with double-quoted strings, consistent with Xcode.  
