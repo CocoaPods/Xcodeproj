@@ -8,7 +8,7 @@ module Xcodeproj
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK = '10.12'
+    LAST_KNOWN_OSX_SDK = '10.13'
 
     # @return [String] The last known tvOS SDK (stable).
     LAST_KNOWN_TVOS_SDK = '10.2'
@@ -22,7 +22,7 @@ module Xcodeproj
 
     # @return [String] The last known Swift version (stable).
     #
-    LAST_KNOWN_SWIFT_VERSION = '3.0'
+    LAST_KNOWN_SWIFT_VERSION = '4.0'
 
     # @return [String] The default object version for Xcodeproj.
     DEFAULT_OBJECT_VERSION = 46
@@ -33,11 +33,11 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '0700'
+    LAST_UPGRADE_CHECK = '0930'
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0830'
+    LAST_SWIFT_UPGRADE_CHECK = '0930'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -99,6 +99,7 @@ module Xcodeproj
       'm'            => 'sourcecode.c.objc',
       'markdown'     => 'text',
       'mdimporter'   => 'wrapper.cfbundle',
+      'modulemap'    => 'sourcecode.module',
       'mov'          => 'video.quicktime',
       'mp3'          => 'audio.mp3',
       'octest'       => 'wrapper.cfbundle',
@@ -219,7 +220,7 @@ module Xcodeproj
         # ProjectHelper#common_build_settings
       }.freeze,
       [:debug, :application, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Onone',
+        # Empty?
       }.freeze,
       [:debug, :swift] => {
         'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
@@ -266,6 +267,7 @@ module Xcodeproj
       }.freeze,
       [:osx, :static_library] => {
         'EXECUTABLE_PREFIX'                 => 'lib',
+        'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:ios, :static_library] => {
         'OTHER_LDFLAGS'                     => '-ObjC',
@@ -286,6 +288,7 @@ module Xcodeproj
         'DYLIB_COMPATIBILITY_VERSION'       => '1',
         'DYLIB_CURRENT_VERSION'             => '1',
         'EXECUTABLE_PREFIX'                 => 'lib',
+        'SKIP_INSTALL'                      => 'YES',
       }.freeze,
       [:application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
@@ -336,11 +339,13 @@ module Xcodeproj
         'CLANG_CXX_LIBRARY'                       => 'libc++',
         'CLANG_ENABLE_MODULES'                    => 'YES',
         'CLANG_ENABLE_OBJC_ARC'                   => 'YES',
+        'CLANG_ENABLE_OBJC_WEAK'                  => 'YES',
         'CLANG_WARN__DUPLICATE_METHOD_MATCH'      => 'YES',
         'CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING'  => 'YES',
         'CLANG_WARN_BOOL_CONVERSION'              => 'YES',
         'CLANG_WARN_COMMA'                        => 'YES',
         'CLANG_WARN_CONSTANT_CONVERSION'          => 'YES',
+        'CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS' => 'YES',
         'CLANG_WARN_DIRECT_OBJC_ISA_USAGE'        => 'YES_ERROR',
         'CLANG_WARN_DOCUMENTATION_COMMENTS'       => 'YES',
         'CLANG_WARN_EMPTY_BODY'                   => 'YES',
@@ -348,6 +353,7 @@ module Xcodeproj
         'CLANG_WARN_INFINITE_RECURSION'           => 'YES',
         'CLANG_WARN_INT_CONVERSION'               => 'YES',
         'CLANG_WARN_NON_LITERAL_NULL_CONVERSION'  => 'YES',
+        'CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF'    => 'YES',
         'CLANG_WARN_OBJC_LITERAL_CONVERSION'      => 'YES',
         'CLANG_WARN_OBJC_ROOT_CLASS'              => 'YES_ERROR',
         'CLANG_WARN_RANGE_LOOP_ANALYSIS'          => 'YES',
