@@ -169,7 +169,7 @@ module ProjectSpecs
       it 'can load projects in Xcode 8.0 format' do
         @path = @dir + '8.0-format.xcodeproj'
         @project = Xcodeproj::Project.open(@path)
-        @project.object_version.should == Xcodeproj::Constants::LAST_KNOWN_OBJECT_VERSION.to_s
+        @project.object_version.should == '48'
       end
 
       it 'can load projects that have circular target dependencies' do
