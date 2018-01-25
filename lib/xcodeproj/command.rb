@@ -18,6 +18,7 @@ module Xcodeproj
     def initialize(argv)
       super
       unless self.ansi_output?
+        Colored2.disable!
         String.send(:define_method, :colorize) { |string, _| string }
       end
     end

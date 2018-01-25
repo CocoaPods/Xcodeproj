@@ -17,6 +17,10 @@
   [Ruenzuo](https://github.com/Ruenzuo)
   [#510](https://github.com/CocoaPods/Xcodeproj/issues/510)
 
+* Ensure `--no-ansi` disables output of escape sequences.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#540](https://github.com/CocoaPods/Xcodeproj/issues/540)
+
 
 ## 1.5.4 (2017-12-16)
 
