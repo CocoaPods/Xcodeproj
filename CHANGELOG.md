@@ -11,6 +11,10 @@
 * Update default build settings for Xcode 9.3.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Allow to create a buildable reference to another project's target.  
+  [Simon Seyer](https://github.com/simonseyer)
+  [#543](https://github.com/CocoaPods/Xcodeproj/pull/543)
+
 ##### Bug Fixes
 
 * Save `.xcscheme` files with double-quoted strings, consistent with Xcode.  
