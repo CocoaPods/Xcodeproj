@@ -110,12 +110,13 @@ module Xcodeproj
       #                  the actual project directory name]"
       #
       def construct_referenced_container_uri(target, root_project = nil)
-        project = root_project || target.project
         target_project = target.project
-        path = if !project.root_object.project_dir_path.to_s.empty?
-                 project.path + project.root_object.project_dir_path
+        root_project ||= target_project
+        root_project_dir_path = root_project.root_object.project_dir_path
+        path = if !root_project_dir_path.to_s.empty?
+                 root_project.path + root_project_dir_path
                else
-                 project.path.dirname
+                 root_project.path.dirname
                end
         relative_path = target_project.path.relative_path_from(path).to_s
         relative_path = target_project.path.basename if relative_path == '.'
