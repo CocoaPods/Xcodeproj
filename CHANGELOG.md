@@ -8,7 +8,10 @@
 
 ##### Bug Fixes
 
-* None.  
+* Disable Objective-C weak references by default for new targets
+  whose deployment targets do not support them.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#544](https://github.com/CocoaPods/Xcodeproj/issues/544)
 
 
 ## 1.5.5 (2018-02-02)
