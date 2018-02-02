@@ -175,6 +175,18 @@ module ProjectSpecs
         settings_1['SDKROOT'].object_id.should.not == settings_2['SDKROOT'].object_id
         settings_1['SDKROOT'][1].object_id.should.not == settings_2['SDKROOT'][1].object_id
       end
+
+      it 'sets CLANG_ENABLE_OBJC_WEAK=NO for old deployment targets' do
+        settings = @helper.common_build_settings(:release, :osx, '10.6', Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings['CLANG_ENABLE_OBJC_WEAK'].should == 'NO'
+        settings = @helper.common_build_settings(:release, :osx, '10.7', Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings.should.not.key 'CLANG_ENABLE_OBJC_WEAK'
+
+        settings = @helper.common_build_settings(:release, :ios, '4.3', Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings['CLANG_ENABLE_OBJC_WEAK'].should == 'NO'
+        settings = @helper.common_build_settings(:release, :ios, '5', Xcodeproj::Constants::PRODUCT_TYPE_UTI[:bundle])
+        settings.should.not.key 'CLANG_ENABLE_OBJC_WEAK'
+      end
     end
 
     #----------------------------------------#

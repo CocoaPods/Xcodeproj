@@ -270,10 +270,16 @@ module Xcodeproj
 
         if deployment_target
           case platform
-          when :ios then settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
-          when :osx then settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
-          when :tvos then settings['TVOS_DEPLOYMENT_TARGET'] = deployment_target
-          when :watchos then settings['WATCHOS_DEPLOYMENT_TARGET'] = deployment_target
+          when :ios
+            settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
+            settings['CLANG_ENABLE_OBJC_WEAK'] = 'NO' if deployment_target < '5'
+          when :osx
+            settings['MACOSX_DEPLOYMENT_TARGET'] = deployment_target
+            settings['CLANG_ENABLE_OBJC_WEAK'] = 'NO' if deployment_target < '10.7'
+          when :tvos
+            settings['TVOS_DEPLOYMENT_TARGET'] = deployment_target
+          when :watchos
+            settings['WATCHOS_DEPLOYMENT_TARGET'] = deployment_target
           end
         end
 
