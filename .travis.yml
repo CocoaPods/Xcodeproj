@@ -5,13 +5,16 @@ branches:
 language: ruby
 cache: bundler
 rvm:
-  - 2.0.0-p647
-  - 2.3.4
-  - 2.4.1
+  - 2.0.0-p648
+  - 2.1.10
+  - 2.2.9
+  - 2.3.6
+  - 2.4.3
+  - 2.5.0
 
 matrix:
   include:
-  - rvm: 2.4.1
+  - rvm: 2.5.0
     env: COCOAPODS_CI_TASKS=LINT
 
 script:
