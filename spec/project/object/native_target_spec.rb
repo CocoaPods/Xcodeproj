@@ -72,6 +72,13 @@ module ProjectSpecs
           @target.resolved_build_setting('OTHER_LDFLAGS', true).should == { 'Release' => expected_value, 'Debug' => expected_value }
         end
 
+        it 'returns the resolved build setting array value for a given key considering inheritance between project and target settings when the target setting is a string' do
+          @project.build_configuration_list.set_setting('OTHER_LDFLAGS', %w(-framework Foundation))
+          @target.build_configuration_list.set_setting('OTHER_LDFLAGS', '${inherited} -framework CoreData')
+          expected_value = %w(-framework Foundation -framework CoreData)
+          @target.resolved_build_setting('OTHER_LDFLAGS', true).should == { 'Release' => expected_value, 'Debug' => expected_value }
+        end
+
         it 'returns the resolved build setting string value for a given key considering inherited between project, target and associated base configuration references' do
           project_xcconfig = @project.new_file(fixture_path('project.xcconfig'))
           @project.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = project_xcconfig }

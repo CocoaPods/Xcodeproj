@@ -113,8 +113,15 @@ module Xcodeproj
           /x
 
         def expand_build_setting(build_setting_value, config_value)
+          if build_setting_value.is_a?(Array) && config_value.is_a?(String)
+            config_value = split_build_setting_array_to_string(config_value)
+          elsif build_setting_value.is_a?(String) && config_value.is_a?(Array)
+            build_setting_value = split_build_setting_array_to_string(build_setting_value)
+          end
+
           default = build_setting_value.is_a?(String) ? '' : []
           inherited = config_value || default
+
           return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
           build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
         end

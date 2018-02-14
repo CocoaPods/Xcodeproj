@@ -8,8 +8,10 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Fix expanding build settings when the current build setting is a string but
+  the inherited value is an array.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#7421](https://github.com/CocoaPods/CocoaPods/issues/7421)
 
 ## 1.5.6 (2018-02-04)
 
