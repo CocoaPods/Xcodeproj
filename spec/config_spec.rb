@@ -126,6 +126,12 @@ Y = 123
         'OTHER_LDFLAGS' => '-framework "Foundation"',
         'HEADER_SEARCH_PATHS' => '/some/path',
       }
+
+      @config << { 'HEADER_SEARCH_PATHS' => '/some/path/subdir', 'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) ' }
+      @config.to_hash['HEADER_SEARCH_PATHS'].should == '/some/path /some/path/subdir'
+
+      @config << { 'GCC_PREPROCESSOR_DEFINITIONS' => 'COCOAPODS=1' }
+      @config.to_hash['GCC_PREPROCESSOR_DEFINITIONS'].should == '$(inherited) COCOAPODS=1'
     end
 
     it 'merges another hash in a new one' do
