@@ -319,7 +319,7 @@ module Xcodeproj
               if existing.is_a?(Hash) && value.is_a?(Hash)
                 return value if existing.keys == value.keys && existing == value
               elsif existing == value
-                return value if existing == value
+                return value
               end
               mark_project_as_dirty!
               @simple_attributes_hash[attrb.plist_name] = value
