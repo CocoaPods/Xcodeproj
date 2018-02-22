@@ -268,7 +268,7 @@ module Xcodeproj
               uuid = subproject_reference.uuid if subproject_reference
               dep.target_proxy.remote_global_id_string == target.uuid && dep.target_proxy.container_portal == uuid
             else
-              dep.target == target
+              dep.target.uuid == target.uuid
             end
           end
         end
