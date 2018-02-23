@@ -15,7 +15,7 @@ PATH
   remote: .
   specs:
     xcodeproj (1.5.6)
-      CFPropertyList (~> 2.3.3)
+      CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.2)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
@@ -24,7 +24,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    CFPropertyList (2.3.6)
+    CFPropertyList (3.0.0)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     ast (2.3.0)
