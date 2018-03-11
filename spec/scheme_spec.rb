@@ -319,6 +319,15 @@ module ProjectSpecs
         buildable_ref.send(:construct_referenced_container_uri, target).should == 'container:../project_dir/Project.xcodeproj'
       end
 
+      it 'Constructs a reference to a different project correctly' do
+        project = Xcodeproj::Project.new('/project_dir/Project.xcodeproj')
+        another_project = Xcodeproj::Project.new('/another_project_dir/AnotherProject.xcodeproj')
+        target = another_project.new_target(:application, 'iOS application', :osx)
+        buildable_ref = Xcodeproj::XCScheme::BuildableReference.new(nil)
+
+        buildable_ref.send(:construct_referenced_container_uri, target, project).should == 'container:../another_project_dir/AnotherProject.xcodeproj'
+      end
+
       describe 'For iOS Application' do
         before do
           @scheme.add_build_target(@ios_application)

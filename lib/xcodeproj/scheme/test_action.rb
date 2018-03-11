@@ -127,10 +127,13 @@ module Xcodeproj
         #        or an existing XML 'TestableReference' node element to reference,
         #        or nil to create an new, empty TestableReference
         #
-        def initialize(target_or_node = nil)
+        # @param [Xcodeproj::Project] the root project to reference from
+        #                             (when nil the project of the target is used)
+        #
+        def initialize(target_or_node = nil, root_project = nil)
           create_xml_element_with_fallback(target_or_node, 'TestableReference') do
             self.skipped = false
-            add_buildable_reference BuildableReference.new(target_or_node) unless target_or_node.nil?
+            add_buildable_reference BuildableReference.new(target_or_node, root_project) unless target_or_node.nil?
           end
         end
 

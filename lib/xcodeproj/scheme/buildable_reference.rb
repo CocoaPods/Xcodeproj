@@ -10,10 +10,13 @@ module Xcodeproj
       #        Either the Xcode target to reference,
       #        or an existing XML 'BuildableReference' node element to reference
       #
-      def initialize(target_or_node)
+      # @param [Xcodeproj::Project] the root project to reference from
+      #                             (when nil the project of the target is used)
+      #
+      def initialize(target_or_node, root_project = nil)
         create_xml_element_with_fallback(target_or_node, 'BuildableReference') do
           @xml_element.attributes['BuildableIdentifier'] = 'primary'
-          set_reference_target(target_or_node, true) if target_or_node
+          set_reference_target(target_or_node, true, root_project) if target_or_node
         end
       end
 
@@ -49,13 +52,16 @@ module Xcodeproj
       # @param [Xcodeproj::Project::Object::AbstractTarget] target
       #        The target this BuildableReference refers to.
       #
+      # @param [Xcodeproj::Project] the root project to reference from
+      #                             (when nil the project of the target is used)
+      #
       # @param [Bool] override_buildable_name
       #        If true, buildable_name will also be updated by computing a name from the target
       #
-      def set_reference_target(target, override_buildable_name = false)
+      def set_reference_target(target, override_buildable_name = false, root_project = nil)
         @xml_element.attributes['BlueprintIdentifier'] = target.uuid
         @xml_element.attributes['BlueprintName'] = target.name
-        @xml_element.attributes['ReferencedContainer'] = construct_referenced_container_uri(target)
+        @xml_element.attributes['ReferencedContainer'] = construct_referenced_container_uri(target, root_project)
         self.buildable_name = construct_buildable_name(target) if override_buildable_name
       end
 
@@ -96,14 +102,24 @@ module Xcodeproj
 
       # @param [Xcodeproj::Project::Object::AbstractTarget] target
       #
+      # @param [Xcodeproj::Project] the root project to reference from
+      #                             (when nil the project of the target is used)
+      #
       # @return [String] A string in the format "container:[path to the project
       #                  file relative to the project_dir_path, always ending with
       #                  the actual project directory name]"
       #
-      def construct_referenced_container_uri(target)
-        project = target.project
-        relative_path = project.path.relative_path_from(project.path + project.root_object.project_dir_path).to_s
-        relative_path = project.path.basename if relative_path == '.'
+      def construct_referenced_container_uri(target, root_project = nil)
+        target_project = target.project
+        root_project ||= target_project
+        root_project_dir_path = root_project.root_object.project_dir_path
+        path = if !root_project_dir_path.to_s.empty?
+                 root_project.path + root_project_dir_path
+               else
+                 root_project.path.dirname
+               end
+        relative_path = target_project.path.relative_path_from(path).to_s
+        relative_path = target_project.path.basename if relative_path == '.'
         "container:#{relative_path}"
       end
     end
