@@ -183,7 +183,7 @@ module Xcodeproj
 
     #-------------------------------------------------------------------------#
 
-    # Load all schemes from all projects in workspace
+    # Load all schemes from all projects in workspace or in the workspace container itself
     #
     # @param [String] workspace_dir_path
     #         path of workspaces dir
@@ -194,6 +194,13 @@ module Xcodeproj
       file_references.each do |file_reference|
         project_full_path = file_reference.absolute_path(workspace_dir_path)
         load_schemes_from_project(project_full_path)
+      end
+
+      # Load schemes that are in the workspace container.
+      workspace_abs_path = File.absolute_path(workspace_dir_path)
+      Dir[File.join(workspace_dir_path, 'xcshareddata', 'xcschemes', '*.xcscheme')].each do |scheme|
+        scheme_name = File.basename(scheme, '.xcscheme')
+        @schemes[scheme_name] = workspace_abs_path
       end
     end
 
