@@ -8,6 +8,10 @@
 
 ##### Bug Fixes
 
+* Make Workspace.load_schemes load schemes in the workspace container  
+  [loufranco](https://github.com/loufranco)
+  [#557](https://github.com/CocoaPods/Xcodeproj/issues/557)
+
 * Fix expanding build settings when the current build setting is a string but
   the inherited value is an array.  
   [Samuel Giddins](https://github.com/segiddins)
