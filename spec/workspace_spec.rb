@@ -136,6 +136,25 @@ describe Xcodeproj::Workspace do
     end
   end
 
+  describe 'load schemes for all projects and the workspace from a workspace file' do
+    before do
+      @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path('WorkspaceSchemes/WorkspaceSchemes.xcworkspace'))
+      @workspace.load_schemes(fixture_path('WorkspaceSchemes/WorkspaceSchemes.xcworkspace'))
+    end
+
+    it 'returns data type should be hash' do
+      @workspace.schemes.should.instance_of Hash
+    end
+
+    it 'schemes count should be greater or equal to file_references count' do
+      @workspace.schemes.count.should >= @workspace.file_references.count
+    end
+
+    it 'contains only test data schemes' do
+      @workspace.schemes.keys.sort.should == %w(WorkspaceSchemesApp WorkspaceSchemesFramework WorkspaceSchemesScheme)
+    end
+  end
+
   describe 'built from a workspace file with XML entities in a project path' do
     before do
       @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path("Otto's Remote.xcworkspace"))
