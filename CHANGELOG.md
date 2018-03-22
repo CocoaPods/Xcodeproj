@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.5.7 (2018-03-22)
 
 ##### Enhancements
 
