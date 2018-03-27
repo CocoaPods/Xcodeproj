@@ -104,9 +104,14 @@ module Xcodeproj
 
         #---------------------------------------------------------------------#
 
-        def ascii_plist_annotation
-          " Build configuration list for #{target.isa} \"#{target}\" "
+         def ascii_plist_annotation
+            unless target.nil?
+                " Build configuration list for #{target.isa} \"#{target}\" "
+            else
+                " Build configuration list for <deleted target> "
+            end
         end
+      
       end
     end
   end
