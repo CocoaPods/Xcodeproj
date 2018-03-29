@@ -13,6 +13,9 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#565](https://github.com/CocoaPods/Xcodeproj/pull/565)  
 
+* Fixed `undefined method isa for nil:NilClass` when deleting a Xcodeproj target.
+  [JanC](https://github.com/JanC)
+  [#462](https://github.com/CocoaPods/Xcodeproj/issues/462)
 
 ## 1.5.7 (2018-03-22)
 
