@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: cfde6ada0a079bf9d5e755f6adcf6aabdeb3dd0d
+  revision: 989df9f0cbd9a2dc35be22aa936637f4f024973a
   specs:
     claide (1.0.2)
 
@@ -19,7 +19,7 @@ PATH
       atomos (~> 0.1.2)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
-      nanaimo (~> 0.2.4)
+      nanaimo (~> 0.2.5)
 
 GEM
   remote: https://rubygems.org/
@@ -72,7 +72,7 @@ GEM
       mocha (>= 0.13.0)
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    nanaimo (0.2.4)
+    nanaimo (0.2.5)
     nap (1.1.0)
     notify (0.5.2)
     octokit (4.7.0)
