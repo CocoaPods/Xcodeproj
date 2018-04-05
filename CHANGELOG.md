@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Update LAST_KNOWN_IOS_SDK to 11.3  
+  [Piasy](https://github.com/Piasy)
 
 ##### Bug Fixes
 

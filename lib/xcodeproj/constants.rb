@@ -4,7 +4,7 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '10.3'
+    LAST_KNOWN_IOS_SDK = '11.3'
 
     # @return [String] The last known OS X SDK (stable).
     #
