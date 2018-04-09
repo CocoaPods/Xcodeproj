@@ -181,6 +181,7 @@ module Xcodeproj
           else
             build_configuration = project.new(XCBuildConfiguration)
             build_configuration.name = name
+            product_type = self.product_type if respond_to?(:product_type)
             build_configuration.build_settings = ProjectHelper.common_build_settings(type, platform_name, deployment_target, product_type)
             build_configuration_list.build_configurations << build_configuration
             build_configuration

@@ -414,6 +414,12 @@ module ProjectSpecs
           conf_2 = @target.add_build_configuration('App Store', :release)
           conf_1.object_id.should == conf_2.object_id
         end
+
+        it 'adds a new build configuration on an aggregate target' do
+          aggregate_target = @project.new_aggregate_target('PBXAggregateTarget')
+          aggregate_target.add_build_configuration('App Store', :release)
+          aggregate_target.build_configurations.map(&:name).grep('App Store').size.should == 1
+        end
       end
 
       #----------------------------------------#
