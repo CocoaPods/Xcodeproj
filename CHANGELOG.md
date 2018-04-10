@@ -9,7 +9,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix `add_build_configuration` for `PBXAggregateTarget`  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#565](https://github.com/CocoaPods/Xcodeproj/pull/565)  
 
 
 ## 1.5.7 (2018-03-22)
