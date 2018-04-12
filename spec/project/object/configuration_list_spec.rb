@@ -40,7 +40,7 @@ module ProjectSpecs
     end
 
     it 'returns the ascii plist annotation given a deleted target ' do
-      @configuration_list.ascii_plist_annotation().should == " Build configuration list for <deleted target> "
+      @configuration_list.ascii_plist_annotation.should == ' Build configuration list for <deleted target> '
     end
 
     it 'sets a build setting to the given value for all the configurations' do
