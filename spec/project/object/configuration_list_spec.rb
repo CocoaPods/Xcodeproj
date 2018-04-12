@@ -39,6 +39,10 @@ module ProjectSpecs
       @configuration_list.build_settings('Debug').should == settings
     end
 
+    it 'returns the ascii plist annotation given a deleted target ' do
+      @configuration_list.ascii_plist_annotation().should == " Build configuration list for <deleted target> "
+    end
+
     it 'sets a build setting to the given value for all the configurations' do
       %w(Debug Release).each do |name|
         configuration = @project.new(XCBuildConfiguration)
