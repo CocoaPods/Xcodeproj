@@ -238,6 +238,8 @@ Y = 123
         'Key1' => 'Value1',
         'Key2' => 'Value2',
         'Key3' => 'Value3',
+        'Key4[sub1=sub2]' => 'Value4',
+        'Key5[sub3=sub4]' => 'Value5',
       }
     end
 
