@@ -21,7 +21,7 @@ module Xcodeproj
           \]
         )*
       )
-      \s+           # Whitespaces after the key (needed because subscripts
+      \s*           # Whitespaces after the key (needed because subscripts
                     # always end with ']')
       =             # The assignment operator
       (.*)          # The value
