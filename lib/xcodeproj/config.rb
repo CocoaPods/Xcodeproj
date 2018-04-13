@@ -10,8 +10,8 @@ module Xcodeproj
 
     KEY_VALUE_PATTERN = /
       (
-        [^=\[]]+    # Any char, but not an assignment operator
-                    # or subscript(non-greedy)
+        [^=\[]+     # Any char, but not an assignment operator
+                    # or subscript (non-greedy)
         (?:         # One or multiple conditional subscripts
           \[
           [^\]]*    # The subscript key
