@@ -232,6 +232,17 @@ Y = 123
       }
     end
 
+    it 'can be created from file with differing whitespace' do
+      config = Xcodeproj::Config.new(fixture_path('differing-whitespace.xcconfig'))
+      config.to_hash.should == {
+        'Key1' => 'Value1',
+        'Key2' => 'Value2',
+        'Key3' => 'Value3',
+        'Key4[sub1=sub2]' => 'Value4',
+        'Key5[sub3=sub4]' => 'Value5',
+      }
+    end
+
     it "doesn't duplicate libraries and frameworks" do
       hash = { 'OTHER_LDFLAGS' => '-framework Foundation -weak_framework Twitter -lxml2.2.7.3' }
       config = Xcodeproj::Config.new(hash)

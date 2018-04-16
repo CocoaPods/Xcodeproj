@@ -17,6 +17,11 @@
   [JanC](https://github.com/JanC)
   [#462](https://github.com/CocoaPods/Xcodeproj/issues/462)
 
+* Fix parsing of build settings when a key and value are not
+  seprated from the `=` by whitespace
+  [Daniel Petri](https://github.com/stocc)
+  [#566](https://github.com/CocoaPods/Xcodeproj/issues/566)
+
 ## 1.5.7 (2018-03-22)
 
 ##### Enhancements
