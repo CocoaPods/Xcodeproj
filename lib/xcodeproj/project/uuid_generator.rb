@@ -76,7 +76,7 @@ module Xcodeproj
       end
 
       def uuid_for_path(path)
-        require 'Digest'
+        require 'digest'
         Digest::MD5.hexdigest(path).upcase
       end
 
