@@ -22,6 +22,10 @@
   [Daniel Petri](https://github.com/stocc)
   [#566](https://github.com/CocoaPods/Xcodeproj/issues/566)
 
+* Warn when encountering unknown attributes instead of bailing out.  
+  [theoriginalgri](https://github.com/theoriginalgri)
+  [#535](https://github.com/CocoaPods/CocoaPods/issues/535)
+
 ## 1.5.7 (2018-03-22)
 
 ##### Enhancements
