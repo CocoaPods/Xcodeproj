@@ -59,8 +59,10 @@ module Xcodeproj
         target.build_phases << project.new(PBXFrameworksBuildPhase)
 
         # Frameworks
-        framework_name = (platform == :osx) ? 'Cocoa' : 'Foundation'
-        target.add_system_framework(framework_name)
+        unless type == :static_library
+          framework_name = (platform == :osx) ? 'Cocoa' : 'Foundation'
+          target.add_system_framework(framework_name)
+        end
 
         target
       end

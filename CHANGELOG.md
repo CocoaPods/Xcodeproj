@@ -7,6 +7,10 @@
 * Update LAST_KNOWN_IOS_SDK to 11.3  
   [Piasy](https://github.com/Piasy)
 
+* Create new static library targets without linking against
+  system frameworks, for new build system compatibility.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Fix `add_build_configuration` for `PBXAggregateTarget`  
