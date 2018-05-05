@@ -22,6 +22,9 @@
   [Daniel Petri](https://github.com/stocc)
   [#566](https://github.com/CocoaPods/Xcodeproj/issues/566)
 
+* Serialize arrays in Xcode projects based upon the project's object version.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 * Warn when encountering unknown attributes instead of bailing out.  
   [theoriginalgri](https://github.com/theoriginalgri)
   [#535](https://github.com/CocoaPods/CocoaPods/issues/535)
