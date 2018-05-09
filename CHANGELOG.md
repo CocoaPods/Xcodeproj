@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Add a missing `require 'set'` so the library can be loaded.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [#572](https://github.com/CocoaPods/Xcodeproj/issues/572)
 
 
 ## 1.5.8 (2018-05-09)

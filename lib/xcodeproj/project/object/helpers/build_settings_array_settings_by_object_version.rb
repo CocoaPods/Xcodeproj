@@ -1,3 +1,5 @@
+require 'set'
+
 module Xcodeproj
   class Project
     module Object
