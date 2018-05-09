@@ -546,11 +546,7 @@ module ProjectSpecs
           end
 
           phase.should.be.instance_of klass
-          if phase.is_a? PBXFrameworksBuildPhase
-            phase.files.count.should == 1
-          else
-            phase.files.to_a.should == []
-          end
+          phase.files.to_a.should == []
         end
       end
 
@@ -684,7 +680,7 @@ module ProjectSpecs
 
     describe 'AbstractObject Hooks' do
       before do
-        @target = @project.new_target(:static_library, 'Pods', :ios)
+        @target = @project.new_target(:framework, 'Pods', :ios)
       end
 
       it 'returns the pretty print representation' do

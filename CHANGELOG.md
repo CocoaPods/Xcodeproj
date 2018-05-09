@@ -7,6 +7,10 @@
 * Update LAST_KNOWN_IOS_SDK to 11.3  
   [Piasy](https://github.com/Piasy)
 
+* Create new static library targets without linking against
+  system frameworks, for new build system compatibility.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Fix `add_build_configuration` for `PBXAggregateTarget`  
@@ -21,6 +25,9 @@
   seprated from the `=` by whitespace
   [Daniel Petri](https://github.com/stocc)
   [#566](https://github.com/CocoaPods/Xcodeproj/issues/566)
+
+* Serialize arrays in Xcode projects based upon the project's object version.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 * Warn when encountering unknown attributes instead of bailing out.  
   [theoriginalgri](https://github.com/theoriginalgri)

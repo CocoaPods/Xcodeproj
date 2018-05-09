@@ -154,42 +154,21 @@ module Xcodeproj
           sorted
         end
 
-        # yes, they are case-sensitive.
-        # no, Xcode doesn't do this for other PathList settings nor other
-        # settings ending in SEARCH_PATHS.
-        ARRAY_SETTINGS = %w(
-          ALTERNATE_PERMISSIONS_FILES
-          ARCHS
-          BUILD_VARIANTS
-          EXCLUDED_SOURCE_FILE_NAMES
-          FRAMEWORK_SEARCH_PATHS
-          GCC_PREPROCESSOR_DEFINITIONS
-          GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS
-          HEADER_SEARCH_PATHS
-          INFOPLIST_PREPROCESSOR_DEFINITIONS
-          LIBRARY_SEARCH_PATHS
-          OTHER_CFLAGS
-          OTHER_CPLUSPLUSFLAGS
-          OTHER_LDFLAGS
-          REZ_SEARCH_PATHS
-          SECTORDER_FLAGS
-          WARNING_CFLAGS
-          WARNING_LDFLAGS
-        ).freeze
-        private_constant :ARRAY_SETTINGS
-
         def normalize_array_settings(settings)
           return unless settings
+
+          array_settings = BuildSettingsArraySettingsByObjectVersion[project.object_version]
+
           settings.keys.each do |key|
             next unless value = settings[key]
             case value
             when String
-              next unless ARRAY_SETTINGS.include?(key)
+              next unless array_settings.include?(key)
               array_value = split_build_setting_array_to_string(value)
               next unless array_value.size > 1
               settings[key] = array_value
             when Array
-              next if value.size > 1 && ARRAY_SETTINGS.include?(key)
+              next if value.size > 1 && array_settings.include?(key)
               settings[key] = value.join(' ')
             end
           end
@@ -211,3 +190,5 @@ module Xcodeproj
     end
   end
 end
+
+require 'xcodeproj/project/object/helpers/build_settings_array_settings_by_object_version'

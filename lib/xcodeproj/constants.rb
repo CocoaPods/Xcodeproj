@@ -11,10 +11,10 @@ module Xcodeproj
     LAST_KNOWN_OSX_SDK = '10.13'
 
     # @return [String] The last known tvOS SDK (stable).
-    LAST_KNOWN_TVOS_SDK = '10.2'
+    LAST_KNOWN_TVOS_SDK = '11.3'
 
     # @return [String] The last known watchOS SDK (stable).
-    LAST_KNOWN_WATCHOS_SDK = '3.2'
+    LAST_KNOWN_WATCHOS_SDK = '4.3'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
