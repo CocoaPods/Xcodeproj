@@ -1,2 +1,3 @@
 #include "Swift_OSX_Native/Swift_OSX_Native_base.xcconfig"
-SWIFT_OPTIMIZATION_LEVEL = -Owholemodule
+SWIFT_COMPILATION_MODE = wholemodule
+SWIFT_OPTIMIZATION_LEVEL = -O

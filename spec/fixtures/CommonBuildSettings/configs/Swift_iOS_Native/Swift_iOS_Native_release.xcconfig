@@ -1,3 +1,4 @@
 #include "Swift_iOS_Native/Swift_iOS_Native_base.xcconfig"
-SWIFT_OPTIMIZATION_LEVEL = -Owholemodule
+SWIFT_COMPILATION_MODE = wholemodule
+SWIFT_OPTIMIZATION_LEVEL = -O
 VALIDATE_PRODUCT = YES

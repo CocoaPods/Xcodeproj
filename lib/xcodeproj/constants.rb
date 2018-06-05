@@ -227,7 +227,8 @@ module Xcodeproj
         'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
       }.freeze,
       [:release, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-Owholemodule',
+        'SWIFT_COMPILATION_MODE'            => 'wholemodule',
+        'SWIFT_OPTIMIZATION_LEVEL'          => '-O',
       }.freeze,
       [:debug, :static_library, :swift] => {
       }.freeze,
@@ -371,6 +372,7 @@ module Xcodeproj
         'GCC_WARN_UNINITIALIZED_AUTOS'            => 'YES_AGGRESSIVE',
         'GCC_WARN_UNUSED_FUNCTION'                => 'YES',
         'GCC_WARN_UNUSED_VARIABLE'                => 'YES',
+        'MTL_FAST_MATH'                           => 'YES',
         'PRODUCT_NAME'                            => '$(TARGET_NAME)',
       },
       :release => {
@@ -384,7 +386,7 @@ module Xcodeproj
         'GCC_DYNAMIC_NO_PIC'                 => 'NO',
         'GCC_OPTIMIZATION_LEVEL'             => '0',
         'GCC_PREPROCESSOR_DEFINITIONS'       => ['DEBUG=1', '$(inherited)'],
-        'MTL_ENABLE_DEBUG_INFO'              => 'YES',
+        'MTL_ENABLE_DEBUG_INFO'              => 'INCLUDE_SOURCE',
         'ONLY_ACTIVE_ARCH'                   => 'YES',
       }.freeze,
     }.freeze

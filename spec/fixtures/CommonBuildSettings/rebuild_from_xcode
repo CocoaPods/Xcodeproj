@@ -94,11 +94,16 @@ end
 
 xcode = ARGV[0] || '/Applications/Xcode.app'
 
+puts "Rebuilding from Xcode at `#{xcode}`"
+
 Dir["#{xcode}/Contents/Developer/Platforms/**/*.xctemplate/TemplateInfo.plist", "#{xcode}/Contents/Developer/Library/Xcode/**/*.xctemplate/TemplateInfo.plist"].map do |template|
+  print "\r\033[KReading template `#{template}`"
   plist = Xcodeproj::Plist.read_from_path(template)
   template = Template.new(plist)
   Template.all_by_identifier[template.identifier] = template if template.identifier
 end.compact
+
+puts "\r\033[KRead all templates"
 
 targets = {
   'Project'                        => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.base' },
@@ -148,6 +153,7 @@ end
 project = nil
 targets.each do |name, options|
   template_identifier = options.delete(:template_identifier)
+  print "\r\033[KCalculating defaults for #{template_identifier}"
   configs = Hash[%w(Debug Release).map do |configuration|
     unless template = Template.all_by_identifier[template_identifier]
       warn "No template #{template_identifier} for #{name} could be found"
@@ -168,3 +174,4 @@ targets.each do |name, options|
 
   project = configs if name == 'Project'
 end
+puts "\r\033[KCalculated default build settings!"
