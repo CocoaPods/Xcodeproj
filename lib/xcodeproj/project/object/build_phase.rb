@@ -250,12 +250,26 @@ module Xcodeproj
         #
         attribute :input_paths, Array, []
 
+        # @return [Array<String>] an array of input file list paths of the script.
+        #
+        # @example
+        #   "$(SRCROOT)/newInputFile.xcfilelist"
+        #
+        attribute :input_file_list_paths, Array, []
+
         # @return [Array<String>] an array of output paths of the script.
         #
         # @example
         #   "$(DERIVED_FILE_DIR)/myfile"
         #
         attribute :output_paths, Array, []
+
+        # @return [Array<String>] an array of output file list paths of the script.
+        #
+        # @example
+        #   "$(SRCROOT)/newOutputFile.xcfilelist"
+        #
+        attribute :output_file_list_paths, Array, []
 
         # @return [String] the path to the script interpreter.
         #

@@ -159,7 +159,9 @@ module ProjectSpecs
     it 'has empty defaults for the other attributes' do
       @build_phase.files.should == []
       @build_phase.input_paths.should == []
+      @build_phase.input_file_list_paths.should == []
       @build_phase.output_paths.should == []
+      @build_phase.output_file_list_paths.should == []
       @build_phase.shell_script.should == ''
     end
 

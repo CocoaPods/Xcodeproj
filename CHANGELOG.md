@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Xcode 10 support for input file list and output file list  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#7835](https://github.com/CocoaPods/CocoaPods/issues/7835)
 
 
 ## 1.5.9 (2018-05-15)
