@@ -1,6 +1,8 @@
 module Xcodeproj
   class Project
     class UUIDGenerator
+      require 'digest'
+
       def initialize(project)
         @project = project
         @new_objects_by_uuid = {}
@@ -76,7 +78,6 @@ module Xcodeproj
       end
 
       def uuid_for_path(path)
-        require 'digest'
         Digest::MD5.hexdigest(path).upcase
       end
 
