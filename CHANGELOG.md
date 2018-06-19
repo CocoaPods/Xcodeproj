@@ -8,6 +8,10 @@
 
 ##### Bug Fixes
 
+* Only `require 'digest'` once instead of per call to `uuid_for_path`  
+  [Eric Amorde](https://github.com/amorde)
+  [#580](https://github.com/CocoaPods/Xcodeproj/pull/580)
+
 * Xcode 10 support for input file list and output file list  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#7835](https://github.com/CocoaPods/CocoaPods/issues/7835)
