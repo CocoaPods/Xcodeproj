@@ -354,6 +354,7 @@ module Xcodeproj
             # 1.9.2 fix, see https://github.com/CocoaPods/Xcodeproj/issues/40.
             public(attrb.name)
 
+            variable_name = :"@#{attrb.name}"
             define_method("#{attrb.name}=") do |value|
               attrb.validate_value(value)
 
@@ -361,7 +362,7 @@ module Xcodeproj
               return value if previous_value == value
               mark_project_as_dirty!
               previous_value.remove_referrer(self) if previous_value
-              instance_variable_set("@#{attrb.name}", value)
+              instance_variable_set(variable_name, value)
               value.add_referrer(self) if value
             end
           end
@@ -392,12 +393,13 @@ module Xcodeproj
             attrb.classes = isas
             add_attribute(attrb)
 
+            variable_name = :"@#{attrb.name}"
             define_method(attrb.name) do
               # Here we are in the context of the instance
-              list = instance_variable_get("@#{attrb.name}")
+              list = instance_variable_get(variable_name)
               unless list
                 list = ObjectList.new(attrb, self)
-                instance_variable_set("@#{attrb.name}", list)
+                instance_variable_set(variable_name, list)
               end
               list
             end
@@ -428,12 +430,13 @@ module Xcodeproj
             attrb.classes_by_key = classes_by_key
             add_attribute(attrb)
 
+            variable_name = :"@#{attrb.name}"
             define_method(attrb.name) do
               # Here we are in the context of the instance
-              list = instance_variable_get("@#{attrb.name}")
+              list = instance_variable_get(variable_name)
               unless list
                 list = ObjectList.new(attrb, self)
-                instance_variable_set("@#{attrb.name}", list)
+                instance_variable_set(variable_name, list)
               end
               list
             end

@@ -9,6 +9,7 @@ module ProjectSpecs
   describe Xcodeproj::XCScheme do
     before do
       @project.stubs(:path).returns(Pathname.new('path/Cocoa Application.xcodeproj'))
+      @project.stubs(:project_dir).returns(Pathname.new('path/'))
     end
 
     #-------------------------------------------------------------------------#

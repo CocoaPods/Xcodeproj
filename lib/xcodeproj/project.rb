@@ -46,6 +46,10 @@ module Xcodeproj
     #
     attr_reader :path
 
+    # @return [Pathname] the directory of the project
+    #
+    attr_reader :project_dir
+
     # @param  [Pathname, String] path @see path
     #         The path provided will be expanded to an absolute path.
     # @param  [Bool] skip_initialization
@@ -64,6 +68,7 @@ module Xcodeproj
     #
     def initialize(path, skip_initialization = false, object_version = Constants::DEFAULT_OBJECT_VERSION)
       @path = Pathname.new(path).expand_path
+      @project_dir = @path.dirname
       @objects_by_uuid = {}
       @generated_uuids = []
       @available_uuids = []
