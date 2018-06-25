@@ -116,7 +116,7 @@ module Xcodeproj
         path = if !root_project_dir_path.to_s.empty?
                  root_project.path + root_project_dir_path
                else
-                 root_project.path.dirname
+                 root_project.project_dir
                end
         relative_path = target_project.path.relative_path_from(path).to_s
         relative_path = target_project.path.basename if relative_path == '.'
