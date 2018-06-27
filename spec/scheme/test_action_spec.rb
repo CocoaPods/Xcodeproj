@@ -248,7 +248,7 @@ module Xcodeproj
         attributes = {
           :skipped => 'skipped',
           :parallelizable => 'parallelizable',
-          :whitelist => 'useTestSelectionWhitelist'
+          :whitelist => 'useTestSelectionWhitelist',
         }
         specs_for_bool_attr(attributes)
 
@@ -276,11 +276,10 @@ module Xcodeproj
 
           it '#randomized= set false value' do
             @sut.randomized = false
-            @sut.xml_element.attributes['testExecutionOrdering'].should == nil
+            @sut.xml_element.attributes['testExecutionOrdering'].should.nil?
           end
         end
       end
-
 
       it '#add_skipped_test' do
         test_ref = XCScheme::TestAction::TestableReference.new
