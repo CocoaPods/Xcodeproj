@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Xcode 10 changes for test schemes  
+  [Jenn Kaplan](https://github.com/jkap)
+  [#583](https://github.com/CocoaPods/CocoaPods/issues/583)
 
 ##### Bug Fixes
 
