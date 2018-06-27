@@ -151,6 +151,36 @@ module Xcodeproj
           @xml_element.attributes['skipped'] = bool_to_string(flag)
         end
 
+        # @return [Bool]
+        #         Whether or not this TestableReference (test bundle) should be run in parallel or not
+        #
+        def parallelizable?
+          string_to_bool(@xml_element.attributes['parallelizable'])
+        end
+
+        # @param [Bool]
+        #         Set whether or not this TestableReference (test bundle) should be run in parallel or not
+        #
+        def parallelizable=(flag)
+          @xml_element.attributes['parallelizable'] = bool_to_string(flag)
+        end
+
+        # @return [Bool]
+        #         Whether or not this TestableReference (test bundle) should be run in randomized order.
+        #
+        def randomized?
+          str = @xml_element.attributes['testExecutionOrdering']
+          raise Informative, 'Invalid tag value. Expected `random` or nil.' unless ['random', nil].include?(str)
+          str == 'random'
+        end
+
+        # @param [Bool] flag
+        #         Set whether or not this TestableReference (test bundle) should be run in randomized order.
+        #
+        def randomized=(flag)
+          @xml_element.attributes['testExecutionOrdering'] = flag ? 'random' : nil
+        end
+
         # @return [Array<BuildableReference>]
         #         The list of BuildableReferences this action will build.
         #         (The list usually contains only one element)
@@ -200,6 +230,52 @@ module Xcodeproj
           entries.add_element(skipped_test.xml_element)
         end
 
+        # @return [Bool]
+        #         Whether or not this TestableReference (test bundle) should use a whitelist or not
+        #
+        def whitelist?
+          string_to_bool(@xml_element.attributes['useTestSelectionWhitelist'])
+        end
+
+        # @param [Bool] flag
+        #        Set whether or not this TestableReference (test bundle) should use a whitelist or not
+        #
+        def whitelist=(flag)
+          @xml_element.attributes['useTestSelectionWhitelist'] = bool_to_string(flag)
+        end
+
+        # @return [Array<SelectedTest>]
+        #         The list of SelectedTest this action will run.
+        #
+        def selected_tests
+          return [] if @xml_element.elements['SelectedTests'].nil?
+          @xml_element.elements['SelectedTests'].get_elements('Test').map do |node|
+            TestableReference::SelectedTest.new(node)
+          end
+        end
+
+        # @param [Array<SelectedTest>] tests
+        #         Set the list of SelectedTest this action will run.
+        #
+        def selected_tests=(tests)
+          @xml_element.delete_element('SelectedTests') unless @xml_element.elements['SelectedTests'].nil?
+          if tests.nil?
+            return
+          end
+          entries = @xml_element.add_element('SelectedTests')
+          tests.each do |selected|
+            entries.add_element(selected.xml_element)
+          end
+        end
+
+        # @param [SelectedTest] selected_test
+        #         The SelectedTest to add to the list of tests this action will run.
+        #
+        def add_selected_test(selected_test)
+          entries = @xml_element.elements['SelectedTests'] || @xml_element.add_element('SelectedTests')
+          entries.add_element(selected_test.xml_element)
+        end
+
         class SkippedTest < XMLElementWrapper
           # @param [REXML::Element] node
           #        The 'Test' XML node that this object will wrap.
@@ -220,6 +296,32 @@ module Xcodeproj
 
           # @param [String] value
           #        Set the name of the skipped test class name
+          #
+          def identifier=(value)
+            @xml_element.attributes['Identifier'] = value
+          end
+        end
+
+        class SelectedTest < XMLElementWrapper
+          # @param [REXML::Element] node
+          #        The 'Test' XML node that this object will wrap.
+          #        If nil, will create a default XML node to use.
+          #
+          def initialize(node = nil)
+            create_xml_element_with_fallback(node, 'Test') do
+              self.identifier = node.attributes['Identifier'] unless node.nil?
+            end
+          end
+
+          # @return [String]
+          #         Selected test class name
+          #
+          def identifier
+            @xml_element.attributes['Identifier']
+          end
+
+          # @param [String] value
+          #        Set the name of the selected test class name
           #
           def identifier=(value)
             @xml_element.attributes['Identifier'] = value
