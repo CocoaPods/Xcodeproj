@@ -158,17 +158,23 @@ module Xcodeproj
           string_to_bool(@xml_element.attributes['parallelizable'])
         end
 
-        # @param [Bool]
+        # @param [Bool] flag
         #         Set whether or not this TestableReference (test bundle) should be run in parallel or not
         #
         def parallelizable=(flag)
           @xml_element.attributes['parallelizable'] = bool_to_string(flag)
         end
 
+        # @return [String]
+        #         The execution order for this TestableReference (test bundle)
+        #
         def test_execution_ordering
           @xml_element.attributes['testExecutionOrdering']
         end
 
+        # @param [String] order
+        #         Set the execution order for this TestableReference (test bundle)
+        #
         def test_execution_ordering=(order)
           @xml_element.attributes['testExecutionOrdering'] = order
         end
