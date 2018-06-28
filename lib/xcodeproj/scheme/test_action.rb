@@ -212,7 +212,7 @@ module Xcodeproj
         #         Set the list of SkippedTest this action will skip.
         #
         def skipped_tests=(tests)
-          @xml_element.delete_element('SkippedTests') unless @xml_element.elements['SkippedTests'].nil?
+          @xml_element.delete_element('SkippedTests')
           if tests.nil?
             return
           end
@@ -258,10 +258,8 @@ module Xcodeproj
         #         Set the list of SelectedTest this action will run.
         #
         def selected_tests=(tests)
-          @xml_element.delete_element('SelectedTests') unless @xml_element.elements['SelectedTests'].nil?
-          if tests.nil?
-            return
-          end
+          @xml_element.delete_element('SelectedTests')
+          return if tests.nil?
           entries = @xml_element.add_element('SelectedTests')
           tests.each do |selected|
             entries.add_element(selected.xml_element)

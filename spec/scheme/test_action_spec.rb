@@ -221,7 +221,7 @@ module Xcodeproj
         test_ref.xml_element.name.should == 'TestableReference'
         test_ref.xml_element.attributes.count.should == 1
         test_ref.xml_element.attributes['skipped'].should == 'NO'
-        test_ref.randomized?.should.be.false?
+        test_ref.should.not.be.randomized?
       end
 
       it 'raises if created with an invalid XML node' do
@@ -256,7 +256,7 @@ module Xcodeproj
         describe 'randomized' do
           it '#randomized? detect a true value' do
             @sut.xml_element.attributes['testExecutionOrdering'] = 'random'
-            @sut.randomized?.should == true
+            @sut.should.be.randomized?
           end
 
           it '#randomized? detect a false value' do
@@ -276,7 +276,7 @@ module Xcodeproj
 
           it '#randomized= set false value' do
             @sut.randomized = false
-            @sut.xml_element.attributes['testExecutionOrdering'].should.nil?
+            @sut.xml_element.attributes['testExecutionOrdering'].should.be.nil?
           end
         end
       end
