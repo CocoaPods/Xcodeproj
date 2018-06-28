@@ -221,6 +221,7 @@ module Xcodeproj
         test_ref.xml_element.name.should == 'TestableReference'
         test_ref.xml_element.attributes.count.should == 1
         test_ref.xml_element.attributes['skipped'].should == 'NO'
+        test_ref.should.not.be.randomized?
       end
 
       it 'raises if created with an invalid XML node' do
@@ -246,13 +247,40 @@ module Xcodeproj
 
         attributes = {
           :skipped => 'skipped',
+          :parallelizable => 'parallelizable',
+          :use_test_selection_whitelist => 'useTestSelectionWhitelist',
         }
         specs_for_bool_attr(attributes)
+
+        # Reimplemented because `testExecutionOrdering` doesn't use standard YES/NO
+        describe 'randomized' do
+          it '#randomized? detect a true value' do
+            @sut.xml_element.attributes['testExecutionOrdering'] = 'random'
+            @sut.should.be.randomized?
+          end
+
+          it '#randomized? detect a false value' do
+            @sut.xml_element.attributes['testExecutionOrdering'] = nil
+            @sut.should.not.be.randomized?
+          end
+        end
+
+        describe 'test_execution_ordering' do
+          it '#test_execution_ordering return actual value' do
+            @sut.xml_element.attributes['testExecutionOrdering'] = 'value'
+            @sut.test_execution_ordering.should == 'value'
+          end
+
+          it '#test_execution_ordering= set actual value' do
+            @sut.test_execution_ordering = 'newValue'
+            @sut.xml_element.attributes['testExecutionOrdering'].should == 'newValue'
+          end
+        end
       end
 
       it '#add_skipped_test' do
         test_ref = XCScheme::TestAction::TestableReference.new
-        skipped_test = XCScheme::TestAction::TestableReference::SkippedTest.new
+        skipped_test = XCScheme::TestAction::TestableReference::Test.new
         skipped_test.identifier = 'MyClassTests'
         test_ref.add_skipped_test(skipped_test)
         test_ref.xml_element.elements['SkippedTests'].should.not.nil?
@@ -262,7 +290,7 @@ module Xcodeproj
 
       it '#set_skipped_tests_nil' do
         test_ref = XCScheme::TestAction::TestableReference.new
-        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::SkippedTest.new]
+        test_ref.skipped_tests = [XCScheme::TestAction::TestableReference::Test.new]
         test_ref.skipped_tests.count.should == 1
         test_ref.skipped_tests = nil
         test_ref.xml_element.elements['SkippedTests'].should.nil?
@@ -272,15 +300,15 @@ module Xcodeproj
       it '#set_skipped_tests' do
         test_ref = XCScheme::TestAction::TestableReference.new
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::Test.new
         test1.identifier = 'MyClassTests1'
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::Test.new
         test2.identifier = 'MyClassTests2'
 
         test_ref.skipped_tests = [test1, test2]
         test_ref.skipped_tests.count.should == 2
-        test_ref.skipped_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::SkippedTest }
+        test_ref.skipped_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::Test }
         test_ref.skipped_tests[0].xml_element.should == test1.xml_element
         test_ref.skipped_tests[1].xml_element.should == test2.xml_element
       end
@@ -288,18 +316,70 @@ module Xcodeproj
       it '#skipped_tests' do
         test_ref = XCScheme::TestAction::TestableReference.new
 
-        test1 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test1 = XCScheme::TestAction::TestableReference::Test.new
         test1.identifier = 'MyClassTests1'
         test_ref.add_skipped_test(test1)
 
-        test2 = XCScheme::TestAction::TestableReference::SkippedTest.new
+        test2 = XCScheme::TestAction::TestableReference::Test.new
         test2.identifier = 'MyClassTests2'
         test_ref.add_skipped_test(test2)
 
         test_ref.skipped_tests.count.should == 2
-        test_ref.skipped_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::SkippedTest }
+        test_ref.skipped_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::Test }
         test_ref.skipped_tests[0].xml_element.should == test1.xml_element
         test_ref.skipped_tests[1].xml_element.should == test2.xml_element
+      end
+
+      it '#add_selected_test' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+        selected_test = XCScheme::TestAction::TestableReference::Test.new
+        selected_test.identifier = 'MyClassTests'
+        test_ref.add_selected_test(selected_test)
+        test_ref.xml_element.elements['SelectedTests'].should.not.nil?
+        test_ref.xml_element.elements['SelectedTests'].count.should == 1
+        test_ref.xml_element.elements['SelectedTests'].elements['Test'].should == selected_test.xml_element
+      end
+
+      it '#set_selected_tests_nil' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+        test_ref.selected_tests = [XCScheme::TestAction::TestableReference::Test.new]
+        test_ref.selected_tests.count.should == 1
+        test_ref.selected_tests = nil
+        test_ref.xml_element.elements['SelectedTests'].should.nil?
+        test_ref.selected_tests.count.should == 0
+      end
+
+      it '#set_selected_tests' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+
+        test1 = XCScheme::TestAction::TestableReference::Test.new
+        test1.identifier = 'MyClassTests1'
+
+        test2 = XCScheme::TestAction::TestableReference::Test.new
+        test2.identifier = 'MyClassTests2'
+
+        test_ref.selected_tests = [test1, test2]
+        test_ref.selected_tests.count.should == 2
+        test_ref.selected_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::Test }
+        test_ref.selected_tests[0].xml_element.should == test1.xml_element
+        test_ref.selected_tests[1].xml_element.should == test2.xml_element
+      end
+
+      it '#selected_tests' do
+        test_ref = XCScheme::TestAction::TestableReference.new
+
+        test1 = XCScheme::TestAction::TestableReference::Test.new
+        test1.identifier = 'MyClassTests1'
+        test_ref.add_selected_test(test1)
+
+        test2 = XCScheme::TestAction::TestableReference::Test.new
+        test2.identifier = 'MyClassTests2'
+        test_ref.add_selected_test(test2)
+
+        test_ref.selected_tests.count.should == 2
+        test_ref.selected_tests.all? { |e| e.class.should == XCScheme::TestAction::TestableReference::Test }
+        test_ref.selected_tests[0].xml_element.should == test1.xml_element
+        test_ref.selected_tests[1].xml_element.should == test2.xml_element
       end
 
       it '#add_buildable_reference' do
