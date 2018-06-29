@@ -316,6 +316,16 @@ Y = 123
         'ANOTHER_BUILD_SETTING' => 'SHOULD_PRECEDE',
       }
     end
+
+    it 'allows using ${inherited} when there are multiple instances of a key in the file' do
+      file = stub(:read => "A = 1\nA=2 ${inherited} ${inherited} 2\n", :to_path => 'A.xcconfig')
+      xcconfig = Xcodeproj::Config.new(file)
+      xcconfig.to_hash.should == { 'A' => '2 1 1 2' }
+
+      file = fixture_path('config-with-inherited-from-self.xcconfig')
+      xcconfig = Xcodeproj::Config.new(file)
+      xcconfig.to_hash.should == { 'HEADER_SEARCH_PATHS' => '${inherited} a b c d' }
+    end
   end
 
   #---------------------------------------------------------------------------#
