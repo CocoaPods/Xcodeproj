@@ -169,6 +169,13 @@ module Xcodeproj
           GroupableHelper.real_path(self)
         end
 
+        # @return [Pathname] the path of the file without resolving the
+        # source tree.
+        #
+        def full_path
+          GroupableHelper.full_path(self)
+        end
+
         # Sets the source tree of the reference.
         #
         # @param  [Symbol, String] source_tree
