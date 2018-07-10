@@ -126,6 +126,46 @@ module ProjectSpecs
       end
     end
 
+    describe '::full_path' do
+      before do
+        @group = @project.new_group('Parent')
+        @file = @group.new_file('File.m')
+      end
+
+      it 'returns the full path of an object which the group path is nil' do
+        @file.set_source_tree(:group)
+        @helper.full_path(@file).should == Pathname.new('File.m')
+        @file.set_source_tree(:absolute)
+        @helper.full_path(@file).should == Pathname.new('/File.m')
+        @file.set_source_tree(:project)
+        @helper.full_path(@file).should == Pathname.new('File.m')
+        @file.set_source_tree(:developer_dir)
+        @helper.full_path(@file).should == Pathname.new('${DEVELOPER_DIR}/File.m')
+      end
+
+      it 'returns the full path of an object which the group path is not nil' do
+        @group.set_path('Parent')
+        @file.set_source_tree(:group)
+        @helper.full_path(@file).should == Pathname.new('Parent/File.m')
+        @file.set_source_tree(:absolute)
+        @helper.full_path(@file).should == Pathname.new('/File.m')
+        @file.set_source_tree(:project)
+        @helper.full_path(@file).should == Pathname.new('File.m')
+        @file.set_source_tree(:developer_dir)
+        @helper.full_path(@file).should == Pathname.new('${DEVELOPER_DIR}/File.m')
+      end
+
+      it 'returns the full path of an object which the group source tree is not <group>' do
+        @group.set_path('Parent')
+        @group.set_source_tree(:project)
+        @helper.full_path(@file).should == Pathname.new('Parent/File.m')
+        @group.set_source_tree(:absolute)
+        @helper.full_path(@file).should == Pathname.new('/Parent/File.m')
+        @group.set_source_tree(:developer_dir)
+        @helper.full_path(@file).should == Pathname.new('${DEVELOPER_DIR}/Parent/File.m')
+      end
+    end
+
     #-------------------------------------------------------------------------#
 
     describe '::source_tree_real_path' do

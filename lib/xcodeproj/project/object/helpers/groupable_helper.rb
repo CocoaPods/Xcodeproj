@@ -109,6 +109,31 @@ module Xcodeproj
           # @param  [PBXGroup, PBXFileReference] object
           #         The object to analyze.
           #
+          # @return [Pathname] The path of the object without resolving the
+          #         source tree.
+          #
+          def full_path(object)
+            folder =  case object.source_tree
+                      when '<group>'
+                        parent(object).isa != 'PBXProject' ? full_path(parent(object)) : nil
+                      when 'SOURCE_ROOT'
+                        nil
+                      when '<absolute>'
+                        Pathname.new('/')
+                      else
+                        Pathname.new("${#{object.source_tree}}")
+                      end
+            folder ||= Pathname.new('')
+            if object.path
+              folder + object.path
+            else
+              folder
+            end
+          end
+
+          # @param  [PBXGroup, PBXFileReference] object
+          #         The object to analyze.
+          #
           # @return [Pathname] The absolute path of the source tree of the
           #         object.
           #

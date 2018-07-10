@@ -28,6 +28,10 @@ module ProjectSpecs
       @file.real_path.should == Pathname.new('/project_dir/File.m')
     end
 
+    it 'returns the full path' do
+      @file.full_path.should == Pathname.new('File.m')
+    end
+
     it 'sets the source tree' do
       @file.source_tree = '<group>'
       @file.set_source_tree(:absolute)
