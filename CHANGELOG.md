@@ -8,6 +8,9 @@
   [Jenn Kaplan](https://github.com/jkap)
   [#583](https://github.com/CocoaPods/CocoaPods/issues/583)
 
+* Update default build settings for Xcode 10 beta 3.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Only `require 'digest'` once instead of per call to `uuid_for_path`  

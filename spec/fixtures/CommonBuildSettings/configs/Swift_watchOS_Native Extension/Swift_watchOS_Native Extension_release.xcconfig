@@ -1,3 +1,4 @@
 #include "Swift_watchOS_Native Extension/Swift_watchOS_Native Extension_base.xcconfig"
-SWIFT_OPTIMIZATION_LEVEL = -Owholemodule
+SWIFT_COMPILATION_MODE = wholemodule
+SWIFT_OPTIMIZATION_LEVEL = -O
 VALIDATE_PRODUCT = YES
