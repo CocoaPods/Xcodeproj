@@ -1,0 +1,2 @@
+HEADER_SEARCH_PATHS = ${inherited} a b
+HEADER_SEARCH_PATHS = ${inherited} c d

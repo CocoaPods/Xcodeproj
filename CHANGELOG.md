@@ -11,6 +11,10 @@
 * Update default build settings for Xcode 10 beta 3.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Allow parsing `.xcconfig` files that use `${inherited}` with multiple
+  definitions for the same key.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ##### Bug Fixes
 
 * Only `require 'digest'` once instead of per call to `uuid_for_path`  
