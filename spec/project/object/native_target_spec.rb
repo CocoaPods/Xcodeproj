@@ -686,8 +686,10 @@ module ProjectSpecs
       it 'returns the pretty print representation' do
         pretty_print = @target.pretty_print
         pretty_print['Pods']['Build Phases'].should == [
+          { 'Headers' => [] },
           { 'Sources' => [] },
           { 'Frameworks' => ['Foundation.framework'] },
+          { 'Resources' => [] },
         ]
         build_configurations = pretty_print['Pods']['Build Configurations']
         build_configurations.map { |bf| bf.keys.first } .should == %w(Release Debug)
@@ -737,7 +739,7 @@ module ProjectSpecs
           @target.build_phases << @project.new(PBXHeadersBuildPhase)
           @target.build_phases << @project.new(PBXSourcesBuildPhase)
           @target.sort
-          @target.build_phases.map(&:isa).should == %w(PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXSourcesBuildPhase PBXHeadersBuildPhase PBXSourcesBuildPhase)
+          @target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXSourcesBuildPhase PBXHeadersBuildPhase PBXSourcesBuildPhase)
         end
       end
     end
