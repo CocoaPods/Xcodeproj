@@ -25,6 +25,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#7835](https://github.com/CocoaPods/CocoaPods/issues/7835)
 
+* Create new targets with the Xcode 10 default ordering for build phases.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#7833](https://github.com/CocoaPods/CocoaPods/issues/7833)
+
 
 ## 1.5.9 (2018-05-15)
 

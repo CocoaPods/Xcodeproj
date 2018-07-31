@@ -55,8 +55,7 @@ module Xcodeproj
         target.product_reference = product
 
         # Build phases
-        target.build_phases << project.new(PBXSourcesBuildPhase)
-        target.build_phases << project.new(PBXFrameworksBuildPhase)
+        build_phases_for_target_type(type).each { |phase| target.build_phases << project.new(phase) }
 
         # Frameworks
         unless type == :static_library
@@ -116,9 +115,7 @@ module Xcodeproj
         target.product_reference = product
 
         # Build phases
-        target.build_phases << project.new(PBXSourcesBuildPhase)
-        target.build_phases << project.new(PBXFrameworksBuildPhase)
-        target.build_phases << project.new(PBXResourcesBuildPhase)
+        build_phases_for_target_type(:bundle).each { |phase| target.build_phases << project.new(phase) }
 
         target
       end
@@ -293,7 +290,7 @@ module Xcodeproj
       # @param  [Object] object
       #         the object to copy.
       #
-      # @return [Object] The deeply copy of the obejct object.
+      # @return [Object] The deep copy of the object.
       #
       def self.deep_dup(object)
         case object
@@ -308,6 +305,27 @@ module Xcodeproj
         else
           object.dup
         end
+      end
+
+      # Returns the build phases, in order, that appear by default
+      # on a target of the given type.
+      #
+      # @param  [Symbol] type
+      #         the name of the target type.
+      #
+      # @return [Array<String>] The list of build phase class names for the target type.
+      #
+      def self.build_phases_for_target_type(type)
+        case type
+        when :static_library, :dynamic_library
+          %w(Headers Sources Frameworks)
+        when :framework
+          %w(Headers Sources Frameworks Resources)
+        when :command_line_tool
+          %w(Sources Frameworks)
+        else
+          %w(Sources Frameworks Resources)
+        end.map { |phase| "PBX#{phase}BuildPhase" }
       end
 
       #-----------------------------------------------------------------------#

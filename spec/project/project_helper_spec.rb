@@ -24,7 +24,7 @@ module ProjectSpecs
         @project.targets.should.include target
         @project.products.should.include target.product_reference
 
-        target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXSourcesBuildPhase)
+        target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
       end
 
       it 'creates a new tvOS target' do
@@ -42,7 +42,7 @@ module ProjectSpecs
         @project.targets.should.include target
         @project.products.should.include target.product_reference
 
-        target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXSourcesBuildPhase)
+        target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
       end
 
       it 'creates a new watchOS target' do
@@ -60,7 +60,7 @@ module ProjectSpecs
         @project.targets.should.include target
         @project.products.should.include target.product_reference
 
-        target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXSourcesBuildPhase)
+        target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
       end
 
       it 'uses default build settings for Release and Debug configurations' do
@@ -109,7 +109,7 @@ module ProjectSpecs
         @project.targets.should.include target
         @project.products.should.include target.product_reference
 
-        target.build_phases.map(&:isa).sort.should == %w(PBXFrameworksBuildPhase PBXResourcesBuildPhase PBXSourcesBuildPhase)
+        target.build_phases.map(&:isa).should == %w(PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXResourcesBuildPhase)
       end
 
       it 'creates a new aggregate target' do
@@ -123,7 +123,7 @@ module ProjectSpecs
 
         @project.targets.should.include target
 
-        target.build_phases.count.should == 0
+        target.build_phases.should.be.empty
       end
 
       it 'creates a new legacy target' do
@@ -140,7 +140,7 @@ module ProjectSpecs
 
         @project.targets.should.include target
 
-        target.build_phases.count.should == 0
+        target.build_phases.should.be.empty
       end
     end
 
@@ -213,6 +213,32 @@ module ProjectSpecs
         object.should == copy
         object.object_id.should.not == copy.object_id
         object.values[1].object_id.should.not == copy.values.object_id[1]
+      end
+    end
+
+    #-------------------------------------------------------------------------#
+
+    describe '::build_phases_for_target_type' do
+      it 'excludes resources for libraries' do
+        @helper.build_phases_for_target_type(:static_library).
+          should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
+        @helper.build_phases_for_target_type(:dynamic_library).
+          should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
+      end
+
+      it 'includes resources for frameworks' do
+        @helper.build_phases_for_target_type(:framework).
+          should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXResourcesBuildPhase)
+      end
+
+      it 'excludes headers by default' do
+        @helper.build_phases_for_target_type(:unknown).
+          should == %w(PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXResourcesBuildPhase)
+      end
+
+      it 'only contains sources and frameworks for CLIs' do
+        @helper.build_phases_for_target_type(:command_line_tool).
+          should == %w(PBXSourcesBuildPhase PBXFrameworksBuildPhase)
       end
     end
 
