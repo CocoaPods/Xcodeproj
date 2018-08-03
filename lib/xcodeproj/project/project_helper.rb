@@ -130,13 +130,19 @@ module Xcodeproj
       # @param  [String] name
       #         the name of the aggregate target.
       #
+      # @param  [Symbol] platform
+      #         the platform of the aggregate target. Can be `:ios` or `:osx`.
+      #
+      # @param  [String] deployment_target
+      #         the deployment target for the platform.
+      #
       # @return [PBXAggregateTarget] the target.
       #
-      def self.new_aggregate_target(project, name)
+      def self.new_aggregate_target(project, name, platform, deployment_target)
         target = project.new(PBXAggregateTarget)
         project.targets << target
         target.name = name
-        target.build_configuration_list = configuration_list(project)
+        target.build_configuration_list = configuration_list(project, platform, deployment_target)
         target
       end
 

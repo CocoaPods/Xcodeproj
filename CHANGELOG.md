@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Extend API to allow specifying platform and deployment target for PBXAggregateTarget  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#593](https://github.com/CocoaPods/Xcodeproj/pull/593)
+
 * Xcode 10 changes for test schemes  
   [Jenn Kaplan](https://github.com/jkap)
   [#583](https://github.com/CocoaPods/CocoaPods/issues/583)
