@@ -726,10 +726,16 @@ module Xcodeproj
     # @param  [Array<AbstractTarget>] target_dependencies
     #         targets, which should be added as dependencies.
     #
+    # @param  [Symbol] platform
+    #         the platform of the aggregate target. Can be `:ios` or `:osx`.
+    #
+    # @param  [String] deployment_target
+    #         the deployment target for the platform.
+    #
     # @return [PBXNativeTarget] the target.
     #
-    def new_aggregate_target(name, target_dependencies = [])
-      ProjectHelper.new_aggregate_target(self, name).tap do |aggregate_target|
+    def new_aggregate_target(name, target_dependencies = [], platform = nil, deployment_target = nil)
+      ProjectHelper.new_aggregate_target(self, name, platform, deployment_target).tap do |aggregate_target|
         target_dependencies.each do |dep|
           aggregate_target.add_dependency(dep)
         end
