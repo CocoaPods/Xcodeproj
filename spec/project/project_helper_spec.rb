@@ -113,13 +113,17 @@ module ProjectSpecs
       end
 
       it 'creates a new aggregate target' do
-        target = @helper.new_aggregate_target(@project, 'Pods')
+        target = @helper.new_aggregate_target(@project, 'Pods', :ios, '9.0')
         target.name.should == 'Pods'
         target.product_name.should.be.nil
 
         target.build_configuration_list.should.not.be.nil
         configurations = target.build_configuration_list.build_configurations
         configurations.map(&:name).sort.should == %w(Debug Release)
+
+        build_settings = configurations.first.build_settings
+        build_settings['SDKROOT'].should == 'iphoneos'
+        build_settings['IPHONEOS_DEPLOYMENT_TARGET'].should == '9.0'
 
         @project.targets.should.include target
 
