@@ -28,6 +28,10 @@
 * Create new targets with the Xcode 10 default ordering for build phases.  
   [Samuel Giddins](https://github.com/segiddins)
   [CocoaPods#7833](https://github.com/CocoaPods/CocoaPods/issues/7833)
+  
+* Document param `product_group` of `Project.new_target`  
+  [janpio](https://github.com/janpio)
+  [#594](https://github.com/CocoaPods/CocoaPods/pull/594)
 
 
 ## 1.5.9 (2018-05-15)
