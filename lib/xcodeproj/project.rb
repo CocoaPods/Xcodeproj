@@ -681,6 +681,10 @@ module Xcodeproj
     # @param  [String] deployment_target
     #         the deployment target for the platform.
     #
+    # @param  [PBXGroup] product_group
+    #         the product group, where to add to a file reference of the
+    #         created target.
+    #
     # @param  [Symbol] language
     #         the primary language of the target, can be `:objc` or `:swift`.
     #
