@@ -239,7 +239,7 @@ module Xcodeproj
               container_proxy.container_portal = project.root_object.uuid
             else
               subproject_reference = project.reference_for_path(target.project.path)
-              raise ArgumentError, 'add_dependency got target that belongs to a project is not this project and is not a subproject of this project' unless subproject_reference
+              raise ArgumentError, 'add_dependency received target that belongs to a project that is not this project and is not a subproject of this project' unless subproject_reference
               container_proxy.container_portal = subproject_reference.uuid
             end
             container_proxy.proxy_type = Constants::PROXY_TYPES[:native_target]
