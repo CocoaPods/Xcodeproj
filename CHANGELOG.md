@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add `.inc` file extension to header file extensions  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#597](https://github.com/CocoaPods/Xcodeproj/issues/597)
+
 * Extend API to allow specifying platform and deployment target for `PBXAggregateTarget`  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#593](https://github.com/CocoaPods/Xcodeproj/pull/593)
