@@ -4,15 +4,15 @@
 
 ##### Enhancements
 
-* Add `.inc` file extension to header file extensions  
+* Add `.inc` file extension to header file extensions.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#597](https://github.com/CocoaPods/Xcodeproj/issues/597)
 
-* Extend API to allow specifying platform and deployment target for `PBXAggregateTarget`  
+* Extend API to allow specifying platform and deployment target for `PBXAggregateTarget`.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#593](https://github.com/CocoaPods/Xcodeproj/pull/593)
 
-* Xcode 10 changes for test schemes  
+* Xcode 10 changes for test schemes.  
   [Jenn Kaplan](https://github.com/jkap)
   [#583](https://github.com/CocoaPods/CocoaPods/issues/583)
 
@@ -25,19 +25,19 @@
 
 ##### Bug Fixes
 
-* Only `require 'digest'` once instead of per call to `uuid_for_path`  
+* Only `require 'digest'` once instead of per call to `uuid_for_path`.  
   [Eric Amorde](https://github.com/amorde)
   [#580](https://github.com/CocoaPods/Xcodeproj/pull/580)
 
-* Xcode 10 support for input file list and output file list  
+* Xcode 10 support for input file list and output file list.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#7835](https://github.com/CocoaPods/CocoaPods/issues/7835)
 
 * Create new targets with the Xcode 10 default ordering for build phases.  
   [Samuel Giddins](https://github.com/segiddins)
   [CocoaPods#7833](https://github.com/CocoaPods/CocoaPods/issues/7833)
-  
-* Document param `product_group` of `Project.new_target`  
+
+* Document param `product_group` of `Project.new_target`.  
   [janpio](https://github.com/janpio)
   [#594](https://github.com/CocoaPods/CocoaPods/pull/594)
 
