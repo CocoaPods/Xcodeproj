@@ -25,7 +25,7 @@
 
 * Xcode 10 changes for test schemes.  
   [Jenn Kaplan](https://github.com/jkap)
-  [#583](https://github.com/CocoaPods/CocoaPods/issues/583)
+  [#583](https://github.com/CocoaPods/Xcodeproj/issues/583)
 
 * Update default build settings for Xcode 10 beta 3.  
   [Samuel Giddins](https://github.com/segiddins)
