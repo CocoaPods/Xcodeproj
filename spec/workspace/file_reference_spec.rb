@@ -41,6 +41,12 @@ module Xcodeproj
       result.should == '/path/to/project.xcodeproj'
     end
 
+    it 'returns the absolute path for self types' do
+      @file.stubs(:type).returns('self')
+      result = @file.absolute_path('/path/to/')
+      result.should == '/path/to/project.xcodeproj'
+    end
+
     it 'returns the absolute path for absolute types' do
       @file.stubs(:type).returns('absolute')
       result = @file.absolute_path('/path/to/')

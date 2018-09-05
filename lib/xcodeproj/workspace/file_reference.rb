@@ -69,9 +69,7 @@ module Xcodeproj
       def absolute_path(workspace_dir_path)
         workspace_dir_path = workspace_dir_path.to_s
         case type
-        when 'group'
-          File.expand_path(File.join(workspace_dir_path, path))
-        when 'container'
+        when 'group', 'container', 'self'
           File.expand_path(File.join(workspace_dir_path, path))
         when 'absolute'
           File.expand_path(path)

@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Support embedded workspace parsing issue 605  
+  [LizCira](https://github.com/LizCira)
+  [#605](https://github.com/CocoaPods/CocoaPods/issues/605) 
 
 
 ## 1.6.0 (2018-08-16)
