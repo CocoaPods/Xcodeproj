@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Update last known SDKs to iOS 12, macOS 10.14, tvOS 12, and watchOS 5  
+  [Minh Nguyễn](http://github.com/1ec5/)
+  [#609](https://github.com/CocoaPods/Xcodeproj/pull/609)
 
 ##### Bug Fixes
 
