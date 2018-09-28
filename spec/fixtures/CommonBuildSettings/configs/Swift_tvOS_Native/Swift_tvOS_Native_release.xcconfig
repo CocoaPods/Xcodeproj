@@ -1,4 +1,2 @@
 #include "Swift_tvOS_Native/Swift_tvOS_Native_base.xcconfig"
-SWIFT_COMPILATION_MODE = wholemodule
-SWIFT_OPTIMIZATION_LEVEL = -O
 VALIDATE_PRODUCT = YES

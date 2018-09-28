@@ -106,7 +106,7 @@ end.compact
 puts "\r\033[KRead all templates"
 
 targets = {
-  'Project'                        => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.base' },
+  'Project'                        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.base' },
 
   'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
   'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
