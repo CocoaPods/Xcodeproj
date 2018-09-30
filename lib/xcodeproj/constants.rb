@@ -223,12 +223,10 @@ module Xcodeproj
         # Empty?
       }.freeze,
       [:debug, :swift] => {
-        'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
-        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
+        # Swift optimization settings are provided by the project settings
       }.freeze,
       [:release, :swift] => {
-        'SWIFT_COMPILATION_MODE'            => 'wholemodule',
-        'SWIFT_OPTIMIZATION_LEVEL'          => '-O',
+        # Swift optimization settings are provided by the project settings
       }.freeze,
       [:debug, :static_library, :swift] => {
       }.freeze,
@@ -374,20 +372,25 @@ module Xcodeproj
         'GCC_WARN_UNUSED_VARIABLE'                => 'YES',
         'MTL_FAST_MATH'                           => 'YES',
         'PRODUCT_NAME'                            => '$(TARGET_NAME)',
+        'SWIFT_VERSION'                           => '4.2',
       },
       :release => {
         'DEBUG_INFORMATION_FORMAT'           => 'dwarf-with-dsym',
         'ENABLE_NS_ASSERTIONS'               => 'NO',
         'MTL_ENABLE_DEBUG_INFO'              => 'NO',
+        'SWIFT_COMPILATION_MODE'             => 'wholemodule',
+        'SWIFT_OPTIMIZATION_LEVEL'           => '-O',
       }.freeze,
       :debug => {
-        'DEBUG_INFORMATION_FORMAT'           => 'dwarf',
-        'ENABLE_TESTABILITY'                 => 'YES',
-        'GCC_DYNAMIC_NO_PIC'                 => 'NO',
-        'GCC_OPTIMIZATION_LEVEL'             => '0',
-        'GCC_PREPROCESSOR_DEFINITIONS'       => ['DEBUG=1', '$(inherited)'],
-        'MTL_ENABLE_DEBUG_INFO'              => 'INCLUDE_SOURCE',
-        'ONLY_ACTIVE_ARCH'                   => 'YES',
+        'DEBUG_INFORMATION_FORMAT'            => 'dwarf',
+        'ENABLE_TESTABILITY'                  => 'YES',
+        'GCC_DYNAMIC_NO_PIC'                  => 'NO',
+        'GCC_OPTIMIZATION_LEVEL'              => '0',
+        'GCC_PREPROCESSOR_DEFINITIONS'        => ['DEBUG=1', '$(inherited)'],
+        'MTL_ENABLE_DEBUG_INFO'               => 'INCLUDE_SOURCE',
+        'ONLY_ACTIVE_ARCH'                    => 'YES',
+        'SWIFT_ACTIVE_COMPILATION_CONDITIONS' => 'DEBUG',
+        'SWIFT_OPTIMIZATION_LEVEL'            => '-Onone',
       }.freeze,
     }.freeze
 

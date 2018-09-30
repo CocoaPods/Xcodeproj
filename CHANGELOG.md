@@ -14,6 +14,10 @@
   [LizCira](https://github.com/LizCira)
   [#605](https://github.com/CocoaPods/CocoaPods/issues/605) 
 
+* Add missing Swift settings in base project template  
+  [amorde](https://github.com/amorde)
+  [CocoaPods #8063](https://github.com/CocoaPods/CocoaPods/issues/8063)
+
 
 ## 1.6.0 (2018-08-16)
 

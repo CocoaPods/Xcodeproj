@@ -83,14 +83,6 @@ module ProjectSpecs
         target.build_settings('Foo').should == release_settings
       end
 
-      it 'uses build settings for Swift language if required' do
-        target = @helper.new_target(@project, :framework, 'Pods', :ios, '8.0', @project.products_group, :objc)
-        target.build_settings('Debug')['SWIFT_OPTIMIZATION_LEVEL'].should.be.nil
-
-        target = @helper.new_target(@project, :framework, 'Pods', :ios, '8.0', @project.products_group, :swift)
-        target.build_settings('Debug')['SWIFT_OPTIMIZATION_LEVEL'].should == '-Onone'
-      end
-
       it 'creates a new resources bundle' do
         target = @helper.new_resources_bundle(@project, 'Pods', :ios, @project.products_group)
         target.name.should == 'Pods'

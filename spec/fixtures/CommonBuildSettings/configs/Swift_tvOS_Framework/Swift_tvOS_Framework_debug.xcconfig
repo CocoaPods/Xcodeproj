@@ -1,3 +1,1 @@
 #include "Swift_tvOS_Framework/Swift_tvOS_Framework_base.xcconfig"
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
-SWIFT_OPTIMIZATION_LEVEL = -Onone
