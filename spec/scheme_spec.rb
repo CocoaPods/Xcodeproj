@@ -104,6 +104,104 @@ module ProjectSpecs
       end
     end
 
+    describe 'Configuration' do
+      it 'app target for launching' do
+        app = @project.new_target(:application, 'App', :ios)
+        scheme = Xcodeproj::XCScheme.new
+        scheme.configure_with_targets(app, nil, :launch_target => true)
+        scheme.build_action.entries.count.should == 1
+
+        entry = scheme.build_action.entries[0]
+
+        entry.build_for_running?.should == true
+        entry.build_for_testing?.should == true
+        entry.build_for_profiling?.should == true
+        entry.build_for_archiving?.should == true
+        entry.build_for_analyzing?.should == true
+        entry.buildable_references.first.buildable_name.should == 'App.app'
+
+        scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.should == 'App.app'
+        scheme.profile_action.buildable_product_runnable.buildable_reference.buildable_name.should == 'App.app'
+        scheme.test_action.macro_expansions.count.should == 1
+      end
+
+      it 'app target not for launching' do
+        app = @project.new_target(:application, 'App', :ios)
+        scheme = Xcodeproj::XCScheme.new
+        scheme.configure_with_targets(app, nil, :launch_target => false)
+        scheme.build_action.entries.count.should == 1
+
+        entry = scheme.build_action.entries[0]
+
+        entry.build_for_running?.should == true
+        entry.build_for_testing?.should == true
+        entry.build_for_profiling?.should == true
+        entry.build_for_archiving?.should == true
+        entry.build_for_analyzing?.should == true
+        entry.buildable_references.first.buildable_name.should == 'App.app'
+
+        scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.nil?.should == true
+        scheme.profile_action.buildable_product_runnable.buildable_reference.buildable_name.nil?.should == true
+        scheme.test_action.macro_expansions.count.should == 0
+      end
+
+      it 'app and test target for launching' do
+        app = @project.new_target(:application, 'App', :ios)
+        test = @project.new_target(:unit_test_bundle, 'Test', :ios)
+        scheme = Xcodeproj::XCScheme.new
+        scheme.configure_with_targets(app, test, :launch_target => true)
+        scheme.build_action.entries.count.should == 2
+
+        app_entry = scheme.build_action.entries[0]
+        app_entry.build_for_running?.should == true
+        app_entry.build_for_testing?.should == true
+        app_entry.build_for_profiling?.should == true
+        app_entry.build_for_archiving?.should == true
+        app_entry.build_for_analyzing?.should == true
+        app_entry.buildable_references.first.buildable_name.should == 'App.app'
+
+        test_entry = scheme.build_action.entries[1]
+        test_entry.build_for_running?.should == false
+        test_entry.build_for_testing?.should == true
+        test_entry.build_for_profiling?.should == true
+        test_entry.build_for_archiving?.should == true
+        test_entry.build_for_analyzing?.should == true
+        test_entry.buildable_references.first.buildable_name.should == 'Test.xctest'
+
+        scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.should == 'App.app'
+        scheme.profile_action.buildable_product_runnable.buildable_reference.buildable_name.should == 'App.app'
+        scheme.test_action.macro_expansions.count.should == 1
+      end
+
+      it 'app and test target for not launching' do
+        app = @project.new_target(:application, 'App', :ios)
+        test = @project.new_target(:unit_test_bundle, 'Test', :ios)
+        scheme = Xcodeproj::XCScheme.new
+        scheme.configure_with_targets(app, test, :launch_target => false)
+        scheme.build_action.entries.count.should == 2
+
+        app_entry = scheme.build_action.entries[0]
+        app_entry.build_for_running?.should == true
+        app_entry.build_for_testing?.should == true
+        app_entry.build_for_profiling?.should == true
+        app_entry.build_for_archiving?.should == true
+        app_entry.build_for_analyzing?.should == true
+        app_entry.buildable_references.first.buildable_name.should == 'App.app'
+
+        test_entry = scheme.build_action.entries[1]
+        test_entry.build_for_running?.should == false
+        test_entry.build_for_testing?.should == true
+        test_entry.build_for_profiling?.should == true
+        test_entry.build_for_archiving?.should == true
+        test_entry.build_for_analyzing?.should == true
+        test_entry.buildable_references.first.buildable_name.should == 'Test.xctest'
+
+        scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.nil?.should == true
+        scheme.profile_action.buildable_product_runnable.buildable_reference.buildable_name.nil?.should == true
+        scheme.test_action.macro_expansions.count.should == 0
+      end
+    end
+
     #-------------------------------------------------------------------------#
 
     describe 'Serialization' do

@@ -64,13 +64,18 @@ module Xcodeproj
     # @param [Xcodeproj::Project::Object::PBXAbstractTarget] test_target
     #        The target to use for the 'Test' action
     #
-    def configure_with_targets(runnable_target, test_target)
-      build_action.add_entry BuildAction::Entry.new(runnable_target) if runnable_target
-      build_action.add_entry BuildAction::Entry.new(test_target) if test_target
-
-      test_action.add_testable TestAction::TestableReference.new(test_target) if test_target
-      launch_action.buildable_product_runnable = BuildableProductRunnable.new(runnable_target, 0) if runnable_target
-      profile_action.buildable_product_runnable = BuildableProductRunnable.new(runnable_target) if runnable_target
+    # @param [Boolean] launch_target
+    #        Determines if the runnable_target is launchable.
+    #
+    def configure_with_targets(runnable_target, test_target, launch_target: false)
+      if runnable_target
+        add_build_target(runnable_target)
+        set_launch_target(runnable_target) if launch_target
+      end
+      if test_target
+        add_build_target(test_target, false) if test_target != runnable_target
+        add_test_target(test_target)
+      end
     end
 
     public

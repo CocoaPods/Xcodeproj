@@ -460,6 +460,17 @@ module Xcodeproj
           end
         end
 
+        # @return [Boolean] Whether the target is launchable.
+        #
+        def launchable_target_type?
+          case symbol_type
+          when :application, :command_line_tool
+            true
+          else
+            false
+          end
+        end
+
         # Adds source files to the target.
         #
         # @param  [Array<PBXFileReference>] file_references

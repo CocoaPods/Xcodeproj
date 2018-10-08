@@ -780,6 +780,27 @@ module ProjectSpecs
         end
       end
 
+      describe '#launchable_target_type?' do
+        it 'returns true for command line tools and applications' do
+          @target.stubs(:symbol_type => :application)
+          @target.should.be.launchable_target_type?
+
+          @target.stubs(:symbol_type => :command_line_tool)
+          @target.should.be.launchable_target_type?
+        end
+
+        it 'returns false for non launchable types' do
+          @target.stubs(:symbol_type => :octest_bundle)
+          @target.should.not.be.launchable_target_type?
+
+          @target.stubs(:symbol_type => :unit_test_bundle)
+          @target.should.not.be.launchable_target_type?
+
+          @target.stubs(:symbol_type => :ui_test_bundle)
+          @target.should.not.be.launchable_target_type?
+        end
+      end
+
       describe '#extension_target_type?' do
         it 'returns true for extension target types' do
           @target.stubs(:symbol_type => :app_extension)
