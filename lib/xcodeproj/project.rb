@@ -811,7 +811,7 @@ module Xcodeproj
     # folder) and optionally hides them.
     #
     # @param  [Bool] visible
-    #         Wether the schemes should be visible or hidden.
+    #         Whether the schemes should be visible or hidden.
     #
     # @return [void]
     #
@@ -826,8 +826,11 @@ module Xcodeproj
 
       targets.each do |target|
         scheme = XCScheme.new
-        scheme.add_build_target(target)
-        scheme.add_test_target(target) if target.respond_to?(:test_target_type?) && target.test_target_type?
+
+        test_target = target if target.respond_to?(:test_target_type?) && target.test_target_type?
+        launch_target = target.respond_to?(:launchable_target_type?) && target.launchable_target_type?
+        scheme.configure_with_targets(target, test_target, :launch_target => launch_target)
+
         yield scheme, target if block_given?
         scheme.save_as(path, target.name, false)
         xcschememanagement['SchemeUserState']["#{target.name}.xcscheme"] = {}

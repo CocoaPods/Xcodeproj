@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support for launchable targets from a scheme.  
+  [Derek Ostrander](https://github.com/dostrander)
+  [#614](https://github.com/CocoaPods/Xcodeproj/pull/614)
+  
 * Update last known SDKs to iOS 12, macOS 10.14, tvOS 12, and watchOS 5  
   [Minh Nguyễn](http://github.com/1ec5/)
   [#609](https://github.com/CocoaPods/Xcodeproj/pull/609)
@@ -65,7 +69,7 @@
 
 ##### Enhancements
 
-* None.  
+* None.
 
 ##### Bug Fixes
 
