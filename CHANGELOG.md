@@ -6,6 +6,7 @@
 
 * Add support for disableMainThreadChecker and stopOnEveryMainThreadCheckerIssue flags
   [Jacek Suliga](https://github.com/jmkk)
+  [#619](https://github.com/CocoaPods/Xcodeproj/pull/619)
 
 ##### Bug Fixes
 
