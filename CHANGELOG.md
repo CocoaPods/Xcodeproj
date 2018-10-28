@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Add support for disableMainThreadChecker and stopOnEveryMainThreadCheckerIssue flags
+  [Jacek Suliga](https://github.com/jmkk)
 
 ##### Bug Fixes
 
