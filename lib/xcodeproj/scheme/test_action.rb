@@ -36,6 +36,22 @@ module Xcodeproj
       end
 
       # @return [Bool]
+      #         Whether this Test Action should disable detection of UI API misuse
+      #         from background threads
+      #
+      def disable_main_thread_checker?
+        string_to_bool(@xml_element.attributes['disableMainThreadChecker'])
+      end
+
+      # @param [Bool] flag
+      #        Set whether this Test Action should disable detection of UI API misuse
+      #        from background threads
+      #
+      def disable_main_thread_checker=(flag)
+        @xml_element.attributes['disableMainThreadChecker'] = bool_to_string(flag)
+      end
+
+      # @return [Bool]
       #         Whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
       #
       def code_coverage_enabled?

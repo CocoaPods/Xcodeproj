@@ -10,6 +10,7 @@ module Xcodeproj
       test_action.xml_element.attributes['selectedLauncherIdentifier'].should == 'Xcode.DebuggerFoundation.Launcher.LLDB'
       test_action.xml_element.attributes['shouldUseLaunchSchemeArgsEnv'].should == 'YES'
       test_action.xml_element.attributes['buildConfiguration'].should == 'Debug'
+      test_action.xml_element.attributes['disableMainThreadChecker'].nil?
     end
 
     it 'raises if created with an invalid XML node' do
@@ -28,6 +29,7 @@ module Xcodeproj
       extend SpecHelper::XCScheme
       specs_for_bool_attr(:should_use_launch_scheme_args_env => 'shouldUseLaunchSchemeArgsEnv')
       specs_for_bool_attr(:code_coverage_enabled => 'codeCoverageEnabled')
+      specs_for_bool_attr(:disable_main_thread_checker => 'disableMainThreadChecker')
 
       it '#testables' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')

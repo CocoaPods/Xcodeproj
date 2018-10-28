@@ -44,6 +44,7 @@ module ProjectSpecs
       it 'Properly map the scheme\'s TestAction' do
         @scheme.test_action.should_use_launch_scheme_args_env?.should == true
         @scheme.test_action.build_configuration.should == 'Debug'
+        @scheme.test_action.disable_main_thread_checker?.should == true
 
         @scheme.test_action.testables.count.should == 0
         @scheme.test_action.macro_expansions.count.should == 1
@@ -65,6 +66,8 @@ module ProjectSpecs
       it 'Properly map the scheme\'s LaunchAction' do
         @scheme.launch_action.allow_location_simulation?.should == true
         @scheme.launch_action.build_configuration.should == 'Debug'
+        @scheme.launch_action.disable_main_thread_checker?.should == true
+        @scheme.launch_action.stop_on_every_main_thread_checker_issue?.should == true
 
         bpr = @scheme.launch_action.buildable_product_runnable
         bpr.class.should == Xcodeproj::XCScheme::BuildableProductRunnable

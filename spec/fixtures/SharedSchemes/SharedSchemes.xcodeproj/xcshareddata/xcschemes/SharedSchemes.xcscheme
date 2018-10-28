@@ -26,6 +26,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
+      disableMainThreadChecker = "YES"
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
@@ -56,6 +57,8 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
+      disableMainThreadChecker = "YES"
+      stopOnEveryMainThreadCheckerIssue = "YES"
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"

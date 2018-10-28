@@ -16,6 +16,8 @@ module Xcodeproj
 
       action.xml_element.attributes['buildConfiguration'].should == 'Debug'
       action.xml_element.attributes['allowLocationSimulation'].should == 'YES'
+      action.xml_element.attributes['disableMainThreadChecker'].nil?
+      action.xml_element.attributes['stopOnEveryMainThreadCheckerIssue'].nil?
     end
 
     it 'raises if created with an invalid XML node' do
