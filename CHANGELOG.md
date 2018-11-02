@@ -27,6 +27,10 @@
 
 ##### Bug Fixes
 
+* Fix Scheme's configure_with_targets setting test targets as build. 
+  [Derek Ostrander](https://github.com/dostrander)
+  [#618](https://github.com/CocoaPods/Xcodeproj/issues/618)
+
 * Support embedded workspace parsing issue 605  
   [LizCira](https://github.com/LizCira)
   [#605](https://github.com/CocoaPods/CocoaPods/issues/605) 

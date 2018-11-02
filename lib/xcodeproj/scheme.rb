@@ -193,9 +193,9 @@ module Xcodeproj
 
       entry.build_for_testing   = true
       entry.build_for_running   = build_for_running
-      entry.build_for_profiling = true
-      entry.build_for_archiving = true
-      entry.build_for_analyzing = true
+      entry.build_for_profiling = build_for_running
+      entry.build_for_archiving = build_for_running
+      entry.build_for_analyzing = build_for_running
 
       build_action.add_entry(entry)
     end

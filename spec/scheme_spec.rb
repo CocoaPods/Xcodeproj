@@ -166,9 +166,9 @@ module ProjectSpecs
         test_entry = scheme.build_action.entries[1]
         test_entry.build_for_running?.should == false
         test_entry.build_for_testing?.should == true
-        test_entry.build_for_profiling?.should == true
-        test_entry.build_for_archiving?.should == true
-        test_entry.build_for_analyzing?.should == true
+        test_entry.build_for_profiling?.should == false
+        test_entry.build_for_archiving?.should == false
+        test_entry.build_for_analyzing?.should == false
         test_entry.buildable_references.first.buildable_name.should == 'Test.xctest'
 
         scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.should == 'App.app'
@@ -194,9 +194,9 @@ module ProjectSpecs
         test_entry = scheme.build_action.entries[1]
         test_entry.build_for_running?.should == false
         test_entry.build_for_testing?.should == true
-        test_entry.build_for_profiling?.should == true
-        test_entry.build_for_archiving?.should == true
-        test_entry.build_for_analyzing?.should == true
+        test_entry.build_for_profiling?.should == false
+        test_entry.build_for_archiving?.should == false
+        test_entry.build_for_analyzing?.should == false
         test_entry.buildable_references.first.buildable_name.should == 'Test.xctest'
 
         scheme.launch_action.buildable_product_runnable.buildable_reference.buildable_name.nil?.should == true
