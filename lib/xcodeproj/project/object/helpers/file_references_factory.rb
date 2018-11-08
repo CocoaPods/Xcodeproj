@@ -177,9 +177,7 @@ module Xcodeproj
             ref = new_file_reference(group, path, source_tree)
             ref.include_in_index = nil
 
-            product_group_ref = group.project.new(PBXGroup)
-            product_group_ref.name = 'Products'
-            product_group_ref.source_tree = '<group>'
+            product_group_ref = find_products_group_ref(group, true)
 
             subproj = Project.open(path)
             subproj.products_group.files.each do |product_reference|
@@ -228,6 +226,12 @@ module Xcodeproj
             if File.extname(ref.path).downcase == '.framework'
               ref.include_in_index = nil
             end
+          end
+
+          def find_products_group_ref(group, should_create = false)
+            product_group_ref =
+              (group.project.root_object.product_ref_group ||= group.project.main_group.find_subpath('Products', should_create))
+            product_group_ref
           end
 
           #-------------------------------------------------------------------#
