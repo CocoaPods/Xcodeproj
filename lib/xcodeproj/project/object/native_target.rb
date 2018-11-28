@@ -356,7 +356,7 @@ module Xcodeproj
         end
         alias_method :add_system_frameworks, :add_system_framework
 
-        # Adds a file reference for one or more system libraries to the project
+        # Adds a file reference for one or more system dylib libraries to the project
         # if needed and adds them to the Frameworks build phases.
         #
         # @param  [Array<String>, String] name
@@ -365,8 +365,13 @@ module Xcodeproj
         # @return [void]
         #
         def add_system_library(names)
+          add_system_library_extension(names, 'dylib')
+        end
+        alias_method :add_system_libraries, :add_system_library
+
+        def add_system_library_extension(names, extension)
           Array(names).each do |name|
-            path = "usr/lib/lib#{name}.dylib"
+            path = "usr/lib/lib#{name}.#{extension}"
             files = project.frameworks_group.files
             unless reference = files.find { |ref| ref.path == path }
               reference = project.frameworks_group.new_file(path, :sdk_root)
@@ -375,7 +380,20 @@ module Xcodeproj
             reference
           end
         end
-        alias_method :add_system_libraries, :add_system_library
+        private :add_system_library_extension
+
+        # Adds a file reference for one or more system tbd libraries to the project
+        # if needed and adds them to the Frameworks build phases.
+        #
+        # @param  [Array<String>, String] name
+        #         The name or the list of the names of the libraries.
+        #
+        # @return [void]
+        #
+        def add_system_library_tbd(names)
+          add_system_library_extension(names, 'tbd')
+        end
+        alias_method :add_system_libraries_tbd, :add_system_library_tbd
 
         public
 

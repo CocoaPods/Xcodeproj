@@ -674,6 +674,40 @@ module ProjectSpecs
           names.should == ['libz.dylib', 'libxml.dylib']
         end
       end
+
+      #----------------------------------------#
+
+      describe '#add_system_library_tbd' do
+        it 'adds a file reference for a system framework, to the Frameworks group' do
+          @target.add_system_library_tbd('xml')
+          file = @project['Frameworks'].files.first
+          file.path.should == 'usr/lib/libxml.tbd'
+          file.source_tree.should == 'SDKROOT'
+        end
+
+        it "doesn't duplicate references to a frameworks if one already exists" do
+          @target.add_system_library_tbd('xml')
+          @target.add_system_library_tbd('xml')
+          @project.frameworks_group.files.count.should == 1
+        end
+
+        it 'adds the framework to the framework build phases' do
+          @target.add_system_library_tbd('xml')
+          @target.frameworks_build_phase.file_display_names.should == ['libxml.tbd']
+        end
+
+        it "doesn't duplicate the frameworks in the build phases" do
+          @target.add_system_library_tbd('xml')
+          @target.add_system_library_tbd('xml')
+          @target.frameworks_build_phase.files.count.should == 1
+        end
+
+        it 'can add multiple libraries' do
+          @target.add_system_libraries_tbd(%w(z xml))
+          names = @target.frameworks_build_phase.file_display_names
+          names.should == ['libz.tbd', 'libxml.tbd']
+        end
+      end
     end
 
     #----------------------------------------#
