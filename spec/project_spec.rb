@@ -480,20 +480,36 @@ module ProjectSpecs
           project
         end
 
-        it 'have the same UUIDS' do
-          create_project[0].uuids.sort.should == create_project[1].uuids.sort
+        it 'not have the same UUIDS' do
+          create_project[0].uuids.sort.should != create_project[1].uuids.sort
         end
 
-        it 'always has the same root object UUID, even for different paths' do
+        it 'have the same UUIDS' do
+          create_project[0].uuids.sort.should == create_project[0].uuids.sort
+        end
+
+        it 'always has the same root object UUID, for the same path' do
           project = Xcodeproj::Project.new('path1.xcodeproj')
           project.add_build_configuration('Config', :debug)
           project.predictabilize_uuids
-          project.root_object.uuid.should == 'D41D8CD98F00B204E9800998ECF8427E'
+          project.root_object.uuid.should == 'BB3CBEC84BD00C24CC882BA09F25FC35'
+
+          project = Xcodeproj::Project.new('path1.xcodeproj')
+          project.add_build_configuration('Config', :release)
+          project.predictabilize_uuids
+          project.root_object.uuid.should == 'BB3CBEC84BD00C24CC882BA09F25FC35'
+        end
+
+        it 'has different root object UUID, for different paths' do
+          project = Xcodeproj::Project.new('path1.xcodeproj')
+          project.add_build_configuration('Config', :debug)
+          project.predictabilize_uuids
+          project.root_object.uuid.should == 'BB3CBEC84BD00C24CC882BA09F25FC35'
 
           project = Xcodeproj::Project.new('path2.xcodeproj')
           project.add_build_configuration('Config', :release)
           project.predictabilize_uuids
-          project.root_object.uuid.should == 'D41D8CD98F00B204E9800998ECF8427E'
+          project.root_object.uuid.should == '58C5CB80A8C53842A0F017EE22887DF0'
         end
 
         Pathname.glob("#{fixture_path}/**/*.xcodeproj").each do |path|

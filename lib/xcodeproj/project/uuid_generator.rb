@@ -3,43 +3,53 @@ module Xcodeproj
     class UUIDGenerator
       require 'digest'
 
-      def initialize(project)
-        @project = project
-        @new_objects_by_uuid = {}
+      def initialize(projects)
+        @projects = projects
         @paths_by_object = {}
       end
 
       def generate!
-        all_objects = @project.objects
-        generate_paths(@project.root_object)
-        switch_uuids(all_objects)
-        verify_no_duplicates!(all_objects)
-        fixup_uuid_references
-        @project.instance_variable_set(:@generated_uuids, @project.instance_variable_get(:@available_uuids))
-        @project.instance_variable_set(:@objects_by_uuid, @new_objects_by_uuid)
+        generate_all_paths_by_objects(@projects)
+
+        new_objects_by_project = Hash[@projects.map do |project|
+          [project, switch_uuids(project)]
+        end]
+        all_new_objects_by_project = new_objects_by_project.values.flat_map(&:values)
+        all_objects_by_uuid = @projects.map(&:objects_by_uuid).inject(:merge)
+        all_objects = @projects.flat_map(&:objects)
+        verify_no_duplicates!(all_objects, all_new_objects_by_project)
+        @projects.each { |project| fixup_uuid_references(project, all_objects_by_uuid) }
+        new_objects_by_project.each do |project, new_objects_by_uuid|
+          project.instance_variable_set(:@generated_uuids, project.instance_variable_get(:@available_uuids))
+          project.instance_variable_set(:@objects_by_uuid, new_objects_by_uuid)
+        end
       end
 
       private
 
       UUID_ATTRIBUTES = [:remote_global_id_string, :container_portal, :target_proxy].freeze
 
-      def verify_no_duplicates!(all_objects)
-        duplicates = all_objects - @new_objects_by_uuid.values
+      def verify_no_duplicates!(all_objects, all_new_objects)
+        duplicates = all_objects - all_new_objects
         UserInterface.warn "[Xcodeproj] Generated duplicate UUIDs:\n\n" <<
           duplicates.map { |d| "#{d.isa} -- #{@paths_by_object[d]}" }.join("\n") unless duplicates.empty?
       end
 
-      def fixup_uuid_references
+      def fixup_uuid_references(target_project, all_objects_by_uuid)
         fixup = ->(object, attr) do
-          if object.respond_to?(attr) && link = @project.objects_by_uuid[object.send(attr)]
+          if object.respond_to?(attr) && link = all_objects_by_uuid[object.send(attr)]
             object.send(:"#{attr}=", link.uuid)
           end
         end
-        @project.objects.each do |object|
+        target_project.objects.each do |object|
           UUID_ATTRIBUTES.each do |attr|
             fixup[object, attr]
           end
         end
+      end
+
+      def generate_all_paths_by_objects(projects)
+        projects.each { |project| generate_paths(project.root_object, project.path.basename.to_s) }
       end
 
       def generate_paths(object, path = '')
@@ -67,13 +77,13 @@ module Xcodeproj
         end
       end
 
-      def switch_uuids(objects)
-        @project.mark_dirty!
-        objects.each do |object|
+      def switch_uuids(project)
+        project.mark_dirty!
+        project.objects.each_with_object({}) do |object, hash|
           next unless path = @paths_by_object[object]
           uuid = uuid_for_path(path)
           object.instance_variable_set(:@uuid, uuid)
-          @new_objects_by_uuid[uuid] = object
+          hash[uuid] = object
         end
       end
 
