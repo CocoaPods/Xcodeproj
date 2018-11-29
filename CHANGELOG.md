@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support for tbd libraries  
+  [raptorxcz](https://github.com/raptorxcz)
+  [#379](https://github.com/CocoaPods/Xcodeproj/issues/379)
+
 * Add support for disableMainThreadChecker and stopOnEveryMainThreadCheckerIssue flags
   [Jacek Suliga](https://github.com/jmkk)
   [#619](https://github.com/CocoaPods/Xcodeproj/pull/619)
