@@ -388,7 +388,24 @@ module Xcodeproj
     # @return [void]
     #
     def predictabilize_uuids
-      UUIDGenerator.new(self).generate!
+      UUIDGenerator.new([self]).generate!
+    end
+
+    # Replaces all the UUIDs in the list of provided projects with deterministic MD5 checksums.
+    #
+    # @param  [Array<Project>] projects
+    #
+    # @note The current sorting of the project is taken into account when
+    #       generating the new UUIDs.
+    #
+    # @note This method should only be used for entirely machine-generated
+    #       projects, as true UUIDs are useful for tracking changes in the
+    #       project.
+    #
+    # @return [void]
+    #
+    def self.predictabilize_uuids(projects)
+      UUIDGenerator.new(projects).generate!
     end
 
     public

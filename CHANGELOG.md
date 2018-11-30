@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support to generating deterministic UUIDs for a list of projects.  
+  [Sebastian Shanus](https://github.com/sebastianv1)
+  [#627](https://github.com/CocoaPods/Xcodeproj/pull/627) 
+
 * Add support for tbd libraries  
   [raptorxcz](https://github.com/raptorxcz)
   [#379](https://github.com/CocoaPods/Xcodeproj/issues/379)
