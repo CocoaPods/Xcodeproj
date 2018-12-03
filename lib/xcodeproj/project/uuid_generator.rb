@@ -4,7 +4,7 @@ module Xcodeproj
       require 'digest'
 
       def initialize(projects)
-        @projects = projects
+        @projects = Array(projects)
         @paths_by_object = {}
       end
 
