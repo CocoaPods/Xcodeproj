@@ -141,12 +141,12 @@ module Xcodeproj
             case object.source_tree
             when '<group>'
               if parent(object).isa == 'PBXProject'
-                object.project.project_dir
+                object.project.project_dir + object.project.root_object.project_dir_path
               else
                 real_path(parent(object))
               end
             when 'SOURCE_ROOT'
-              object.project.project_dir
+              object.project.project_dir + object.project.root_object.project_dir_path
             when '<absolute>'
               nil
             else
