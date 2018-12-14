@@ -47,7 +47,20 @@ module Xcodeproj
       #
       def self.from_node(xml_node)
         type, path = xml_node.attribute('location').value.split(':', 2)
+        path = prepend_parent_path(xml_node, path)
         new(path, type)
+      end
+
+      def self.prepend_parent_path(xml_node, path)
+        if !xml_node.parent.nil? && (xml_node.parent.name == 'Group')
+          group = GroupReference.from_node(xml_node.parent)
+          if !group.location.nil? && !group.location.empty?
+            path = '' if path.nil?
+            path = File.join(group.location, path)
+          end
+        end
+
+        path
       end
 
       # @return [REXML::Element] the XML representation of the file reference.

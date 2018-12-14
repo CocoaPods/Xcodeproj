@@ -151,7 +151,7 @@ describe Xcodeproj::Workspace do
     end
 
     it 'contains only test data schemes' do
-      @workspace.schemes.keys.sort.should == %w(WorkspaceSchemesApp WorkspaceSchemesFramework WorkspaceSchemesScheme)
+      @workspace.schemes.keys.sort.should == %w(WorkspaceSchemesApp WorkspaceSchemesFramework WorkspaceSchemesScheme project_in_subgroup scheme_in_subgroup_with_location)
     end
   end
 
