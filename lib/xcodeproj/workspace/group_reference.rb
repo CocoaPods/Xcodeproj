@@ -23,6 +23,7 @@ module Xcodeproj
 
       # @param [#to_s] name @see name
       # @param [#to_s] type @see type
+      # @param [#to_s] location @see location
       #
       def initialize(name, type = 'container', location = '')
         @name = name.to_s
@@ -53,7 +54,7 @@ module Xcodeproj
       def self.from_node(xml_node)
         location_array = xml_node.attribute('location').value.split(':', 2)
         type = location_array.first
-        location = (location_array.length > 1) ? location_array[1] : ''
+        location = location_array[1] || ''
         name = xml_node.attribute('name').value
         new(name, type, location)
       end

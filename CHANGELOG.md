@@ -18,7 +18,7 @@
 
 ##### Bug Fixes
 
-* filerefs now take parent group location into account  
+* Workspace file references now take parent group location into account  
   [Albert So](https://github.com/kingfai)
   [#630](https://github.com/CocoaPods/Xcodeproj/issues/630)  
 
