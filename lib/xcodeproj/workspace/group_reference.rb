@@ -18,6 +18,7 @@ module Xcodeproj
       attr_reader :type
 
       # @return [String] the location of the group on disk
+      #
       attr_reader :location
 
       # @param [#to_s] name @see name
