@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <Group
+      location = "container:GroupLocation"
+      name = "Group">
+      <Group
+         location = "container:GroupLocation/Group2Location"
+         name = "Group2">
+         <FileRef
+            location = "group:project_in_subgroup/project_in_subgroup.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
    <FileRef
       location = "group:WorkspaceSchemesFramework/WorkspaceSchemesFramework.xcodeproj">
    </FileRef>

@@ -18,7 +18,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Workspace file references now take parent group location into account  
+  [Albert So](https://github.com/kingfai)
+  [#630](https://github.com/CocoaPods/Xcodeproj/issues/630)  
 
 
 ## 1.7.0 (2018-10-17)

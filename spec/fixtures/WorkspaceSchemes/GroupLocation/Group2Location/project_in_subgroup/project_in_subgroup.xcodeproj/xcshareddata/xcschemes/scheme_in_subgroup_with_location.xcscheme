@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0920"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B83E0CD92061E2CB00DEE246"
-               BuildableName = "WorkspaceSchemesApp.app"
-               BlueprintName = "WorkspaceSchemesApp"
-               ReferencedContainer = "container:WorkspaceSchemesApp/WorkspaceSchemesApp.xcodeproj">
+               BlueprintIdentifier = "7A69B2F821BB2E0800A88CAA"
+               BuildableName = "project_in_subgroup.app"
+               BlueprintName = "project_in_subgroup"
+               ReferencedContainer = "container:project_in_subgroup.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B83E0CD92061E2CB00DEE246"
-            BuildableName = "WorkspaceSchemesApp.app"
-            BlueprintName = "WorkspaceSchemesApp"
-            ReferencedContainer = "container:WorkspaceSchemesApp/WorkspaceSchemesApp.xcodeproj">
+            BlueprintIdentifier = "7A69B2F821BB2E0800A88CAA"
+            BuildableName = "project_in_subgroup.app"
+            BlueprintName = "project_in_subgroup"
+            ReferencedContainer = "container:project_in_subgroup.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B83E0CD92061E2CB00DEE246"
-            BuildableName = "WorkspaceSchemesApp.app"
-            BlueprintName = "WorkspaceSchemesApp"
-            ReferencedContainer = "container:WorkspaceSchemesApp/WorkspaceSchemesApp.xcodeproj">
+            BlueprintIdentifier = "7A69B2F821BB2E0800A88CAA"
+            BuildableName = "project_in_subgroup.app"
+            BlueprintName = "project_in_subgroup"
+            ReferencedContainer = "container:project_in_subgroup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B83E0CD92061E2CB00DEE246"
-            BuildableName = "WorkspaceSchemesApp.app"
-            BlueprintName = "WorkspaceSchemesApp"
-            ReferencedContainer = "container:WorkspaceSchemesApp/WorkspaceSchemesApp.xcodeproj">
+            BlueprintIdentifier = "7A69B2F821BB2E0800A88CAA"
+            BuildableName = "project_in_subgroup.app"
+            BlueprintName = "project_in_subgroup"
+            ReferencedContainer = "container:project_in_subgroup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
