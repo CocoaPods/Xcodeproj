@@ -18,6 +18,10 @@
 
 ##### Bug Fixes
 
+* Update default script phase values to match Xcode 10.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#652](https://github.com/CocoaPods/Xcodeproj/pull/652)
+
 * Workspace file references now take parent group location into account  
   [Albert So](https://github.com/kingfai)
   [#630](https://github.com/CocoaPods/Xcodeproj/issues/630)  

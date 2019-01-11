@@ -162,11 +162,11 @@ module ProjectSpecs
       @build_phase.input_file_list_paths.should == []
       @build_phase.output_paths.should == []
       @build_phase.output_file_list_paths.should == []
-      @build_phase.shell_script.should == ''
+      @build_phase.shell_script.should == "# Type a script or drag a script file from your workspace to insert its path.\n"
     end
 
     it 'returns wether or not env vars should be shown in the log' do
-      @build_phase.show_env_vars_in_log.should == '1'
+      @build_phase.show_env_vars_in_log.should.be.nil
       @build_phase.show_env_vars_in_log = '0'
       @build_phase.show_env_vars_in_log.should == '0'
     end
