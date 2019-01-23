@@ -3,6 +3,7 @@
 *.bundle
 *.o
 *.rbc
+.rbenv-gemsets
 .rbenv-version
 ext/xcodeproj/.RUBYARCHDIR.time
 ext/xcodeproj/extconf.h
