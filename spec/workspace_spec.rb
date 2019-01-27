@@ -139,7 +139,6 @@ describe Xcodeproj::Workspace do
   describe 'load schemes for all projects and the workspace from a workspace file' do
     before do
       @workspace = Xcodeproj::Workspace.new_from_xcworkspace(fixture_path('WorkspaceSchemes/WorkspaceSchemes.xcworkspace'))
-      @workspace.load_schemes(fixture_path('WorkspaceSchemes/WorkspaceSchemes.xcworkspace'))
     end
 
     it 'returns data type should be hash' do
@@ -152,6 +151,12 @@ describe Xcodeproj::Workspace do
 
     it 'contains only test data schemes' do
       @workspace.schemes.keys.sort.should == %w(WorkspaceSchemesApp WorkspaceSchemesFramework WorkspaceSchemesScheme project_in_subgroup scheme_in_subgroup_with_location)
+    end
+
+    it 'schemes hash contain path to a valid project/workspace' do
+      @workspace.schemes.values.each do |path|
+        File.exist?(path).should == true
+      end
     end
   end
 

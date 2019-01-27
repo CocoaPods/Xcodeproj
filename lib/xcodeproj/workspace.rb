@@ -64,7 +64,7 @@ module Xcodeproj
     #
     def self.new_from_xcworkspace(path)
       from_s(File.read(File.join(path, 'contents.xcworkspacedata')),
-             File.expand_path(File.dirname(path)))
+             File.expand_path(path))
     rescue Errno::ENOENT
       new(nil)
     end
@@ -191,8 +191,14 @@ module Xcodeproj
     # @return [void]
     #
     def load_schemes(workspace_dir_path)
+      # Normalizes path to directory of workspace needed for file_reference.absolute_path
+      workspaces_dir = workspace_dir_path
+      if File.extname(workspace_dir_path) == '.xcworkspace'
+        workspaces_dir = File.expand_path('..', workspaces_dir)
+      end
+
       file_references.each do |file_reference|
-        project_full_path = file_reference.absolute_path(workspace_dir_path)
+        project_full_path = file_reference.absolute_path(workspaces_dir)
         load_schemes_from_project(project_full_path)
       end
 
