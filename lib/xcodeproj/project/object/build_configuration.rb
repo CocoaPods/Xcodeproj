@@ -116,13 +116,13 @@ module Xcodeproj
         CAPTURE_VARIABLE_IN_BUILD_CONFIG = /
             \$ # matches dollar sign literally
             (?: # non-capturing group
-              [{] # matches a single caracter on this list
+              [{] # matches a single character on this list
                 #{VARIABLE_NAME_PATTERN}
-              [}] # matches a single caracter on this list
+              [}] # matches a single character on this list
               | # or
-              [(] # matches a single caracter on this list
+              [(] # matches a single character on this list
                 #{VARIABLE_NAME_PATTERN}
-              [)] # matches a single caracter on this list
+              [)] # matches a single character on this list
             )
           /x
         private_constant :CAPTURE_VARIABLE_IN_BUILD_CONFIG
