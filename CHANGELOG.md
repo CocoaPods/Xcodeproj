@@ -8,7 +8,8 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix build setting variable substitution for array settings.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 
 ## 1.8.0 (2019-01-25)
