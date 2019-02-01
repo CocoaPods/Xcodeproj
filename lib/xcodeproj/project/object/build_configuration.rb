@@ -85,15 +85,20 @@ module Xcodeproj
         #
         def resolve_build_setting(key, root_target = nil)
           setting = build_settings[key]
-          setting = resolve_variable_substitution(key, setting, root_target) if setting.is_a?(String)
+          setting = resolve_variable_substitution(key, setting, root_target)
           config_setting = base_configuration_reference && config[key]
-          config_setting = resolve_variable_substitution(key, config_setting, root_target) if config_setting.is_a?(String)
+          config_setting = resolve_variable_substitution(key, config_setting, root_target)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if project_setting == self
           project_setting &&= project_setting.resolve_build_setting(key, root_target)
 
-          [project_setting, config_setting, setting, ENV[key]].compact.reduce do |inherited, value|
+          defaults = {
+            'CONFIGURATION' => name,
+            'SRCROOT' => project.project_dir,
+          }
+
+          [project_setting, config_setting, setting, ENV[key], defaults[key]].compact.reduce(nil) do |inherited, value|
             expand_build_setting(value, inherited)
           end
         end
@@ -102,15 +107,25 @@ module Xcodeproj
 
         private
 
+        VARIABLE_NAME_PATTERN =
+          '( # capture block
+            [_a-zA-Z0-9]+? # non-greedy lookup for everything contained in this list
+          )'.freeze
+        private_constant :VARIABLE_NAME_PATTERN
+
         CAPTURE_VARIABLE_IN_BUILD_CONFIG = /
             \$ # matches dollar sign literally
-            [{(] # matches a single caracter on this list
-              ( # capture block
-              [^inherited] # ignore if match characters in this list
-              [$(){}_a-zA-Z0-9]*? # non-greedy lookup for everything that contains this list
-              )
-            [})] # matches a single caracter on this list
+            (?: # non-capturing group
+              [{] # matches a single caracter on this list
+                #{VARIABLE_NAME_PATTERN}
+              [}] # matches a single caracter on this list
+              | # or
+              [(] # matches a single caracter on this list
+                #{VARIABLE_NAME_PATTERN}
+              [)] # matches a single caracter on this list
+            )
           /x
+        private_constant :CAPTURE_VARIABLE_IN_BUILD_CONFIG
 
         def expand_build_setting(build_setting_value, config_value)
           if build_setting_value.is_a?(Array) && config_value.is_a?(String)
@@ -127,23 +142,37 @@ module Xcodeproj
         end
 
         def resolve_variable_substitution(key, value, root_target)
-          variable = match_variable(value)
-          return nil if key.eql?(variable)
-          if variable.nil?
-            return name if value.eql?('CONFIGURATION')
-            if root_target
-              return root_target.build_configuration_list[name].resolve_build_setting(value, root_target) || value
-            else
-              return resolve_build_setting(value, root_target) || value
-            end
+          case value
+          when Array
+            return value.map { |v| resolve_variable_substitution(key, v, root_target) }
+          when nil
+            return
+          when String
+            # we know how to resolve strings!
+            nil
+          else
+            raise ArgumentError, "Settings values can only be nil, string, or array, got #{value.inspect} for #{key}"
           end
-          resolve_variable_substitution(key, value.sub(CAPTURE_VARIABLE_IN_BUILD_CONFIG, resolve_variable_substitution(key, variable, root_target)), root_target)
-        end
 
-        def match_variable(config_setting)
-          match_data = config_setting.match(CAPTURE_VARIABLE_IN_BUILD_CONFIG)
-          return match_data.captures.first unless match_data.nil?
-          match_data
+          unless variable_match_data = value.match(CAPTURE_VARIABLE_IN_BUILD_CONFIG)
+            # no variables left, return the value unchanged
+            return value
+          end
+          variable_reference, variable = *variable_match_data.values_at(0, 1, 2).compact
+
+          case variable
+          when 'inherited'
+            # this is handled separately, after resolving all other variable references
+            value
+          when key
+            # to prevent infinite recursion
+            nil
+          else
+            configuration_to_resolve_against = root_target ? root_target.build_configuration_list[name] : self
+            resolved_value_for_variable = configuration_to_resolve_against.resolve_build_setting(variable, root_target) || ''
+            value = value.gsub(variable_reference, resolved_value_for_variable)
+            resolve_variable_substitution(key, value, root_target)
+          end
         end
 
         def sorted_build_settings

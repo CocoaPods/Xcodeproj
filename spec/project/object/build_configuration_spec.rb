@@ -56,6 +56,71 @@ module ProjectSpecs
           @configuration.type.should == :release
         end
       end
+
+      describe '#resolve_build_setting' do
+        before do
+          @configuration.build_settings = {
+            'i' => 'I',
+            'plain_i' => 'i',
+            'e' => 'E',
+            'IE' => 'nested',
+            'thing' => 'should resolve ${i} hop${e}, ${${i}${e}}',
+            'other' => '$(inherited) 10 ${inherited}',
+            'missing_ref' => '${dsadsadsaFSDFDS}',
+            'missing_ref_array' => %w(${dsadsadsaFSDFDS}),
+            'prefixed_with_inherited' => '${inherited_suffix}',
+            'inherited_suffix' => 'suffix',
+            'FOOS' => %w(a b c d ${i} ${inherited} ${I${e}} ${${i}E}),
+            'self_recursive' => 'hi $(self_recursive)',
+            'mutually_recursive' => 'm1: ${mutually_recursive_1} m2: ${mutually_recursive_1}',
+            'mutually_recursive_1' => 'mr2=${mutually_recursive_2}',
+            'mutually_recursive_2' => 'mr1=${mutually_recursive_1}',
+            'mixes_braces_and_parens' => '${ab) $(cd}){})',
+          }
+        end
+
+        it 'resolves build settings that reference other variables' do
+          @configuration.resolve_build_setting('thing').should == 'should resolve I hopE, nested'
+        end
+
+        it 'resolves build settings that have inherited, but dont inherit a value' do
+          @configuration.resolve_build_setting('other').should == ' 10 '
+        end
+
+        it 'resolves settings prefixed with inherited' do
+          @configuration.resolve_build_setting('prefixed_with_inherited').should == 'suffix'
+        end
+
+        it 'resolves array settings with variable references' do
+          @configuration.resolve_build_setting('FOOS').should == %w(a b c d I nested nested)
+        end
+
+        it 'resolves values that are the name of another setting to the value, not the other setting' do
+          @configuration.resolve_build_setting('plain_i').should == 'i'
+        end
+
+        it 'resolves missing references to the empty string' do
+          @configuration.resolve_build_setting('missing_ref').should == ''
+        end
+
+        it 'resolves missing references to the empty string in an array' do
+          @configuration.resolve_build_setting('missing_ref_array').should == ['']
+        end
+
+        it 'resolves self-recursive references to nil' do
+          @configuration.resolve_build_setting('self_recursive').should.nil?
+        end
+
+        it 'is stict about a variable only being surrounded by braces or parens' do
+          @configuration.resolve_build_setting('mixes_braces_and_parens').should == '${ab) $(cd}){})'
+        end
+
+        xit 'resolves mutually-recursive references to nil' do
+          @configuration.resolve_build_setting('mutually_recursive_1').should.nil?
+          @configuration.resolve_build_setting('mutually_recursive_2').should.nil?
+          @configuration.resolve_build_setting('mutually_recursive').should.nil?
+        end
+      end
     end
 
     #-------------------------------------------------------------------------#
