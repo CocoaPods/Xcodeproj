@@ -10,6 +10,7 @@
 
 * Fix build setting variable substitution for array settings.  
   [Samuel Giddins](https://github.com/segiddins)
+
 * Properly loads both project schemes and workspaces schemes on init and
   prevents overriding of incorrect project paths.  
   [joshdholtz](https://github.com/joshdholtz)
