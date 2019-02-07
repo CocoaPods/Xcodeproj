@@ -5,6 +5,13 @@
       location = "container:GroupLocation"
       name = "Group">
       <Group
+         location = "group:GroupTypeGroupLocation"
+         name = "GroupTypeGroup">
+         <FileRef
+            location = "group:project_in_group_type_group/project_in_group_type_group.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
          location = "container:GroupLocation/Group2Location"
          name = "Group2">
          <FileRef

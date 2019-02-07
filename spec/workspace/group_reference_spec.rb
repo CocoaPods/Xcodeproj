@@ -43,5 +43,19 @@ module Xcodeproj
       result.class.should == REXML::Element
       result.to_s.should == "<Group location='group:' name='&quot;&amp;&apos;&gt;&lt;.xcodeproj'/>"
     end
+
+    it 'prepends a parent group path, if it exists, to a path' do
+      subgroup_node = REXML::Element.new('Group')
+      subgroup_node.attributes['location'] = 'group:groupref_subdir/groupref'
+      subgroup_node.attributes['name'] = 'Subgroup Name'
+
+      group_node = REXML::Element.new('Group')
+      group_node.attributes['location'] = 'container:dir1/dir2'
+      group_node.attributes['name'] = 'Group Name'
+      group_node.add_element(subgroup_node)
+
+      groupref = Workspace::GroupReference.from_node(subgroup_node)
+      groupref.location.to_s.should == 'dir1/dir2/groupref_subdir/groupref'
+    end
   end
 end

@@ -60,7 +60,7 @@ module Xcodeproj
       result.to_s.should == "<FileRef location='group:&quot;&amp;&apos;&gt;&lt;.xcodeproj'/>"
     end
 
-    it 'prepends a parent Group path, if it exists, to a path' do
+    it 'prepends a parent group path, if it exists, to a path' do
       fileref_node = REXML::Element.new('FileRef')
       fileref_node.attributes['location'] = 'group:fileref_subdir/fileref'
 
@@ -70,8 +70,20 @@ module Xcodeproj
       group_node.add_element(fileref_node)
 
       fileref = Workspace::FileReference.from_node(fileref_node)
-      puts fileref.inspect
       fileref.path.to_s.should == 'dir1/dir2/fileref_subdir/fileref'
+    end
+
+    it 'does not prepend a parent group path to non-group type file references' do
+      fileref_node = REXML::Element.new('FileRef')
+      fileref_node.attributes['location'] = 'container:fileref_subdir/fileref'
+
+      group_node = REXML::Element.new('Group')
+      group_node.attributes['location'] = 'container:dir1/dir2'
+      group_node.attributes['name'] = 'The Group Name'
+      group_node.add_element(fileref_node)
+
+      fileref = Workspace::FileReference.from_node(fileref_node)
+      fileref.path.to_s.should == 'fileref_subdir/fileref'
     end
   end
 end
