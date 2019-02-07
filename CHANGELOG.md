@@ -18,7 +18,7 @@
 
 * Ensure a `GroupReference`'s path includes its parent `GroupReference`'s path. 
   Both `FileReference`s and `GroupReference`s only prepend the parent path if
-  the child has a type of `group`.
+  the child has a type of `group`.  
   [Kesi Maduka](https://github.com/k3zi)
   [#657](https://github.com/CocoaPods/Xcodeproj/issues/657)
 
