@@ -86,19 +86,20 @@ module Xcodeproj
         def resolve_build_setting(key, root_target = nil)
           setting = build_settings[key]
           setting = resolve_variable_substitution(key, setting, root_target)
+
           config_setting = base_configuration_reference && config[key]
           config_setting = resolve_variable_substitution(key, config_setting, root_target)
 
           project_setting = project.build_configuration_list[name]
-          project_setting = nil if project_setting == self
+          project_setting = nil if equal?(project_setting)
           project_setting &&= project_setting.resolve_build_setting(key, root_target)
 
           defaults = {
             'CONFIGURATION' => name,
-            'SRCROOT' => project.project_dir,
+            'SRCROOT' => project.project_dir.to_s,
           }
 
-          [project_setting, config_setting, setting, ENV[key], defaults[key]].compact.reduce(nil) do |inherited, value|
+          [defaults[key], project_setting, config_setting, setting, ENV[key]].compact.reduce(nil) do |inherited, value|
             expand_build_setting(value, inherited)
           end
         end
