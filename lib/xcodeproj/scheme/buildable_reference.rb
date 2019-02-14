@@ -59,10 +59,12 @@ module Xcodeproj
       #        If true, buildable_name will also be updated by computing a name from the target
       #
       def set_reference_target(target, override_buildable_name = false, root_project = nil)
+        # note, the order of assignment here is important, it determines the order of serialization in the xml
+        # this matches the order that Xcode generates
         @xml_element.attributes['BlueprintIdentifier'] = target.uuid
+        self.buildable_name = construct_buildable_name(target) if override_buildable_name
         @xml_element.attributes['BlueprintName'] = target.name
         @xml_element.attributes['ReferencedContainer'] = construct_referenced_container_uri(target, root_project)
-        self.buildable_name = construct_buildable_name(target) if override_buildable_name
       end
 
       # @return [String]

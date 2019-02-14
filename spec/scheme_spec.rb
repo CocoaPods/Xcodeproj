@@ -241,9 +241,9 @@ module ProjectSpecs
                  <BuildableReference
                     BuildableIdentifier = "primary"
                     BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
-                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
-                    BuildableName = "iOS application.app">
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj">
                  </BuildableReference>
               </MacroExpansion>
            </TestAction>
@@ -264,9 +264,9 @@ module ProjectSpecs
                  <BuildableReference
                     BuildableIdentifier = "primary"
                     BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
-                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
-                    BuildableName = "iOS application.app">
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj">
                  </BuildableReference>
               </BuildableProductRunnable>
            </LaunchAction>
@@ -280,9 +280,9 @@ module ProjectSpecs
                  <BuildableReference
                     BuildableIdentifier = "primary"
                     BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
-                    ReferencedContainer = "container:Cocoa Application.xcodeproj"
-                    BuildableName = "iOS application.app">
+                    ReferencedContainer = "container:Cocoa Application.xcodeproj">
                  </BuildableReference>
               </BuildableProductRunnable>
            </ProfileAction>
