@@ -1,21 +1,13 @@
+require 'xcodeproj/workspace/reference'
+
 module Xcodeproj
   class Workspace
     # Describes a group reference of a Workspace.
     #
-    class GroupReference
+    class GroupReference < Reference
       # @return [String] the name of the group
       #
       attr_reader :name
-
-      # @return [String] the type of reference to the project
-      #
-      # This can be of the following values:
-      # - absolute
-      # - group
-      # - container (only supported value)
-      # - developer
-      #
-      attr_reader :type
 
       # @return [String] the location of the group on disk
       #
@@ -55,6 +47,9 @@ module Xcodeproj
         location_array = xml_node.attribute('location').value.split(':', 2)
         type = location_array.first
         location = location_array[1] || ''
+        if type == 'group'
+          location = prepend_parent_path(xml_node, location)
+        end
         name = xml_node.attribute('name').value
         new(name, type, location)
       end
