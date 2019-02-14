@@ -25,6 +25,10 @@
   [Kesi Maduka](https://github.com/k3zi)
   [#657](https://github.com/CocoaPods/Xcodeproj/issues/657)
 
+* Stop leaking file handles when initializing schemes from files.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 1.8.0 (2019-01-25)
 
 ##### Enhancements

@@ -31,7 +31,9 @@ module Xcodeproj
     def initialize(file_path = nil)
       if file_path
         @file_path = file_path
-        @doc = REXML::Document.new(File.new(file_path))
+        @doc = File.open(file_path, 'r') do |f|
+          REXML::Document.new(f)
+        end
         @doc.context[:attribute_quote] = :quote
 
         @scheme = @doc.elements['Scheme']
