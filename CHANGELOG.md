@@ -14,7 +14,10 @@
 * Properly loads both project schemes and workspaces schemes on init and
   prevents overriding of incorrect project paths.  
   [joshdholtz](https://github.com/joshdholtz)
-  [#656](https://github.com/CocoaPods/CocoaPods/pull/656)  
+  [#656](https://github.com/CocoaPods/CocoaPods/pull/656)
+
+* Serialize `BuildableReference` attributes in schemes in the same order as Xcode.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 * Ensure a `GroupReference`'s path includes its parent `GroupReference`'s path. 
   Both `FileReference`s and `GroupReference`s only prepend the parent path if
