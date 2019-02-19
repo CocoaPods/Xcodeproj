@@ -98,7 +98,7 @@ module Xcodeproj
           #
           def real_path(object)
             source_tree = source_tree_real_path(object)
-            path = object.path || ''
+            path = object.path || ''.freeze
             if source_tree
               source_tree + path
             else
@@ -115,11 +115,16 @@ module Xcodeproj
           def full_path(object)
             folder =  case object.source_tree
                       when '<group>'
-                        parent(object).isa != 'PBXProject' ? full_path(parent(object)) : nil
+                        object_parent = parent(object)
+                        if object_parent.isa == 'PBXProject'.freeze
+                          nil
+                        else
+                          full_path(object_parent)
+                        end
                       when 'SOURCE_ROOT'
                         nil
                       when '<absolute>'
-                        Pathname.new('/')
+                        Pathname.new('/'.freeze)
                       else
                         Pathname.new("${#{object.source_tree}}")
                       end
@@ -140,10 +145,11 @@ module Xcodeproj
           def source_tree_real_path(object)
             case object.source_tree
             when '<group>'
-              if parent(object).isa == 'PBXProject'
+              object_parent = parent(object)
+              if object_parent.isa == 'PBXProject'.freeze
                 object.project.project_dir
               else
-                real_path(parent(object))
+                real_path(object_parent)
               end
             when 'SOURCE_ROOT'
               object.project.project_dir
