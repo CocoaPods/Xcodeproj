@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.8.1 (2019-02-19)
 
 ##### Enhancements
 
