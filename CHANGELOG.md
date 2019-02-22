@@ -8,10 +8,8 @@
 
 ##### Bug Fixes
 
-* Normalize xcconfig path when generating includes.
+* Normalize xcconfig path when generating includes.  
   [bclymer](https://github.com/bclymer)
-
-
 
 ## 1.8.1 (2019-02-19)
 
