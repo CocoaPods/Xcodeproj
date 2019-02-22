@@ -207,7 +207,13 @@ Y = 123
     it 'contains file path refs to all included xcconfigs' do
       config = Xcodeproj::Config.new(fixture_path('include.xcconfig'))
       config.includes.size.should.be.equal 1
-      config.includes.first.should.be.equal 'Somefile'
+      config.includes.first.should.be.equal 'Somefile.xcconfig'
+    end
+
+    it 'contains file path refs to all included xcconfigs, even without the extension added' do
+      config = Xcodeproj::Config.new(fixture_path('config-with-include-no-extension.xcconfig'))
+      config.includes.size.should.be.equal 1
+      config.includes.first.should.be.equal 'another-config-with-include.xcconfig'
     end
 
     it 'can be created from multiline file' do
