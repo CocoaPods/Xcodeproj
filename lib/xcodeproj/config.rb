@@ -275,7 +275,7 @@ module Xcodeproj
       string.split("\n").each do |line|
         uncommented_line = strip_comment(line)
         if include = extract_include(uncommented_line)
-          @includes.push include
+          @includes.push normalized_xcconfig_path(include)
         else
           key, value = extract_key_value(uncommented_line)
           next unless key
