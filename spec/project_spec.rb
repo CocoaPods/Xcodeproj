@@ -49,6 +49,22 @@ module ProjectSpecs
         @project.root_object.main_group.class.should == PBXGroup
       end
 
+      it 'initializes the root object compatibility version' do
+        @project.root_object.compatibility_version.should == 'Xcode 3.2'
+      end
+
+      it 'initializes the root object compatibility version on different object version' do
+        project = Xcodeproj::Project.new('foo.xcodeproj', false, 50)
+        project.root_object.compatibility_version.should == 'Xcode 9.3'
+      end
+
+      it 'raises when a compatibiliy version string cannot be found for an unknown object version' do
+        e = should.raise ArgumentError do
+          Xcodeproj::Project.new('foo.xcodeproj', false, 999)
+        end
+        e.message.should == '[Xcodeproj] Unable to find compatibility version string for object version `999`.'
+      end
+
       it 'initializes the root object products group' do
         product_ref_group = @project.root_object.product_ref_group
         product_ref_group.class.should == PBXGroup

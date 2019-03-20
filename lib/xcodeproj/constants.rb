@@ -11,9 +11,11 @@ module Xcodeproj
     LAST_KNOWN_OSX_SDK = '10.14'
 
     # @return [String] The last known tvOS SDK (stable).
+    #
     LAST_KNOWN_TVOS_SDK = '12.0'
 
     # @return [String] The last known watchOS SDK (stable).
+    #
     LAST_KNOWN_WATCHOS_SDK = '5.0'
 
     # @return [String] The last known archive version to Xcodeproj.
@@ -25,6 +27,7 @@ module Xcodeproj
     LAST_KNOWN_SWIFT_VERSION = '4.0'
 
     # @return [String] The default object version for Xcodeproj.
+    #
     DEFAULT_OBJECT_VERSION = 46
 
     # @return [String] The last known object version to Xcodeproj.
@@ -118,6 +121,17 @@ module Xcodeproj
       'xctest'       => 'wrapper.cfbundle',
       'xib'          => 'file.xib',
       'zip'          => 'archive.zip',
+    }.freeze
+
+    # @return [Hash] The compatibility version string for different object versions.
+    #
+    COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
+      51 => 'Xcode 10.0',
+      50 => 'Xcode 9.3',
+      48 => 'Xcode 8.0',
+      47 => 'Xcode 6.3',
+      46 => 'Xcode 3.2',
+      45 => 'Xcode 3.1',
     }.freeze
 
     # @return [Hash] The uniform type identifier of various product types.

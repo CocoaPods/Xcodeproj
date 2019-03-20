@@ -8,6 +8,10 @@
 
 ##### Bug Fixes
 
+* Set root object compatibility version depending on object version.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso) & [Doug Mead](https://github.com/dmead28)
+  [#668](https://github.com/CocoaPods/Xcodeproj/pull/668)
+
 * Normalize xcconfig path when generating includes.  
   [bclymer](https://github.com/bclymer)
 
