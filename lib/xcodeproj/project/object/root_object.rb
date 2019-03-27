@@ -34,7 +34,7 @@ module Xcodeproj
 
         # @return [String] the development region of the project.
         #
-        attribute :development_region, String, 'English'
+        attribute :development_region, String, 'en'
 
         # @return [String] whether the project has scanned for encodings.
         #
