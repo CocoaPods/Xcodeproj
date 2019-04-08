@@ -4,7 +4,7 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '12.0'
+    LAST_KNOWN_IOS_SDK = '12.2'
 
     # @return [String] The last known OS X SDK (stable).
     #
@@ -12,11 +12,11 @@ module Xcodeproj
 
     # @return [String] The last known tvOS SDK (stable).
     #
-    LAST_KNOWN_TVOS_SDK = '12.0'
+    LAST_KNOWN_TVOS_SDK = '12.2'
 
     # @return [String] The last known watchOS SDK (stable).
     #
-    LAST_KNOWN_WATCHOS_SDK = '5.0'
+    LAST_KNOWN_WATCHOS_SDK = '5.2'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -24,7 +24,7 @@ module Xcodeproj
 
     # @return [String] The last known Swift version (stable).
     #
-    LAST_KNOWN_SWIFT_VERSION = '4.0'
+    LAST_KNOWN_SWIFT_VERSION = '5.0'
 
     # @return [String] The default object version for Xcodeproj.
     #
@@ -36,11 +36,11 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '0930'
+    LAST_UPGRADE_CHECK = '1020'
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '0930'
+    LAST_SWIFT_UPGRADE_CHECK = '1020'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -386,7 +386,7 @@ module Xcodeproj
         'GCC_WARN_UNUSED_VARIABLE'                => 'YES',
         'MTL_FAST_MATH'                           => 'YES',
         'PRODUCT_NAME'                            => '$(TARGET_NAME)',
-        'SWIFT_VERSION'                           => '4.2',
+        'SWIFT_VERSION'                           => '5.0',
       },
       :release => {
         'DEBUG_INFORMATION_FORMAT'           => 'dwarf-with-dsym',

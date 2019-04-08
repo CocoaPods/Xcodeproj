@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Updated latest SDK versions for the release of Xcode 10.2.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 ##### Bug Fixes
 
