@@ -97,15 +97,17 @@ module Xcodeproj
     #
     def <<(path_or_reference)
       return unless @document && @document.respond_to?(:root)
-      case
-      when path_or_reference.is_a?(String)
+
+      case path_or_reference
+      when String
         project_file_reference = Xcodeproj::Workspace::FileReference.new(path_or_reference)
-      when path_or_reference.is_a?(Xcodeproj::Workspace::FileReference)
+      when Xcodeproj::Workspace::FileReference
         project_file_reference = path_or_reference
         projpath = nil
       else
-        raise ArgumentError, 'Input to the << operator must be a file path or FileReference'
+        raise ArgumentError, "Input to the << operator must be a file path or FileReference, got #{path_or_reference.inspect}"
       end
+
       @document.root.add_element(project_file_reference.to_node)
       load_schemes_from_project File.expand_path(projpath || project_file_reference.path)
     end
