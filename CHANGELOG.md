@@ -27,6 +27,9 @@
 * Normalize xcconfig path when generating includes.  
   [bclymer](https://github.com/bclymer)
 
+* Use modern localization identifier 'en' for the development region.
+  [Steffen Matthischke](https://github.com/heeaad)
+
 ## 1.8.1 (2019-02-19)
 
 ##### Enhancements

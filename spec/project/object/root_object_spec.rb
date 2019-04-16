@@ -24,7 +24,7 @@ module ProjectSpecs
     end
 
     it 'returns the development region' do
-      @root_object.development_region.should == 'English'
+      @root_object.development_region.should == 'en'
     end
 
     it 'returns whether has scanned for encodings' do
