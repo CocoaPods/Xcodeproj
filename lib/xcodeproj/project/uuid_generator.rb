@@ -46,6 +46,18 @@ module Xcodeproj
             fixup[object, attr]
           end
         end
+
+        if (project_attributes = target_project.root_object.attributes) && project_attributes['TargetAttributes']
+          project_attributes['TargetAttributes'] = Hash[project_attributes['TargetAttributes'].map do |target_uuid, attributes|
+            if test_target_id = attributes['TestTargetID']
+              attributes = attributes.merge('TestTargetID' => all_objects_by_uuid[test_target_id].uuid)
+            end
+            if target_object = all_objects_by_uuid[target_uuid]
+              target_uuid = target_object.uuid
+            end
+            [target_uuid, attributes]
+          end]
+        end
       end
 
       def generate_all_paths_by_objects(projects)
