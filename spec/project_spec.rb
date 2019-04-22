@@ -528,6 +528,21 @@ module ProjectSpecs
           project.root_object.uuid.should == '58C5CB80A8C53842A0F017EE22887DF0'
         end
 
+        it 'updates TargetAttributes' do
+          project = Xcodeproj::Project.new('path.xcodeproj')
+          project.add_build_configuration('Config', :debug)
+          app = project.new_target(:application, 'App', :ios, '12.0')
+          test = project.new_target(:unit_test_bundle, 'Test', :ios, '12.0')
+          project.root_object.attributes['TargetAttributes'] = {
+            test.uuid => { 'TestTargetID' => app.uuid },
+          }
+          project.predictabilize_uuids
+
+          project.root_object.attributes['TargetAttributes'].should == {
+            test.uuid => { 'TestTargetID' => app.uuid },
+          }
+        end
+
         Pathname.glob("#{fixture_path}/**/*.xcodeproj").each do |path|
           next if path.to_s.include?('ProjectInMergeConflict/')
           open_project = ->() do

@@ -13,6 +13,9 @@
   [Steffen Matthischke](https://github.com/heeaad)
   [#669](https://github.com/CocoaPods/Xcodeproj/pull/669)
 
+* Generating deterministic UUIDs for a project also updates `TargetAttributes`.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 1.8.2 (2019-03-27)
 
