@@ -170,6 +170,9 @@
 * Generating deterministic UUIDs for a project also updates `TargetAttributes`.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Include non-shared schemes in `Project.schemes`.
+  [Serge Lebedev](https://github.com/lebedev)
+
 
 ## 1.8.2 (2019-03-27)
 
