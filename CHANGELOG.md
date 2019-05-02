@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.9.0 (2019-05-02)
+
+##### Enhancements
+
 * Updated latest SDK versions for the release of Xcode 10.2.  
   [Samuel Giddins](https://github.com/segiddins)
 
