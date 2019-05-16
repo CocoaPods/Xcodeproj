@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Sort by name like Xcode does.  
+[Antoine Cœur](https://github.com/Coeur)
+[#677](https://github.com/CocoaPods/Xcodeproj/pull/677)
 
 ##### Bug Fixes
 
