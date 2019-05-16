@@ -1,5 +1,6 @@
 require 'xcodeproj/project/object/helpers/groupable_helper'
 require 'xcodeproj/project/object/helpers/file_references_factory'
+require 'xcodeproj/project/object/helpers/sort_helper'
 
 module Xcodeproj
   class Project
@@ -438,9 +439,9 @@ module Xcodeproj
               end
             end
 
-            result = File.basename(x.display_name.downcase, '.*') <=> File.basename(y.display_name.downcase, '.*')
+            result = XcodeSortString.new(File.basename(x.display_name, '.*')) <=> XcodeSortString.new(File.basename(y.display_name, '.*'))
             if result.zero?
-              File.extname(x.display_name.downcase) <=> File.extname(y.display_name.downcase)
+              XcodeSortString.new(File.extname(x.display_name)) <=> XcodeSortString.new(File.extname(y.display_name))
             else
               result
             end
