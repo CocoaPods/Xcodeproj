@@ -1,4 +1,6 @@
 ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication
+DEVELOPMENT_ASSET_PATHS = ___PACKAGENAME:quoteIfNeeded___/Preview\ Content
+ENABLE_PREVIEWS = YES
 INFOPLIST_FILE = ___PACKAGENAME___/Info.plist
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
 PRODUCT_BUNDLE_IDENTIFIER = ___ASSOCIATEDTARGET_bundleIdentifier___.watchkitapp.watchkitextension
