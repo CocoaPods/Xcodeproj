@@ -309,7 +309,7 @@ module Xcodeproj
         # Adds a file reference for one or more system framework to the project
         # if needed and adds them to the Frameworks build phases.
         #
-        # @param  [Array<String>, String] name
+        # @param  [Array<String>, String] names
         #         The name or the list of the names of the framework.
         #
         # @note   Xcode behaviour is following: if the target has the same SDK
@@ -359,7 +359,7 @@ module Xcodeproj
         # Adds a file reference for one or more system dylib libraries to the project
         # if needed and adds them to the Frameworks build phases.
         #
-        # @param  [Array<String>, String] name
+        # @param  [Array<String>, String] names
         #         The name or the list of the names of the libraries.
         #
         # @return [void]
@@ -385,7 +385,7 @@ module Xcodeproj
         # Adds a file reference for one or more system tbd libraries to the project
         # if needed and adds them to the Frameworks build phases.
         #
-        # @param  [Array<String>, String] name
+        # @param  [Array<String>, String] names
         #         The name or the list of the names of the libraries.
         #
         # @return [void]
@@ -431,6 +431,11 @@ module Xcodeproj
         # @return [PBXFileReference] the reference to the product file.
         #
         has_one :product_reference, PBXFileReference
+
+        # @return [ObjectList<XCSwiftPackageProductDependency>] the Swift package products necessary to
+        #         build this target.
+        #
+        has_many :package_product_dependencies, XCSwiftPackageProductDependency
 
         # @return [String] the install path of the product.
         #
@@ -621,6 +626,22 @@ module Xcodeproj
               x.display_name <=> y.display_name
             end
           end
+        end
+
+        def to_hash_as(method = :to_hash)
+          hash_as = super
+          if !hash_as['packageProductDependencies'].nil? && hash_as['packageProductDependencies'].empty?
+            hash_as.delete('packageProductDependencies')
+          end
+          hash_as
+        end
+
+        def to_ascii_plist
+          plist = super
+          if !plist.value['packageProductDependencies'].nil? && plist.value['packageProductDependencies'].empty?
+            plist.value.delete('packageProductDependencies')
+          end
+          plist
         end
       end
 

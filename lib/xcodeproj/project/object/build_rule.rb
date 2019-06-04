@@ -42,6 +42,11 @@ module Xcodeproj
         attribute :is_editable, String, '1'
 
         # @return [ObjectList<PBXFileReference>] the file references for the
+        #         input files files.
+        #
+        attribute :input_files, Array
+
+        # @return [ObjectList<PBXFileReference>] the file references for the
         #         output files.
         #
         attribute :output_files, Array

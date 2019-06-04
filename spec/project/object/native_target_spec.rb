@@ -776,6 +776,32 @@ module ProjectSpecs
           @target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase PBXSourcesBuildPhase PBXHeadersBuildPhase PBXSourcesBuildPhase)
         end
       end
+
+      describe '#to_hash_as' do
+        it "does not include package product dependencies in its hash if there aren't any" do
+          @target.to_hash_as['packageProductDependencies'].should.be.nil
+        end
+
+        it 'include package product dependencies in its hash if it contains at least one' do
+          @target.package_product_dependencies << XCSwiftPackageProductDependency.new(@project, 'uuid')
+          @target.to_hash_as['packageProductDependencies'].should == ['uuid']
+        end
+      end
+
+      describe '#to_ascii_plist' do
+        it "does not include package product dependencies in its plist if there aren't any" do
+          @target.to_ascii_plist.value['packageProductDependencies'].should.be.nil
+        end
+
+        it 'include package product dependencies in its plist if it contains at least one' do
+          @target.package_product_dependencies << XCSwiftPackageProductDependency.new(@project, 'uuid1')
+          @target.package_product_dependencies << XCSwiftPackageProductDependency.new(@project, 'uuid2')
+          @target.to_ascii_plist.value['packageProductDependencies'].should == [
+            Nanaimo::String.new('uuid1', ' SwiftPackageProductDependency '),
+            Nanaimo::String.new('uuid2', ' SwiftPackageProductDependency '),
+          ]
+        end
+      end
     end
 
     #----------------------------------------#
