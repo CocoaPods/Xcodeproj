@@ -4,17 +4,21 @@ module Xcodeproj
   #   arrayOfFilenames.sort_by { |s| XcodeSortString.new(s) }
   class XcodeSortString
     include Comparable
-    attr_reader :str_fallback, :ints_and_strings, :ints_and_strings_fallback, :str_pattern
+    attr_reader :str, :ints_and_strings, :ints_and_strings_fallback, :str_pattern
+    @has_unicode_normalize = Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2.0')
+    class << self
+      attr_accessor :has_unicode_normalize
+    end
 
     def initialize(str)
-      # fallback pass
-      @str_fallback = str
+      # original string
+      @str = str
       # first pass: digits are used as integers, symbols are individualized, case is ignored
       @ints_and_strings = str.scan(/\d+|\p{L}+|[^\d\p{L}]/).map do |s|
         case s
         when /\d/ then Integer(s, 10)
         else
-          if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.2.0')
+          if self.class.has_unicode_normalize
             s.unicode_normalize(:nfkd).gsub(/\p{Mn}/, '').downcase
           else
             s.downcase
@@ -22,7 +26,7 @@ module Xcodeproj
         end
       end
       # second pass: digits are inverted, case is inverted
-      @ints_and_strings_fallback = @str_fallback.scan(/\d+|\D+/).map do |s|
+      @ints_and_strings_fallback = @str.scan(/\d+|\D+/).map do |s|
         case s
         when /\d/ then Integer(s.reverse, 10)
         else s.swapcase
@@ -44,7 +48,7 @@ module Xcodeproj
         end
       else
         # type mismatch, we sort alphabetically (case ignored)
-        str_fallback.downcase <=> other.str_fallback.downcase
+        str.downcase <=> other.str.downcase
       end
     end
   end

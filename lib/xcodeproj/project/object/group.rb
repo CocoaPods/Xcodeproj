@@ -429,9 +429,11 @@ module Xcodeproj
         # @return [void]
         #
         def sort(options = nil)
+          if options && groups_position = options[:groups_position]
+            raise ArgumentError unless [:above, :below].include?(groups_position)
+          end
           children.sort! do |x, y|
-            if options && groups_position = options[:groups_position]
-              raise ArgumentError unless [:above, :below].include?(groups_position)
+            if groups_position
               if x.isa == 'PBXGroup' && !(y.isa == 'PBXGroup')
                 next groups_position == :above ? -1 : 1
               elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
