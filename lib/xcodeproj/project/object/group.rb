@@ -441,9 +441,9 @@ module Xcodeproj
               end
             end
 
-            result = XcodeSortString.new(File.basename(x.display_name, '.*')) <=> XcodeSortString.new(File.basename(y.display_name, '.*'))
+            result = XcodeSortString.new(x.display_name) <=> XcodeSortString.new(y.display_name)
             if result.zero?
-              XcodeSortString.new(File.extname(x.display_name)) <=> XcodeSortString.new(File.extname(y.display_name))
+              XcodeSortString.new(x.path) <=> XcodeSortString.new(y.path)
             else
               result
             end
