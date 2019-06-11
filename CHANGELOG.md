@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Support for Xcode 11 attributes and objects.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#687](https://github.com/CocoaPods/Xcodeproj/pull/687)
 
 ##### Bug Fixes
 

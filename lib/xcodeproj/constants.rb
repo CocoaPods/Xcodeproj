@@ -32,15 +32,15 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION = 51
+    LAST_KNOWN_OBJECT_VERSION = 52
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '1020'
+    LAST_UPGRADE_CHECK = '1100'
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '1020'
+    LAST_SWIFT_UPGRADE_CHECK = '1100'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -126,6 +126,7 @@ module Xcodeproj
     # @return [Hash] The compatibility version string for different object versions.
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
+      52 => 'Xcode 11.0',
       51 => 'Xcode 10.0',
       50 => 'Xcode 9.3',
       48 => 'Xcode 8.0',

@@ -62,6 +62,10 @@ module Xcodeproj
         #
         attribute :project_root, String, ''
 
+        # @return [Array<XCRemoteSwiftPackageReference>] the list of Swift package references.
+        #
+        has_many :package_references, XCRemoteSwiftPackageReference
+
         # @return [Array<ObjectDictionary>] any reference to other projects.
         #
         has_many_references_by_keys :project_references,
@@ -76,9 +80,18 @@ module Xcodeproj
           ' Project object '
         end
 
+        def to_hash_as(method = :to_hash)
+          hash_as = super
+          if !hash_as['packageReferences'].nil? && hash_as['packageReferences'].empty?
+            hash_as.delete('packageReferences') if !hash_as['packageReferences'].nil? && hash_as['packageReferences'].empty?
+          end
+          hash_as
+        end
+
         def to_ascii_plist
           plist = super
           plist.value.delete('projectReferences') if plist.value['projectReferences'].empty?
+          plist.value.delete('packageReferences') if !plist.value['packageReferences'].nil? && plist.value['packageReferences'].empty?
           plist
         end
       end
