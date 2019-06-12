@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.10.0 (2019-06-12)
+
+##### Enhancements
+
 * Support for Xcode 11 attributes and objects.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#687](https://github.com/CocoaPods/Xcodeproj/pull/687)
