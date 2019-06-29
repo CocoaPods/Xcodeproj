@@ -150,6 +150,7 @@ module Xcodeproj
       :command_line_tool    => 'com.apple.product-type.tool',
       :watch_app            => 'com.apple.product-type.application.watchapp',
       :watch2_app           => 'com.apple.product-type.application.watchapp2',
+      :watch2_app_container => 'com.apple.product-type.application.watchapp2-container',
       :watch_extension      => 'com.apple.product-type.watchkit-extension',
       :watch2_extension     => 'com.apple.product-type.watchkit2-extension',
       :tv_extension         => 'com.apple.product-type.tv-app-extension',
@@ -162,17 +163,18 @@ module Xcodeproj
     # @return [Hash] The extensions or the various product UTIs.
     #
     PRODUCT_UTI_EXTENSIONS = {
-      :application      => 'app',
-      :framework        => 'framework',
-      :dynamic_library  => 'dylib',
-      :static_library   => 'a',
-      :bundle           => 'bundle',
-      :octest_bundle    => 'octest',
-      :unit_test_bundle => 'xctest',
-      :ui_test_bundle   => 'xctest',
-      :app_extension    => 'appex',
-      :watch2_extension => 'appex',
-      :watch2_app       => 'app',
+      :application          => 'app',
+      :framework            => 'framework',
+      :dynamic_library      => 'dylib',
+      :static_library       => 'a',
+      :bundle               => 'bundle',
+      :octest_bundle        => 'octest',
+      :unit_test_bundle     => 'xctest',
+      :ui_test_bundle       => 'xctest',
+      :app_extension        => 'appex',
+      :watch2_extension     => 'appex',
+      :watch2_app           => 'app',
+      :watch2_app_container => 'app',
     }.freeze
 
     # @return [Hash] The common build settings grouped by platform, and build

@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add watchapp2-container product type.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#690](https://github.com/CocoaPods/Xcodeproj/pull/690)
 
 ##### Bug Fixes
 
