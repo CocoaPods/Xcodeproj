@@ -60,7 +60,7 @@ module Xcodeproj
               if target_val.is_a? String
                 target_val.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), proj_val)
               else
-                target_val.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? proj_val : value }.flatten
+                target_val.flat_map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? proj_val : value }
               end
             else
               target_val || proj_val

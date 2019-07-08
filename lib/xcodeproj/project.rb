@@ -589,7 +589,7 @@ module Xcodeproj
     #
     def embedded_targets_in_native_target(native_target)
       native_targets.select do |target|
-        host_targets_for_embedded_target(target).map(&:uuid).include? native_target.uuid
+        host_targets_for_embedded_target(target).any? { |host| host.uuid == native_target.uuid }
       end
     end
 

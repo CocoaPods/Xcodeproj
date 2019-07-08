@@ -224,8 +224,9 @@ module Xcodeproj
         cl.build_configurations << release_conf
         cl.build_configurations << debug_conf
 
+        existing_configurations = cl.build_configurations.map(&:name)
         project.build_configurations.each do |configuration|
-          next if cl.build_configurations.map(&:name).include?(configuration.name)
+          next if existing_configurations.include?(configuration.name)
 
           new_config = project.new(XCBuildConfiguration)
           new_config.name = configuration.name

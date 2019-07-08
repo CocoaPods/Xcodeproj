@@ -55,13 +55,13 @@ module Xcodeproj
       #         The other linker flags value.
       #
       def self.split(flags)
-        flags.strip.shellsplit.map do |string|
+        flags.strip.shellsplit.flat_map do |string|
           if string =~ /\A-l.+/
             ['-l', string[2..-1]]
           else
             string
           end
-        end.flatten
+        end
       end
     end
   end

@@ -139,7 +139,7 @@ module Xcodeproj
           inherited = config_value || default
 
           return build_setting_value.gsub(Regexp.union(Constants::INHERITED_KEYWORDS), inherited) if build_setting_value.is_a? String
-          build_setting_value.map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }.flatten
+          build_setting_value.flat_map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }
         end
 
         def resolve_variable_substitution(key, value, root_target)
