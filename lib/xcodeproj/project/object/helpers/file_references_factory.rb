@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'xcodeproj/project/object/helpers/groupable_helper'
 
 module Xcodeproj
