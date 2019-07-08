@@ -8,6 +8,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#690](https://github.com/CocoaPods/Xcodeproj/pull/690)
 
+* Add `platformFilter` Xcode 11 entry.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#693](https://github.com/CocoaPods/Xcodeproj/issues/693)
+
 ##### Bug Fixes
 
 * None.  
