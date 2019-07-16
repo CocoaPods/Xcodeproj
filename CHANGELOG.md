@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* When resolving build settings against `xcconfig`s, allow the referenced file to be missing,
+  as Xcode does.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 
 ## 1.11.0 (2019-07-09)
