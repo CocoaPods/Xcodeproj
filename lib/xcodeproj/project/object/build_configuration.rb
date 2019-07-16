@@ -87,7 +87,7 @@ module Xcodeproj
           setting = build_settings[key]
           setting = resolve_variable_substitution(key, setting, root_target)
 
-          config_setting = base_configuration_reference && config[key]
+          config_setting = config[key]
           config_setting = resolve_variable_substitution(key, config_setting, root_target)
 
           project_setting = project.build_configuration_list[name]
@@ -210,9 +210,14 @@ module Xcodeproj
         end
 
         def config
-          @config ||= Xcodeproj::Config.new(base_configuration_reference.real_path).to_hash.tap do |hash|
-            normalize_array_settings(hash)
-          end
+          @config ||=
+            if base_configuration_reference && base_configuration_reference.real_path.exist?
+              Xcodeproj::Config.new(base_configuration_reference.real_path).to_hash.tap do |hash|
+                normalize_array_settings(hash)
+              end
+            else
+              {}
+            end
         end
 
         #---------------------------------------------------------------------#
