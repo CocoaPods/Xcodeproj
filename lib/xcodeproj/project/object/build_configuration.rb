@@ -210,8 +210,9 @@ module Xcodeproj
         end
 
         def config
+          return {} unless base_configuration_reference
           @config ||=
-            if base_configuration_reference && base_configuration_reference.real_path.exist?
+            if base_configuration_reference.real_path.exist?
               Xcodeproj::Config.new(base_configuration_reference.real_path).to_hash.tap do |hash|
                 normalize_array_settings(hash)
               end
