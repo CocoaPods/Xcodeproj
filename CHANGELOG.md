@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add #pretty_print to PBXCopyFilesBuildPhase and PBXShellScriptBuildPhase  
+  [Alex Coomans](https://github.com/drcapulet)
+  [#702](https://github.com/CocoaPods/Xcodeproj/pull/702)
 
 ##### Bug Fixes
 

@@ -204,6 +204,19 @@ module Xcodeproj
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
 
+        # @return [Hash{String => Hash}] A hash suitable to display the build
+        #         phase to the user.
+        #
+        def pretty_print
+          {
+            display_name => {
+              'Destination Path' => dst_path,
+              'Destination Subfolder' => Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.key(dst_subfolder_spec).to_s,
+              'Files' => files.map(&:pretty_print),
+            },
+          }
+        end
+
         # Alias method for #dst_subfolder_spec=, which accepts symbol values
         # instead of numeric string values.
         #
@@ -287,6 +300,22 @@ module Xcodeproj
         #         the build log.
         #
         attribute :show_env_vars_in_log, String
+
+        # @return [Hash{String => Hash}] A hash suitable to display the build
+        #         phase to the user.
+        #
+        def pretty_print
+          {
+            display_name => {
+              'Input File List Paths' => input_file_list_paths || [],
+              'Input Paths' => input_paths || [],
+              'Output File List Paths' => output_file_list_paths || [],
+              'Output Paths' => output_paths || [],
+              'Shell Path' => shell_path,
+              'Shell Script' => shell_script,
+            },
+          }
+        end
       end
 
       #-----------------------------------------------------------------------#
