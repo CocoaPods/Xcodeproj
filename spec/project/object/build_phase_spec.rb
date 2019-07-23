@@ -124,6 +124,18 @@ module ProjectSpecs
       @build_phase.dst_subfolder_spec.should == '7'
     end
 
+    describe '#pretty_print' do
+      it 'returns the pretty print representation' do
+        @build_phase.pretty_print.should == {
+          'CopyFiles' => {
+            'Destination Path' => '',
+            'Destination Subfolder' => 'resources',
+            'Files' => [],
+          },
+        }
+      end
+    end
+
     describe '#symbol_dst_subfolder_spec' do
       it 'returns the matching value' do
         @build_phase.symbol_dst_subfolder_spec.should == :resources
@@ -169,6 +181,21 @@ module ProjectSpecs
       @build_phase.show_env_vars_in_log.should.be.nil
       @build_phase.show_env_vars_in_log = '0'
       @build_phase.show_env_vars_in_log.should == '0'
+    end
+
+    describe '#pretty_print' do
+      it 'returns the pretty print representation' do
+        @build_phase.pretty_print.should == {
+          'ShellScript' => {
+            'Input File List Paths' => [],
+            'Input Paths' => [],
+            'Output File List Paths' => [],
+            'Output Paths' => [],
+            'Shell Path' => '/bin/sh',
+            'Shell Script' => "# Type a script or drag a script file from your workspace to insert its path.\n",
+          },
+        }
+      end
     end
   end
 end
