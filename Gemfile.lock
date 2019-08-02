@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: 896d82a4dff73d80da565b0caa77c6ed74c9c6f8
+  revision: b5ced9cc141df732e8027078543eb92fc6447567
   specs:
-    claide (1.0.2)
+    claide (1.0.3)
 
 GIT
   remote: https://github.com/segiddins/json.git
@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (1.11.0)
+    xcodeproj (1.11.1)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
       claide (>= 1.0.2, < 2.0)
