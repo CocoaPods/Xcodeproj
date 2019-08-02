@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.11.1 (2019-08-02)
 
 ##### Enhancements
 
