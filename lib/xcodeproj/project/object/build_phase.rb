@@ -301,6 +301,10 @@ module Xcodeproj
         #
         attribute :show_env_vars_in_log, String
 
+        # @return [String] the discovered dependency file to use.
+        #
+        attribute :dependency_file, String
+
         # @return [Hash{String => Hash}] A hash suitable to display the build
         #         phase to the user.
         #
