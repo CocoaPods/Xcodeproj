@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add `PBXShellScriptBuildPhase` dependency file.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#705](https://github.com/CocoaPods/Xcodeproj/pull/705)
 
 ##### Bug Fixes
 
