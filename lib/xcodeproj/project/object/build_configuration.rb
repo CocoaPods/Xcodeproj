@@ -215,14 +215,15 @@ module Xcodeproj
 
           settings.keys.each do |key|
             next unless value = settings[key]
+            stripped_key = key.sub(/\[[^\]]+\]$/, '')
             case value
             when String
-              next unless array_settings.include?(key)
+              next unless array_settings.include?(stripped_key)
               array_value = split_build_setting_array_to_string(value)
               next unless array_value.size > 1
               settings[key] = array_value
             when Array
-              next if value.size > 1 && array_settings.include?(key)
+              next if value.size > 1 && array_settings.include?(stripped_key)
               settings[key] = value.join(' ')
             end
           end
