@@ -46,6 +46,25 @@ module Xcodeproj
           @sut.entries.should.nil?
         end
 
+        it '#entries=' do
+          project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+          target1 = project.new_target(:application, 'FooApp', :ios)
+          entry1 = XCScheme::BuildAction::Entry.new
+          entry1.add_buildable_reference(XCScheme::BuildableReference.new(target1))
+
+          target2 = project.new_target(:static_library, 'FooLib', :ios)
+          entry2 = XCScheme::BuildAction::Entry.new
+          entry2.add_buildable_reference(XCScheme::BuildableReference.new(target2))
+
+          @sut.entries = [entry1, entry2]
+
+          @sut.entries.count.should == 2
+          @sut.entries.all? { |e| e.class.should == XCScheme::BuildAction::Entry }
+          @sut.entries[0].xml_element.should == entry1.xml_element
+          @sut.entries[1].xml_element.should == entry2.xml_element
+        end
+
         it 'when there are entries' do
           project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
 
@@ -164,6 +183,18 @@ module Xcodeproj
         entry.add_buildable_reference(ref)
 
         entry.xml_element.elements['BuildableReference'].should == ref.xml_element
+      end
+
+      it '#remove_buildable_reference' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        entry = XCScheme::BuildAction::Entry.new
+
+        target = project.new_target(:application, 'FooApp', :ios)
+        ref = XCScheme::BuildableReference.new(target)
+        entry.add_buildable_reference(ref)
+        entry.xml_element.elements['BuildableReference'].should == ref.xml_element
+        entry.remove_buildable_reference(ref)
+        entry.xml_element.elements['BuildableReference'].should.nil?
       end
 
       it '#buildable_references' do

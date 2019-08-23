@@ -59,6 +59,20 @@ module Xcodeproj
         end
       end
 
+      # @param [Array<BuildAction::Entry>] entries
+      #        Sets the list of BuildActionEntry nodes associated with this Build Action.
+      #
+      def entries=(entries)
+        @xml_element.delete_element('BuildActionEntries')
+        unless entries.empty?
+          entries_element = @xml_element.add_element('BuildActionEntries')
+          entries.each do |entry_node|
+            entries_element.add_element(entry_node.xml_element)
+          end
+        end
+        entries
+      end
+
       # @param [BuildAction::Entry] entry
       #        The BuildActionEntry to add to the list of targets to build for the various actions
       #
@@ -184,6 +198,13 @@ module Xcodeproj
         #
         def add_buildable_reference(ref)
           @xml_element.add_element(ref.xml_element)
+        end
+
+        # @param [BuildableReference] ref
+        #         The BuildableReference to remove from the list of targets this entry will build
+        #
+        def remove_buildable_reference(ref)
+          @xml_element.delete_element(ref.xml_element)
         end
       end
     end

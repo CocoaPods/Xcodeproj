@@ -49,6 +49,23 @@ module Xcodeproj
         @sut.testables[1].xml_element.should == test_ref2.xml_element
       end
 
+      it '#testables=' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        test_ref1 = XCScheme::TestAction::TestableReference.new(target1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        test_ref2 = XCScheme::TestAction::TestableReference.new(target2)
+
+        @sut.testables = [test_ref1, test_ref2]
+
+        @sut.testables.count.should == 2
+        @sut.testables.all? { |t| t.class.should == XCScheme::TestAction::TestableReference }
+        @sut.testables[0].xml_element.should == test_ref1.xml_element
+        @sut.testables[1].xml_element.should == test_ref2.xml_element
+      end
+
       it '#add_testables' do
         project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
 
@@ -393,6 +410,19 @@ module Xcodeproj
         test_ref.add_buildable_reference(ref)
 
         test_ref.xml_element.elements['BuildableReference'].should == ref.xml_element
+      end
+
+      it '#remove_buildable_reference' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        test_ref = XCScheme::TestAction::TestableReference.new
+
+        target = project.new_target(:application, 'FooApp', :ios)
+        ref = XCScheme::BuildableReference.new(target)
+        test_ref.add_buildable_reference(ref)
+
+        test_ref.xml_element.elements['BuildableReference'].should == ref.xml_element
+        test_ref.remove_buildable_reference(ref)
+        test_ref.xml_element.elements['BuildableReference'].should.nil?
       end
 
       it '#buildable_references' do
