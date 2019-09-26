@@ -157,6 +157,8 @@ module Xcodeproj
       end
     end
 
+    alias_method :to_h, :to_hash
+
     # @return [Set<String>] The list of the frameworks required by this
     #         settings file.
     #

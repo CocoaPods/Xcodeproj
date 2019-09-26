@@ -7,6 +7,11 @@
 * Add `PBXShellScriptBuildPhase` dependency file.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#705](https://github.com/CocoaPods/Xcodeproj/pull/705)
+  
+* Add `to_h` alias to `Config`
+  [Eric Amorde](https://github.com/amorde/)
+  [#710](https://github.com/CocoaPods/Xcodeproj/pull/710)
+  
 
 ##### Bug Fixes
 
