@@ -15,7 +15,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Add support for `runOncePerArchitecture` attribute for `PBXBuildRule`.  
+  [Alon Karasik](https://github.com/alon-k/)
+  [#712](https://github.com/CocoaPods/Xcodeproj/pull/712)
 
 
 ## 1.12.0 (2019-08-02)
