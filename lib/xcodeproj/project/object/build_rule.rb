@@ -56,6 +56,13 @@ module Xcodeproj
         #
         attribute :output_files_compiler_flags, Array
 
+        # @return [String] whether the rule should be run once per architecture.
+        #
+        # @example
+        #   `0`.
+        #
+        attribute :run_once_per_architecture, String
+
         # @return [String] the content of the script to use for the build rule.
         #
         # @note   This attribute is present if the #{#compiler_spec} is
