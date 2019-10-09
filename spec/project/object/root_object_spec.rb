@@ -32,7 +32,7 @@ module ProjectSpecs
     end
 
     it 'returns the known regions' do
-      @root_object.known_regions.should == %w(en)
+      @root_object.known_regions.should == %w(en Base)
     end
 
     it 'returns the main group' do

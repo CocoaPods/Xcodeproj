@@ -11,6 +11,10 @@
 * Add `to_h` alias to `Config`
   [Eric Amorde](https://github.com/amorde/)
   [#710](https://github.com/CocoaPods/Xcodeproj/pull/710)
+
+* Update PBXProject known_regions attribute to include 'Base'  
+  [Liam Nichols](https://github.com/liamnichols)
+  [#9187](https://github.com/CocoaPods/CocoaPods/issues/9187)
   
 
 ##### Bug Fixes
