@@ -42,7 +42,7 @@ module Xcodeproj
 
         # @return [Array<String>] the list of known regions.
         #
-        attribute :known_regions, Array, ['en']
+        attribute :known_regions, Array, %w(en Base)
 
         # @return [PBXGroup] the main group of the project. The one displayed
         #         by Xcode in the Project Navigator.
