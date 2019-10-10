@@ -19,6 +19,10 @@
 
 ##### Bug Fixes
 
+* Add support for `productRef` attribute for `PBXTargetDependency`.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#715](https://github.com/CocoaPods/Xcodeproj/issues/715)
+
 * Add support for `runOncePerArchitecture` attribute for `PBXBuildRule`.  
   [Alon Karasik](https://github.com/alon-k/)
   [#712](https://github.com/CocoaPods/Xcodeproj/pull/712)
