@@ -8,7 +8,8 @@
 
 ##### Bug Fixes
 
-* None.  
+* Properly serialize array settings when running `config-dump`.  
+  [Samuel Giddins](https://github.com/segiddins)
 
 
 ## 1.13.0 (2019-10-16)

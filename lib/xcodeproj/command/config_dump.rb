@@ -76,7 +76,11 @@ module Xcodeproj
 
       def dump_config_to_file(settings, file_path, includes = [])
         dir = @output_path + file_path + '..'
-        dir.mkdir unless dir.exist?
+        dir.mkpath
+
+        settings = Hash[settings.map do |k, v|
+          [k, Array(v).join(' ')]
+        end]
 
         config = Config.new(settings)
         config.includes = includes
