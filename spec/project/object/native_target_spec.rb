@@ -245,6 +245,13 @@ module ProjectSpecs
           @target.common_resolved_build_setting('ARCHS').should == 'VALID_ARCHS'
         end
 
+        it 'returns the common resolved build setting for the given key including xcconfig' do
+          target_xcconfig = @project.new_file(fixture_path('target.xcconfig'))
+          @target.build_configuration_list.build_configurations.each { |build_config| build_config.base_configuration_reference = target_xcconfig }
+          @target.common_resolved_build_setting('APPLICATION_EXTENSION_API_ONLY', :resolve_against_xcconfig => false).should.be.nil
+          @target.common_resolved_build_setting('APPLICATION_EXTENSION_API_ONLY', :resolve_against_xcconfig => true).should == 'YES'
+        end
+
         it 'raises if the build setting has multiple values across the build configurations' do
           @target.build_configuration_list.build_configurations.first.build_settings['ARCHS'] = 'arm64'
           @target.build_configuration_list.build_configurations.last.build_settings['ARCHS'] = 'VALID_ARCHS'
