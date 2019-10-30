@@ -58,7 +58,7 @@ module Xcodeproj
         string_to_bool(@xml_element.attributes['codeCoverageEnabled'])
       end
 
-      # @rparam [Bool] flag
+      # @param [Bool] flag
       #         Set whether Clang Code Coverage is enabled ('Gather coverage data' turned ON)
       #
       def code_coverage_enabled=(flag)

@@ -42,7 +42,7 @@ module Xcodeproj
         #        the key of the build setting.
         #
         # @param [Bool] resolve_against_xcconfig
-        #        wether the resolved setting should take in consideration any
+        #        whether the resolved setting should take in consideration any
         #        configuration file present.
         #
         # @return [Hash{String => String}] The value of the build setting
@@ -74,6 +74,10 @@ module Xcodeproj
         # @param [String] key
         #        the key of the build setting.
         #
+        # @param [Boolean] resolve_against_xcconfig
+        #        whether the resolved setting should take in consideration any
+        #        configuration file present.
+        #
         # @raise  If the build setting has multiple values.
         #
         # @note   As it is common not to have a setting with no value for
@@ -83,8 +87,8 @@ module Xcodeproj
         #
         # @return [String] The value of the build setting.
         #
-        def common_resolved_build_setting(key)
-          values = resolved_build_setting(key).values.compact.uniq
+        def common_resolved_build_setting(key, resolve_against_xcconfig: false)
+          values = resolved_build_setting(key, resolve_against_xcconfig).values.compact.uniq
           if values.count <= 1
             values.first
           else
