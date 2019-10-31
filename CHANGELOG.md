@@ -11,6 +11,9 @@
 * Properly serialize array settings when running `config-dump`.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Add `to_h` alias to `Config`
+  [wade0317](https://github.com/wade0317)
+  [#723](https://github.com/CocoaPods/Xcodeproj/pull/723)
 
 ## 1.13.0 (2019-10-16)
 
