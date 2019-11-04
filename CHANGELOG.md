@@ -11,7 +11,7 @@
 * Properly serialize array settings when running `config-dump`.  
   [Samuel Giddins](https://github.com/segiddins)
 
-* Add iMessage extensions 
+* Add iMessage extensions. 
   [wade0317](https://github.com/wade0317)
   [#723](https://github.com/CocoaPods/Xcodeproj/pull/723)
 
