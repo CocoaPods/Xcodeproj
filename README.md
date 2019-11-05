@@ -92,3 +92,5 @@ for more info.
 [xcodeproj]: https://github.com/cocoapods/xcodeproj
 [tickets]: https://github.com/cocoapods/xcodeproj/issues
 [license]: LICENSE
+
+test
