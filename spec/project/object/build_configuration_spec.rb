@@ -115,7 +115,7 @@ module ProjectSpecs
           @configuration.resolve_build_setting('mixes_braces_and_parens').should == '${ab) $(cd}){})'
         end
 
-        xit 'resolves mutually-recursive references to nil' do
+        it 'resolves mutually-recursive references to nil' do
           @configuration.resolve_build_setting('mutually_recursive_1').should.nil?
           @configuration.resolve_build_setting('mutually_recursive_2').should.nil?
           @configuration.resolve_build_setting('mutually_recursive').should.nil?
