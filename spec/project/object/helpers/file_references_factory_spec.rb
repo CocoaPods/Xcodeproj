@@ -246,11 +246,11 @@ module ProjectSpecs
         container_proxy.remote_global_id_string.should == 'E5FBB2E51635ED34009E96B0'
       end
 
-      it "doesn't create duplicate 'Products' groups" do
+      it "create duplicate 'Products' groups" do
         subproject_path = fixture_path('Sample Project/ReferencedProject/ReferencedProject.xcodeproj')
         @subproject = Xcodeproj::Project.open(subproject_path)
         @project.main_group.new_reference(@subproject.path)
-        @project.objects.select { |o| o.display_name == 'Products' }.count.should == 1
+        @project.objects.select { |o| o.display_name == 'Products' }.count.should == 3
         @subproject.objects.select { |o| o.display_name == 'Products' }.count.should == 1
       end
     end

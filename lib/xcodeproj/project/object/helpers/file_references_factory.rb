@@ -178,7 +178,8 @@ module Xcodeproj
             ref = new_file_reference(group, path, source_tree)
             ref.include_in_index = nil
 
-            product_group_ref = find_products_group_ref(group, true)
+            product_group_ref = group.project.new(Xcodeproj::Project::PBXGroup)
+            product_group_ref.name = 'Products'
 
             subproj = Project.open(path)
             subproj.products_group.files.each do |product_reference|
