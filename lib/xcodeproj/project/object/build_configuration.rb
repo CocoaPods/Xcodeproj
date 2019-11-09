@@ -8,6 +8,8 @@ module Xcodeproj
       class XCBuildConfiguration < AbstractObject
         MUTUAL_RECURSION_SENTINEL = 'xcodeproj.mutual_recursion_sentinel'.freeze
 
+        private_constant :MUTUAL_RECURSION_SENTINEL
+
         # @!group Attributes
 
         # @return [String] the name of the Target.
