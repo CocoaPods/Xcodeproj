@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.14.0 (2019-12-14)
+
+##### Enhancements
+
 * Provide option to look into xcconfigs for common build settings.
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#722](https://github.com/CocoaPods/Xcodeproj/pull/722)
