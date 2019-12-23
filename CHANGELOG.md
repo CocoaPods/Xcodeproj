@@ -28,6 +28,10 @@
   [wade0317](https://github.com/wade0317)
   [#723](https://github.com/CocoaPods/Xcodeproj/pull/723)
 
+* Create separate group for subproject targets  
+  [maniramezan](https://github.com/maniramezan)
+  [#678](https://github.com/CocoaPods/Xcodeproj/issues/678)
+
 ## 1.13.0 (2019-10-16)
 
 ##### Enhancements
