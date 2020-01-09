@@ -182,7 +182,8 @@ module Xcodeproj
             # to prevent infinite recursion
             nil
           when previous_key
-            # to prevent infinite recursion; we don't return nil as for the self recursion because it
+            # to prevent infinite recursion; we don't return nil as for the self recursion because it needs to be
+            # distinguished outside this method too
             MUTUAL_RECURSION_SENTINEL
           else
             configuration_to_resolve_against = root_target ? root_target.build_configuration_list[name] : self
