@@ -6,6 +6,10 @@ module Xcodeproj
       # {PBXProject} or a {PBXNativeTarget}.
       #
       class XCBuildConfiguration < AbstractObject
+        MUTUAL_RECURSION_SENTINEL = 'xcodeproj.mutual_recursion_sentinel'.freeze
+
+        private_constant :MUTUAL_RECURSION_SENTINEL
+
         # @!group Attributes
 
         # @return [String] the name of the Target.
@@ -79,16 +83,19 @@ module Xcodeproj
         #        the key of the build setting.
         #
         # @param [PBXNativeTarget] root_target
-        #        use this to resolve complete recursion between project and targets
+        #        use this to resolve complete recursion between project and targets.
+        #
+        # @param [String] previous_key
+        #        use this to resolve complete recursion between different build settings.
         #
         # @return [String] The value of the build setting
         #
-        def resolve_build_setting(key, root_target = nil)
+        def resolve_build_setting(key, root_target = nil, previous_key = nil)
           setting = build_settings[key]
-          setting = resolve_variable_substitution(key, setting, root_target)
+          setting = resolve_variable_substitution(key, setting, root_target, previous_key)
 
           config_setting = config[key]
-          config_setting = resolve_variable_substitution(key, config_setting, root_target)
+          config_setting = resolve_variable_substitution(key, config_setting, root_target, previous_key)
 
           project_setting = project.build_configuration_list[name]
           project_setting = nil if equal?(project_setting)
@@ -98,6 +105,12 @@ module Xcodeproj
             'CONFIGURATION' => name,
             'SRCROOT' => project.project_dir.to_s,
           }
+
+          # if previous_key is nil, it means that we're back at the first call, so we can replace our sentinel string
+          # used to prevent recursion with nil
+          if previous_key.nil? && setting == MUTUAL_RECURSION_SENTINEL
+            setting = nil
+          end
 
           [defaults[key], project_setting, config_setting, setting, ENV[key]].compact.reduce(nil) do |inherited, value|
             expand_build_setting(value, inherited)
@@ -142,7 +155,7 @@ module Xcodeproj
           build_setting_value.flat_map { |value| Constants::INHERITED_KEYWORDS.include?(value) ? inherited : value }
         end
 
-        def resolve_variable_substitution(key, value, root_target)
+        def resolve_variable_substitution(key, value, root_target, previous_key = nil)
           case value
           when Array
             return value.map { |v| resolve_variable_substitution(key, v, root_target) }
@@ -168,9 +181,20 @@ module Xcodeproj
           when key
             # to prevent infinite recursion
             nil
+          when previous_key
+            # to prevent infinite recursion; we don't return nil as for the self recursion because it needs to be
+            # distinguished outside this method too
+            MUTUAL_RECURSION_SENTINEL
           else
             configuration_to_resolve_against = root_target ? root_target.build_configuration_list[name] : self
-            resolved_value_for_variable = configuration_to_resolve_against.resolve_build_setting(variable, root_target) || ''
+            resolved_value_for_variable = configuration_to_resolve_against.resolve_build_setting(variable, root_target, key) || ''
+
+            # we use this sentinel string instead of nil, because, otherwise, it would be swallowed by the default empty
+            # string from the preceding line, and we want to distinguish between mutual recursion and other cases
+            if resolved_value_for_variable == MUTUAL_RECURSION_SENTINEL
+              return MUTUAL_RECURSION_SENTINEL
+            end
+
             value = value.gsub(variable_reference, resolved_value_for_variable)
             resolve_variable_substitution(key, value, root_target)
           end
