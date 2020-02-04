@@ -8,6 +8,17 @@
 
 ##### Bug Fixes
 
+* None.  
+
+
+## 1.15.0 (2020-02-04)
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
 * Fix incorrect formatting of build settings with modifiers  
   [revolter](https://github.com/revolter)
   [#706](https://github.com/CocoaPods/CocoaPods/pull/706)
