@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix incorrect formatting of build settings with modifiers  
+  [revolter](https://github.com/revolter)
+  [#706](https://github.com/CocoaPods/CocoaPods/pull/706)
 
 
 ## 1.14.0 (2019-12-14)
@@ -58,10 +60,6 @@
 * Add support for `runOncePerArchitecture` attribute for `PBXBuildRule`.  
   [Alon Karasik](https://github.com/alon-k/)
   [#712](https://github.com/CocoaPods/Xcodeproj/pull/712)
-
-* Fix incorrect formatting of build settings with modifiers  
-  [revolter](https://github.com/revolter)
-  [#706](https://github.com/CocoaPods/CocoaPods/pull/706)
 
 
 ## 1.12.0 (2019-08-02)
