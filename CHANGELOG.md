@@ -21,7 +21,7 @@
 
 * Fix incorrect formatting of build settings with modifiers  
   [revolter](https://github.com/revolter)
-  [#706](https://github.com/CocoaPods/CocoaPods/pull/706)
+  [#706](https://github.com/CocoaPods/Xcodeproj/pull/706)
 
 
 ## 1.14.0 (2019-12-14)
