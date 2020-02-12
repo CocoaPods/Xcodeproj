@@ -76,6 +76,18 @@ module Xcodeproj
         end
       end
 
+      # @param [Array<TestableReference>] testables
+      #         Sets the list of TestableReference (test bundles) associated with this Test Action
+      #
+      def testables=(testables)
+        @xml_element.delete_element('Testables')
+        testables_element = @xml_element.add_element('Testables')
+        testables.each do |testable|
+          testables_element.add_element(testable.xml_element)
+        end
+        testables
+      end
+
       # @param [TestableReference] testable
       #        Add a TestableReference (test bundle) to this Test Action
       #
@@ -217,6 +229,13 @@ module Xcodeproj
         #
         def add_buildable_reference(ref)
           @xml_element.add_element(ref.xml_element)
+        end
+
+        # @param [BuildableReference] ref
+        #         The BuildableReference to remove from the list of targets this entry will build
+        #
+        def remove_buildable_reference(ref)
+          @xml_element.delete_element(ref.xml_element)
         end
 
         # @return [Array<Test>]

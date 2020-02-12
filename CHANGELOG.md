@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add new APIs to set testables or entries in schemes.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#707](https://github.com/CocoaPods/Xcodeproj/pull/707)
 
 ##### Bug Fixes
 
