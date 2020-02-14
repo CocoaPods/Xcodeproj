@@ -143,6 +143,22 @@ module Xcodeproj
         @xml_element.add_element(arguments.xml_element) if arguments
         arguments
       end
+
+      # @return [Array<MacroExpansion>]
+      #         The list of MacroExpansion bound with this LaunchAction
+      #
+      def macro_expansions
+        @xml_element.get_elements('MacroExpansion').map do |node|
+          MacroExpansion.new(node)
+        end
+      end
+
+      # @param [MacroExpansion] macro_expansion
+      #        Add a MacroExpansion to this LaunchAction
+      #
+      def add_macro_expansion(macro_expansion)
+        @xml_element.add_element(macro_expansion.xml_element)
+      end
     end
   end
 end

@@ -180,6 +180,39 @@ module Xcodeproj
           xml_out.should == "<EnvironmentVariables>\n<EnvironmentVariable key='a' value='1' isEnabled='YES'/>\n</EnvironmentVariables>"
         end
       end
+
+      it '#macro_expansions' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        macro1 = XCScheme::MacroExpansion.new(target1)
+        @sut.xml_element.add_element(macro1.xml_element)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        macro2 = XCScheme::MacroExpansion.new(target2)
+        @sut.xml_element.add_element(macro2.xml_element)
+
+        @sut.macro_expansions.count.should == 2
+        @sut.macro_expansions.all? { |m| m.class.should == XCScheme::MacroExpansion }
+        @sut.macro_expansions[0].xml_element.should == macro1.xml_element
+        @sut.macro_expansions[1].xml_element.should == macro2.xml_element
+      end
+
+      it '#add_macro_expansion' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        macro1 = XCScheme::MacroExpansion.new(target1)
+        @sut.add_macro_expansion(macro1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        macro2 = XCScheme::MacroExpansion.new(target2)
+        @sut.add_macro_expansion(macro2)
+
+        @sut.xml_element.get_elements('MacroExpansion').count.should == 2
+        @sut.xml_element.elements['MacroExpansion[1]'].should == macro1.xml_element
+        @sut.xml_element.elements['MacroExpansion[2]'].should == macro2.xml_element
+      end
     end
   end
 end

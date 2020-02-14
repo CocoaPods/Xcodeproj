@@ -8,6 +8,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#707](https://github.com/CocoaPods/Xcodeproj/pull/707)
 
+* Add support for macro expansions to launch actions.  
+  [Eric Amorde](https://github.com/amorde)
+  [#738](https://github.com/CocoaPods/Xcodeproj/pull/738)
+
 ##### Bug Fixes
 
 * None.  
