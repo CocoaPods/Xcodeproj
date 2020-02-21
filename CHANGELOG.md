@@ -14,8 +14,10 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Handle project_dir_path attribute for project location.  
+  [Paul Beusterien](https://github.com/paulb777)
+  [Andrew](https://github.com/mad-rain)
+  [#739](https://github.com/CocoaPods/Xcodeproj/pull/739)
 
 ## 1.15.0 (2020-02-04)
 

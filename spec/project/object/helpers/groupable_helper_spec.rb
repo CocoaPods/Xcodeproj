@@ -183,6 +183,13 @@ module ProjectSpecs
         @helper.source_tree_real_path(@group).should == Pathname.new('/project_dir')
       end
 
+      it 'check project_dir_path adjustment' do
+        @group.source_tree = '<group>'
+        @project.root_object.stubs(:project_dir_path).returns('../')
+        @helper.source_tree_real_path(@group).to_s.should.not.include Pathname.new('/project_dir').to_s
+        Pathname.new('/project_dir').to_s.should.include @helper.source_tree_real_path(@group).to_s
+      end
+
       it 'returns the source tree of a path relative to a group' do
         @group.source_tree = '<absolute>'
         @group.path = '/parent_group_path'
