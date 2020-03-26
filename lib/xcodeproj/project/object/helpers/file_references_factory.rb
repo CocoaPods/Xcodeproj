@@ -179,7 +179,7 @@ module Xcodeproj
             ref.include_in_index = nil
 
             product_group_ref = group.project.new(PBXGroup)
-            product_group_ref.name = "Products"
+            product_group_ref.name = 'Products'
 
             subproj = Project.open(path)
             subproj.products_group.files.each do |product_reference|
@@ -250,15 +250,12 @@ module Xcodeproj
           # @return [String] The remote info name.
           #
           def find_remote_info_name_for_product_reference(ref, project)
-              if ref == nil || project == nil
-                  return 'Subproject'
+              project.native_targets.each do |target|
+                if target.product_reference == ref
+                  return target.name
+                end
               end
-              project.native_targets.each { |target|
-                  if target.product_reference == ref
-                      return target.name
-                  end
-              }
-              return 'Subproject'
+              'Subproject'
           end
 
           #-------------------------------------------------------------------#
