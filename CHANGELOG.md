@@ -18,6 +18,10 @@
   [Paul Beusterien](https://github.com/paulb777)
   [Andrew](https://github.com/mad-rain)
   [#739](https://github.com/CocoaPods/Xcodeproj/pull/739)
+  
+* Fix crash when adding sub project.
+  [HDB Li](https://github.com/HDB-Li)
+  [#745](https://github.com/CocoaPods/Xcodeproj/pull/745)
 
 ## 1.15.0 (2020-02-04)
 
