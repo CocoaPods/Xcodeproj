@@ -19,7 +19,7 @@
   [Andrew](https://github.com/mad-rain)
   [#739](https://github.com/CocoaPods/Xcodeproj/pull/739)
   
-* Fix crash when adding sub project.
+* Fix crash when adding sub project.  
   [HDB Li](https://github.com/HDB-Li)
   [#745](https://github.com/CocoaPods/Xcodeproj/pull/745)
 
