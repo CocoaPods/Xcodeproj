@@ -32,7 +32,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION = 52
+    LAST_KNOWN_OBJECT_VERSION = 53
 
     # @return [String] The last known object version to Xcodeproj.
     #
@@ -126,6 +126,7 @@ module Xcodeproj
     # @return [Hash] The compatibility version string for different object versions.
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
+      53 => 'Xcode 11.4',
       52 => 'Xcode 11.0',
       51 => 'Xcode 10.0',
       50 => 'Xcode 9.3',

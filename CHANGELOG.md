@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add Xcode 11.4 object version.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#744](https://github.com/CocoaPods/Xcodeproj/issues/744)
+
 * Add new APIs to set testables or entries in schemes.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#707](https://github.com/CocoaPods/Xcodeproj/pull/707)
