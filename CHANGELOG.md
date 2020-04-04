@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* target_dependency: Add target proxy to `to_tree_hash`.
+  [Ben Yohay](https://github.com/byohay)
 
 ##### Bug Fixes
 

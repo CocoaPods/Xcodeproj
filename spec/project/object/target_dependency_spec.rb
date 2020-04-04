@@ -40,6 +40,32 @@ module ProjectSpecs
       lambda { @target_dependency.sort_recursively }.should.not.raise
     end
 
+    it 'tree hash does not contain target' do
+      target = @project.new_target(:static, 'Pods', :ios)
+      @target_dependency.target = target
+      target.dependencies << @target_dependency
+
+      proxy = @project.new(PBXContainerItemProxy)
+      proxy.container_portal = @project.root_object.uuid
+      proxy.remote_info = 'Pods'
+      proxy.proxy_type = '1'
+      proxy.remote_global_id_string = target.uuid
+      @target_dependency.target_proxy = proxy
+
+      @target_dependency.to_tree_hash.should == {
+        'displayName' => 'Pods',
+        'isa' => 'PBXTargetDependency',
+        'targetProxy' => {
+          'displayName' => 'ContainerItemProxy',
+          'isa' => 'PBXContainerItemProxy',
+          'containerPortal' => @project.root_object.uuid,
+          'proxyType' => '1',
+          'remoteGlobalIDString' => target.uuid,
+          'remoteInfo' => 'Pods',
+        },
+      }
+    end
+
     #----------------------------------------#
 
     describe '#display_name' do
