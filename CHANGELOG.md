@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.16.0 (2020-04-10)
+
+##### Enhancements
+
 * Add Xcode 11.4 object version.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#744](https://github.com/CocoaPods/Xcodeproj/issues/744)
