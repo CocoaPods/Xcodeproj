@@ -3,6 +3,9 @@
 ## Master
 
 ##### Enhancements
+* Support On-Demand Resource   
+  [JunyiXie](https://github.com/JunyiXie)
+  [#issue_number](https://github.com/CocoaPods/Xcodeproj/pull/742)
 
 * Add new APIs to set testables or entries in schemes.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
