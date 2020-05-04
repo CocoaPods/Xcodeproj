@@ -52,7 +52,9 @@ module Xcodeproj
               prefix = 'lib'
             end
             extension = Constants::PRODUCT_UTI_EXTENSIONS[product_type]
-            ref = new_reference(group, "#{prefix}#{target_name}.#{extension}", :built_products)
+            path = "#{prefix}#{target_name}"
+            path += ".#{extension}" if extension
+            ref = new_reference(group, path, :built_products)
             ref.include_in_index = '0'
             ref.set_explicit_file_type
             ref
