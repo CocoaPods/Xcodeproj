@@ -281,5 +281,19 @@ module ProjectSpecs
     end
 
     #-------------------------------------------------------------------------#
+
+    describe '::new_product_ref_for_target' do
+      it 'adds extension for target types that have extensions' do
+        ref = @factory.new_product_ref_for_target(@group, 'Pods', :static_library)
+        ref.path.should == 'libPods.a'
+      end
+
+      it 'does not add trailing dot for target types that do not have extensions' do
+        ref = @factory.new_product_ref_for_target(@group, 'mytool', :command_line_tool)
+        ref.path.should == 'mytool'
+      end
+    end
+
+    #-------------------------------------------------------------------------#
   end
 end
