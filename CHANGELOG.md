@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix small bug where product references have a trailing dot  
+  [nickgravelyn](https://github.com/nickgravelyn)
+  [#757](https://github.com/CocoaPods/Xcodeproj/pull/757)
 
 
 ## 1.16.0 (2020-04-10)
