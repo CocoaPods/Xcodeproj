@@ -19,7 +19,6 @@ module Xcodeproj
           @xml_element.attributes['ignoresPersistentStateOnLaunch'] = bool_to_string(false)
           @xml_element.attributes['debugDocumentVersioning'] = bool_to_string(true)
           @xml_element.attributes['debugServiceExtension'] = 'internal'
-          @xml_element.add_element('AdditionalOptions')
 
           # Setup default values for other (handled) attributes
           self.build_configuration = 'Debug'

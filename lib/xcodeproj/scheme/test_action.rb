@@ -13,7 +13,6 @@ module Xcodeproj
         create_xml_element_with_fallback(node, 'TestAction') do
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
-          @xml_element.add_element('AdditionalOptions')
           self.should_use_launch_scheme_args_env = true
           self.build_configuration = 'Debug'
         end
@@ -128,8 +127,6 @@ module Xcodeproj
         @xml_element.add_element(env_vars.xml_element) if env_vars
         env_vars
       end
-
-      # @todo handle 'AdditionalOptions' tag
 
       # @return [CommandLineArguments]
       #         Returns the CommandLineArguments that will be passed at app launch
@@ -345,7 +342,6 @@ module Xcodeproj
         #
         SkippedTest = Test
 
-        # @todo handle 'AdditionalOptions' tag
       end
     end
   end
