@@ -87,14 +87,14 @@ module Xcodeproj
 
       # @!group Private helpers
 
-      # @param [Xcodeproj::Project::Object::AbstractTarget] target
+      # @param [Xcodeproj::Project::Object::AbstractTarget] build_target
       #
       # @return [String] The buildable name of the scheme.
       #
       def construct_buildable_name(build_target)
         case build_target.isa
         when 'PBXNativeTarget'
-          File.basename(build_target.product_reference.path)
+          build_target.product_reference.name || File.basename(build_target.product_reference.path)
         when 'PBXAggregateTarget'
           build_target.name
         else
@@ -104,7 +104,7 @@ module Xcodeproj
 
       # @param [Xcodeproj::Project::Object::AbstractTarget] target
       #
-      # @param [Xcodeproj::Project] the root project to reference from
+      # @param [Xcodeproj::Project] root_project the root project to reference from
       #                             (when nil the project of the target is used)
       #
       # @return [String] A string in the format "container:[path to the project
