@@ -27,7 +27,7 @@ module Xcodeproj
                   when '.xcdatamodeld'
                     new_xcdatamodeld(group, path, source_tree)
                   when '.xcodeproj'
-                    new_subproject(group, path, source_tree)
+                    new_subproject(group, Project.open(path), source_tree)
                   else
                     new_file_reference(group, path, source_tree)
                   end
@@ -75,6 +75,61 @@ module Xcodeproj
             ref = new_reference(group, "#{product_name}.bundle", :built_products)
             ref.include_in_index = '0'
             ref.set_explicit_file_type('wrapper.cfbundle')
+            ref
+          end
+
+          # Creates a file reference to another loaded Project instance and sets up the
+          # proxies to the targets.
+          #
+          # @param  [PBXGroup] group
+          #         The group to which to add the reference.
+          #
+          # @param  [Project] project
+          #         The sub-project to add
+          #
+          # @param  [Symbol] source_tree
+          #         The source tree key to use to configure the path (@see
+          #         GroupableHelper::SOURCE_TREES_BY_KEY).
+          #
+          # @return [PBXFileReference] The new file reference.
+          #
+          def new_subproject(group, project, source_tree)
+            parent_project = group.project
+            puts "Adding subproject #{project.path} to #{parent_project}"
+            ref = new_file_reference(group, project.path, source_tree)
+            ref.name = File.basename(project.path, '.*')
+            ref.include_in_index = nil
+
+            # Create a new Products group to store this subproject's products
+            product_group_ref = parent_project.new(PBXGroup)
+            product_group_ref.name = 'Products'
+            product_group_ref.set_source_tree(:absolute)
+            # This path may not actually exist, but is meant to be unique so we don't get duplicate UUIDs
+            product_group_ref.set_path(project.path.dirname + File.basename(project.path, '.*'))
+
+            project.products_group.files.each do |product_reference|
+              container_proxy = group.project.new(PBXContainerItemProxy)
+              container_proxy.container_portal = File.basename(ref.uuid)
+              container_proxy.proxy_type = Constants::PROXY_TYPES[:reference]
+              container_proxy.remote_global_id_string = product_reference.uuid
+              container_proxy.remote_info = 'Subproject'
+
+              reference_proxy = group.project.new(PBXReferenceProxy)
+              extension = File.extname(product_reference.path)[1..-1]
+              reference_proxy.file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
+              reference_proxy.path = product_reference.path
+              reference_proxy.remote_ref = container_proxy
+              reference_proxy.source_tree = 'BUILT_PRODUCTS_DIR'
+
+              product_group_ref << reference_proxy
+            end
+
+            attribute = PBXProject.references_by_keys_attributes.find { |attrb| attrb.name == :project_references }
+            project_reference = ObjectDictionary.new(attribute, group.project.root_object)
+            project_reference[:project_ref] = ref
+            project_reference[:product_group] = product_group_ref
+            group.project.root_object.project_references << project_reference
+
             ref
           end
 
@@ -154,57 +209,6 @@ module Xcodeproj
                 end
               end
             end
-
-            ref
-          end
-
-          # Creates a file reference to another Xcode subproject and setups the
-          # proxies to the targets.
-          #
-          # @param  [PBXGroup] group
-          #         The group to which to add the reference.
-          #
-          # @param  [#to_s] path
-          #         The, preferably absolute, path of the reference.
-          #
-          # @param  [Symbol] source_tree
-          #         The source tree key to use to configure the path (@see
-          #         GroupableHelper::SOURCE_TREES_BY_KEY).
-          #
-          # @note   To analyze the targets the given project is read and thus
-          #         it should already exist in the disk.
-          #
-          # @return [PBXFileReference] The new file reference.
-          #
-          def new_subproject(group, path, source_tree)
-            ref = new_file_reference(group, path, source_tree)
-            ref.include_in_index = nil
-
-            product_group_ref = find_products_group_ref(group, true)
-
-            subproj = Project.open(path)
-            subproj.products_group.files.each do |product_reference|
-              container_proxy = group.project.new(PBXContainerItemProxy)
-              container_proxy.container_portal = ref.uuid
-              container_proxy.proxy_type = Constants::PROXY_TYPES[:reference]
-              container_proxy.remote_global_id_string = product_reference.uuid
-              container_proxy.remote_info = 'Subproject'
-
-              reference_proxy = group.project.new(PBXReferenceProxy)
-              extension = File.extname(product_reference.path)[1..-1]
-              reference_proxy.file_type = Constants::FILE_TYPES_BY_EXTENSION[extension]
-              reference_proxy.path = product_reference.path
-              reference_proxy.remote_ref = container_proxy
-              reference_proxy.source_tree = 'BUILT_PRODUCTS_DIR'
-
-              product_group_ref << reference_proxy
-            end
-
-            attribute = PBXProject.references_by_keys_attributes.find { |attrb| attrb.name == :project_references }
-            project_reference = ObjectDictionary.new(attribute, group.project.root_object)
-            project_reference[:project_ref] = ref
-            project_reference[:product_group] = product_group_ref
-            group.project.root_object.project_references << project_reference
 
             ref
           end
