@@ -93,7 +93,7 @@ module Xcodeproj
 
         def container_portal_annotation
           if remote?
-            " #{File.basename(project.objects_by_uuid[container_portal].real_path)} "
+            " #{File.basename(project.objects_by_uuid[container_portal].real_path, '.*')} "
           else
             project.root_object.ascii_plist_annotation
           end
