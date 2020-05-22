@@ -14,7 +14,7 @@ group :development do
   gem 'mocha'
   gem 'mocha-on-bacon'
   gem 'prettybacon'
-  gem 'rake'
+  gem 'rake', '~> 12.0'
 
   gem 'codeclimate-test-reporter', '~> 0.4.1', :require => nil
   gem 'rubocop'
