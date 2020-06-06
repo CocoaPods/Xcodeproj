@@ -107,8 +107,9 @@ module Xcodeproj
       else
         raise ArgumentError, "Input to the << operator must be a file path or FileReference, got #{path_or_reference.inspect}"
       end
-
-      @document.root.add_element(project_file_reference.to_node)
+      unless file_references.any? { |ref| project_file_reference.eql? ref }
+        @document.root.add_element(project_file_reference.to_node)
+      end
       load_schemes_from_project File.expand_path(projpath || project_file_reference.path)
     end
 

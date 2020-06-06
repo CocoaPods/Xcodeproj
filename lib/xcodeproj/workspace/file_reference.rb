@@ -13,7 +13,7 @@ module Xcodeproj
       # @param [#to_s] type @see type
       #
       def initialize(path, type = 'group')
-        @path = path.to_s
+        @path = Pathname.new(path.to_s).cleanpath.to_s
         @type = type.to_s
       end
 
