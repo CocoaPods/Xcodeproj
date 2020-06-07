@@ -73,6 +73,7 @@ module Xcodeproj
           hash = {}
           hash['displayName'] = display_name
           hash['isa'] = isa
+          hash['targetProxy'] = target_proxy.to_tree_hash
           hash
         end
 
