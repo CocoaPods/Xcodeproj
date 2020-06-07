@@ -252,12 +252,7 @@ module Xcodeproj
           # @return [String] The remote info name.
           #
           def find_remote_info_name_for_product_reference(ref, project)
-            project.native_targets.each do |target|
-              if target.product_reference == ref
-                return target.name
-              end
-            end
-            'Subproject'
+            project.native_targets.find { |t| t.product_reference == ref } || 'Subproject'
           end
 
           #-------------------------------------------------------------------#
