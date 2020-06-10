@@ -180,7 +180,8 @@ module Xcodeproj
             ref = new_file_reference(group, path, source_tree)
             ref.include_in_index = nil
 
-            product_group_ref = find_products_group_ref(group, true)
+            product_group_ref = group.project.new(PBXGroup)
+            product_group_ref.name = 'Products'
 
             subproj = Project.open(path)
             subproj.products_group.files.each do |product_reference|
@@ -188,7 +189,7 @@ module Xcodeproj
               container_proxy.container_portal = ref.uuid
               container_proxy.proxy_type = Constants::PROXY_TYPES[:reference]
               container_proxy.remote_global_id_string = product_reference.uuid
-              container_proxy.remote_info = 'Subproject'
+              container_proxy.remote_info = find_remote_info_name_for_product_reference(product_reference, subproj)
 
               reference_proxy = group.project.new(PBXReferenceProxy)
               extension = File.extname(product_reference.path)[1..-1]
@@ -235,6 +236,24 @@ module Xcodeproj
             product_group_ref =
               (group.project.root_object.product_ref_group ||= group.project.main_group.find_subpath('Products', should_create))
             product_group_ref
+          end
+
+          # Find the remote info name for a new sub project.
+          #
+          # @param  [PBXFileReference] ref
+          #         The file reference to compare.
+          #
+          # @param  [Project] project
+          #         The project to which to find the target.
+          #
+          # @note   If the target is found, then return the name of target,
+          #         otherwise, the default value 'Subproject' will be returned
+          #
+          # @return [String] The remote info name.
+          #
+          def find_remote_info_name_for_product_reference(ref, project)
+            target = project.native_targets.find { |t| t.product_reference == ref }
+            target.nil? ? 'Subproject' : target.name
           end
 
           #-------------------------------------------------------------------#
