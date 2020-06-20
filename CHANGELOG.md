@@ -9,6 +9,10 @@
 
 ##### Bug Fixes
 
+* Prevent duplicate project references from being added to the generated workspace.  
+  [Sean Reinhardt](https://github.com/seanreinhardtapps)
+  [#8481](https://github.com/CocoaPods/CocoaPods/issues/8481)
+  
 * Fix small bug where product references have a trailing dot  
   [nickgravelyn](https://github.com/nickgravelyn)
   [#757](https://github.com/CocoaPods/Xcodeproj/pull/757)

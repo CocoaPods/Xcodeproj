@@ -30,6 +30,12 @@ module Xcodeproj
       result.should == @file
     end
 
+    it 'cleans messy file paths' do
+      Workspace::FileReference.new('project.xcodeproj').path.should == 'project.xcodeproj'
+      Workspace::FileReference.new('Directory1/directory_2/project.xcodeproj').path.should == 'Directory1/directory_2/project.xcodeproj'
+      Workspace::FileReference.new('D1/D2/../../D3/../Directory/project.xcodeproj').path.should == 'Directory/project.xcodeproj'
+    end
+
     it 'returns the absolute path for group types' do
       result = @file.absolute_path('/path/to/')
       result.should == '/path/to/project.xcodeproj'

@@ -3,9 +3,9 @@ require File.expand_path('../spec_helper', __FILE__)
 describe Xcodeproj::Workspace do
   describe 'from new' do
     before do
-      pods_project_file_reference = Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
-      project_file_reference = Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
-      @workspace = Xcodeproj::Workspace.new(pods_project_file_reference, project_file_reference)
+      @pods_project_file_reference = Xcodeproj::Workspace::FileReference.new('Pods/Pods.xcodeproj')
+      @project_file_reference = Xcodeproj::Workspace::FileReference.new('App.xcodeproj')
+      @workspace = Xcodeproj::Workspace.new(@pods_project_file_reference, @project_file_reference)
     end
 
     it 'contains the initial projects' do
@@ -15,7 +15,22 @@ describe Xcodeproj::Workspace do
 
     it 'accepts new projects' do
       @workspace << 'Framework.xcodeproj'
-      @workspace.file_references.should.include Xcodeproj::Workspace::FileReference.new('Framework.xcodeproj')
+      proj_ref = Xcodeproj::Workspace::FileReference.new('Framework.xcodeproj')
+      @workspace.file_references.should == [@pods_project_file_reference, @project_file_reference, proj_ref]
+    end
+
+    it 'should skip duplicate projects' do
+      @workspace << 'Framework.xcodeproj'
+      @workspace << 'Framework.xcodeproj'
+      proj_ref = Xcodeproj::Workspace::FileReference.new('Framework.xcodeproj')
+      @workspace.file_references.should == [@pods_project_file_reference, @project_file_reference, proj_ref]
+    end
+
+    it 'should skip duplicate projects with messy paths' do
+      @workspace << 'OtherDirectory/../Directory/Framework.xcodeproj'
+      @workspace << 'Directory/Framework.xcodeproj'
+      proj_ref = Xcodeproj::Workspace::FileReference.new('Directory/Framework.xcodeproj')
+      @workspace.file_references.should == [@pods_project_file_reference, @project_file_reference, proj_ref]
     end
 
     it 'accepts new groups' do
