@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add Xcode 12 object version  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#764](https://github.com/CocoaPods/Xcodeproj/pull/764)
+
 * target_dependency: Add target proxy to `to_tree_hash`.
   [Ben Yohay](https://github.com/byohay)
 
