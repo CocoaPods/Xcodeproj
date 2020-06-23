@@ -1,4 +1,3 @@
-CODE_SIGN_IDENTITY = iPhone Developer
 IPHONEOS_DEPLOYMENT_TARGET = latest_iphoneos
 OTHER_LDFLAGS = -ObjC
 SDKROOT = iphoneos
