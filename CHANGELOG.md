@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.17.0 (2020-06-23)
+
+##### Enhancements
+
 * Add Xcode 12 object version  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#764](https://github.com/CocoaPods/Xcodeproj/pull/764)
