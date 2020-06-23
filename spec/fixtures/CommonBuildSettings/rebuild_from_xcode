@@ -108,8 +108,8 @@ puts "\r\033[KRead all templates"
 targets = {
   'Project'                        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.base' },
 
-  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
-  'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
+  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
+  'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
   'Objc_iOS_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.iosFramework' },
   'Swift_iOS_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.iosFramework' },
   'Objc_iOS_StaticLibrary'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaTouchStaticLibrary' },
@@ -180,7 +180,7 @@ end
 
 if any_missing
   puts "\r\033[K"
-  warn "Valid template identifiers are:\n- #{Template.all_by_identifier.each_key.map { |k| "\n- #{k}" }}"
+  warn "Valid template identifiers are:#{Template.all_by_identifier.map { |i, t| "\n- #{i}" }.sort.join}"
   exit 1
 else
   puts "\r\033[KCalculated default build settings!"
