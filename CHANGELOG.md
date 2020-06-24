@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add `:application_on_demand_install_capable` product type to support App Clips.  
+  [Igor Makarov](https://github.com/igor-makarov)
+  [#768](https://github.com/CocoaPods/Xcodeproj/pull/768)
 
 ##### Bug Fixes
 
