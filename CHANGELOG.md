@@ -8,6 +8,10 @@
   [Igor Makarov](https://github.com/igor-makarov)
   [#768](https://github.com/CocoaPods/Xcodeproj/pull/768)
 
+* Override Xcode 12 default for erroring on quoted imports in umbrellas.  
+  [Paul Beusterien](https://github.com/paulb777)
+  [#772](https://github.com/CocoaPods/Xcodeproj/pull/772)
+
 ##### Bug Fixes
 
 * None.  
