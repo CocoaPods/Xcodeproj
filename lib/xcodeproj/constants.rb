@@ -92,7 +92,7 @@ module Xcodeproj
       'apns'         => 'text',
       'app'          => 'wrapper.application',
       'appex'        => 'wrapper.app-extension',
-      'bundle'       => 'wrapper.plug-in',
+      'bundle'       => 'wrapper.cfbundle',
       'dylib'        => 'compiled.mach-o.dylib',
       'entitlements' => 'text.plist.entitlements',
       'framework'    => 'wrapper.framework',
@@ -118,7 +118,7 @@ module Xcodeproj
       'xcconfig'     => 'text.xcconfig',
       'xcdatamodel'  => 'wrapper.xcdatamodel',
       'xcodeproj'    => 'wrapper.pb-project',
-      'xctest'       => 'wrapper.cfbundle',
+      'xctest'       => 'wrapper.plug-in',
       'xib'          => 'file.xib',
       'zip'          => 'archive.zip',
     }.freeze
