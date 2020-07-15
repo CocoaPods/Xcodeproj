@@ -227,7 +227,9 @@ module Xcodeproj
           #
           def configure_defaults_for_file_reference(ref)
             if ref.path.include?('/')
-              ref.name = ref.path.split('/').last
+              name =  ref.path.split('/').last
+              # Xcode will strip the name if they are the same
+              ref.name = name unless name == ref.path
             end
 
             if File.extname(ref.path).downcase == '.framework'
