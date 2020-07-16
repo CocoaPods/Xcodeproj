@@ -421,8 +421,8 @@ module Xcodeproj
           #   the list of the classes corresponding to the accepted isas for
           #   this relationship.
           #
-          # @macro [attach] has_many
-          #   @!attribute [r] $1
+          # @macro [attach] has_many_references_by_keys
+          #   @!attribute [r] Array<ObjectList>
           #
           def has_many_references_by_keys(plural_name, classes_by_key)
             attrb = AbstractObjectAttribute.new(:references_by_keys, plural_name, self)

@@ -94,6 +94,12 @@ module Xcodeproj
           plist.value.delete('packageReferences') if !plist.value['packageReferences'].nil? && plist.value['packageReferences'].empty?
           plist
         end
+
+        def sort(options)
+          super(options)
+          project_references.sort! { |lhs, rhs| lhs[:project_ref].name <=> rhs[:project_ref].name }
+          product_ref_group.sort_by_type
+        end
       end
     end
   end

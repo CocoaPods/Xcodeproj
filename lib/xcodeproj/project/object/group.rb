@@ -365,19 +365,23 @@ module Xcodeproj
         #
         # @return [void]
         #
-        def sort_by_type
+        def sort_by_type(compare_basenames: true)
           children.sort! do |x, y|
             if x.isa == 'PBXGroup' && !(y.isa == 'PBXGroup')
               -1
             elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
               1
             elsif x.display_name && y.display_name
-              extname_x = File.extname(x.display_name)
-              extname_y = File.extname(y.display_name)
-              if extname_x != extname_y
-                extname_x <=> extname_y
+              if compare_basenames
+                extname_x = File.extname(x.display_name)
+                extname_y = File.extname(y.display_name)
+                if extname_x != extname_y
+                  extname_x <=> extname_y
+                else compare_basenames
+                  File.basename(x.display_name, '.*') <=> File.basename(y.display_name, '.*')
+                end
               else
-                File.basename(x.display_name, '.*') <=> File.basename(y.display_name, '.*')
+                x.display_name <=> y.display_name
               end
             else
               0

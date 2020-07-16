@@ -95,7 +95,6 @@ module Xcodeproj
           #
           def new_subproject(group, project, source_tree)
             parent_project = group.project
-            puts "Adding subproject #{project.path} to #{parent_project}"
             ref = new_file_reference(group, project.path, source_tree)
             ref.name = File.basename(project.path, '.*')
             ref.include_in_index = nil
@@ -123,6 +122,8 @@ module Xcodeproj
 
               product_group_ref << reference_proxy
             end
+
+            project.products_group.sort_by_type(compare_basenames: false)
 
             attribute = PBXProject.references_by_keys_attributes.find { |attrb| attrb.name == :project_references }
             project_reference = ObjectDictionary.new(attribute, group.project.root_object)
@@ -227,7 +228,7 @@ module Xcodeproj
           #
           def configure_defaults_for_file_reference(ref)
             if ref.path.include?('/')
-              name =  ref.path.split('/').last
+              name = ref.path.split('/').last
               # Xcode will strip the name if they are the same
               ref.name = name unless name == ref.path
             end
