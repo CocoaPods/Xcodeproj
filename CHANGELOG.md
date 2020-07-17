@@ -13,6 +13,19 @@
 * None.  
 
 
+## 1.17.1 (2020-07-17)
+
+##### Enhancements
+
+* Bump mininum Nanaimo gem version for Ruby 2.7 support.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#776](https://github.com/CocoaPods/Xcodeproj/pull/776)
+
+##### Bug Fixes
+
+* None.  
+
+
 ## 1.17.0 (2020-06-23)
 
 ##### Enhancements
