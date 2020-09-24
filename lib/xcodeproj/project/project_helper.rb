@@ -57,12 +57,6 @@ module Xcodeproj
         # Build phases
         build_phases_for_target_type(type).each { |phase| target.build_phases << project.new(phase) }
 
-        # Frameworks
-        unless type == :static_library
-          framework_name = (platform == :osx) ? 'Cocoa' : 'Foundation'
-          target.add_system_framework(framework_name)
-        end
-
         target
       end
 

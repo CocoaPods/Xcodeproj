@@ -316,6 +316,11 @@ module Xcodeproj
         # @param  [Array<String>, String] names
         #         The name or the list of the names of the framework.
         #
+        # @param  [String] sdk
+        #         Optional version of the sdk you are adding the SDK for. If
+        #         left empty the path will not include the SDK version as
+        #         newer version of xcode use a symbolic link.
+        #
         # @note   Xcode behaviour is following: if the target has the same SDK
         #         of the project it adds the reference relative to the SDK root
         #         otherwise the reference is added relative to the Developer
@@ -327,27 +332,27 @@ module Xcodeproj
         # @return [Array<PBXFileReference>] An array of the newly created file
         #         references.
         #
-        def add_system_framework(names)
+        def add_system_framework(names, sdk = "")
           Array(names).map do |name|
             case platform_name
             when :ios
               group = project.frameworks_group['iOS'] || project.frameworks_group.new_group('iOS')
               path_sdk_name = 'iPhoneOS'
-              path_sdk_version = sdk_version || Constants::LAST_KNOWN_IOS_SDK
             when :osx
               group = project.frameworks_group['OS X'] || project.frameworks_group.new_group('OS X')
               path_sdk_name = 'MacOSX'
-              path_sdk_version = sdk_version || Constants::LAST_KNOWN_OSX_SDK
             when :tvos
               group = project.frameworks_group['tvOS'] || project.frameworks_group.new_group('tvOS')
               path_sdk_name = 'AppleTVOS'
-              path_sdk_version = sdk_version || Constants::LAST_KNOWN_TVOS_SDK
             when :watchos
               group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
               path_sdk_name = 'WatchOS'
-              path_sdk_version = sdk_version || Constants::LAST_KNOWN_WATCHOS_SDK
             else
               raise 'Unknown platform for target'
+            end
+
+            if (sdk != "") 
+              path_sdk_version = sdk
             end
 
             path = "Platforms/#{path_sdk_name}.platform/Developer/SDKs/#{path_sdk_name}#{path_sdk_version}.sdk/System/Library/Frameworks/#{name}.framework"
