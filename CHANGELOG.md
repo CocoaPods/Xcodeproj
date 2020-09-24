@@ -10,8 +10,9 @@
 
 ##### Bug Fixes
 
-* None.  
-
+* Resolved issues with `add_system_framework` and SDK version 
+  [JavanPoirier](https://github.com/JavanPoirier)
+  [#786](https://github.com/CocoaPods/Xcodeproj/pull/786)
 
 ## 1.18.0 (2020-08-12)
 

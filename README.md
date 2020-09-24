@@ -73,6 +73,11 @@ use to generate project diffs, target diffs, output all configurations and show 
 
 For more information consult `xcodeproj --help`.
 
+## Building/Installing Locally
+
+To build locally run `gem build xcodeproj.gemspec`. You can then install the gem locally replacing
+`*` with your specific gem's version `gem install xcodeproj-*.gem`
+
 ## Collaborate
 
 All Xcodeproj development happens on [GitHub][xcodeproj]. Contributing patches
@@ -80,7 +85,6 @@ is really easy and gratifying.
 
 Follow [@CocoaPods][twitter] to get up to date information about what's
 going on in the CocoaPods world.
-
 
 ## LICENSE
 
