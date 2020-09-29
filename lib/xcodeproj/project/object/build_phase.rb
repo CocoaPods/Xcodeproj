@@ -30,6 +30,16 @@ module Xcodeproj
         #
         attribute :run_only_for_deployment_postprocessing, String, '0'
 
+        # @return [String] whether or not this run script will be forced to
+        #         run even on incremental builds. Can be either '1', or
+        #         missing. By default this option is disabled in Xcode.
+        #
+        # @note   This setting is exposed in Xcode in the UI of
+        #         PBXShellScriptBuildPhase as `Based on
+        #         dependency analysis` (selected by default).
+        #
+        attribute :always_out_of_date, String
+
         # @return [String] Comments associated with this build phase.
         #
         # @note   This is apparently no longer used by Xcode.

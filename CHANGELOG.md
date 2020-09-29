@@ -8,6 +8,10 @@
   [romanmikhailov](https://github.com/romanmikhailov)
   [#783](https://github.com/CocoaPods/Xcodeproj/issues/783)
 
+* Add support of dependency analysis option in `PBXShellScriptBuildPhase:always_out_of_date`.  
+  [lemonspike](https://github.com/LemonSpike)
+  [#785](https://github.com/CocoaPods/Xcodeproj/issues/785)
+
 ##### Bug Fixes
 
 * None.  
