@@ -108,16 +108,16 @@ puts "\r\033[KRead all templates"
 targets = {
   'Project'                        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.base' },
 
-  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
-  'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.masterDetailApplication' },
-  'Objc_iOS_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaTouchFramework' },
-  'Swift_iOS_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaTouchFramework' },
+  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
+  'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
+  'Objc_iOS_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.iosFramework' },
+  'Swift_iOS_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.iosFramework' },
   'Objc_iOS_StaticLibrary'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaTouchStaticLibrary' },
 
   'Objc_OSX_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaApplication' },
   'Swift_OSX_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaApplication' },
-  'Objc_OSX_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.cocoaFramework' },
-  'Swift_OSX_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.cocoaFramework' },
+  'Objc_OSX_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.macosFramework' },
+  'Swift_OSX_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.macosFramework' },
   'Objc_OSX_StaticLibrary'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.osxLibrary', 'libraryType' => 'Static' },
   'Objc_OSX_DynamicLibrary'        => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.osxLibrary', 'libraryType' => 'Dynamic' },
   'OSX_Bundle'                     => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.osxbundle' },
@@ -150,6 +150,8 @@ def extract_common_settings!(all_configs, project_configs)
   end
 end
 
+any_missing = false
+
 project = nil
 targets.each do |name, options|
   template_identifier = options.delete(:template_identifier)
@@ -157,6 +159,7 @@ targets.each do |name, options|
   configs = Hash[%w(Debug Release).map do |configuration|
     unless template = Template.all_by_identifier[template_identifier]
       warn "No template #{template_identifier} for #{name} could be found"
+      any_missing = true
       next [configuration, {}]
     end
     settings = template.shared_settings(:configuration => configuration, :options => options)
@@ -174,4 +177,11 @@ targets.each do |name, options|
 
   project = configs if name == 'Project'
 end
-puts "\r\033[KCalculated default build settings!"
+
+if any_missing
+  puts "\r\033[K"
+  warn "Valid template identifiers are:#{Template.all_by_identifier.map { |i, t| "\n- #{i}" }.sort.join}"
+  exit 1
+else
+  puts "\r\033[KCalculated default build settings!"
+end

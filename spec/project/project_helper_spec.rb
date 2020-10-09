@@ -150,12 +150,12 @@ module ProjectSpecs
     describe '::common_build_settings' do
       it 'returns the build settings for an application by default' do
         settings = @helper.common_build_settings(:release, :ios, nil, nil)
-        settings['CODE_SIGN_IDENTITY'].should == 'iPhone Developer'
+        settings['ASSETCATALOG_COMPILER_APPICON_NAME'].should == 'AppIcon'
       end
 
       it 'returns the build settings for an application' do
         settings = @helper.common_build_settings(:release, :ios, nil, Xcodeproj::Constants::PRODUCT_TYPE_UTI[:application])
-        settings['CODE_SIGN_IDENTITY'].should == 'iPhone Developer'
+        settings['ASSETCATALOG_COMPILER_APPICON_NAME'].should == 'AppIcon'
       end
 
       it 'returns the build settings for a bundle' do

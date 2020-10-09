@@ -12,6 +12,10 @@
   [lemonspike](https://github.com/LemonSpike)
   [#785](https://github.com/CocoaPods/Xcodeproj/issues/785)
 
+* Update default build settings for Xcode 12  
+  [Samuel Giddins](https://github.com/segiddins), [Eric Amorde](https://github.com/amorde)
+  [#767](https://github.com/CocoaPods/Xcodeproj/pull/767)
+
 ##### Bug Fixes
 
 * None.  

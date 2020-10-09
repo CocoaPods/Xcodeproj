@@ -4,19 +4,19 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '12.2'
+    LAST_KNOWN_IOS_SDK = '14.0'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK = '10.14'
+    LAST_KNOWN_OSX_SDK = '10.15'
 
     # @return [String] The last known tvOS SDK (stable).
     #
-    LAST_KNOWN_TVOS_SDK = '12.2'
+    LAST_KNOWN_TVOS_SDK = '14.0'
 
     # @return [String] The last known watchOS SDK (stable).
     #
-    LAST_KNOWN_WATCHOS_SDK = '5.2'
+    LAST_KNOWN_WATCHOS_SDK = '7.0'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -204,11 +204,9 @@ module Xcodeproj
       }.freeze,
       [:ios] => {
         'SDKROOT'                           => 'iphoneos',
-        'CODE_SIGN_IDENTITY'                => 'iPhone Developer',
       }.freeze,
       [:osx] => {
         'SDKROOT'                           => 'macosx',
-        'CODE_SIGN_IDENTITY'                => '-',
       }.freeze,
       [:tvos] => {
         'SDKROOT'                           => 'appletvos',
@@ -257,7 +255,6 @@ module Xcodeproj
       [:debug, :static_library, :swift] => {
       }.freeze,
       [:framework] => {
-        'CODE_SIGN_IDENTITY' => '',
         'CURRENT_PROJECT_VERSION'           => '1',
         'DEFINES_MODULE'                    => 'YES',
         'DYLIB_COMPATIBILITY_VERSION'       => '1',
@@ -275,7 +272,6 @@ module Xcodeproj
       }.freeze,
       [:osx, :framework] => {
         'COMBINE_HIDPI_IMAGES'              => 'YES',
-        'FRAMEWORK_VERSION'                 => 'A',
         'LD_RUNPATH_SEARCH_PATHS'           => '$(inherited) @executable_path/../Frameworks @loader_path/Frameworks',
       }.freeze,
       [:watchos, :framework] => {
@@ -317,6 +313,7 @@ module Xcodeproj
       }.freeze,
       [:application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'AppIcon',
+        'ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME'  => 'AccentColor',
       }.freeze,
       [:ios, :application] => {
         'LD_RUNPATH_SEARCH_PATHS'           => '$(inherited) @executable_path/Frameworks',
@@ -332,9 +329,11 @@ module Xcodeproj
       }.freeze,
       [:tvos, :application] => {
         'ASSETCATALOG_COMPILER_APPICON_NAME' => 'App Icon & Top Shelf Image',
-        'ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME' => 'LaunchImage',
         'LD_RUNPATH_SEARCH_PATHS'           => '$(inherited) @executable_path/Frameworks',
         'TARGETED_DEVICE_FAMILY'            => '3',
+      }.freeze,
+      [:tvos, :application, :swift] => {
+        'ENABLE_PREVIEWS'                                 => 'YES',
       }.freeze,
       [:watchos, :application, :swift] => {
         'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES',
@@ -381,6 +380,7 @@ module Xcodeproj
         'CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF'    => 'YES',
         'CLANG_WARN_OBJC_LITERAL_CONVERSION'      => 'YES',
         'CLANG_WARN_OBJC_ROOT_CLASS'              => 'YES_ERROR',
+        'CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER' => 'YES',
         'CLANG_WARN_RANGE_LOOP_ANALYSIS'          => 'YES',
         'CLANG_WARN_STRICT_PROTOTYPES'            => 'YES',
         'CLANG_WARN_SUSPICIOUS_MOVE'              => 'YES',
