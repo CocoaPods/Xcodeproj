@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.19.0 (2020-10-09)
 
 ##### Enhancements
 
