@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.19.0 (2020-10-09)
+
+##### Enhancements
+
 * Add support of c++ files (`hpp` and `cpp`) in `PBXFileReference:set_last_known_file_type`.  
   [romanmikhailov](https://github.com/romanmikhailov)
   [#783](https://github.com/CocoaPods/Xcodeproj/issues/783)
