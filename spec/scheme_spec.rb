@@ -229,7 +229,7 @@ module ProjectSpecs
         expected = <<-XML.gsub(/^ {8}/, '')
         <?xml version="1.0" encoding="UTF-8"?>
         <Scheme
-           LastUpgradeVersion = "1100"
+           LastUpgradeVersion = "1200"
            version = "1.3">
            <BuildAction
               parallelizeBuildables = "YES"

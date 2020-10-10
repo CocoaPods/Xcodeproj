@@ -34,13 +34,13 @@ module Xcodeproj
     #
     LAST_KNOWN_OBJECT_VERSION = 54
 
-    # @return [String] The last known object version to Xcodeproj.
+    # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '1100'
+    LAST_UPGRADE_CHECK = '1200'
 
-    # @return [String] The last known object version to Xcodeproj.
+    # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '1100'
+    LAST_SWIFT_UPGRADE_CHECK = '1200'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #

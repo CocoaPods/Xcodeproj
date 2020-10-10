@@ -8,6 +8,10 @@
   [thiagohmcruz](https://github.com/thiagohmcruz)
   [#401](https://github.com/CocoaPods/CocoaPods/issues/401)
 
+* Bump Xcode version to suppress warnings to update build settings  
+  [chuganzy](https://github.com/chuganzy)
+  [#793](https://github.com/CocoaPods/Xcodeproj/pull/793)
+
 ##### Bug Fixes
 
 * Update Swift packages annotations to match Xcode
