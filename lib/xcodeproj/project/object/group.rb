@@ -1,5 +1,6 @@
 require 'xcodeproj/project/object/helpers/groupable_helper'
 require 'xcodeproj/project/object/helpers/file_references_factory'
+require 'xcodeproj/project/object/helpers/sort_helper'
 
 module Xcodeproj
   class Project
@@ -428,9 +429,11 @@ module Xcodeproj
         # @return [void]
         #
         def sort(options = nil)
+          if options && groups_position = options[:groups_position]
+            raise ArgumentError unless [:above, :below].include?(groups_position)
+          end
           children.sort! do |x, y|
-            if options && groups_position = options[:groups_position]
-              raise ArgumentError unless [:above, :below].include?(groups_position)
+            if groups_position
               if x.isa == 'PBXGroup' && !(y.isa == 'PBXGroup')
                 next groups_position == :above ? -1 : 1
               elsif !(x.isa == 'PBXGroup') && y.isa == 'PBXGroup'
@@ -438,9 +441,9 @@ module Xcodeproj
               end
             end
 
-            result = File.basename(x.display_name.downcase, '.*') <=> File.basename(y.display_name.downcase, '.*')
+            result = XcodeSortString.new(x.display_name) <=> XcodeSortString.new(y.display_name)
             if result.zero?
-              File.extname(x.display_name.downcase) <=> File.extname(y.display_name.downcase)
+              XcodeSortString.new(x.path) <=> XcodeSortString.new(y.path)
             else
               result
             end
