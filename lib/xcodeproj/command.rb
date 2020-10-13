@@ -33,11 +33,14 @@ module Xcodeproj
         elsif projects.size > 1
           raise Informative, 'There are more than one Xcode project documents ' \
                              'in the current working directory. Please specify ' \
-                             'which to use with the `--project` option.'
+                             'the project as the first argument, or specify ' \
+                             'which to use with the --project option if using ' \
+                             'target-diff.'
         else
           raise Informative, 'No Xcode project document found in the current ' \
-                             'working directory. Please specify which to use ' \
-                             'with the `--project` option.'
+                             'working directory. Please specify the project ' \
+                             'as the first argument, or specify which to use ' \
+                             'with the --project option if using target-diff.' \
         end
         @xcodeproj_path = Pathname.new(xcodeproj_path).expand_path
       end
