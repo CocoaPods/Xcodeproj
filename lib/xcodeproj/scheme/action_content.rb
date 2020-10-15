@@ -1,8 +1,8 @@
 module Xcodeproj
   class XCScheme
-    class ActionContext < XMLElementWrapper
+    class ActionContent < XMLElementWrapper
       def initialize(target_or_node = nil)
-        create_xml_element_with_fallback(target_or_node, 'ActionContext')
+        create_xml_element_with_fallback(target_or_node, 'ActionContent')
       end
 
       def title?

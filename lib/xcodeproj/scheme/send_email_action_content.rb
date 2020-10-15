@@ -1,6 +1,6 @@
 module Xcodeproj
   class XCScheme
-    class SendEmailActionContext < ActionContext
+    class SendEmailActionContent < ActionContent
       attr_reader :archive_version
 
       def initialize(node = nil)

@@ -1,6 +1,6 @@
 module Xcodeproj
   class XCScheme
-    class ShellScriptActionContext < ActionContext
+    class ShellScriptActionContent < ActionContent
       def initialize(node = nil)
         super
         self.title = 'Run Script'
