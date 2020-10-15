@@ -453,5 +453,12 @@ module Xcodeproj
       $(inherited)
       ${inherited}
     ).freeze
+
+    # @return [Hash] Possible types for a scheme's 'ExecutionAction' node
+    #
+    EXECUTION_ACTION_TYPE = {
+      :shell_script_action  => 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction',
+      :send_email_action    => 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction',
+    }.freeze
   end
 end

@@ -1,5 +1,3 @@
-require 'xcodeproj/scheme/xml_element_wrapper'
-
 module Xcodeproj
   class XCScheme
     class ShellScriptActionContext < ActionContext

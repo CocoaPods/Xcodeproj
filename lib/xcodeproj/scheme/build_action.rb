@@ -47,6 +47,54 @@ module Xcodeproj
         @xml_element.attributes['buildImplicitDependencies'] = bool_to_string(flag)
       end
 
+      def pre_actions
+        actions = @xml_element.elements['PreActions']
+        return nil unless actions
+        actions.get_elements('ExecutionAction').map do |entry_node|
+          ExecutionAction.new(entry_node)
+        end
+      end
+
+      def pre_actions=(actions)
+        @xml_element.delete_element('PreActions')
+        unless actions.empty?
+          actions_element = @xml_element.add_element('PreActions')
+          actions.each do |entry_node|
+            actions_element.add_element(entry_node.xml_element)
+          end
+        end
+        actions
+      end
+
+      def add_pre_action(action)
+        actions = @xml_element.elements['PreActions'] || @xml_element.add_element('PreActions')
+        actions.add_element(action.xml_element)
+      end
+
+      def post_actions
+        actions = @xml_element.elements['PostActions']
+        return nil unless actions
+        actions.get_elements('ExecutionAction').map do |entry_node|
+          ExecutionAction.new(entry_node)
+        end
+      end
+
+      def post_actions=(actions)
+        @xml_element.delete_element('PostActions')
+        unless actions.empty?
+          actions_element = @xml_element.add_element('PostActions')
+          actions.each do |entry_node|
+            actions_element.add_element(entry_node.xml_element)
+          end
+        end
+        actions
+      end
+
+      def add_post_action(action)
+        actions = @xml_element.elements['PostActions'] || @xml_element.add_element('PostActions')
+        actions.add_element(action.xml_element)
+      end
+
       # @return [Array<BuildAction::Entry>]
       #         The list of BuildActionEntry nodes associated with this Build Action.
       #         Each entry represent a target to build and tells for which action it's needed to be built.
