@@ -3,7 +3,7 @@ module Xcodeproj
     class ShellScriptActionContext < ActionContext
       def initialize(node = nil)
         super
-        @title = 'Run Script'
+        self.title = 'Run Script'
       end
 
       def script_text?
