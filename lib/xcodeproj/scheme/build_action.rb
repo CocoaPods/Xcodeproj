@@ -55,14 +55,9 @@ module Xcodeproj
         @xml_element.attributes['buildImplicitDependencies'] = bool_to_string(flag)
       end
 
-      def pre_actions
-        pre_actions = @xml_element.elements['PreActions']
-        return nil unless pre_actions
-        pre_actions.get_elements('ExecutionAction').map do |entry_node|
-          ExecutionAction.new(entry_node)
-        end
-      end
-
+      # @param [Array<ExecutionAction>] pre_actions
+      #        Sets the list of ExecutionAction under the PreActions node associated with this action
+      #
       def pre_actions=(pre_actions)
         @xml_element.delete_element('PreActions')
         unless pre_actions.empty?
@@ -74,11 +69,18 @@ module Xcodeproj
         pre_actions
       end
 
+      # @param [ExecutionAction] pre_action
+      #        The ExecutionAction to add to the PreActions node associated with this action
+      #
       def add_pre_action(pre_action)
         pre_actions = @xml_element.elements['PreActions'] || @xml_element.add_element('PreActions')
         pre_actions.add_element(pre_action.xml_element)
       end
 
+      # @return [Array<ExecutionAction>]
+      #         The list of ExecutionAction under the PostActions node associated with this action.
+      #         Each entry represent one of two types 'Run Script' or 'Send Email'
+      #
       def post_actions
         post_actions = @xml_element.elements['PostActions']
         return nil unless post_actions
@@ -87,6 +89,9 @@ module Xcodeproj
         end
       end
 
+      # @param [Array<ExecutionAction>] post_actions
+      #        Sets the list of ExecutionAction under the PostActions node associated with this action
+      #
       def post_actions=(post_actions)
         @xml_element.delete_element('PostActions')
         unless post_actions.empty?
@@ -98,6 +103,9 @@ module Xcodeproj
         post_actions
       end
 
+      # @param [ExecutionAction] post_action
+      #        The ExecutionAction to add to the PostActions node associated with this action
+      #
       def add_post_action(post_action)
         post_actions = @xml_element.elements['PostActions'] || @xml_element.add_element('PostActions')
         post_actions.add_element(post_action.xml_element)
