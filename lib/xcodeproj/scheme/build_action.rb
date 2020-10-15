@@ -19,10 +19,16 @@ module Xcodeproj
         end
       end
 
+      # @return [Bool]
+      #         Whether or not to run post actions on build failure
+      #
       def run_post_actions_on_failure?
         string_to_bool(@xml_element.attributes['runPostActionsOnFailure'])
       end
 
+      # @param [Bool] flag
+      #        Set whether or not to run post actions on build failure
+      #
       def run_post_actions_on_failure=(flag)
         @xml_element.attributes['runPostActionsOnFailure'] = bool_to_string(flag)
       end
