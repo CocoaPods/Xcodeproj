@@ -7,7 +7,6 @@ require 'xcodeproj/scheme/profile_action'
 require 'xcodeproj/scheme/analyze_action'
 require 'xcodeproj/scheme/archive_action'
 
-require 'xcodeproj/scheme/action_content'
 require 'xcodeproj/scheme/buildable_product_runnable'
 require 'xcodeproj/scheme/buildable_reference'
 require 'xcodeproj/scheme/execution_action'

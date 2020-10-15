@@ -1,9 +1,18 @@
 module Xcodeproj
   class XCScheme
-    class ShellScriptActionContent < ActionContent
+    class ShellScriptActionContent < XMLElementWrapper
       def initialize(node = nil)
-        super
-        self.title = 'Run Script'
+        create_xml_element_with_fallback(node, 'ActionContent') do
+          self.title = 'Run Script'
+        end
+      end
+
+      def title?
+        @xml_element.attributes['title']
+      end
+
+      def title=(value)
+        @xml_element.attributes['title'] = value
       end
 
       def script_text?
