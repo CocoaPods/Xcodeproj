@@ -19,6 +19,14 @@ module Xcodeproj
         end
       end
 
+      def run_post_actions_on_failure?
+        string_to_bool(@xml_element.attributes['runPostActionsOnFailure'])
+      end
+
+      def run_post_actions_on_failure=(flag)
+        @xml_element.attributes['runPostActionsOnFailure'] = bool_to_string(flag)
+      end
+
       # @return [Bool]
       #         Whether or not to build the various targets in parallel
       #
