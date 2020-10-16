@@ -36,11 +36,11 @@ module Xcodeproj
       end
 
       # @return [ShellScriptActionContent]
-      #         if action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction'
+      #         If action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction'
       #         returns the contents of the shell script to run pre/post action.
       #
       # @return [SendEmailActionContent]
-      #         if action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction'
+      #         If action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction'
       #         returns the contents of the email to send pre/post action.
       #
       def action_content

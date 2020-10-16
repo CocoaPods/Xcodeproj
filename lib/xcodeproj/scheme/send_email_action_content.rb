@@ -44,7 +44,7 @@ module Xcodeproj
         @xml_element.attributes['emailRecipient']
       end
 
-      # @param [String]
+      # @param [String] value
       #        Set the email recipient of this ActionContent
       #
       def email_recipient=(value)
@@ -58,7 +58,7 @@ module Xcodeproj
         @xml_element.attributes['emailSubject']
       end
 
-      # @param [String]
+      # @param [String] value
       #        Set the email subject of this ActionContent
       #
       def email_subject=(value)
@@ -72,7 +72,7 @@ module Xcodeproj
         @xml_element.attributes['emailBody']
       end
 
-      # @param [String]
+      # @param [String] value
       #        Set the email body of this ActionContent
       #
       def email_body=(value)

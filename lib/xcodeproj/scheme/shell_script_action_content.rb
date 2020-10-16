@@ -43,14 +43,14 @@ module Xcodeproj
       end
 
       # @return [String]
-      #         The preferred shell to use with this ActionContent
+      #         The preferred shell to invoke with this ActionContent
       #
       def shell_to_invoke
         @xml_element.attributes['shellToInvoke']
       end
 
       # @param [String] value
-      #        Set the preferred shell to use with this ActionContent
+      #        Set the preferred shell to invoke with this ActionContent
       #
       def shell_to_invoke=(value)
         @xml_element.attributes['shellToInvoke'] = value
