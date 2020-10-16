@@ -64,6 +64,9 @@ module Xcodeproj
 
       # @!group Private helpers
 
+      # @return [Bool]
+      #         True if type is valid
+      #
       # @param [String] type
       #        Checks if type matches the expected action_content if present.
       #
@@ -79,6 +82,9 @@ module Xcodeproj
         end
       end
 
+      # @return [Bool]
+      #         True if value is valid
+      #
       # @param [ShellScriptActionContent, SendEmailActionContent] value
       #        Checks if value matches the expected action_type if present.
       #
