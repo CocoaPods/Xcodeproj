@@ -17,7 +17,7 @@ module Xcodeproj
       # @return [String]
       #         The title of this ActionContent
       #
-      def title?
+      def title
         @xml_element.attributes['title']
       end
 
@@ -31,7 +31,7 @@ module Xcodeproj
       # @return [String]
       #         The contents of the shell script represented by this ActionContent
       #
-      def script_text?
+      def script_text
         @xml_element.attributes['scriptText']
       end
 
@@ -45,7 +45,7 @@ module Xcodeproj
       # @return [String]
       #         The preferred shell to use with this ActionContent
       #
-      def shell_to_invoke?
+      def shell_to_invoke
         @xml_element.attributes['shellToInvoke']
       end
 
@@ -59,7 +59,7 @@ module Xcodeproj
       # @return [BuildableReference]
       #         The BuildableReference (Xcode target) associated with this ActionContent
       #
-      def buildable_reference?
+      def buildable_reference
         @xml_element.elements['EnvironmentBuildable'].attributes['BuildableReference']
       end
 

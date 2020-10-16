@@ -25,7 +25,7 @@ module Xcodeproj
       # @return [String]
       #         The title of this ActionContent
       #
-      def title?
+      def title
         @xml_element.attributes['title']
       end
 
@@ -39,7 +39,7 @@ module Xcodeproj
       # @return [String]
       #         The email recipient of this ActionContent
       #
-      def email_recipient?
+      def email_recipient
         @xml_element.attributes['emailRecipient']
       end
 
@@ -53,7 +53,7 @@ module Xcodeproj
       # @return [String]
       #         The email subject of this ActionContent
       #
-      def email_subject?
+      def email_subject
         @xml_element.attributes['emailSubject']
       end
 
@@ -67,7 +67,7 @@ module Xcodeproj
       # @return [String]
       #         The email body of this ActionContent
       #
-      def email_body?
+      def email_body
         @xml_element.attributes['emailBody']
       end
 

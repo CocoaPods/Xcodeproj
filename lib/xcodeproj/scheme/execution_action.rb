@@ -18,7 +18,7 @@ module Xcodeproj
       #         Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction,
       #         Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction
       #
-      def action_type?
+      def action_type
         @xml_element.attributes['ActionType']
       end
 
@@ -43,7 +43,7 @@ module Xcodeproj
       #         if action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction'
       #         returns the contents of the email to send pre/post action.
       #
-      def action_content?
+      def action_content
         @xml_element.attributes['ActionContent']
       end
 

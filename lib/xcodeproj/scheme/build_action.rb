@@ -61,6 +61,18 @@ module Xcodeproj
         @xml_element.attributes['buildImplicitDependencies'] = bool_to_string(flag)
       end
 
+      # @return [Array<ExecutionAction>]
+      #         The list of ExecutionAction under the PreActions node associated with this action.
+      #         Each entry represent one of two types 'Run Script' or 'Send Email'
+      #
+      def pre_actions
+        pre_actions = @xml_element.elements['PreActions']
+        return nil unless pre_actions
+        pre_actions.get_elements('ExecutionAction').map do |entry_node|
+          ExecutionAction.new(entry_node)
+        end
+      end
+
       # @param [Array<ExecutionAction>] pre_actions
       #        Sets the list of ExecutionAction under the PreActions node associated with this action
       #
