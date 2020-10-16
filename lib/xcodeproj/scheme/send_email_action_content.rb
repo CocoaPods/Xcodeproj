@@ -5,9 +5,10 @@ module Xcodeproj
     #
     class SendEmailActionContent < XMLElementWrapper
       # @return [Bool]
-      #         Wheter or not this action should attach log to email
+      #         Whether or not this action should attach log to email
       #
       attr_reader :attach_log_to_email
+      alias attach_log_to_email? attach_log_to_email
 
       # @param [REXML::Element] node
       #        The 'ActionContent' XML node that this object will wrap.
