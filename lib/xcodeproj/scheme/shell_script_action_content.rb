@@ -10,7 +10,7 @@ module Xcodeproj
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ActionContent') do
-          @title = 'Run Script'
+          self.title = 'Run Script'
         end
       end
 

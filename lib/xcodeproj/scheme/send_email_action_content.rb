@@ -16,7 +16,7 @@ module Xcodeproj
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ActionContent') do
-          @title = 'Send Email'
+          self.title = 'Send Email'
           # For some reason this is not visible in Xcode's UI and it's always set to 'NO'
           # couldn't find much documentation on it so it might be safer to keep it read only
           @attach_log_to_email = bool_to_string(false)
