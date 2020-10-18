@@ -39,9 +39,6 @@ module Xcodeproj
       #         If action_type is 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction'
       #         returns the contents of the email to send pre/post action.
       #
-      # @return [Nil]
-      #         If action_type is not set
-      #
       def action_content
         case action_type
         when Constants::EXECUTION_ACTION_TYPE[:shell_script]

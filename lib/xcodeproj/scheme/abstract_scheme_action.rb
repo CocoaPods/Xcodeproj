@@ -25,8 +25,8 @@ module Xcodeproj
       end
 
       # @return [Array<ExecutionAction>]
-      #         The list of ExecutionAction under the PreActions node associated with this action.
-      #         Each entry represent one of two types 'Run Script' or 'Send Email'
+      #         The list of actions to run before this scheme action.
+      #         Each entry can be either a 'Run Script' or a 'Send Email' action.
       #
       def pre_actions
         return if pre_and_post_actions_disabled
@@ -39,7 +39,8 @@ module Xcodeproj
       end
 
       # @param [Array<ExecutionAction>] pre_actions
-      #        Sets the list of ExecutionAction under the PreActions node associated with this action
+      #         Set the list of actions to run before this scheme action.
+      #         Each entry can be either a 'Run Script' or a 'Send Email' action.
       #
       def pre_actions=(pre_actions)
         return if pre_and_post_actions_disabled
@@ -55,7 +56,8 @@ module Xcodeproj
       end
 
       # @param [ExecutionAction] pre_action
-      #        The ExecutionAction to add to the PreActions node associated with this action
+      #        Add an action to the list of actions to run before this scheme action.
+      #        It can be either a 'Run Script' or a 'Send Email' action.
       #
       def add_pre_action(pre_action)
         return if pre_and_post_actions_disabled
@@ -65,8 +67,8 @@ module Xcodeproj
       end
 
       # @return [Array<ExecutionAction>]
-      #         The list of ExecutionAction under the PostActions node associated with this action.
-      #         Each entry represent one of two types 'Run Script' or 'Send Email'
+      #         The list of actions to run after this scheme action.
+      #         Each entry can be either a 'Run Script' or a 'Send Email' action.
       #
       def post_actions
         return if pre_and_post_actions_disabled
@@ -79,7 +81,8 @@ module Xcodeproj
       end
 
       # @param [Array<ExecutionAction>] post_actions
-      #        Sets the list of ExecutionAction under the PostActions node associated with this action
+      #        Set the list of actions to run after this scheme action.
+      #        Each entry can be either a 'Run Script' or a 'Send Email' action.
       #
       def post_actions=(post_actions)
         return if pre_and_post_actions_disabled
@@ -95,7 +98,8 @@ module Xcodeproj
       end
 
       # @param [ExecutionAction] post_action
-      #        The ExecutionAction to add to the PostActions node associated with this action
+      #        Add an action to the list of actions to run after this scheme action.
+      #        It can be either a 'Run Script' or a 'Send Email' action.
       #
       def add_post_action(post_action)
         return if pre_and_post_actions_disabled
