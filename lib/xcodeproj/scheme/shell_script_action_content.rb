@@ -60,7 +60,7 @@ module Xcodeproj
       #         The BuildableReference (Xcode target) associated with this ActionContent
       #
       def buildable_reference
-        @xml_element.elements['EnvironmentBuildable'].attributes['BuildableReference']
+        BuildableReference.new(@xml_element.elements['EnvironmentBuildable'].elements['BuildableReference'])
       end
 
       # @param [BuildableReference] ref
