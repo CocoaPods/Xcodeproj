@@ -4,7 +4,7 @@
 
 ##### Enhancements
 
-* Creates pre/post-actions for scheme actions
+* Add support for pre/post-actions in scheme actions
   [thiagohmcruz](https://github.com/thiagohmcruz)
   [#401](https://github.com/CocoaPods/CocoaPods/issues/401)
 
