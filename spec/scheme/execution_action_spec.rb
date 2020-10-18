@@ -32,7 +32,34 @@ module Xcodeproj
       end
 
       it '#action_type' do
+        @action.action_type.should == Constants::EXECUTION_ACTION_TYPE[:shell_script]
         @action.action_type.should == @action.xml_element.attributes['ActionType']
+      end
+
+      it '#action_content' do
+        action_content1 = Xcodeproj::XCScheme::ShellScriptActionContent.new
+        @action.action_content = action_content1
+        @action.action_content.class.should == Xcodeproj::XCScheme::ShellScriptActionContent
+        @action.action_content.xml_element.should == action_content1.xml_element
+
+        @action.xml_element.attributes['ActionType'] = Constants::EXECUTION_ACTION_TYPE[:send_email]
+        action_content2 = Xcodeproj::XCScheme::SendEmailActionContent.new
+        @action.action_content = action_content2
+        @action.action_content.class.should == Xcodeproj::XCScheme::SendEmailActionContent
+        @action.action_content.xml_element.should == action_content2.xml_element
+      end
+
+      it '#action_content=' do
+        action_content1 = Xcodeproj::XCScheme::ShellScriptActionContent.new
+        action_content2 = Xcodeproj::XCScheme::SendEmailActionContent.new
+
+        should.not.raise do
+          @action.action_content = action_content1
+        end
+
+        should.raise do
+          @action.action_content = action_content2
+        end.message.should.match /Invalid ActionContent/
       end
     end
   end
