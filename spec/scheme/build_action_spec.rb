@@ -28,12 +28,9 @@ module Xcodeproj
       attributes = {
         :parallelize_buildables => 'parallelizeBuildables',
         :build_implicit_dependencies => 'buildImplicitDependencies',
+        :run_post_actions_on_failure => 'runPostActionsOnFailure',
       }
       specs_for_bool_attr(attributes)
-
-      it '#run_post_actions_on_failure' do
-        specs_for_bool_attr(:run_post_actions_on_failure => 'runPostActionsOnFailure')
-      end
 
       it '#add_pre_action' do
         @sut.xml_element.elements['PreActions'].should.nil?

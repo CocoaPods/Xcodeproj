@@ -4,7 +4,66 @@
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      runPostActionsOnFailure = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -28,6 +87,64 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       disableMainThreadChecker = "YES"
       buildConfiguration = "Debug">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <Testables>
       </Testables>
       <MacroExpansion>
@@ -94,6 +211,64 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
@@ -111,5 +286,63 @@
    <ArchiveAction
       buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "echo foo&#10;"
+               shellToInvoke = "/bin/sh">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "632143E8175736EE0038D40D"
+                     BuildableName = "SharedSchemes.app"
+                     BlueprintName = "SharedSchemes"
+                     ReferencedContainer = "container:SharedSchemes.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction">
+            <ActionContent
+               title = "Send Email"
+               emailRecipient = "foo@foo.com"
+               emailSubject = "Foo"
+               emailBody = "Foo"
+               attachLogToEmail = "NO">
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
    </ArchiveAction>
 </Scheme>

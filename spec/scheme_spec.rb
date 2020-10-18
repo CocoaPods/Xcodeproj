@@ -20,7 +20,12 @@ module ProjectSpecs
         @scheme = Xcodeproj::XCScheme.new(scheme_path)
       end
 
+      extend SpecHelper::XCScheme
+      execution_actions = %i(build_action test_action profile_action archive_action)
+      check_load_pre_and_post_actions_from_file(execution_actions)
+
       it 'Properly map the scheme\'s BuildAction' do
+        @scheme.build_action.run_post_actions_on_failure?.should == true
         @scheme.build_action.parallelize_buildables?.should == true
         @scheme.build_action.build_implicit_dependencies?.should == true
         @scheme.build_action.entries.count.should == 1
