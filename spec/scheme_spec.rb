@@ -21,8 +21,8 @@ module ProjectSpecs
       end
 
       extend SpecHelper::XCScheme
-      execution_actions = %i(build_action test_action profile_action archive_action)
-      check_load_pre_and_post_actions_from_file(execution_actions)
+      scheme_actions = %i(build_action test_action profile_action archive_action)
+      check_load_pre_and_post_actions_from_file(scheme_actions)
 
       it 'Properly map the scheme\'s BuildAction' do
         @scheme.build_action.run_post_actions_on_failure?.should == true
