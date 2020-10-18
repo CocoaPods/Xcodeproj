@@ -4,11 +4,11 @@ module Xcodeproj
   describe XCScheme::ShellScriptActionContent do
     describe 'Created from scratch' do
       it 'Creates an initial, almost empty XML node' do
-        ssac = Xcodeproj::XCScheme::ShellScriptActionContent.new
-        ssac.xml_element.name.should == 'ActionContent'
-        ssac.xml_element.attributes.count.should == 1
-        ssac.xml_element.attributes['title'].should == 'Run Script'
-        ssac.xml_element.elements.count.should == 0
+        sut = Xcodeproj::XCScheme::ShellScriptActionContent.new
+        sut.xml_element.name.should == 'ActionContent'
+        sut.xml_element.attributes.count.should == 1
+        sut.xml_element.attributes['title'].should == 'Run Script'
+        sut.xml_element.elements.count.should == 0
       end
     end
 

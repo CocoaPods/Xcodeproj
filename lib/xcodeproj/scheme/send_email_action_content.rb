@@ -4,12 +4,6 @@ module Xcodeproj
     # 'Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction' of a .xcscheme XML file
     #
     class SendEmailActionContent < XMLElementWrapper
-      # @return [Bool]
-      #         Whether or not this action should attach log to email
-      #
-      attr_reader :attach_log_to_email
-      alias attach_log_to_email? attach_log_to_email
-
       # @param [REXML::Element] node
       #        The 'ActionContent' XML node that this object will wrap.
       #        If nil, will create a default XML node to use.
@@ -19,8 +13,15 @@ module Xcodeproj
           self.title = 'Send Email'
           # For some reason this is not visible in Xcode's UI and it's always set to 'NO'
           # couldn't find much documentation on it so it might be safer to keep it read only
-          @attach_log_to_email = bool_to_string(false)
+          @xml_element.attributes['attachLogToEmail'] = 'NO'
         end
+      end
+
+      # @return [Bool]
+      #         Whether or not this action should attach log to email
+      #
+      def attach_log_to_email?
+        string_to_bool(@xml_element.attributes['attachLogToEmail'])
       end
 
       # @return [String]
