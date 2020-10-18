@@ -13,10 +13,11 @@ module Xcodeproj
       #        The 'ExecutionAction' XML node that this object will wrap.
       #        If nil, will create an empty one
       #
-      def initialize(action_type, node = nil)
+      def initialize(action_type = nil, node = nil)
         create_xml_element_with_fallback(node, 'ExecutionAction') do
-          raise "[Xcodeproj] Invalid ActionType `#{type}`" unless Constants::EXECUTION_ACTION_TYPE.values.include?(action_type)
-          @xml_element.attributes['ActionType'] = action_type
+          type = action_type || node.action_type
+          raise "[Xcodeproj] Invalid ActionType `#{type}`" unless Constants::EXECUTION_ACTION_TYPE.values.include?(type)
+          @xml_element.attributes['ActionType'] = type
         end
       end
 
@@ -43,9 +44,9 @@ module Xcodeproj
       #
       def action_content
         case action_type
-        when Constants::EXECUTION_ACTION_TYPE[:shell_script_action]
+        when Constants::EXECUTION_ACTION_TYPE[:shell_script]
           ShellScriptActionContent.new(@xml_element.elements['ActionContent'])
-        when Constants::EXECUTION_ACTION_TYPE[:send_email_action]
+        when Constants::EXECUTION_ACTION_TYPE[:send_email]
           SendEmailActionContent.new(@xml_element.elements['ActionContent'])
         else
           raise "[Xcodeproj] Invalid ActionType `#{action_type}`"
@@ -78,9 +79,9 @@ module Xcodeproj
       #
       def validate_action_content(value)
         case action_type
-        when Constants::EXECUTION_ACTION_TYPE[:shell_script_action]
+        when Constants::EXECUTION_ACTION_TYPE[:shell_script]
           value.is_a?(ShellScriptActionContent)
-        when Constants::EXECUTION_ACTION_TYPE[:send_email_action]
+        when Constants::EXECUTION_ACTION_TYPE[:send_email]
           value.is_a?(SendEmailActionContent)
         else
           false
