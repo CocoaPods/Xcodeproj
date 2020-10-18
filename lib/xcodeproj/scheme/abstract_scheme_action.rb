@@ -29,6 +29,8 @@ module Xcodeproj
       #         Each entry represent one of two types 'Run Script' or 'Send Email'
       #
       def pre_actions
+        return if pre_and_post_actions_disabled
+
         pre_actions = @xml_element.elements['PreActions']
         return nil unless pre_actions
         pre_actions.get_elements('ExecutionAction').map do |entry_node|
@@ -40,6 +42,8 @@ module Xcodeproj
       #        Sets the list of ExecutionAction under the PreActions node associated with this action
       #
       def pre_actions=(pre_actions)
+        return if pre_and_post_actions_disabled
+
         @xml_element.delete_element('PreActions')
         unless pre_actions.empty?
           pre_actions_element = @xml_element.add_element('PreActions')
@@ -54,6 +58,8 @@ module Xcodeproj
       #        The ExecutionAction to add to the PreActions node associated with this action
       #
       def add_pre_action(pre_action)
+        return if pre_and_post_actions_disabled
+
         pre_actions = @xml_element.elements['PreActions'] || @xml_element.add_element('PreActions')
         pre_actions.add_element(pre_action.xml_element)
       end
@@ -63,6 +69,8 @@ module Xcodeproj
       #         Each entry represent one of two types 'Run Script' or 'Send Email'
       #
       def post_actions
+        return if pre_and_post_actions_disabled
+
         post_actions = @xml_element.elements['PostActions']
         return nil unless post_actions
         post_actions.get_elements('ExecutionAction').map do |entry_node|
@@ -74,6 +82,8 @@ module Xcodeproj
       #        Sets the list of ExecutionAction under the PostActions node associated with this action
       #
       def post_actions=(post_actions)
+        return if pre_and_post_actions_disabled
+
         @xml_element.delete_element('PostActions')
         unless post_actions.empty?
           post_actions_element = @xml_element.add_element('PostActions')
@@ -88,8 +98,22 @@ module Xcodeproj
       #        The ExecutionAction to add to the PostActions node associated with this action
       #
       def add_post_action(post_action)
+        return if pre_and_post_actions_disabled
+
         post_actions = @xml_element.elements['PostActions'] || @xml_element.add_element('PostActions')
         post_actions.add_element(post_action.xml_element)
+      end
+
+      #-------------------------------------------------------------------------#
+
+      private
+
+      # @!group Private helpers
+
+      # @return [Bool]
+      #         The AnalyzeAction does not support pre/post actions (see in Xcode)
+      def pre_and_post_actions_disabled
+        is_a?(AnalyzeAction)
       end
     end
   end
