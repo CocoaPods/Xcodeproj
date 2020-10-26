@@ -34,7 +34,7 @@ module Xcodeproj
         pre_actions = @xml_element.elements['PreActions']
         return nil unless pre_actions
         pre_actions.get_elements('ExecutionAction').map do |entry_node|
-          ExecutionAction.new(nil, entry_node)
+          ExecutionAction.new(entry_node)
         end
       end
 
@@ -76,7 +76,7 @@ module Xcodeproj
         post_actions = @xml_element.elements['PostActions']
         return nil unless post_actions
         post_actions.get_elements('ExecutionAction').map do |entry_node|
-          ExecutionAction.new(nil, entry_node)
+          ExecutionAction.new(entry_node)
         end
       end
 

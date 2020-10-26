@@ -12,16 +12,16 @@ module Xcodeproj
     it 'ensure pre and post actions are disabled' do
       action = Xcodeproj::XCScheme::AnalyzeAction.new(nil)
 
-      pre_action1 = Xcodeproj::XCScheme::ExecutionAction.new(Constants::EXECUTION_ACTION_TYPE[:send_email])
-      pre_action2 = Xcodeproj::XCScheme::ExecutionAction.new(Constants::EXECUTION_ACTION_TYPE[:send_email])
+      pre_action1 = Xcodeproj::XCScheme::ExecutionAction.new(nil, :send_email)
+      pre_action2 = Xcodeproj::XCScheme::ExecutionAction.new(nil, :send_email)
 
       action.pre_actions = Array(pre_action1)
       action.add_pre_action(pre_action2)
       action.pre_actions.should.nil?
       action.xml_element.elements['PreActions'].should.nil?
 
-      post_action1 = Xcodeproj::XCScheme::ExecutionAction.new(Constants::EXECUTION_ACTION_TYPE[:send_email])
-      post_action2 = Xcodeproj::XCScheme::ExecutionAction.new(Constants::EXECUTION_ACTION_TYPE[:send_email])
+      post_action1 = Xcodeproj::XCScheme::ExecutionAction.new(nil, :send_email)
+      post_action2 = Xcodeproj::XCScheme::ExecutionAction.new(nil, :send_email)
 
       action.post_actions = Array(post_action1)
       action.add_post_action(post_action2)

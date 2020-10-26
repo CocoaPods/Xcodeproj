@@ -3,21 +3,18 @@ module Xcodeproj
     # This class wraps the ExecutionAction node of a .xcscheme XML file
     #
     class ExecutionAction < XMLElementWrapper
-      # @param [String] action_type
-      #        The ActionType of this ExecutionAction. One of two values:
-      #
-      #        Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction,
-      #        Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.SendEmailAction
-      #
       # @param [REXML::Element] node
       #        The 'ExecutionAction' XML node that this object will wrap.
       #        If nil, will create an empty one
       #
-      def initialize(action_type = nil, node = nil)
+      # @param [Symbol] action_type
+      #        One of `EXECUTION_ACTION_TYPE.keys`
+      #
+      def initialize(node = nil, action_type = nil)
         create_xml_element_with_fallback(node, 'ExecutionAction') do
           type = action_type || node.action_type
-          raise "[Xcodeproj] Invalid ActionType `#{type}`" unless Constants::EXECUTION_ACTION_TYPE.values.include?(type)
-          @xml_element.attributes['ActionType'] = type
+          raise "[Xcodeproj] Invalid ActionType `#{type}`" unless Constants::EXECUTION_ACTION_TYPE.keys.include?(type)
+          @xml_element.attributes['ActionType'] = Constants::EXECUTION_ACTION_TYPE[type]
         end
       end
 
