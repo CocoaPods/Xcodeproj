@@ -56,7 +56,7 @@ module Xcodeproj
       #
       def action_content=(value)
         raise "[Xcodeproj] Invalid ActionContent `#{value.class}` for " \
-          "ActionType `#{action_type}`" unless validate_action_content(value)
+          "ActionType `#{action_type}`" unless valid_action_content?(value)
 
         @xml_element.delete_element('ActionContent')
         @xml_element.add_element(value.xml_element)
@@ -69,12 +69,12 @@ module Xcodeproj
       # @!group Private helpers
 
       # @return [Bool]
-      #         True if value is valid
+      #         True if value (ActionContent) is valid for current action_type
       #
       # @param [ShellScriptActionContent, SendEmailActionContent] value
       #        Checks if value matches the expected action_type if present.
       #
-      def validate_action_content(value)
+      def valid_action_content?(value)
         case action_type
         when Constants::EXECUTION_ACTION_TYPE[:shell_script]
           value.is_a?(ShellScriptActionContent)

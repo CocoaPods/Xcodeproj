@@ -116,6 +116,7 @@ module Xcodeproj
 
       # @return [Bool]
       #         The AnalyzeAction does not support pre/post actions (see in Xcode)
+      #
       def pre_and_post_actions_disabled
         is_a?(AnalyzeAction)
       end
