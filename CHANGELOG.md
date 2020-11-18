@@ -10,7 +10,8 @@
 
 ##### Bug Fixes
 
-* None.  
+* Update Swift packages annotations to match Xcode
+  [Tommaso Madonia](https://github.com/Frugghi)
 
 
 ## 1.19.0 (2020-10-09)

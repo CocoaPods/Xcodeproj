@@ -29,7 +29,14 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'AbstractObject Hooks' do
-      it 'returns the display name of the file reference if one is available' do
+      it 'returns the display name of the Swift package if one is available' do
+        product_ref = @project.new(XCSwiftPackageProductDependency)
+        product_ref.product_name = 'SwiftPackage'
+        @build_file.product_ref = product_ref
+        @build_file.display_name.should == 'SwiftPackage'
+      end
+
+      it 'returns the display name of the file reference if one is available and Swift Package is not set' do
         file_ref = @project.new_file('Class.m')
         @build_file.file_ref = file_ref
         @build_file.display_name.should == 'Class.m'

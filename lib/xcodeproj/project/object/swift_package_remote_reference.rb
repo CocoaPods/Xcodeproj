@@ -13,6 +13,20 @@ module Xcodeproj
         # @return [Hash] the version requirements for this Swift package.
         #
         attribute :requirement, Hash
+
+        # @!group AbstractObject Hooks
+        #--------------------------------------#
+
+        def ascii_plist_annotation
+          " #{isa} \"#{File.basename(display_name)}\" "
+        end
+
+        # @return [String] the name of the Swift package repository.
+        #
+        def display_name
+          return repositoryURL if repositoryURL
+          super
+        end
       end
     end
   end
