@@ -8,8 +8,9 @@
   [thiagohmcruz](https://github.com/thiagohmcruz)
   [#401](https://github.com/CocoaPods/CocoaPods/issues/401)
 
-* Bump Xcode version to suppress warnings to update build settings  
+* Bump Xcode version constants for Xcode 12.3  
   [chuganzy](https://github.com/chuganzy)
+  [amorde](https://github.com/amorde)
   [#793](https://github.com/CocoaPods/Xcodeproj/pull/793)
 
 ##### Bug Fixes
