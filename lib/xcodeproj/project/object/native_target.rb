@@ -550,6 +550,7 @@ module Xcodeproj
             phase = is_header_phase ? headers_build_phase : source_build_phase
             phase.remove_file_reference(file)
           end
+        end
 
         # Adds resource files to the resources build phase of the target.
         #
