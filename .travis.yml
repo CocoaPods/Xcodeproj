@@ -13,6 +13,7 @@ rvm:
   - 2.5.0
   - 2.6.0
   - 2.7.0
+  - 3.0.0
 
 before_install:
   # There is a bug in travis. When using system ruby, bundler is not
@@ -21,13 +22,13 @@ before_install:
 
 matrix:
   include:
-  - rvm: 2.5.0
-    env: COCOAPODS_CI_TASKS=LINT
+    - rvm: 2.5.0
+      env: COCOAPODS_CI_TASKS=LINT
 
 script:
   - bundle exec rake spec:all
   - if [ "$COCOAPODS_CI_TASKS" = "LINT" ]; then bundle exec danger; fi
 
 addons:
- code_climate:
-   repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152
+  code_climate:
+    repo_token: fcf708528e1eca6e8a8bf8f7be3bd24e4478b019c4cd7860325c141dd52aa152
