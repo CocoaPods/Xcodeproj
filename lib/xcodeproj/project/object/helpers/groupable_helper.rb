@@ -205,7 +205,7 @@ module Xcodeproj
           # @return [void]
           #
           def set_path_with_source_tree(object, path, source_tree)
-            path = Pathname.new(path)
+            path = Pathname(path)
             source_tree = normalize_source_tree(source_tree)
             object.source_tree = source_tree
 
