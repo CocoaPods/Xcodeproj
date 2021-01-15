@@ -41,17 +41,17 @@ module Xcodeproj
       #
       # @return [PBXNativeTarget] the target.
       #
-      def self.new_target(project, type, name, platform, deployment_target, product_group, language)
+      def self.new_target(project, type, name, platform, deployment_target, product_group, language, product_basename)
         # Target
         target = project.new(PBXNativeTarget)
         project.targets << target
         target.name = name
-        target.product_name = name
+        target.product_name = product_basename
         target.product_type = Constants::PRODUCT_TYPE_UTI[type]
         target.build_configuration_list = configuration_list(project, platform, deployment_target, type, language)
 
         # Product
-        product = product_group.new_product_ref_for_target(name, type)
+        product = product_group.new_product_ref_for_target(target.product_name, type)
         target.product_reference = product
 
         # Build phases
@@ -88,12 +88,12 @@ module Xcodeproj
       #
       # @return [PBXNativeTarget] the target.
       #
-      def self.new_resources_bundle(project, name, platform, product_group)
+      def self.new_resources_bundle(project, name, platform, product_group, product_basename)
         # Target
         target = project.new(PBXNativeTarget)
         project.targets << target
         target.name = name
-        target.product_name = name
+        target.product_name = product_basename
         target.product_type = Constants::PRODUCT_TYPE_UTI[:bundle]
 
         # Configuration List
@@ -111,7 +111,7 @@ module Xcodeproj
         target.build_configuration_list = cl
 
         # Product
-        product = product_group.new_bundle(name)
+        product = product_group.new_bundle(target.product_name)
         target.product_reference = product
 
         # Build phases

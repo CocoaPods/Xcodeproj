@@ -226,24 +226,24 @@ module Xcodeproj
         # Creates a file reference to a static library and adds it to the
         # group.
         #
-        # @param  [#to_s] product_name
+        # @param  [#to_s] product_basename
         #         The name of the static library.
         #
         # @return [PBXFileReference] The new file reference.
         #
-        def new_product_ref_for_target(target_name, product_type)
-          FileReferencesFactory.new_product_ref_for_target(self, target_name, product_type)
+        def new_product_ref_for_target(product_basename, product_type)
+          FileReferencesFactory.new_product_ref_for_target(self, product_basename, product_type)
         end
 
         # Creates a file reference to a new bundle.
         #
-        # @param  [#to_s] product_name
+        # @param  [#to_s] product_basename
         #         The name of the bundle.
         #
         # @return [PBXFileReference] The new file reference.
         #
-        def new_bundle(product_name)
-          FileReferencesFactory.new_bundle(self, product_name)
+        def new_bundle(product_basename)
+          FileReferencesFactory.new_bundle(self, product_basename)
         end
 
         # Creates a file reference to a new bundle and adds it to the group.

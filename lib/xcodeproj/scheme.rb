@@ -224,7 +224,7 @@ module Xcodeproj
       launch_runnable = BuildableProductRunnable.new(build_target, 0)
       launch_action.buildable_product_runnable = launch_runnable
 
-      profile_runnable = BuildableProductRunnable.new(build_target)
+      profile_runnable = BuildableProductRunnable.new(build_target, 0)
       profile_action.buildable_product_runnable = profile_runnable
 
       macro_exp = MacroExpansion.new(build_target)

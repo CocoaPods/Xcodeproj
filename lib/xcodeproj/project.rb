@@ -711,9 +711,10 @@ module Xcodeproj
     #
     # @return [PBXNativeTarget] the target.
     #
-    def new_target(type, name, platform, deployment_target = nil, product_group = nil, language = nil)
+    def new_target(type, name, platform, deployment_target = nil, product_group = nil, language = nil, product_basename = nil)
       product_group ||= products_group
-      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group, language)
+      product_basename ||= name
+      ProjectHelper.new_target(self, type, name, platform, deployment_target, product_group, language, product_basename)
     end
 
     # Creates a new resource bundles target and adds it to the project.
@@ -731,9 +732,10 @@ module Xcodeproj
     #
     # @return [PBXNativeTarget] the target.
     #
-    def new_resources_bundle(name, platform, product_group = nil)
+    def new_resources_bundle(name, platform, product_group = nil, product_basename = nil)
       product_group ||= products_group
-      ProjectHelper.new_resources_bundle(self, name, platform, product_group)
+      product_basename ||= name
+      ProjectHelper.new_resources_bundle(self, name, platform, product_group, product_basename)
     end
 
     # Creates a new target and adds it to the project.
