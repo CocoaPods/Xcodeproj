@@ -22,6 +22,10 @@
   [amorde](https://github.com/amorde)
   [#793](https://github.com/CocoaPods/Xcodeproj/pull/793)
 
+* Bump Xcode version constants for Xcode 12.4  
+  [esteluk](https://github.com/esteluk)
+  [#806](https://github.com/CocoaPods/Xcodeproj/pull/806)
+
 ##### Bug Fixes
 
 * Update Swift packages annotations to match Xcode
