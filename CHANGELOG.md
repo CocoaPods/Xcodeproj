@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support for group options when using  the sort command
+  [zanchee](https://github.com/Zanchee)
+  [#807](https://github.com/CocoaPods/Xcodeproj/pull/807)
+
 * Add support for pre/post-actions in scheme actions  
   [thiagohmcruz](https://github.com/thiagohmcruz)
   [#401](https://github.com/CocoaPods/CocoaPods/issues/401)
