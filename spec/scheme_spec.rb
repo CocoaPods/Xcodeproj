@@ -1,6 +1,7 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 def compare_elements(a, b)
+  return a.should.be.nil if b.nil?
   a.attributes.should.be.equal b.attributes
   a.elements.count.should.be.equal b.elements.count
 end
@@ -236,23 +237,24 @@ module ProjectSpecs
               buildImplicitDependencies = "YES">
            </BuildAction>
            <TestAction
+              buildConfiguration = "Debug"
               selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
               selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-              shouldUseLaunchSchemeArgsEnv = "YES"
-              buildConfiguration = "Debug">
-              <AdditionalOptions>
-              </AdditionalOptions>
+              shouldUseLaunchSchemeArgsEnv = "YES">
               <MacroExpansion>
                  <BuildableReference
                     BuildableIdentifier = "primary"
-                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintIdentifier = "IDENTIFIER"
                     BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
                     ReferencedContainer = "container:Cocoa Application.xcodeproj">
                  </BuildableReference>
               </MacroExpansion>
+              <Testables>
+              </Testables>
            </TestAction>
            <LaunchAction
+              buildConfiguration = "Debug"
               selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
               selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
               launchStyle = "0"
@@ -260,15 +262,12 @@ module ProjectSpecs
               ignoresPersistentStateOnLaunch = "NO"
               debugDocumentVersioning = "YES"
               debugServiceExtension = "internal"
-              buildConfiguration = "Debug"
               allowLocationSimulation = "YES">
-              <AdditionalOptions>
-              </AdditionalOptions>
               <BuildableProductRunnable
                  runnableDebuggingMode = "0">
                  <BuildableReference
                     BuildableIdentifier = "primary"
-                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintIdentifier = "IDENTIFIER"
                     BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
                     ReferencedContainer = "container:Cocoa Application.xcodeproj">
@@ -276,15 +275,16 @@ module ProjectSpecs
               </BuildableProductRunnable>
            </LaunchAction>
            <ProfileAction
+              buildConfiguration = "Release"
+              shouldUseLaunchSchemeArgsEnv = "YES"
               savedToolIdentifier = ""
               useCustomWorkingDirectory = "NO"
-              debugDocumentVersioning = "YES"
-              buildConfiguration = "Release"
-              shouldUseLaunchSchemeArgsEnv = "YES">
-              <BuildableProductRunnable>
+              debugDocumentVersioning = "YES">
+              <BuildableProductRunnable
+                 runnableDebuggingMode = "0">
                  <BuildableReference
                     BuildableIdentifier = "primary"
-                    BlueprintIdentifier = "8AF293B530B5A8B3208262BD"
+                    BlueprintIdentifier = "IDENTIFIER"
                     BuildableName = "iOS application.app"
                     BlueprintName = "iOS application"
                     ReferencedContainer = "container:Cocoa Application.xcodeproj">

@@ -18,6 +18,10 @@
 * Update Swift packages annotations to match Xcode
   [Tommaso Madonia](https://github.com/Frugghi)
 
+* Update format of generated schemes to match the ordering Xcode uses,
+  minimizing the amount of time it takes to open projects in Xcode.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 1.19.0 (2020-10-09)
 

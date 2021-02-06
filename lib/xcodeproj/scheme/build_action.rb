@@ -189,11 +189,11 @@ module Xcodeproj
               is_app_target = app_types.include?(target_or_node.product_type)
             end
 
-            self.build_for_analyzing = true
             self.build_for_testing   = is_test_target
             self.build_for_running   = is_app_target
             self.build_for_profiling = is_app_target
             self.build_for_archiving = is_app_target
+            self.build_for_analyzing = true
 
             add_buildable_reference BuildableReference.new(target_or_node) if target_or_node
           end

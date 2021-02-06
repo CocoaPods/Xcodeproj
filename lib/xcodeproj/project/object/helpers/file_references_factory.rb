@@ -42,17 +42,17 @@ module Xcodeproj
           # @param  [PBXGroup] group
           #         The group to which to add the reference.
           #
-          # @param  [#to_s] product_name
+          # @param  [#to_s] product_basename
           #         The name of the static library.
           #
           # @return [PBXFileReference] The new file reference.
           #
-          def new_product_ref_for_target(group, target_name, product_type)
+          def new_product_ref_for_target(group, product_basename, product_type)
             if product_type == :static_library
               prefix = 'lib'
             end
             extension = Constants::PRODUCT_UTI_EXTENSIONS[product_type]
-            path = "#{prefix}#{target_name}"
+            path = "#{prefix}#{product_basename}"
             path += ".#{extension}" if extension
             ref = new_reference(group, path, :built_products)
             ref.include_in_index = '0'
@@ -66,13 +66,13 @@ module Xcodeproj
           # @param  [PBXGroup] group
           #         The group to which to add the reference.
           #
-          # @param  [#to_s] product_name
+          # @param  [#to_s] product_basename
           #         The name of the bundle.
           #
           # @return [PBXFileReference] The new file reference.
           #
-          def new_bundle(group, product_name)
-            ref = new_reference(group, "#{product_name}.bundle", :built_products)
+          def new_bundle(group, product_basename)
+            ref = new_reference(group, "#{product_basename}.bundle", :built_products)
             ref.include_in_index = '0'
             ref.set_explicit_file_type('wrapper.cfbundle')
             ref

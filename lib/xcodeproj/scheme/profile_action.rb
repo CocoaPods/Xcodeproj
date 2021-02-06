@@ -11,14 +11,14 @@ module Xcodeproj
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'ProfileAction') do
+          # Setup default values for other (handled) attributes
+          self.build_configuration = 'Release'
+          self.should_use_launch_scheme_args_env = true
+
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
           @xml_element.attributes['savedToolIdentifier'] = ''
           @xml_element.attributes['useCustomWorkingDirectory'] = bool_to_string(false)
           @xml_element.attributes['debugDocumentVersioning'] = bool_to_string(true)
-
-          # Setup default values for other (handled) attributes
-          self.build_configuration = 'Release'
-          self.should_use_launch_scheme_args_env = true
         end
       end
 
@@ -42,7 +42,7 @@ module Xcodeproj
       #         The BuildableProductRunnable to launch when launching the Profile action
       #
       def buildable_product_runnable
-        BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable']
+        BuildableProductRunnable.new @xml_element.elements['BuildableProductRunnable'], 0
       end
 
       # @param [BuildableProductRunnable] runnable

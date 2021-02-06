@@ -11,6 +11,8 @@ module Xcodeproj
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'LaunchAction') do
+          self.build_configuration = 'Debug'
+
           # Add some attributes (that are not handled by this wrapper class yet but expected in the XML)
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
@@ -19,10 +21,8 @@ module Xcodeproj
           @xml_element.attributes['ignoresPersistentStateOnLaunch'] = bool_to_string(false)
           @xml_element.attributes['debugDocumentVersioning'] = bool_to_string(true)
           @xml_element.attributes['debugServiceExtension'] = 'internal'
-          @xml_element.add_element('AdditionalOptions')
 
           # Setup default values for other (handled) attributes
-          self.build_configuration = 'Debug'
           self.allow_location_simulation = true
         end
       end

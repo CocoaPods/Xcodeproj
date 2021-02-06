@@ -11,11 +11,11 @@ module Xcodeproj
       #
       def initialize(node = nil)
         create_xml_element_with_fallback(node, 'TestAction') do
+          self.build_configuration = 'Debug'
           @xml_element.attributes['selectedDebuggerIdentifier'] = 'Xcode.DebuggerFoundation.Debugger.LLDB'
           @xml_element.attributes['selectedLauncherIdentifier'] = 'Xcode.DebuggerFoundation.Launcher.LLDB'
-          @xml_element.add_element('AdditionalOptions')
           self.should_use_launch_scheme_args_env = true
-          self.build_configuration = 'Debug'
+          @xml_element.add_element('Testables')
         end
       end
 
@@ -109,7 +109,11 @@ module Xcodeproj
       #        Add a MacroExpansion to this TestAction
       #
       def add_macro_expansion(macro_expansion)
-        @xml_element.add_element(macro_expansion.xml_element)
+        if testables = @xml_element.elements['Testables']
+          @xml_element.insert_before(testables, macro_expansion.xml_element)
+        else
+          @xml_element.add_element(macro_expansion.xml_element)
+        end
       end
 
       # @return [EnvironmentVariables]
