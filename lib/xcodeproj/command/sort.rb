@@ -14,7 +14,7 @@ module Xcodeproj
           ['--group-option=[above|below]', 'The position of the groups when sorting. If no option is specified, sorting will interleave groups and files.'],
         ].concat(super)
       end
-      
+
       self.arguments = [
         CLAide::Argument.new('PROJECT', false),
       ]
@@ -25,8 +25,8 @@ module Xcodeproj
         @group_option &&= @group_option.to_sym
         super
       end
-      
-      def validate
+
+      def validate!
         super
         unless [nil, :above, :below].include?(@group_option)
           help! "Unknown format `#{@group_option}`"
@@ -35,17 +35,7 @@ module Xcodeproj
       end
 
       def run
-          
-        if @group_option
-            if [:above, :below].include? @group_option
-                xcodeproj.sort(groups_position: @group_option)
-            else
-                help! "Unknown format `#{@group_option}`"
-            end
-        else
-            xcodeproj.sort
-        end
-        
+        xcodeproj.sort(:groups_position => @group_option)
         xcodeproj.save
         puts "The `#{File.basename(xcodeproj_path)}` project was sorted"
       end
