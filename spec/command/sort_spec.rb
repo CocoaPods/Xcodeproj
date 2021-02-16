@@ -19,7 +19,7 @@ describe Xcodeproj::Command::Sort do
     sort = Xcodeproj::Command::Sort.new(argv)
     sort.instance_variable_get(:@group_option).should == :above
     sort.validate!.should.not.be.nil
-    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be == :above }))
+    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be == { :groups_position => :above } }))
     sort.run
   end
 
@@ -28,7 +28,7 @@ describe Xcodeproj::Command::Sort do
     sort = Xcodeproj::Command::Sort.new(argv)
     sort.instance_variable_get(:@group_option).should == :below
     sort.validate!.should.not.be.nil
-    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be == :below }))
+    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be == { :groups_position => :below } }))
     sort.run
   end
 
@@ -37,7 +37,7 @@ describe Xcodeproj::Command::Sort do
     sort = Xcodeproj::Command::Sort.new(argv)
     sort.instance_variable_get(:@group_option).should.be.nil
     sort.validate!.should.not.be.nil
-    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be.nil }))
+    sort.instance_variable_set(:@xcodeproj, MockXcodeproj.new(->(options) { options.should.be == { :groups_position => nil } }))
     sort.run
   end
 
