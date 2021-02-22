@@ -129,4 +129,15 @@ class Bacon::Context
       define_singleton_method(key) { value }
     end
   end
+
+  def should_raise_help(error_message)
+    error = nil
+    begin
+      yield
+    rescue CLAide::Help => e
+      error = e
+    end
+    error.should.not.nil?
+    error.error_message.should == error_message
+  end
 end
