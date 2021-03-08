@@ -2,7 +2,7 @@ module Xcodeproj
   class XCScheme
     # This class wraps the LocationScenarioReference node of a .xcscheme XML file
     #
-    # A LocationScenarioReference is a reference to a simulated GPS locatio associated
+    # A LocationScenarioReference is a reference to a simulated GPS location associated
     # with a scheme's launch action
     #
     class LocationScenarioReference < XMLElementWrapper
