@@ -10,7 +10,7 @@ support for Xcode workspaces (`.xcworkspace`), configuration files (`.xcconfig`)
 Xcode Scheme files (`.xcscheme`).
 
 It is used in [CocoaPods](https://github.com/CocoaPods/CocoaPods) to create a
-a collection of supplemental libraries or frameworks, for all platforms Xcode supports.
+collection of supplemental libraries or frameworks, for all platforms Xcode supports.
 
 The API reference can be found [here](http://www.rubydoc.info/gems/xcodeproj).
 
