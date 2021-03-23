@@ -47,6 +47,21 @@ module Xcodeproj
         @xml_element.attributes['allowLocationSimulation'] = bool_to_string(flag)
       end
 
+      # @return [LocationScenarioReference]
+      #         The LocationScenarioReference to simulate a GPS location when executing the Launch Action
+      #
+      def location_scenario_reference?
+        LocationScenarioReference.new(@xml_element.elements['LocationScenarioReference'])
+      end
+
+      # @return [LocationScenarioReference]
+      #         Set the LocationScenarioReference which simulates a GPS location when executing the Launch Action
+      #
+      def location_scenario_reference=(reference)
+        @xml_element.delete_element('LocationScenarioReference')
+        @xml_element.add_element(reference.xml_element) if reference
+      end
+
       # @return [Bool]
       #         Whether this Build Action should disable detection of UI API misuse
       #         from background threads

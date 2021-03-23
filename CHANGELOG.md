@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Allow accessing a Launch Action's Simulated Location (`LocationScenarioReference`)  
+  [freak4pc](https://github.com/freak4pc)
+  [#813](https://github.com/CocoaPods/Xcodeproj/pull/813)
+
 * Add support for group options when using the sort command
   [zanchee](https://github.com/Zanchee)
   [imachumphries](https://github.com/imachumphries)
