@@ -12,6 +12,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => ['Foundation'],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -23,6 +24,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => ['Foundation'],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -34,6 +36,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => ['Twitter'],
         :libraries => [],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -45,6 +48,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -56,6 +60,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['xml2.2.7.3'],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -67,6 +72,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -78,6 +84,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => ['Pods-AFNetworking iOS Example-AFNetworking'],
+        :arg_files => [],
         :simple => [],
         :force_load => [],
       }
@@ -89,7 +96,44 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => ['-ObjC', '-fobjc-arc'],
+        :force_load => [],
+      }
+    end
+
+    it 'detects arg files' do
+      flags = '@ /path/to/file'
+      @parser.parse(flags).should == {
+        :frameworks => [],
+        :weak_frameworks => [],
+        :libraries => [],
+        :arg_files => ['/path/to/file'],
+        :simple => [],
+        :force_load => [],
+      }
+    end
+
+    it 'detects arg files specified with quotes' do
+      flags = '@ "${PODS_ROOT}/Target Support Files/Target/other_ldflags"'
+      @parser.parse(flags).should == {
+        :frameworks => [],
+        :weak_frameworks => [],
+        :libraries => [],
+        :arg_files => ['${PODS_ROOT}/Target Support Files/Target/other_ldflags'],
+        :simple => [],
+        :force_load => [],
+      }
+    end
+
+    it 'detects arg files specified with quotes without a space' do
+      flags = '@"${PODS_ROOT}/Target Support Files/Target/other_ldflags"'
+      @parser.parse(flags).should == {
+        :frameworks => [],
+        :weak_frameworks => [],
+        :libraries => [],
+        :arg_files => ['${PODS_ROOT}/Target Support Files/Target/other_ldflags'],
+        :simple => [],
         :force_load => [],
       }
     end
@@ -100,6 +144,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => ['-ObjC'],
         :force_load => [],
       }
@@ -111,6 +156,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => ['-finalize', '-prefinalized-library'],
         :force_load => [],
       }
@@ -123,12 +169,15 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
       flags << '-lxml2.2.7.3'
       flags << '-l "Pods-AFNetworking iOS Example-AFNetworking"'
       flags << '-l"Pods-AFNetworking iOS Example-AFNetworking"'
+      flags << '@"${PODS_ROOT}/Target Support Files/other_ldflags"'
+      flags << '@ "${PODS_ROOT}/Target Support Files/other_ldflags"'
       flags << '-ObjC -fobjc-arc'
       flags << '-finalize -prefinalized-library'
       @parser.parse(flags.join(' ')).should == {
         :frameworks => ['Foundation'],
         :weak_frameworks => ['Twitter'],
         :libraries => ['xml2.2.7.3', 'xml2.2.7.3', 'Pods-AFNetworking iOS Example-AFNetworking', 'Pods-AFNetworking iOS Example-AFNetworking'],
+        :arg_files => ['${PODS_ROOT}/Target Support Files/other_ldflags', '${PODS_ROOT}/Target Support Files/other_ldflags'],
         :simple => ['-ObjC', '-fobjc-arc', '-finalize', '-prefinalized-library'],
         :force_load => [],
       }
@@ -140,6 +189,7 @@ describe Xcodeproj::Config::OtherLinkerFlagsParser do
         :frameworks => [],
         :weak_frameworks => [],
         :libraries => [],
+        :arg_files => [],
         :simple => ['-Objc', '-all_load', '-lsqlite3', '-lz'],
         :force_load => [],
       }

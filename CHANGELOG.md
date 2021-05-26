@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support to parse OTHER_LDFLAGS arg files using '@'  
+  [dnkoutso](https://github.com/dnkoutso)
+  [#820](https://github.com/CocoaPods/Xcodeproj/pull/820)
+
 * Allow accessing a Launch Action's Simulated Location (`LocationScenarioReference`)  
   [freak4pc](https://github.com/freak4pc)
   [#813](https://github.com/CocoaPods/Xcodeproj/pull/813)

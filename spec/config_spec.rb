@@ -62,6 +62,18 @@ describe Xcodeproj::Config do
       config.libraries.to_a.should.be.equal %w(xml2.2.7.3)
     end
 
+    it 'parses arg files with double quotes' do
+      hash = { 'OTHER_LDFLAGS' => '@"${PODS_ROOT}/Target Support Files/path/to/other_ldflags"' }
+      config = Xcodeproj::Config.new(hash)
+      config.arg_files.to_a.should.be.equal ['${PODS_ROOT}/Target Support Files/path/to/other_ldflags']
+    end
+
+    it 'parses arg files with shell escaping' do
+      hash = { 'OTHER_LDFLAGS' => '@${PODS_ROOT}/Target\ Support\ Files/path/to/other_ldflags' }
+      config = Xcodeproj::Config.new(hash)
+      config.arg_files.to_a.should.be.equal ['${PODS_ROOT}/Target Support Files/path/to/other_ldflags']
+    end
+
     it 'can be serialized with #to_s' do
       @config.to_s.should.be.equal "OTHER_LDFLAGS = -framework \"Foundation\"\n"
     end
@@ -148,6 +160,13 @@ Y = 123
       @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3')
       @config.to_hash.should == {
         'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation"',
+      }
+    end
+
+    it 'appends a value for the same key when merging' do
+      @config.merge!('OTHER_LDFLAGS' => '-l xml2.2.7.3 @"${PODS_ROOT}/Target Support Files/other_ldflags"')
+      @config.to_hash.should == {
+        'OTHER_LDFLAGS' => '-l"xml2.2.7.3" -framework "Foundation" @"${PODS_ROOT}/Target Support Files/other_ldflags"',
       }
     end
 

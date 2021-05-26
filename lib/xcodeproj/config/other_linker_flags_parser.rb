@@ -16,6 +16,7 @@ module Xcodeproj
           :frameworks => [],
           :weak_frameworks => [],
           :libraries => [],
+          :arg_files => [],
           :simple => [],
           :force_load => [],
         }
@@ -32,6 +33,8 @@ module Xcodeproj
             key = :weak_frameworks
           when '-l'
             key = :libraries
+          when '@'
+            key = :arg_files
           when '-force_load'
             key = :force_load
           else
@@ -58,6 +61,8 @@ module Xcodeproj
         flags.strip.shellsplit.flat_map do |string|
           if string =~ /\A-l.+/
             ['-l', string[2..-1]]
+          elsif string =~ /\A@.+/
+            ['@', string[1..-1]]
           else
             string
           end
