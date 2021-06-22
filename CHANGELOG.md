@@ -26,6 +26,10 @@
   [amorde](https://github.com/amorde)
   [#793](https://github.com/CocoaPods/Xcodeproj/pull/793)
 
+* Reword misleading warning diagnostic for the `--project` option.  
+  [lemonspike](https://github.com/LemonSpike)
+  [#709](https://github.com/CocoaPods/Xcodeproj/issues/709)
+
 ##### Bug Fixes
 
 * Update Swift packages annotations to match Xcode
