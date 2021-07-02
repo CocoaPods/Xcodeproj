@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add Xcode 13.0 object version support.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#825](https://github.com/CocoaPods/Xcodeproj/pull/825)
+
 * Add support to parse OTHER_LDFLAGS arg files using '@'  
   [dnkoutso](https://github.com/dnkoutso)
   [#820](https://github.com/CocoaPods/Xcodeproj/pull/820)
