@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.20.0 (2021-07-05)
 
 ##### Enhancements
 

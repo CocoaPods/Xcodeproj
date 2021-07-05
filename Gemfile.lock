@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CLAide
-  revision: b5ced9cc141df732e8027078543eb92fc6447567
+  revision: a5d1a29b08ca88f90f47104805bc4fad2efc93c9
   specs:
     claide (1.0.3)
 
@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    xcodeproj (1.19.0)
+    xcodeproj (1.20.0)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
       claide (>= 1.0.2, < 2.0)
@@ -25,7 +25,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    CFPropertyList (3.0.2)
+    CFPropertyList (3.0.3)
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     ast (2.3.0)
