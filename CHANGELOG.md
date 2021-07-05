@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.20.0 (2021-07-05)
+
+##### Enhancements
+
 * Add Xcode 13.0 object version support.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#825](https://github.com/CocoaPods/Xcodeproj/pull/825)
