@@ -11,7 +11,7 @@ gem 'json', :git => 'https://github.com/segiddins/json.git', :branch => 'seg-1.7
 
 group :development do
   gem 'bacon'
-  gem 'mocha'
+  gem 'mocha', '~> 1.2.0'
   gem 'mocha-on-bacon'
   gem 'prettybacon'
   gem 'rake', '~> 12.0'

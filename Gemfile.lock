@@ -122,7 +122,7 @@ DEPENDENCIES
   danger
   json!
   kicker
-  mocha
+  mocha (~> 1.2.0)
   mocha-on-bacon
   prettybacon
   rake (~> 12.0)
