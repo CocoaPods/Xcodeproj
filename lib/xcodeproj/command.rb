@@ -4,8 +4,7 @@ module Xcodeproj
 
   class Command < CLAide::Command
     require 'xcodeproj/command/config_dump'
-    require 'xcodeproj/command/target_diff'
-    require 'xcodeproj/command/project_diff'
+    require 'xcodeproj/command/diff'
     require 'xcodeproj/command/show'
     require 'xcodeproj/command/sort'
 
