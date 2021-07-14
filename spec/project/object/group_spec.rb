@@ -290,6 +290,28 @@ module ProjectSpecs
           ]
         end
 
+        it 'sorts by full path when filename is identical' do
+          files = %w(
+            zh-Hant.lproj/InfoPlist.strings
+            he.lproj/InfoPlist.strings
+            ar.lproj/InfoPlist.strings
+            en.lproj/InfoPlist.strings
+            el.lproj/InfoPlist.strings
+          )
+          files.each do |file|
+            @group.new_file(file)
+          end
+          @group.sort
+
+          @group.children.map(&:path).should == %w(
+            ar.lproj/InfoPlist.strings
+            el.lproj/InfoPlist.strings
+            en.lproj/InfoPlist.strings
+            he.lproj/InfoPlist.strings
+            zh-Hant.lproj/InfoPlist.strings
+          )
+        end
+
         it 'can sort groups above' do
           files = %w(B.m A.h B.h A.m)
           files.each do |file|
