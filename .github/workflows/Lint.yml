@@ -10,8 +10,6 @@ jobs:
 
     name: Lint
     runs-on: ${{ matrix.os }}
-    env:
-      COCOAPODS_CI_TASKS: LINT
     steps:
       - name: Set build image var
         run: echo "ImageVersion=$ImageVersion"  >> $GITHUB_ENV
@@ -37,9 +35,9 @@ jobs:
 
       - name: Run Tests
         run: bundle exec rake spec:all
+        env:
+          COCOAPODS_CI_TASKS: LINT
 
-      - name: Run Danger
-        run: bundle exec danger
 
 on:
   push:
