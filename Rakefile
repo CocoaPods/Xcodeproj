@@ -194,11 +194,15 @@ begin
   namespace :spec do
     desc 'Run all specs'
     task :all do
-      puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
-      title 'Running the specs'
-      sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
+      if ENV['COCOAPODS_CI_TASKS'].nil? || ENV['COCOAPODS_CI_TASKS'].include?('SPEC')
+        puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
+        title 'Running the specs'
+        sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
+      end
 
-      Rake::Task['rubocop'].invoke
+      if ENV['COCOAPODS_CI_TASKS'].nil? || ENV['COCOAPODS_CI_TASKS'].include?('LINT')
+        Rake::Task['rubocop'].invoke
+      end
     end
 
     desc 'Automatically run specs'

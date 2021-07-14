@@ -5,7 +5,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.0.0, 2.1.9, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7]
+        ruby: [2.1.9, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7]
         os: [ubuntu-16.04]
         include:
           - os: macos-10.15
@@ -45,6 +45,8 @@ jobs:
 
       - name: Run Tests
         run: bundle exec rake spec:all
+        env:
+          COCOAPODS_CI_TASKS: SPEC
 
 on:
   push:
