@@ -145,6 +145,27 @@ module Xcodeproj
         def ascii_plist_annotation
           " #{display_name} "
         end
+
+        # Sorts the build files of the phase according to the display
+        # name or the path.
+        #
+        # @param  [Hash] _options
+        #         Not used.
+        #
+        # @return [void]
+        #
+        def sort(_options = nil)
+          files.sort! do |x, y|
+            result = File.basename(x.display_name.downcase, '.*') <=> File.basename(y.display_name.downcase, '.*')
+            if result.zero?
+              result = File.extname(x.display_name.downcase) <=> File.extname(y.display_name.downcase)
+              if result.zero? && x.file_ref.respond_to?(:full_path) && y.file_ref.respond_to?(:full_path)
+                result = x.file_ref.full_path.to_s.downcase <=> y.file_ref.full_path.to_s.downcase
+              end
+            end
+            result
+          end
+        end
       end
 
       #-----------------------------------------------------------------------#
