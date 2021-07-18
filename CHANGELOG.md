@@ -4,7 +4,13 @@
 
 ##### Enhancements
 
-* None.  
+* Add an unambiguous sort order to build phase files.  
+  [Igor Makarov](https://github.com/igor-makarov)
+  [#839](https://github.com/CocoaPods/Xcodeproj/pull/839)
+
+* Add fallback to sort group by full path.  
+  [Igor Makarov](https://github.com/igor-makarov)
+  [#835](https://github.com/CocoaPods/Xcodeproj/pull/835)
 
 ##### Bug Fixes
 

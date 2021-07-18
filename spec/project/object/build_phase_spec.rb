@@ -26,6 +26,72 @@ module ProjectSpecs
 
     #----------------------------------------#
 
+    describe '#sort' do
+      it 'sorts file references by name' do
+        files = %w(b a d c)
+        files.each do |filename|
+          file = @project.new_file(filename)
+          @build_phase.add_file_reference(file)
+        end
+        @build_phase.sort
+        @build_phase.files_references.map(&:path).should == %w(a b c d)
+      end
+
+      it 'sorts file references by full name if ambiguous' do
+        files = %w(f.b f.a f.d f.c)
+        files.each do |filename|
+          file = @project.new_file(filename)
+          @build_phase.add_file_reference(file)
+        end
+        @build_phase.sort
+        @build_phase.files_references.map(&:path).should == %w(f.a f.b f.c f.d)
+      end
+
+      it 'sorts file references by file paths if ambiguous' do
+        files = %w(
+          zh-Hant.lproj/InfoPlist.strings
+          he.lproj/InfoPlist.strings
+          ar.lproj/InfoPlist.strings
+          en.lproj/InfoPlist.strings
+          el.lproj/InfoPlist.strings
+        )
+
+        files.each do |filename|
+          file = @project.new_file(filename)
+          @build_phase.add_file_reference(file)
+        end
+        @build_phase.sort
+        @build_phase.files_references.map(&:path).should == %w(
+          ar.lproj/InfoPlist.strings
+          el.lproj/InfoPlist.strings
+          en.lproj/InfoPlist.strings
+          he.lproj/InfoPlist.strings
+          zh-Hant.lproj/InfoPlist.strings
+        )
+      end
+
+      it 'sorts file references by full file paths' do
+        groups = %w(b a d c)
+
+        parent_group = @project.new_group('parent', 'parent')
+
+        groups.each do |group_name|
+          group = parent_group.new_group(group_name, group_name)
+          file = group.new_file('file.json')
+          @build_phase.add_file_reference(file)
+        end
+        @build_phase.sort
+        @build_phase.files_references.map(&:full_path).map(&:to_s).should == %w(
+          parent/a/file.json
+          parent/b/file.json
+          parent/c/file.json
+          parent/d/file.json
+        )
+      end
+    end
+
+    #----------------------------------------#
+
     it "returns the files it's associated with through its build files" do
       file = @project.new_file('some/file')
       @build_phase.add_file_reference(file)
