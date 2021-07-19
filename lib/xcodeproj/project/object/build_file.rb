@@ -39,6 +39,10 @@ module Xcodeproj
         #
         attribute :platform_filter, String
 
+        # @return [Array<String>] the platform filters for this build file.
+        #
+        attribute :platform_filters, Array
+
         #---------------------------------------------------------------------#
 
         public
