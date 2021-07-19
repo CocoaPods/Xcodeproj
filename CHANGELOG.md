@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add `platform_filters` support for `PBXBuildPhase`.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#838](https://github.com/CocoaPods/Xcodeproj/issues/838)
+
 * Add an unambiguous sort order to build phase files.  
   [Igor Makarov](https://github.com/igor-makarov)
   [#839](https://github.com/CocoaPods/Xcodeproj/pull/839)
