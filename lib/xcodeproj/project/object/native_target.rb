@@ -552,6 +552,40 @@ module Xcodeproj
           end
         end
 
+        # Remove on demand resource to the resources build phase of the target.
+        #
+        # @param  {String => [Array<PBXFileReference>]} on_demand_resource_tag_files
+        #         the files references of the on demand resources to the target.
+        #
+        # @return [void]
+        #
+        def remove_on_demand_resources(on_demand_resource_tag_files)
+          on_demand_resource_tag_files.each do |_, files|
+            files.each do |file|
+              resources_build_phase.remove_file_reference(file)
+            end
+          end
+        end
+
+        # Adds on demand resource to the resources build phase of the target.
+        #
+        # @param  {String => [Array<PBXFileReference>]} on_demand_resource_tag_files
+        #         the files references of the on demand resource to the target.
+        #
+        # @return [void]
+        #
+        def add_on_demand_resources(on_demand_resource_tag_files)
+          on_demand_resource_tag_files.each do |tag_name, files|
+            files.each do |file|
+              next if resources_build_phase.include?(file)
+              build_file = project.new(PBXBuildFile)
+              build_file.file_ref = file
+              build_file.settings = (build_file.settings ||= {}).merge('ASSET_TAGS' => [tag_name])
+              resources_build_phase.files << build_file
+            end
+          end
+        end
+
         # Finds or creates the headers build phase of the target.
         #
         # @note   A target should have only one headers build phase.
