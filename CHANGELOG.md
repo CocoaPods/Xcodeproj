@@ -4,6 +4,11 @@
 
 ##### Enhancements
 
+* Add support for adding and removing on demand resources.  
+  [JunyiXie](https://github.com/JunyiXie)
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#844](https://github.com/CocoaPods/Xcodeproj/pull/844)
+
 * Add `platform_filters` support for `PBXBuildPhase`.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#838](https://github.com/CocoaPods/Xcodeproj/issues/838)
