@@ -947,7 +947,64 @@ module ProjectSpecs
         build_files.first.settings.should.be.nil
       end
 
-      it 'de-duplicates added sources files' do
+      it 'adds on demand resources' do
+        apple_ref = @project.main_group.new_file('apple.png')
+        orange_ref = @project.main_group.new_file('orange.png')
+        bear_ref = @project.main_group.new_file('bear.png')
+        frog_ref = @project.main_group.new_file('frog.png')
+        on_demand_resources = { 'fruits' => [apple_ref, orange_ref], 'animals' => [bear_ref, frog_ref], 'mixed' => [apple_ref, bear_ref] }
+        @target.add_on_demand_resources(on_demand_resources)
+        build_files = @target.resources_build_phase.files
+        build_files.count.should == 4
+        build_files.map(&:display_name).should == %w(apple.png orange.png bear.png frog.png)
+        build_files[0].settings.should == { 'ASSET_TAGS' => %w(fruits mixed) }
+        build_files[1].settings.should == { 'ASSET_TAGS' => ['fruits'] }
+        build_files[2].settings.should == { 'ASSET_TAGS' => %w(animals mixed) }
+        build_files[3].settings.should == { 'ASSET_TAGS' => ['animals'] }
+      end
+
+      it 'does not add a duplicate file reference to the resources build phase for on demand resources' do
+        apple_ref = @project.main_group.new_file('apple.png')
+        @target.resources_build_phase.add_file_reference(apple_ref)
+        on_demand_resources = { 'fruits' => [apple_ref] }
+        @target.add_on_demand_resources(on_demand_resources)
+        build_files = @target.resources_build_phase.files
+        build_files.count.should == 1
+        build_files.map(&:display_name).should == %w(apple.png)
+        build_files[0].settings.should == { 'ASSET_TAGS' => %w(fruits) }
+      end
+
+      it 'removes on demand resources' do
+        apple_ref = @project.main_group.new_file('apple.png')
+        orange_ref = @project.main_group.new_file('orange.png')
+        bear_ref = @project.main_group.new_file('bear.png')
+        frog_ref = @project.main_group.new_file('frog.png')
+        on_demand_resources = { 'fruits' => [apple_ref, orange_ref], 'animals' => [bear_ref, frog_ref], 'mixed' => [apple_ref, bear_ref] }
+        @target.add_on_demand_resources(on_demand_resources)
+        @target.resources_build_phase.files.count.should == 4
+        @target.remove_on_demand_resources(on_demand_resources)
+        @target.resources_build_phase.files.count.should == 0
+      end
+
+      it 'removes specific on demand resource tag' do
+        apple_ref = @project.main_group.new_file('apple.png')
+        orange_ref = @project.main_group.new_file('orange.png')
+        bear_ref = @project.main_group.new_file('bear.png')
+        frog_ref = @project.main_group.new_file('frog.png')
+        on_demand_resources = { 'fruits' => [apple_ref, orange_ref], 'animals' => [bear_ref, frog_ref], 'mixed' => [apple_ref, bear_ref] }
+        @target.add_on_demand_resources(on_demand_resources)
+        @target.resources_build_phase.files.count.should == 4
+        @target.remove_on_demand_resources('fruits' => [apple_ref])
+        build_files = @target.resources_build_phase.files
+        build_files.count.should == 4
+        build_files.map(&:display_name).should == %w(apple.png orange.png bear.png frog.png)
+        build_files[0].settings.should == { 'ASSET_TAGS' => ['mixed'] }
+        build_files[1].settings.should == { 'ASSET_TAGS' => ['fruits'] }
+        build_files[2].settings.should == { 'ASSET_TAGS' => %w(animals mixed) }
+        build_files[3].settings.should == { 'ASSET_TAGS' => ['animals'] }
+      end
+
+      it 'de-duplicates added source files' do
         ref = @project.main_group.new_file('Class.h')
         new_build_files = @target.add_file_references([ref], '-fobjc-arc')
         @target.add_file_references([ref], '-fobjc-arc')

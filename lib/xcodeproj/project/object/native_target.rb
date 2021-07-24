@@ -552,6 +552,49 @@ module Xcodeproj
           end
         end
 
+        # Adds on demand resources to the resources build phase of the target.
+        #
+        # @param  {String => [Array<PBXFileReference>]} on_demand_resource_tag_files
+        #         the files references of the on demand resources to add to the target keyed by the tag.
+        #
+        # @return [void]
+        #
+        def add_on_demand_resources(on_demand_resource_tag_files)
+          on_demand_resource_tag_files.each do |tag, file_refs|
+            file_refs.each do |file_ref|
+              if resources_build_phase.include?(file_ref)
+                existing_build_file = resources_build_phase.build_file(file_ref)
+                existing_build_file.settings ||= {}
+                existing_build_file.settings['ASSET_TAGS'] ||= []
+                existing_build_file.settings['ASSET_TAGS'] << tag
+                existing_build_file.settings['ASSET_TAGS'].uniq!
+                next
+              end
+              build_file = resources_build_phase.add_file_reference(file_ref, true)
+              build_file.settings = (build_file.settings ||= {}).merge('ASSET_TAGS' => [tag])
+            end
+          end
+        end
+
+        # Remove on demand resources from the resources build phase of the target.
+        #
+        # @param  {String => [Array<PBXFileReference>]} on_demand_resource_tag_files
+        #         the files references of the on demand resources to add to the target keyed by the tag.
+        #
+        # @return [void]
+        #
+        def remove_on_demand_resources(on_demand_resource_tag_files)
+          on_demand_resource_tag_files.each do |tag, file_refs|
+            file_refs.each do |file_ref|
+              build_file = resources_build_phase.build_file(file_ref)
+              next if build_file.nil?
+              asset_tags = build_file.settings['ASSET_TAGS']
+              asset_tags.delete(tag)
+              resources_build_phase.remove_file_reference(file_ref) if asset_tags.empty?
+            end
+          end
+        end
+
         # Finds or creates the headers build phase of the target.
         #
         # @note   A target should have only one headers build phase.
