@@ -60,6 +60,23 @@ module Xcodeproj
             ref
           end
 
+          # Creates a file reference to a SPM package and adds it to the
+          # given group.
+          #
+          # @param  [PBXGroup] group
+          #         The group to which to add the reference.
+          #
+          # @return [PBXFileReference] The new file reference.
+          #
+          def new_spm_package(group, product_basename)
+            path = product_basename
+            ref = new_reference(group, path, :built_products)
+            ref.source_tree = (class << GroupableHelper; self; end)::SOURCE_TREES_BY_KEY[:group]
+            ref.set_last_known_file_type('folder')
+            ref.include_in_index = nil
+            ref
+          end
+
           # Creates a file reference to a new bundle and adds it to the given
           # group.
           #

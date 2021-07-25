@@ -223,6 +223,18 @@ module Xcodeproj
         end
         alias_method :new_file, :new_reference
 
+        # Creates a file reference to an spm package and adds it to the
+        # group.
+        #
+        # @param  [#to_s] product_basename
+        #         The name of the spm package.
+        #
+        # @return [PBXFileReference] The new file reference.
+        #
+        def new_spm_package_ref_for_target(product_basename)
+          FileReferencesFactory.new_spm_package(self, product_basename)
+        end
+
         # Creates a file reference to a static library and adds it to the
         # group.
         #

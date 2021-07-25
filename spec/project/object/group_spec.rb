@@ -131,6 +131,28 @@ module ProjectSpecs
       end
     end
 
+    describe '#new_spm_package_ref' do
+      it 'creates a new file reference' do
+        ref = @group.new_spm_package_ref_for_target('SPMPackageName')
+        ref.parent.should == @group
+      end
+
+      it 'sets the source tree to group' do
+        ref = @group.new_spm_package_ref_for_target('SPMPackageName')
+        ref.source_tree.should == '<group>'
+      end
+
+      it 'sets the last known file type to folder' do
+        ref = @group.new_spm_package_ref_for_target('SPMPackageName')
+        ref.last_known_file_type.should == 'folder'
+      end
+
+      it 'sets the include_in_index to nil' do
+        ref = @group.new_spm_package_ref_for_target('SPMPackageName')
+        ref.include_in_index.should == nil
+      end
+    end
+
     describe '#new_variant_group' do
       it 'creates a new variant group' do
         group = @group.new_variant_group('LocalizedResource')
