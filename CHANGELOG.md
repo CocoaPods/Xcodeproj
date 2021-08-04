@@ -23,7 +23,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix crash when adding sub project.  
+  [Dario Avetisov](https://github.com/avetiso)
+  [#851](https://github.com/CocoaPods/Xcodeproj/pull/851)
 
 
 ## 1.20.0 (2021-07-05)
@@ -137,10 +139,6 @@
 * Fix small bug where product references have a trailing dot  
   [nickgravelyn](https://github.com/nickgravelyn)
   [#757](https://github.com/CocoaPods/Xcodeproj/pull/757)
-  
-* Fix crash when adding sub project.  
-  [HDB-Li](https://github.com/HDB-Li)
-  [#762](https://github.com/CocoaPods/Xcodeproj/pull/762)
 
 
 ## 1.16.0 (2020-04-10)
