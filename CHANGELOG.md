@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.21.0 (2021-08-09)
+
+##### Enhancements
+
 * Add support for adding and removing on demand resources.  
   [JunyiXie](https://github.com/JunyiXie)
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
