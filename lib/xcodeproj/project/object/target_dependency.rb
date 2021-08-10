@@ -29,7 +29,7 @@ module Xcodeproj
         # @return [String] the platform filter for this target dependency.
         #
         attribute :platform_filter, String
-        
+
         # @return [Array<String>] the platform filters for this target dependency.
         #
         attribute :platform_filters, Array
