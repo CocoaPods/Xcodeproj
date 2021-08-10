@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add `platform_filters` support for `PBXTargetDependency`.  
+  [Max Langer](https://github.com/mangerlahn)
+  [#853](https://github.com/CocoaPods/Xcodeproj/pull/853) 
 
 ##### Bug Fixes
 
