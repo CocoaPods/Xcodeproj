@@ -1,6 +1,6 @@
 # Xcodeproj
 
-[![Build Status](https://img.shields.io/travis/CocoaPods/Xcodeproj/master.svg?style=flat)](https://travis-ci.org/CocoaPods/Xcodeproj)
+[![Build Status](https://img.shields.io/github/workflow/status/CocoaPods/Xcodeproj/Specs)](https://github.com/CocoaPods/Xcodeproj/actions)
 [![Coverage](https://img.shields.io/codeclimate/coverage/github/CocoaPods/Xcodeproj.svg?style=flat)](https://codeclimate.com/github/CocoaPods/Xcodeproj)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/CocoaPods/Xcodeproj.svg?style=flat&label=code%20climate)](https://codeclimate.com/github/CocoaPods/Xcodeproj)
 
