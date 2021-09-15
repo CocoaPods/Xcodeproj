@@ -36,11 +36,11 @@ module Xcodeproj
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '1240'
+    LAST_UPGRADE_CHECK = '1250'
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '1240'
+    LAST_SWIFT_UPGRADE_CHECK = '1250'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #

@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Bump Xcode version constants for Xcode 12.5.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#856](https://github.com/CocoaPods/Xcodeproj/pull/856)
+
 * Add `platform_filters` support for `PBXTargetDependency`.  
   [Max Langer](https://github.com/mangerlahn)
   [#853](https://github.com/CocoaPods/Xcodeproj/pull/853) 
