@@ -75,6 +75,14 @@ module ProjectSpecs
       @file.comments.should == 'This file was automatically generated.'
     end
 
+    it 'removes the build files when removing the file reference' do
+      @target = @project.new_target(:static_library, 'Pods', :ios)
+      @target.build_phases[0].add_file_reference(@file)
+
+      @file.remove_from_project
+      @target.build_phases[0].files.should.be.empty
+    end
+
     describe 'concerning proxies' do
       it 'returns that it is not a proxy' do
         @file.should.not.be.a.proxy
