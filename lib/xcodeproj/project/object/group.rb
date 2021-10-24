@@ -448,6 +448,25 @@ module Xcodeproj
             result
           end
         end
+
+        # @return [Array<PBXBuildFile>] the build files associated with the
+        #         current reference proxy.
+        #
+        def build_files
+          referrers.grep(PBXBuildFile)
+        end
+
+        # In addition to removing the reference proxy, this will also remove any
+        # items related to this reference.
+        #
+        # @see AbstractObject#remove_from_project
+        #
+        # @return [void]
+        #
+        def remove_from_project
+          build_files.each(&:remove_from_project)
+          super
+        end
       end
 
       #-----------------------------------------------------------------------#
