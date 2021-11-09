@@ -64,6 +64,7 @@ project.targets.each do |target|
     config.build_settings['MY_CUSTOM_FLAG'] ||= 'TRUE'
   end
 end
+project.save
 ```
 
 ## Command Line Tool
