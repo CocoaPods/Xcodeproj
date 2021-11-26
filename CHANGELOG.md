@@ -18,7 +18,8 @@
 
 ##### Bug Fixes
 
-* None.  
+* fix undefined method 'downcase' for nil 
+  [#865](https://github.com/CocoaPods/Xcodeproj/pull/865)
 
 
 ## 1.21.0 (2021-08-09)
