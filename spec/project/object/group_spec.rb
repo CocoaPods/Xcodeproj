@@ -342,6 +342,13 @@ module ProjectSpecs
           @group.sort
           @group.children.map(&:display_name).should == ['iRate', 'JSAnimatedImageView', 'MSWeakTimer', 'Pods-CPtestAlphabetic']
         end
+
+        it 'sorts when directory and subspec have same name' do
+          @group.new_group('Test', '/project_dir/classes')
+          @group.new_group('test', nil)
+          @group.sort
+          @group.children.map(&:display_name).should == %w(Test test)
+        end
       end
     end
 
