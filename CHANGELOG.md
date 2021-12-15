@@ -16,6 +16,10 @@
   [Max Langer](https://github.com/mangerlahn)
   [#853](https://github.com/CocoaPods/Xcodeproj/pull/853) 
 
+* Add `dependency_file` support for `PBXBuildRule`.
+  [Zachary Waldowski](https://github.com/zwaldowski)
+  [#862](https://github.com/CocoaPods/Xcodeproj/pull/862)
+
 ##### Bug Fixes
 
 * fix undefined method 'downcase' for nil 
