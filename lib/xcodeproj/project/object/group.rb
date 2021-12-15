@@ -441,7 +441,7 @@ module Xcodeproj
             result = File.basename(x.display_name.downcase, '.*') <=> File.basename(y.display_name.downcase, '.*')
             if result.zero?
               result = File.extname(x.display_name.downcase) <=> File.extname(y.display_name.downcase)
-              if result.zero?
+              if result.zero? && !(x.path.nil? || y.path.nil?)
                 result = x.path.downcase <=> y.path.downcase
               end
             end
