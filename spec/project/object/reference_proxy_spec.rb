@@ -24,5 +24,13 @@ module ProjectSpecs
       @proxy.path = 'Path/To/Proxy'
       @proxy.display_name.should == 'Path/To/Proxy'
     end
+
+    it 'removes the build files when removing the reference proxy' do
+      @target = @project.new_target(:static_library, 'Pods', :ios)
+      @target.build_phases[0].add_file_reference(@proxy)
+
+      @proxy.remove_from_project
+      @target.build_phases[0].files.should.be.empty
+    end
   end
 end

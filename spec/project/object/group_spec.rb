@@ -352,6 +352,15 @@ module ProjectSpecs
       end
     end
 
+    it 'removes the build files when removing the group' do
+      @target = @project.new_target(:static_library, 'Pods', :ios)
+      build_file = @project.new(Xcodeproj::Project::PBXBuildFile)
+      build_file.file_ref = @group
+      @target.build_phases[0].files << build_file
+
+      @group.remove_from_project
+      @target.build_phases[0].files.should.be.empty
+    end
     #-------------------------------------------------------------------------#
   end
 end

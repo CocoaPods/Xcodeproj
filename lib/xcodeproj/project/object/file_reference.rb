@@ -313,8 +313,7 @@ module Xcodeproj
         end
 
         # In addition to removing the file reference, this will also remove any
-        # items related to this reference in case it represents an external
-        # Xcode project.
+        # items related to this reference.
         #
         # @see AbstractObject#remove_from_project
         #
@@ -327,6 +326,8 @@ module Xcodeproj
             project_reference[:product_group].remove_from_project
             project.root_object.project_references.delete(project_reference)
           end
+
+          build_files.each(&:remove_from_project)
           super
         end
 

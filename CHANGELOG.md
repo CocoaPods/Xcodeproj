@@ -20,6 +20,10 @@
   [Zachary Waldowski](https://github.com/zwaldowski)
   [#862](https://github.com/CocoaPods/Xcodeproj/pull/862)
 
+* Remove build files when underlying file_ref is removed.  
+  [Ben Yohay](https://github.com/byohay)
+  [#861](https://github.com/CocoaPods/Xcodeproj/pull/861)
+
 ##### Bug Fixes
 
 * Fix undefined method 'downcase' for `nil`  
