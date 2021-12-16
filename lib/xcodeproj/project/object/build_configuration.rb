@@ -12,7 +12,7 @@ module Xcodeproj
 
         # @!group Attributes
 
-        # @return [String] the name of the Target.
+        # @return [String] the name of the configuration.
         #
         attribute :name, String
 
