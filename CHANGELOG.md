@@ -29,6 +29,8 @@
 * Fix undefined method 'downcase' for `nil`  
   [#865](https://github.com/CocoaPods/Xcodeproj/pull/865)
 
+* Fix workspace schemes doesn't match the result of `xcodebuild -list -workspace`
+  [#797](https://github.com/CocoaPods/Xcodeproj/pull/797)
 
 ## 1.21.0 (2021-08-09)
 
