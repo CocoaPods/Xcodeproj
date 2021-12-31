@@ -30,7 +30,7 @@
   [#865](https://github.com/CocoaPods/Xcodeproj/pull/865)
 
 * Fix workspace schemes doesn't match the result of `xcodebuild -list -workspace`
-  [#797](https://github.com/CocoaPods/Xcodeproj/pull/797)
+  [#869](https://github.com/CocoaPods/Xcodeproj/pull/869)
 
 ## 1.21.0 (2021-08-09)
 
