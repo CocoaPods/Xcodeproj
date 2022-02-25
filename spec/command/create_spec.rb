@@ -8,18 +8,17 @@ module Xcodeproj
       ]
 
       def initialize(argv)
-        self.xcodeproj_path = argv.shift_argument
+        @project_name = argv.shift_argument
         super
       end
 
       def validate!
         super
-        help! "Project file not specified" if self.xcodeproj_path.nil?
+        help! "Project file not specified" if @project_name.nil?
       end
     end
   end
 end
-
 
 describe Xcodeproj::Command::Create do
   it 'errors if a project file has not been provided' do
