@@ -15,10 +15,13 @@ module Xcodeproj
       def validate!
         super
         help! "Project file not specified" if @project_name.nil?
+        help! "Project already exists" if File.exist?(@project_name)
       end
     end
   end
 end
+
+require 'fileutils'
 
 describe Xcodeproj::Command::Create do
   it 'errors if a project file has not been provided' do
@@ -29,7 +32,18 @@ describe Xcodeproj::Command::Create do
     end
   end
 
-  it 'errors if the specified project file already exists'
+  it 'errors if the specified project already exists' do
+    project_dir = 'FooBar.xcodeproj'
+    FileUtils.mkdir(project_dir)
+
+    argv = CLAide::ARGV.new([project_dir])
+    create = Xcodeproj::Command::Create.new(argv)
+    should_raise_help 'Project already exists' do
+      create.validate!
+    end
+
+    FileUtils.rm_r(project_dir)
+  end
 
   it 'creates a project file'
 end
