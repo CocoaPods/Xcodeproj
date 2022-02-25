@@ -1,25 +1,6 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-module Xcodeproj
-  class Command
-    class Create < Command
-      self.arguments = [
-        CLAide::Argument.new('PROJECT', true),
-      ]
-
-      def initialize(argv)
-        self.xcodeproj_path = argv.shift_argument
-        super
-      end
-
-      def validate!
-        super
-        help! "Project file not specified" if self.xcodeproj_path.nil?
-      end
-    end
-  end
-end
-
+require 'fileutils'
 
 describe Xcodeproj::Command::Create do
   it 'errors if a project file has not been provided' do
@@ -30,7 +11,39 @@ describe Xcodeproj::Command::Create do
     end
   end
 
-  it 'errors if the specified project file already exists'
+  it 'errors if the specified project already exists' do
+    project_dir = 'FooBar.xcodeproj'
+    FileUtils.mkdir(project_dir)
 
-  it 'creates a project file'
+    argv = CLAide::ARGV.new([project_dir])
+    create = Xcodeproj::Command::Create.new(argv)
+    should_raise_help 'Project already exists' do
+      create.validate!
+    end
+  ensure
+    FileUtils.rm_r(project_dir)
+  end
+
+  it 'creates a project file' do
+    project_dir = 'FooBar.xcodeproj'
+    argv = CLAide::ARGV.new([project_dir])
+    create = Xcodeproj::Command::Create.new(argv)
+    create.run
+
+    File.exist?(project_dir).should.be.true
+  ensure
+    FileUtils.rm_r(project_dir)
+  end
+
+  it 'adds the suffix if one is not provided' do
+    project_name = 'FooBar'
+    project_dir = 'FooBar.xcodeproj'
+    argv = CLAide::ARGV.new([project_name])
+    create = Xcodeproj::Command::Create.new(argv)
+    create.run
+
+    File.exist?(project_dir).should.be.true
+  ensure
+    FileUtils.rm_r(project_dir)
+  end
 end
