@@ -7,6 +7,8 @@ module Xcodeproj
         CLAide::Argument.new('PROJECT', true),
       ]
 
+      EXTENSION = '.xcodeproj'
+
       def initialize(argv)
         @project_name = argv.shift_argument
 
@@ -29,7 +31,7 @@ module Xcodeproj
       def add_extension_if_missing
         return unless @project_name
 
-        @project_name += '.xcodeproj' unless File.extname(@project_name) == '.xcodeproj'
+        @project_name += EXTENSION unless File.extname(@project_name) == EXTENSION
       end
     end
   end
@@ -55,7 +57,6 @@ describe Xcodeproj::Command::Create do
     should_raise_help 'Project already exists' do
       create.validate!
     end
-
   ensure
     FileUtils.rm_r(project_dir)
   end
@@ -67,7 +68,6 @@ describe Xcodeproj::Command::Create do
     create.run
 
     File.exist?(project_dir).should.be.true
-
   ensure
     FileUtils.rm_r(project_dir)
   end
