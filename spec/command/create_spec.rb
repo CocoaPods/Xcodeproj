@@ -9,6 +9,9 @@ module Xcodeproj
 
       def initialize(argv)
         @project_name = argv.shift_argument
+
+        add_extension_if_missing
+
         super
       end
 
@@ -21,6 +24,12 @@ module Xcodeproj
       def run
         project = Xcodeproj::Project.new(@project_name)
         project.save
+      end
+
+      def add_extension_if_missing
+        return unless @project_name
+
+        @project_name += '.xcodeproj' unless File.extname(@project_name) == '.xcodeproj'
       end
     end
   end
@@ -59,6 +68,18 @@ describe Xcodeproj::Command::Create do
 
     File.exist?(project_dir).should.be.true
 
+  ensure
+    FileUtils.rm_r(project_dir)
+  end
+
+  it 'adds the suffix if one is not provided' do
+    project_name = 'FooBar'
+    project_dir = 'FooBar.xcodeproj'
+    argv = CLAide::ARGV.new([project_name])
+    create = Xcodeproj::Command::Create.new(argv)
+    create.run
+
+    File.exist?(project_dir).should.be.true
   ensure
     FileUtils.rm_r(project_dir)
   end
