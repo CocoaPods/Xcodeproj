@@ -17,6 +17,11 @@ module Xcodeproj
         help! "Project file not specified" if @project_name.nil?
         help! "Project already exists" if File.exist?(@project_name)
       end
+
+      def run
+        project = Xcodeproj::Project.new(@project_name)
+        project.save
+      end
     end
   end
 end
@@ -45,5 +50,14 @@ describe Xcodeproj::Command::Create do
     FileUtils.rm_r(project_dir)
   end
 
-  it 'creates a project file'
+  it 'creates a project file' do
+    project_dir = 'FooBar.xcodeproj'
+    argv = CLAide::ARGV.new([project_dir])
+    create = Xcodeproj::Command::Create.new(argv)
+    create.run
+
+    File.exist?(project_dir).should.be.true
+
+    FileUtils.rm_r(project_dir)
+  end
 end
