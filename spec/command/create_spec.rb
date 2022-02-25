@@ -47,6 +47,7 @@ describe Xcodeproj::Command::Create do
       create.validate!
     end
 
+  ensure
     FileUtils.rm_r(project_dir)
   end
 
@@ -58,6 +59,7 @@ describe Xcodeproj::Command::Create do
 
     File.exist?(project_dir).should.be.true
 
+  ensure
     FileUtils.rm_r(project_dir)
   end
 end
