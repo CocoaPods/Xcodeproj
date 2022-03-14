@@ -24,7 +24,7 @@
   [Ben Yohay](https://github.com/byohay)
   [#861](https://github.com/CocoaPods/Xcodeproj/pull/861)
 
-* Add `code_coverage_targets` support for `TestAction`.
+* Add `code_coverage_targets` support for `TestAction`.  
   [Joey Dong](https://github.com/joeydong)
   [#874](https://github.com/CocoaPods/Xcodeproj/pull/874)
 
