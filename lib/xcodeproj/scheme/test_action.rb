@@ -151,6 +151,44 @@ module Xcodeproj
         arguments
       end
 
+      # @return [Array<BuildableReference>]
+      #         The list of BuildableReference (code coverage targets) associated with this Test Action
+      #
+      def code_coverage_targets
+        return [] unless @xml_element.elements['CodeCoverageTargets']
+
+        @xml_element.elements['CodeCoverageTargets'].get_elements('BuildableReference').map do |node|
+          BuildableReference.new(node)
+        end
+      end
+
+      # @param [Array<BuildableReference>] buildable_references
+      #         Sets the list of BuildableReference (code coverage targets) associated with this Test Action
+      #
+      def code_coverage_targets=(buildable_references)
+        @xml_element.attributes['onlyGenerateCoverageForSpecifiedTargets'] = bool_to_string(true)
+
+        @xml_element.delete_element('CodeCoverageTargets')
+        coverage_targets_element = @xml_element.add_element('CodeCoverageTargets')
+        buildable_references.each do |reference|
+          coverage_targets_element.add_element(reference.xml_element)
+        end
+
+        code_coverage_targets
+      end
+
+      # @param [BuildableReference] buildable_reference
+      #        Add a BuildableReference (code coverage target) to this Test Action
+      #
+      def add_code_coverage_target(buildable_reference)
+        @xml_element.attributes['onlyGenerateCoverageForSpecifiedTargets'] = bool_to_string(true)
+
+        coverage_targets_element = @xml_element.elements['CodeCoverageTargets'] || @xml_element.add_element('CodeCoverageTargets')
+        coverage_targets_element.add_element(buildable_reference.xml_element)
+
+        code_coverage_targets
+      end
+
       #-------------------------------------------------------------------------#
 
       class TestableReference < XMLElementWrapper

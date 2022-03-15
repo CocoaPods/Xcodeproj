@@ -231,6 +231,59 @@ module Xcodeproj
           xml_out.should == "<EnvironmentVariables>\n<EnvironmentVariable key='a' value='1' isEnabled='YES'/>\n</EnvironmentVariables>"
         end
       end
+
+      it '#code_coverage_targets' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+        @sut.xml_element.add_element('CodeCoverageTargets')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref1 = XCScheme::BuildableReference.new(target1)
+        @sut.xml_element.elements['CodeCoverageTargets'].add_element(buildable_ref1.xml_element)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref2 = XCScheme::BuildableReference.new(target2)
+        @sut.xml_element.elements['CodeCoverageTargets'].add_element(buildable_ref2.xml_element)
+
+        @sut.code_coverage_targets.count.should == 2
+        @sut.code_coverage_targets.all? { |t| t.class.should == XCScheme::BuildableReference }
+        @sut.code_coverage_targets[0].xml_element.should == buildable_ref1.xml_element
+        @sut.code_coverage_targets[1].xml_element.should == buildable_ref2.xml_element
+      end
+
+      it '#code_coverage_targets=' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref1 = XCScheme::BuildableReference.new(target1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref2 = XCScheme::BuildableReference.new(target2)
+
+        @sut.code_coverage_targets = [buildable_ref1, buildable_ref2]
+
+        @sut.xml_element.attributes['onlyGenerateCoverageForSpecifiedTargets'].should == 'YES'
+        @sut.code_coverage_targets.count.should == 2
+        @sut.code_coverage_targets.all? { |t| t.class.should == XCScheme::BuildableReference }
+        @sut.code_coverage_targets[0].xml_element.should == buildable_ref1.xml_element
+        @sut.code_coverage_targets[1].xml_element.should == buildable_ref2.xml_element
+      end
+
+      it '#add_code_coverage_target' do
+        project = Xcodeproj::Project.new('/foo/bar/baz.xcodeproj')
+
+        target1 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref1 = XCScheme::BuildableReference.new(target1)
+        @sut.add_code_coverage_target(buildable_ref1)
+
+        target2 = project.new_target(:application, 'FooApp', :ios)
+        buildable_ref2 = XCScheme::BuildableReference.new(target2)
+        @sut.add_code_coverage_target(buildable_ref2)
+
+        @sut.xml_element.attributes['onlyGenerateCoverageForSpecifiedTargets'].should == 'YES'
+        @sut.xml_element.elements['CodeCoverageTargets'].count.should == 2
+        @sut.xml_element.elements['CodeCoverageTargets/BuildableReference[1]'].should == buildable_ref1.xml_element
+        @sut.xml_element.elements['CodeCoverageTargets/BuildableReference[2]'].should == buildable_ref2.xml_element
+      end
     end
 
     describe XCScheme::TestAction::TestableReference do
