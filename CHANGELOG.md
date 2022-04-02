@@ -57,7 +57,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Fix crash when adding sub project.  
+  [Dario Avetisov](https://github.com/avetiso)
+  [#851](https://github.com/CocoaPods/Xcodeproj/pull/851)
 
 
 ## 1.20.0 (2021-07-05)
