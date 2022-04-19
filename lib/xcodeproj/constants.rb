@@ -24,7 +24,7 @@ module Xcodeproj
 
     # @return [String] The last known Swift version (stable).
     #
-    LAST_KNOWN_SWIFT_VERSION = '5.0'
+    LAST_KNOWN_SWIFT_VERSION = '5.6'
 
     # @return [String] The default object version for Xcodeproj.
     #
@@ -399,7 +399,7 @@ module Xcodeproj
         'GCC_WARN_UNUSED_VARIABLE'                => 'YES',
         'MTL_FAST_MATH'                           => 'YES',
         'PRODUCT_NAME'                            => '$(TARGET_NAME)',
-        'SWIFT_VERSION'                           => '5.0',
+        'SWIFT_VERSION'                           => '5.6',
       },
       :release => {
         'DEBUG_INFORMATION_FORMAT'           => 'dwarf-with-dsym',
