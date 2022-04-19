@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Bump Xcode version (13.3), SDK, and Swift (5.6) constants.  
+  [Seth Friedman](https://github.com/sethfri)
+  [#877](https://github.com/CocoaPods/Xcodeproj/pull/877)
+
 * Bump Xcode version to match Xcode 13  
   [Eric Firestone](https://github.com/efirestone)
   [#857](https://github.com/CocoaPods/Xcodeproj/pull/857)
