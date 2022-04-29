@@ -28,6 +28,10 @@
   [Joey Dong](https://github.com/joeydong)
   [#874](https://github.com/CocoaPods/Xcodeproj/pull/874)
 
+* Reword misleading warning diagnostic for the `--project` option.  
+  [lemonspike](https://github.com/LemonSpike)
+  [#709](https://github.com/CocoaPods/Xcodeproj/issues/709)
+
 ##### Bug Fixes
 
 * Fix undefined method 'downcase' for `nil`  
