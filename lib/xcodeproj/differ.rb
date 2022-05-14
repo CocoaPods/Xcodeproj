@@ -113,8 +113,8 @@ module Xcodeproj
       ensure_class(value_2, Array)
       return nil if value_1 == value_2
 
-      new_objects_value_1 = (value_1 - value_2)
-      new_objects_value_2 = (value_2 - value_1)
+      new_objects_value_1 = array_non_unique_diff(value_1, value_2)
+      new_objects_value_2 = array_non_unique_diff(value_2, value_1)
       return nil if value_1.empty? && value_2.empty?
 
       matched_diff = {}
@@ -234,6 +234,37 @@ module Xcodeproj
       raise "Wrong type `#{object.inspect}`" unless object.is_a?(klass)
     end
 
+    # Returns the difference between two arrays, taking into account the number of times an element
+    # repeats in both arrays.
+    #
+    # @param  [Array] value_1
+    #         First array to the difference operation.
+    #
+    # @param  [Array] value_2
+    #         Second array to the difference operation.
+    #
+    # @return [Array]
+    #
+    def self.array_non_unique_diff(value_1, value_2)
+      value_2_elements_by_count = value_2.reduce({}) do |hash, element|
+        updated_element_hash = hash.key?(element) ? { element => hash[element] + 1 } : { element => 1 }
+        hash.merge(updated_element_hash)
+      end
+
+      value_1_elements_by_deletions =
+        value_1.to_set.map do |element|
+          times_to_delete_element = value_2_elements_by_count[element] || 0
+          next [element, times_to_delete_element]
+        end.to_h
+
+      value_1.select do |element|
+        if value_1_elements_by_deletions[element] > 0
+          value_1_elements_by_deletions[element] -= 1
+          next false
+        end
+        next true
+      end
+    end
     #-------------------------------------------------------------------------#
   end
 end
