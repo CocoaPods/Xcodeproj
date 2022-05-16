@@ -32,6 +32,10 @@
   [lemonspike](https://github.com/LemonSpike)
   [#709](https://github.com/CocoaPods/Xcodeproj/issues/709)
 
+* Do not raise an exception on a Swift Package dependency.
+  [Vincent Isambart](https://github.com/vincentisambart)
+  [#743](https://github.com/CocoaPods/Xcodeproj/issues/743)
+
 ##### Bug Fixes
 
 * Fix undefined method 'downcase' for `nil`  
