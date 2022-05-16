@@ -34,9 +34,10 @@ module Xcodeproj
         #
         attribute :platform_filters, Array
 
-        # @return [String] the product reference for this target dependency.
+        # @return [XCSwiftPackageProductDependency] the Swift Package product
+        #         for this target dependency.
         #
-        attribute :product_ref, String
+        has_one :product_ref, XCSwiftPackageProductDependency
 
         public
 
@@ -49,20 +50,22 @@ module Xcodeproj
           return name if name
           return target.name if target
           return target_proxy.remote_info if target_proxy
+          return product_ref.product_name if product_ref
         end
 
         def ascii_plist_annotation
           " #{isa} "
         end
 
-        # @return [String] uuid of the target, if the dependency
-        #         is a native target, otherwise the uuid of the
-        #         target in the sub-project if the dependency is
-        #         a target proxy
+        # @return [String] the uuid of the target if the dependency is a native
+        #         target, the uuid of the target in the sub-project if the
+        #         dependency is a target proxy, nil if the dependency is a Swift
+        #         Package.
         #
         def native_target_uuid
           return target.uuid if target
           return target_proxy.remote_global_id_string if target_proxy
+          return nil if product_ref
           raise "Expected target or target_proxy, from which to fetch a uuid for target '#{display_name}'." \
             "Find and clear the PBXTargetDependency entry with uuid '#{@uuid}' in your .xcodeproj."
         end
