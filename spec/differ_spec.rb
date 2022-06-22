@@ -68,6 +68,13 @@ module Xcodeproj
         diff.should == { 'v1' => [3], 'v2' => [4] }
       end
 
+      it 'returns the diff of two arrays with non unique elements' do
+        v1 = [1, 2, 2, 3]
+        v2 = [1, 2, 4]
+        diff = Differ.array_diff(v1, v2, options)
+        diff.should == { 'v1' => [2, 3], 'v2' => [4] }
+      end
+
       it 'returns the diff of two arrays containing an hash' do
         v1 = [{ :key => 'value_1' }]
         v2 = [{ :key => 'value_2' }]
