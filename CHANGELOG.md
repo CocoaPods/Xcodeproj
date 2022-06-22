@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add Xcode 14.0 object version support.  
+  [florianhieger](https://github.com/florianhieger)
+  [#884](https://github.com/CocoaPods/Xcodeproj/pull/884)
+
 * Bump Xcode version to match Xcode 13  
   [Eric Firestone](https://github.com/efirestone)
   [#857](https://github.com/CocoaPods/Xcodeproj/pull/857)
@@ -39,6 +43,7 @@
 ##### Bug Fixes
 
 * Fix undefined method 'downcase' for `nil`  
+  [LWX124](https://github.com/LWX124)
   [#865](https://github.com/CocoaPods/Xcodeproj/pull/865)
 
 
