@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Add Xcode 15.0 object version support.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#910](https://github.com/CocoaPods/Xcodeproj/pull/910)  
 
 ##### Bug Fixes
 

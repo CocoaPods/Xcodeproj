@@ -128,6 +128,7 @@ module Xcodeproj
     # @return [Hash] The compatibility version string for different object versions.
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
+      60 => 'Xcode 15.0',
       56 => 'Xcode 14.0',
       55 => 'Xcode 13.0',
       54 => 'Xcode 12.0',
