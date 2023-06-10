@@ -1,18 +1,14 @@
 module Xcodeproj
   class Project
     module Object
-      # This class represents a remote Swift package reference.
+      # This class represents a local Swift package reference.
       #
-      class XCRemoteSwiftPackageReference < AbstractObject
+      class XCLocalSwiftPackageReference < AbstractObject
         # @!group Attributes
 
         # @return [String] the repository url this Swift package was installed from.
         #
-        attribute :repositoryURL, String
-
-        # @return [Hash] the version requirements for this Swift package.
-        #
-        attribute :requirement, Hash
+        attribute :path, String
 
         # @!group AbstractObject Hooks
         #--------------------------------------#
@@ -21,10 +17,10 @@ module Xcodeproj
           " #{isa} \"#{File.basename(display_name)}\" "
         end
 
-        # @return [String] the name of the remote Swift package reference.
+        # @return [String] the path of the local Swift package reference.
         #
         def display_name
-          return repositoryURL if repositoryURL
+          return path if path
           super
         end
       end

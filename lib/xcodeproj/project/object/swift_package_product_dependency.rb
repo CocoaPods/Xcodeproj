@@ -6,9 +6,9 @@ module Xcodeproj
       class XCSwiftPackageProductDependency < AbstractObject
         # @!group Attributes
 
-        # @return [XCRemoteSwiftPackageReference] the Swift package reference.
+        # @return [XCRemoteSwiftPackageReference, XCLocalSwiftPackageReference] the Swift package reference.
         #
-        has_one :package, XCRemoteSwiftPackageReference
+        has_one :package, [XCRemoteSwiftPackageReference, XCLocalSwiftPackageReference]
 
         # @return [String] the product name of this Swift package.
         #
@@ -17,7 +17,7 @@ module Xcodeproj
         # @!group AbstractObject Hooks
         #--------------------------------------#
 
-        # @return [String] the name of the Swift package.
+        # @return [String] the name of the Swift package product dependency.
         #
         def display_name
           return product_name if product_name

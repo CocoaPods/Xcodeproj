@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Add support for parsing XCLocalSwiftPackageReference objects.  
+  [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
+  [#911](https://github.com/CocoaPods/Xcodeproj/pull/911)
+  
 * Add Xcode 15.0 object version support.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#910](https://github.com/CocoaPods/Xcodeproj/pull/910)  
