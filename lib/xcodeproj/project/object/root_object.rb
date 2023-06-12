@@ -62,9 +62,9 @@ module Xcodeproj
         #
         attribute :project_root, String, ''
 
-        # @return [Array<XCRemoteSwiftPackageReference>] the list of Swift package references.
+        # @return [Array<XCRemoteSwiftPackageReference, XCLocalSwiftPackageReference>] the list of Swift package references.
         #
-        has_many :package_references, XCRemoteSwiftPackageReference
+        has_many :package_references, [XCRemoteSwiftPackageReference, XCLocalSwiftPackageReference]
 
         # @return [Array<ObjectDictionary>] any reference to other projects.
         #
