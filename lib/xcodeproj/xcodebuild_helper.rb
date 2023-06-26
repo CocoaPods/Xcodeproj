@@ -27,6 +27,13 @@ module Xcodeproj
       versions_by_sdk[:tvos].sort.last
     end
 
+    # @return [String] The version of the last visionOS sdk.
+    #
+    def last_visionos_sdk
+      parse_sdks_if_needed
+      versions_by_sdk[:visionos].sort.last
+    end
+
     # @return [String] The version of the last watchOS sdk.
     #
     def last_watchos_sdk
@@ -53,6 +60,7 @@ module Xcodeproj
         @versions_by_sdk[:osx] = []
         @versions_by_sdk[:ios] = []
         @versions_by_sdk[:tvos] = []
+        @versions_by_sdk[:visionos] = []
         @versions_by_sdk[:watchos] = []
         if xcodebuild_available?
           sdks = parse_sdks_information(xcodebuild_sdks)
@@ -61,6 +69,7 @@ module Xcodeproj
             when name == 'macosx' then @versions_by_sdk[:osx] << version
             when name == 'iphoneos' then @versions_by_sdk[:ios] << version
             when name == 'appletvos' then @versions_by_sdk[:tvos] << version
+            when name == 'xros' then @versions_by_sdk[:visionos] << version
             when name == 'watchos' then @versions_by_sdk[:watchos] << version
             end
           end
@@ -82,7 +91,7 @@ module Xcodeproj
     #         is the name of the SDK and the second is the version.
     #
     def parse_sdks_information(output)
-      output.scan(/-sdk (macosx|iphoneos|watchos|appletvos)(.+\w)/)
+      output.scan(/-sdk (macosx|iphoneos|watchos|appletvos|xros)(.+\w)/)
     end
 
     # @return [String] The sdk information reported by xcodebuild.

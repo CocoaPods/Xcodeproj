@@ -14,6 +14,10 @@ module Xcodeproj
     #
     LAST_KNOWN_TVOS_SDK = '14.0'
 
+    # @return [String] The last known visionOS SDK (unstable).
+    #
+    LAST_KNOWN_VISIONOS_SDK = '1.0'
+
     # @return [String] The last known watchOS SDK (stable).
     #
     LAST_KNOWN_WATCHOS_SDK = '7.0'
@@ -36,11 +40,11 @@ module Xcodeproj
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '1300'
+    LAST_UPGRADE_CHECK = '1500'
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '1300'
+    LAST_SWIFT_UPGRADE_CHECK = '1500'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -213,6 +217,9 @@ module Xcodeproj
       }.freeze,
       [:tvos] => {
         'SDKROOT'                           => 'appletvos',
+      }.freeze,
+      [:visionos] => {
+        'SDKROOT'                           => 'xros',
       }.freeze,
       [:watchos] => {
         'SDKROOT'                           => 'watchos',

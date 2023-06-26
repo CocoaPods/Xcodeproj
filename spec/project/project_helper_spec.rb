@@ -45,6 +45,24 @@ module ProjectSpecs
         target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
       end
 
+      it 'creates a new visionOS target' do
+        target = @helper.new_target(@project, :static_library, 'Pods', :visionos, '1.0', @project.products_group, :objc, nil)
+        target.name.should == 'Pods'
+        target.product_type.should == 'com.apple.product-type.library.static'
+
+        target.build_configuration_list.should.not.be.nil
+        configurations = target.build_configuration_list.build_configurations
+        configurations.map(&:name).sort.should == %w(Debug Release)
+        build_settings = configurations.first.build_settings
+        build_settings['XROS_DEPLOYMENT_TARGET'].should == '1.0'
+        build_settings['SDKROOT'].should == 'xros'
+
+        @project.targets.should.include target
+        @project.products.should.include target.product_reference
+
+        target.build_phases.map(&:isa).should == %w(PBXHeadersBuildPhase PBXSourcesBuildPhase PBXFrameworksBuildPhase)
+      end
+
       it 'creates a new watchOS target' do
         target = @helper.new_target(@project, :static_library, 'Pods', :watchos, '2.0', @project.products_group, :objc, nil)
         target.name.should == 'Pods'

@@ -112,6 +112,8 @@ module Xcodeproj
             :osx
           elsif sdk.include? 'appletvos'
             :tvos
+          elsif sdk.include? 'xros'
+            :visionos
           elsif sdk.include? 'watchos'
             :watchos
           end
@@ -134,6 +136,7 @@ module Xcodeproj
           :ios => 'IPHONEOS_DEPLOYMENT_TARGET',
           :osx => 'MACOSX_DEPLOYMENT_TARGET',
           :tvos => 'TVOS_DEPLOYMENT_TARGET',
+          :visionos => 'XROS_DEPLOYMENT_TARGET',
           :watchos => 'WATCHOS_DEPLOYMENT_TARGET',
         }.freeze
 
@@ -342,6 +345,10 @@ module Xcodeproj
               group = project.frameworks_group['tvOS'] || project.frameworks_group.new_group('tvOS')
               path_sdk_name = 'AppleTVOS'
               path_sdk_version = sdk_version || Constants::LAST_KNOWN_TVOS_SDK
+            when :visionos
+              group = project.frameworks_group['visionOS'] || project.frameworks_group.new_group('visionOS')
+              path_sdk_name = 'XROS'
+              path_sdk_version = sdk_version || Constants::LAST_KNOWN_VISIONOS_SDK
             when :watchos
               group = project.frameworks_group['watchOS'] || project.frameworks_group.new_group('watchOS')
               path_sdk_name = 'WatchOS'
