@@ -632,7 +632,7 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('SDKROOT', 'xros')
           @target.add_system_framework('ARKit')
           file = @project['Frameworks/visionOS'].files.first
-          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_VISIONOS_SDK
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_VISIONOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do
