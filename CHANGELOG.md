@@ -12,6 +12,10 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#910](https://github.com/CocoaPods/Xcodeproj/pull/910)  
 
+* Add `visionOS` as a new platform.
+  [Gabriel Donadel](https://github.com/gabrieldonadel)
+  [#913](https://github.com/CocoaPods/Xcodeproj/pull/913)
+
 ##### Bug Fixes
 
 * None.  

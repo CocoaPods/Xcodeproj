@@ -307,6 +307,10 @@ module ProjectSpecs
         t4 = @project.new_target(:static_library, 'Pods', :tvos)
         t4.build_configuration_list.set_setting('SDKROOT', 'tvos9.0')
         t4.sdk_version.should == '9.0'
+
+        t5 = @project.new_target(:static_library, 'Pods', :visionos)
+        t5.build_configuration_list.set_setting('SDKROOT', 'visionos1.0')
+        t5.sdk_version.should == '1.0'
       end
 
       describe 'returns the deployment target specified in its build configuration' do
@@ -323,6 +327,11 @@ module ProjectSpecs
         it 'works for tvOS' do
           @project.build_configuration_list.set_setting('TVOS_DEPLOYMENT_TARGET', nil)
           @project.new_target(:static_library, 'Pods', :tvos, '9.0').deployment_target.should == '9.0'
+        end
+
+        it 'works for visionOS' do
+          @project.build_configuration_list.set_setting('XROS_DEPLOYMENT_TARGET', nil)
+          @project.new_target(:static_library, 'Pods', :visionos, '1.0').deployment_target.should == '1.0'
         end
 
         it 'works for watchOS' do
@@ -358,6 +367,13 @@ module ProjectSpecs
           tv_target = @project.new_target(:static_library, 'Pods', :tvos)
           tv_target.build_configurations.first.build_settings['TVOS_DEPLOYMENT_TARGET'] = nil
           tv_target.deployment_target.should == '9.0'
+        end
+
+        it 'works for visionOS' do
+          @project.build_configuration_list.set_setting('XROS_DEPLOYMENT_TARGET', '1.0')
+          vision_target = @project.new_target(:static_library, 'Pods', :visionos)
+          vision_target.build_configurations.first.build_settings['XROS_DEPLOYMENT_TARGET'] = nil
+          vision_target.deployment_target.should == '1.0'
         end
       end
 
@@ -610,6 +626,13 @@ module ProjectSpecs
           @target.add_system_framework('TVServices')
           file = @project['Frameworks/tvOS'].files.first
           file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
+        end
+
+        it 'uses the last known visionOS SDK version if none is specified in the target' do
+          @target.build_configuration_list.set_setting('SDKROOT', 'xros')
+          @target.add_system_framework('ARKit')
+          file = @project['Frameworks/visionOS'].files.first
+          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_VISIONOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do

@@ -284,6 +284,8 @@ module Xcodeproj
             settings['CLANG_ENABLE_OBJC_WEAK'] = 'NO' if deployment_target < '10.7'
           when :tvos
             settings['TVOS_DEPLOYMENT_TARGET'] = deployment_target
+          when :visionos
+            settings['XROS_DEPLOYMENT_TARGET'] = deployment_target
           when :watchos
             settings['WATCHOS_DEPLOYMENT_TARGET'] = deployment_target
           end
