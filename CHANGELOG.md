@@ -4,7 +4,7 @@
 
 ##### Enhancements
 
-* Add support for parsing XCLocalSwiftPackageReference objects.  
+* Add support for parsing `XCLocalSwiftPackageReference` objects.  
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#911](https://github.com/CocoaPods/Xcodeproj/pull/911)
   
@@ -12,7 +12,7 @@
   [Dimitris Koutsogiorgas](https://github.com/dnkoutso)
   [#910](https://github.com/CocoaPods/Xcodeproj/pull/910)  
 
-* Add `visionOS` as a new platform.
+* Add `visionOS` as a new platform.  
   [Gabriel Donadel](https://github.com/gabrieldonadel)
   [#913](https://github.com/CocoaPods/Xcodeproj/pull/913)
 
