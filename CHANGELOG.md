@@ -18,7 +18,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* target_dependency: Fix crash if target_proxy is nil.  
+  [Ben Yohay](https://github.com/byohay)
+  [#915](https://github.com/CocoaPods/Xcodeproj/pull/915)
 
 
 ## 1.22.0 (2022-06-22)
