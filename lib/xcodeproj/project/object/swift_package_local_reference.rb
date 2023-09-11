@@ -21,7 +21,7 @@ module Xcodeproj
         # @return [String] the path of the local Swift package reference.
         #
         def display_name
-          return path if path
+          return relative_path if relative_path
           super
         end
       end
