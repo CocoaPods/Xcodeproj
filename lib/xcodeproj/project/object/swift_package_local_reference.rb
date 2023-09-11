@@ -7,7 +7,7 @@ module Xcodeproj
         # @!group Attributes
 
         # @return [String] the repository path where the package is located relative
-        # to the Xcode project.
+        #                  to the Xcode project.
         #
         attribute :relative_path, String
 
