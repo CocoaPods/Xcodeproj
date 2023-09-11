@@ -6,9 +6,10 @@ module Xcodeproj
       class XCLocalSwiftPackageReference < AbstractObject
         # @!group Attributes
 
-        # @return [String] the repository url this Swift package was installed from.
+        # @return [String] the repository path where the package is located relative
+        # to the Xcode project.
         #
-        attribute :path, String
+        attribute :relative_path, String
 
         # @!group AbstractObject Hooks
         #--------------------------------------#
