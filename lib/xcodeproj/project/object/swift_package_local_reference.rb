@@ -10,6 +10,11 @@ module Xcodeproj
         #
         attribute :path, String
 
+        # @return [String] the repository path where the package is located relative
+        #                  to the Xcode project.
+        #
+        attribute :relative_path, String
+
         # @!group AbstractObject Hooks
         #--------------------------------------#
 
@@ -20,7 +25,7 @@ module Xcodeproj
         # @return [String] the path of the local Swift package reference.
         #
         def display_name
-          return path if path
+          return relative_path if relative_path
           super
         end
       end

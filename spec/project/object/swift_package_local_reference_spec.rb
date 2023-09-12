@@ -11,12 +11,12 @@ module ProjectSpecs
     end
 
     it 'returns path for display_name if path is set' do
-      @proxy.path = '../path'
+      @proxy.relative_path = '../path'
       @proxy.display_name.should == '../path'
     end
 
     it 'returns the ascii plist annotation with the last component of path' do
-      @proxy.path = '../path'
+      @proxy.relative_path = '../path'
       @proxy.ascii_plist_annotation.should == ' XCLocalSwiftPackageReference "path" '
     end
   end
