@@ -1,5 +1,16 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
 ## 1.23.0 (2023-09-22)
 
 ##### Enhancements
