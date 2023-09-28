@@ -19,5 +19,10 @@ module ProjectSpecs
       @proxy.repositoryURL = 'github.com/swift/package'
       @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "package" '
     end
+
+    it 'returns the ascii plist annotation without the .git extension of repositoryURL' do
+      @proxy.repositoryURL = 'github.com/swift/package.git'
+      @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "package" '
+    end
   end
 end
