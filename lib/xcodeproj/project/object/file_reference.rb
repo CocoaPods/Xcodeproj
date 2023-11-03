@@ -106,6 +106,14 @@ module Xcodeproj
         #   `0`
         #
         attribute :line_ending, String
+        
+        # @return [String] a string that specifies the signature of an external
+        #         framework.
+        #
+        # @example
+        #   `AppleDeveloperProgram:TEAM0ID1:Team name`
+        #
+        attribute :expected_signature, String
 
         # @return [String] Comments associated with this file.
         #
