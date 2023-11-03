@@ -4,7 +4,7 @@
 
 ##### Enhancements
 
-* Add `expected_signature support` for `PBXFileReference`
+* Add `expected_signature support` for `PBXFileReference`.  
   [hieu9102002](https://github.com/hieu9102002)
   [#924](https://github.com/CocoaPods/Xcodeproj/pull/924)
 
