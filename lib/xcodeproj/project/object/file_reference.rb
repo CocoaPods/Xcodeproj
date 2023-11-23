@@ -106,7 +106,7 @@ module Xcodeproj
         #   `0`
         #
         attribute :line_ending, String
-        
+
         # @return [String] a string that specifies the signature of an external
         #         framework.
         #
