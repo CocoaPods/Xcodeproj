@@ -10,9 +10,13 @@
 
 ##### Bug Fixes
 
-* Update remote Swift packages annotations to match Xcode
+* Update remote Swift packages annotations to match Xcode.  
    [alexandre-pod](https://github.com/alexandre-pod)
    [#921](https://github.com/CocoaPods/Xcodeproj/pull/921)
+
+* Fix a crash when serializing a target dependency without a target proxy.  
+   [byohay](https://github.com/byohay)
+   [#915](https://github.com/CocoaPods/Xcodeproj/pull/915)
 
 
 ## 1.23.0 (2023-09-22)
