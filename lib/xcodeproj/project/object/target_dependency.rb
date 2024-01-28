@@ -80,7 +80,7 @@ module Xcodeproj
           hash = {}
           hash['displayName'] = display_name
           hash['isa'] = isa
-          hash['targetProxy'] = target_proxy.to_tree_hash
+          hash['targetProxy'] = target_proxy.to_tree_hash if target_proxy
           hash
         end
 

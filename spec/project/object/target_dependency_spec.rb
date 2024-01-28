@@ -66,6 +66,17 @@ module ProjectSpecs
       }
     end
 
+    it 'tree hash for target dependency without target proxy' do
+      target = @project.new_target(:static, 'Pods', :ios)
+      @target_dependency.target = target
+      target.dependencies << @target_dependency
+
+      @target_dependency.to_tree_hash.should == {
+        'displayName' => 'Pods',
+        'isa' => 'PBXTargetDependency',
+      }
+    end
+
     #----------------------------------------#
 
     describe '#display_name' do
