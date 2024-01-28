@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.24.0 (2024-01-28)
+
+##### Enhancements
+
 * Add `expected_signature support` for `PBXFileReference`.  
   [hieu9102002](https://github.com/hieu9102002)
   [#924](https://github.com/CocoaPods/Xcodeproj/pull/924)
