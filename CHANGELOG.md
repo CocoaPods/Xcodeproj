@@ -10,7 +10,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Update remote Swift packages annotations to match Xcode
+   [alexandre-pod](https://github.com/alexandre-pod)
+   [#921](https://github.com/CocoaPods/Xcodeproj/pull/921)
 
 
 ## 1.23.0 (2023-09-22)

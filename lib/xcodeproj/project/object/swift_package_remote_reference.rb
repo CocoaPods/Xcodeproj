@@ -18,7 +18,7 @@ module Xcodeproj
         #--------------------------------------#
 
         def ascii_plist_annotation
-          " #{isa} \"#{File.basename(display_name)}\" "
+          " #{isa} \"#{File.basename(display_name,".git")}\" "
         end
 
         # @return [String] the name of the remote Swift package reference.
