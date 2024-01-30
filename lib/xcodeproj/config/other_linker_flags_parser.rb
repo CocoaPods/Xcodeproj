@@ -16,6 +16,7 @@ module Xcodeproj
           :frameworks => [],
           :weak_frameworks => [],
           :libraries => [],
+          :weak_libraries => [],
           :arg_files => [],
           :simple => [],
           :force_load => [],
@@ -33,6 +34,8 @@ module Xcodeproj
             key = :weak_frameworks
           when '-l'
             key = :libraries
+          when '-weak_l'
+            key = :weak_libraries
           when '@'
             key = :arg_files
           when '-force_load'
