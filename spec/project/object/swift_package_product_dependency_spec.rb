@@ -14,5 +14,10 @@ module ProjectSpecs
       @proxy.product_name = 'NiceSwiftPackage'
       @proxy.display_name.should == 'NiceSwiftPackage'
     end
+
+    it 'returns the ascii plist annotation without the "plugin:" prefix in product_name' do
+      @proxy.product_name = 'plugin:NiceSwiftPackage'
+      @proxy.ascii_plist_annotation.should == ' NiceSwiftPackage '
+    end
   end
 end

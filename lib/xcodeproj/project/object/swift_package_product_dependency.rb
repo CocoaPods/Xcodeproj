@@ -23,6 +23,15 @@ module Xcodeproj
           return product_name if product_name
           super
         end
+
+        # @!group AbstractObject Hooks
+        #--------------------------------------#
+        #
+        # @return [String] the asciii plist annotation of the Swift package product dependency.
+        #
+        def ascii_plist_annotation
+          " #{display_name.delete_prefix('plugin:')} "
+        end
       end
     end
   end
