@@ -36,7 +36,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION = 60
+    LAST_KNOWN_OBJECT_VERSION = 63
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
