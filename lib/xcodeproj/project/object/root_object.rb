@@ -49,6 +49,10 @@ module Xcodeproj
         #
         has_one :main_group, PBXGroup
 
+        #  @return [String] whether minimizes project reference proxies
+        #
+        attribute :minimized_project_reference_proxies, String, '0'
+
         # @return [PBXGroup] the group containing the references to products of
         #         the project.
         #
