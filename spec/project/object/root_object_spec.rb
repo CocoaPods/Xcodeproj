@@ -39,7 +39,7 @@ module ProjectSpecs
       @root_object.main_group.class.should == PBXGroup
     end
 
-    it 'returns whether minimizes project reference proxies' do
+    it 'returns whether the project minimized project reference proxies' do
       @root_object.minimized_project_reference_proxies.should == '0'
     end
 
