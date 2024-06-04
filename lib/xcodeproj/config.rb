@@ -341,7 +341,7 @@ module Xcodeproj
     # @return [Nil] if no include was found in the line.
     #
     def extract_include(line)
-      regexp = /#include\s*"(.+)"/
+      regexp = /#include\??\s*"(.+)"/
       match = line.match(regexp)
       match[1] if match
     end
