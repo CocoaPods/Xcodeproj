@@ -53,6 +53,10 @@ module Xcodeproj
         #
         attribute :minimized_project_reference_proxies, String, '0'
 
+        #  @return [String] preferred project object version
+        #
+        attribute :preferred_project_object_version, String, '73'
+
         # @return [PBXGroup] the group containing the references to products of
         #         the project.
         #
