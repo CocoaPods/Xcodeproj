@@ -43,6 +43,10 @@ module ProjectSpecs
       @root_object.minimized_project_reference_proxies.should == '0'
     end
 
+    it 'returns the preferred project object version' do
+      @root_object.preferred_project_object_version.should == '73'
+    end
+
     it 'returns the products group' do
       @root_object.product_ref_group.class.should == PBXGroup
     end
