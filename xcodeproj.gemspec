@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'claide',         '>= 1.0.2', '< 2.0'
   s.add_runtime_dependency 'colored2',       '~> 3.1'
   s.add_runtime_dependency 'nanaimo',        '~> 0.3.0'
-  s.add_runtime_dependency 'rexml',          '~> 3.2.4'
+  s.add_runtime_dependency 'rexml',          '~> 3.3.2'
 
   ## Make sure you can build the gem on older versions of RubyGems too:
   s.rubygems_version = '1.6.2'
