@@ -221,11 +221,11 @@ module Xcodeproj
       end
 
       if archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION
-        puts "WARN: [Xcodeproj] Unknown archive version (#{archive_version.to_i})."
+        puts "WARN: [Xcodeproj] Archive version (#{archive_version.to_i}) is higher than the latest supported by xcodeproj (#{Constants::LAST_KNOWN_ARCHIVE_VERSION})."
       end
 
       if object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION
-        puts "WARN: [Xcodeproj] Unknown object version (#{object_version.to_i})."
+        puts "WARN: [Xcodeproj] Xcode project version (#{object_version.to_i}) is higher than the latest supported by xcodeproj (#{Constants::LAST_KNOWN_OBJECT_VERSION})."
       end
 
       # Projects can have product_ref_groups that are not listed in the main_groups["Products"]
