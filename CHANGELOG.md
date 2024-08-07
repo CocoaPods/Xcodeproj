@@ -4,11 +4,24 @@
 
 ##### Enhancements
 
-* None.  
+* Print a warning instead of raising an exception when an unrecognized Xcode project object version is found.  
+  [Kaspik](https://github.com/Kaspik)
+  [#953](https://github.com/CocoaPods/Xcodeproj/pull/953)
+
+* Add support for optional includes (via `#include?`) in xcconfig files.  
+  [Werelds](https://github.com/Werelds)
+  [#940](https://github.com/CocoaPods/Xcodeproj/pull/940)
+
+* Add support for Xcode 15.3 project versions.  
+  [Brett-Best](https://github.com/Brett-Best)
+  [#934](https://github.com/CocoaPods/Xcodeproj/pull/934)
+
 
 ##### Bug Fixes
 
-* None.  
+* Bump `rexml` dependency to address [CVE-2024-399086](https://www.cve.org/CVERecord?id=CVE-2024-399086).  
+  [bmedenwald](https://github.com/bmedenwald)
+  [#948](https://github.com/CocoaPods/Xcodeproj/pull/948)
 
 
 ## 1.24.0 (2024-01-28)
