@@ -1,5 +1,16 @@
 # Xcodeproj Changelog
 
+## Master
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
 ## 1.25.0 (2024-08-07)
 
 ##### Enhancements
