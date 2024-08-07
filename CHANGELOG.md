@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.25.0 (2024-08-07)
+
+##### Enhancements
+
 * Print a warning instead of raising an exception when an unrecognized Xcode project object version is found.  
   [Kaspik](https://github.com/Kaspik)
   [#953](https://github.com/CocoaPods/Xcodeproj/pull/953)
