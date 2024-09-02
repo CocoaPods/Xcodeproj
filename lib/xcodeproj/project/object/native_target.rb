@@ -29,6 +29,8 @@ module Xcodeproj
         #
         has_many :dependencies, PBXTargetDependency
 
+        has_many :file_system_synchronized_groups, PBXFileSystemSynchronizedRootGroup
+
         public
 
         # @!group Helpers
