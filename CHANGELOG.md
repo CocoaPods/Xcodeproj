@@ -11,6 +11,19 @@
 * None.  
 
 
+## 1.25.1 (2024-10-03)
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* Bump `rexml` dependency to address [CVE-2024-43398](https://www.ruby-lang.org/en/news/2024/08/22/dos-rexml-cve-2024-43398/).  
+  [Eric Amorde](https://github.com/amorde)
+  [#970](https://github.com/CocoaPods/Xcodeproj/pull/970)
+
+
 ## 1.25.0 (2024-08-07)
 
 ##### Enhancements
