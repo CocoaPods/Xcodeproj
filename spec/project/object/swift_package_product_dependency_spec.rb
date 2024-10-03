@@ -14,5 +14,10 @@ module ProjectSpecs
       @proxy.product_name = 'NiceSwiftPackage'
       @proxy.display_name.should == 'NiceSwiftPackage'
     end
+
+    it 'strips plugin prefix from product_name for display_name if package is plugin' do
+      @proxy.product_name = 'plugin:NiceSwiftPackage'
+      @proxy.display_name.should == 'NiceSwiftPackage'
+    end
   end
 end
