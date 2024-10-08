@@ -461,6 +461,11 @@ module Xcodeproj
         #
         has_many :build_phases, AbstractBuildPhase
 
+        # @return [ObjectList<PBXFileSystemSynchronizedRootGroup>] the synchronized 
+        #         folder groups used by this target.
+        #
+        has_many :fileSystemSynchronizedGroups, PBXFileSystemSynchronizedRootGroup
+
         public
 
         # @!group Helpers
