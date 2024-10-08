@@ -501,6 +501,11 @@ module Xcodeproj
       end
 
       #-----------------------------------------------------------------------#
+
+      # A new group type introduced by Xcode 16
+      #
+      class PBXFileSystemSynchronizedRootGroup < PBXGroup
+      end
     end
   end
 end
