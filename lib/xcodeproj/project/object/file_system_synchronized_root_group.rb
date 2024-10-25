@@ -1,4 +1,4 @@
-require 'xcodeproj/project/object/file_system_synchronized_build_file_exception_set'
+require 'xcodeproj/project/object/file_system_synchronized_exception_set'
 
 module Xcodeproj
   class Project
