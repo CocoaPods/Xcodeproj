@@ -41,6 +41,26 @@ module Xcodeproj
         end
       end
 
+      # This class represents a file system synchronized group build phase membership exception set.
+      class PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet < AbstractObject
+
+        # @return [PBXSourcesBuildPhase] The build phase to which this exception set applies.
+        #
+        has_one :build_phase, PBXSourcesBuildPhase
+
+        # @return [Array<String>] The list of files in the group that are excluded from the build phase.
+        #
+        attribute :membership_exceptions, Array
+
+        # @return [Hash] The files with a platform filter.
+        #
+        attribute :platform_filters_by_relative_path, Hash
+
+        def display_name
+          "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{build_phase.name}\" build phase"
+        end
+      end
+      
     end
   end
 end
