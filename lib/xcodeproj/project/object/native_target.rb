@@ -29,8 +29,6 @@ module Xcodeproj
         #
         has_many :dependencies, PBXTargetDependency
 
-        has_many :file_system_synchronized_groups, PBXFileSystemSynchronizedRootGroup
-
         public
 
         # @!group Helpers
@@ -462,6 +460,11 @@ module Xcodeproj
         #         target.
         #
         has_many :build_phases, AbstractBuildPhase
+
+        # @return [ObjectList<PBXFileSystemSynchronizedRootGroup>] the file system synchronized
+        #         groups containing files to include to build this target.
+        #
+        has_many :file_system_synchronized_groups, PBXFileSystemSynchronizedRootGroup
 
         public
 
