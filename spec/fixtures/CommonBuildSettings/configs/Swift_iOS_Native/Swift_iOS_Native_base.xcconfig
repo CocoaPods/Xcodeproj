@@ -1,8 +1,15 @@
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
 ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor
-INFOPLIST_FILE = ___PACKAGENAME___/Info.plist
+CURRENT_PROJECT_VERSION = 1
+GENERATE_INFOPLIST_FILE = YES
+INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES
+INFOPLIST_KEY_UIMainStoryboardFile = Main
+INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
 IPHONEOS_DEPLOYMENT_TARGET = latest_iphoneos
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+MARKETING_VERSION = 1.0
 PRODUCT_BUNDLE_IDENTIFIER = ___VARIABLE_bundleIdentifierPrefix:bundleIdentifier___.___PACKAGENAMEASRFC1034IDENTIFIER___
 SDKROOT = iphoneos
+SWIFT_EMIT_LOC_STRINGS = YES
 TARGETED_DEVICE_FAMILY = 1,2

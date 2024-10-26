@@ -79,14 +79,23 @@ class Template
     copy = {}
     macros = {
       'DEFAULT_MACOS_CODE_SIGN_IDENTITY' => '-', # from -[IDETemplateInstantiationContext additionalMacroExpansions]
+      # These are based on the name of the project which we can't statically specify
+      'PARENTPACKAGENAME' => nil,
+      'PACKAGENAMEPREVIEWCONTENT' => nil,
+      'PACKAGENAMEPREVIEWCONTENT:quoteIfNeeded' => nil,
+      'COPYRIGHT' => nil,
     }
     Array(@plist['Options']).each do |option|
       next unless identifier = option['Identifier']
       next unless default = option['Default']
       macros["VARIABLE_#{identifier}"] = default
     end
+    delete_marker = '___DELETE___'
     settings.each do |k, v|
-      copy[k] = v.gsub(/___(#{Regexp.union macros.keys})___/) { macros[Regexp.last_match(1)] }
+      copy[k] = v.gsub(/___(#{Regexp.union macros.keys})___/) { macros[Regexp.last_match(1)].nil? ? delete_marker : macros[Regexp.last_match(1)] }
+      if copy[k] == delete_marker
+        copy.delete(k)
+      end
     end
     copy
   end
@@ -97,9 +106,11 @@ xcode = ARGV[0] || '/Applications/Xcode.app'
 puts "Rebuilding from Xcode at `#{xcode}`"
 
 Dir["#{xcode}/Contents/Developer/Platforms/**/*.xctemplate/TemplateInfo.plist", "#{xcode}/Contents/Developer/Library/Xcode/**/*.xctemplate/TemplateInfo.plist"].map do |template|
-  print "\r\033[KReading template `#{template}`"
+  # print "\r\033[KReading template `#{template}`"
+  puts "Reading template `#{Pathname(template).relative_path_from(xcode)}`"
   plist = Xcodeproj::Plist.read_from_path(template)
   template = Template.new(plist)
+  puts "\t loaded #{template.identifier}" if template.identifier
   Template.all_by_identifier[template.identifier] = template if template.identifier
 end.compact
 
@@ -108,7 +119,6 @@ puts "\r\033[KRead all templates"
 targets = {
   'Project'                        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.base' },
 
-  'Objc_iOS_Native'                => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
   'Swift_iOS_Native'               => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.storyboardApplication' },
   'Objc_iOS_Framework'             => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.iosFramework' },
   'Swift_iOS_Framework'            => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.iosFramework' },
@@ -122,10 +132,8 @@ targets = {
   'Objc_OSX_DynamicLibrary'        => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.osxLibrary', 'libraryType' => 'Dynamic' },
   'OSX_Bundle'                     => { 'languageChoice' => nil,            :template_identifier => 'com.apple.dt.unit.osxbundle' },
 
-  'Objc_watchOS_Native'            => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitapp' },
-  'Objc_watchOS_Native Extension'  => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitextension' },
-  'Swift_watchOS_Native'           => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitapp' },
-  'Swift_watchOS_Native Extension' => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchkit2.watchkitextension' },
+  'Objc_watchOS_Native'            => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.application.SwiftUI.watchOS' },
+  'Swift_watchOS_Native'           => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.application.SwiftUI.watchOS' },
   'Objc_watchOS_Framework'         => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchosFramework' },
   'Swift_watchOS_Framework'        => { 'languageChoice' => 'Swift',        :template_identifier => 'com.apple.dt.unit.watchosFramework' },
   'Objc_watchOS_StaticLibrary'     => { 'languageChoice' => 'Objective-C',  :template_identifier => 'com.apple.dt.unit.watchosStaticLibrary' },
@@ -156,15 +164,22 @@ project = nil
 targets.each do |name, options|
   template_identifier = options.delete(:template_identifier)
   print "\r\033[KCalculating defaults for #{template_identifier}"
+  missing_templates = []
   configs = Hash[%w(Debug Release).map do |configuration|
     unless template = Template.all_by_identifier[template_identifier]
-      warn "No template #{template_identifier} for #{name} could be found"
+      missing_templates << [name, template_identifier]
       any_missing = true
       next [configuration, {}]
     end
     settings = template.shared_settings(:configuration => configuration, :options => options)
     [configuration, settings]
   end]
+
+  print("\r\n")
+
+  missing_templates.each do |(name, template_identifier)|
+    warn "No template #{template_identifier} for #{name} could be found\n"
+  end
 
   extract_common_settings!(configs, project)
 

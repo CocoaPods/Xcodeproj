@@ -140,7 +140,7 @@ module Xcodeproj
               "for attribute: #{inspect}" unless acceptable
           else
             raise "[Xcodeproj] Type checking error: got `#{object.isa}` for " \
-              "attribute: #{inspect}" unless acceptable
+              "attribute: #{inspect} - #{object.uuid} #{object.to_ascii_plist}" unless acceptable
           end
         end
 
