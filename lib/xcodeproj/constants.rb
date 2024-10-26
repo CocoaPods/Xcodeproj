@@ -4,23 +4,23 @@ module Xcodeproj
   module Constants
     # @return [String] The last known iOS SDK (stable).
     #
-    LAST_KNOWN_IOS_SDK = '14.0'
+    LAST_KNOWN_IOS_SDK = '18.0'
 
     # @return [String] The last known OS X SDK (stable).
     #
-    LAST_KNOWN_OSX_SDK = '10.15'
+    LAST_KNOWN_OSX_SDK = '15.0'
 
     # @return [String] The last known tvOS SDK (stable).
     #
-    LAST_KNOWN_TVOS_SDK = '14.0'
+    LAST_KNOWN_TVOS_SDK = '18.0'
 
     # @return [String] The last known visionOS SDK (unstable).
     #
-    LAST_KNOWN_VISIONOS_SDK = '1.0'
+    LAST_KNOWN_VISIONOS_SDK = '2.0'
 
     # @return [String] The last known watchOS SDK (stable).
     #
-    LAST_KNOWN_WATCHOS_SDK = '7.0'
+    LAST_KNOWN_WATCHOS_SDK = '11.0'
 
     # @return [String] The last known archive version to Xcodeproj.
     #
@@ -36,15 +36,15 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION = 70
+    LAST_KNOWN_OBJECT_VERSION = 77
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_UPGRADE_CHECK = '1500'
+    LAST_UPGRADE_CHECK = '1600'
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
-    LAST_SWIFT_UPGRADE_CHECK = '1500'
+    LAST_SWIFT_UPGRADE_CHECK = '1600'
 
     # @return [String] The version of `.xcscheme` files supported by Xcodeproj
     #
@@ -132,7 +132,7 @@ module Xcodeproj
     # @return [Hash] The compatibility version string for different object versions.
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
-      70 => 'Xcode 16.0',
+      77 => 'Xcode 16.0',
       63 => 'Xcode 15.3',
       60 => 'Xcode 15.0',
       56 => 'Xcode 14.0',

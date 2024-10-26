@@ -44,7 +44,7 @@ module ProjectSpecs
     end
 
     it 'returns the preferred project object version' do
-      @root_object.preferred_project_object_version.should == '70'
+      @root_object.preferred_project_object_version.should == '77'
     end
 
     it 'returns the products group' do
