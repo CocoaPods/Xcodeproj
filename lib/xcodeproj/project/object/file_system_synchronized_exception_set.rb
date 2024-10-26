@@ -4,10 +4,8 @@ require 'xcodeproj/project/object/helpers/groupable_helper'
 module Xcodeproj
   class Project
     module Object
-      
       # This class represents a file system synchronized build file exception set.
       class PBXFileSystemSynchronizedBuildFileExceptionSet < AbstractObject
-
         # @return [AbstractTarget] The target to which this exception set applies.
         #
         has_one :target, AbstractTarget
@@ -31,7 +29,7 @@ module Xcodeproj
         # @return [Hash] The files with specific attributes.
         #
         attribute :attributes_by_relative_path, Hash
-        
+
         # @return [Hash] The files with a platform filter.
         #
         attribute :platform_filters_by_relative_path, Hash
@@ -43,7 +41,6 @@ module Xcodeproj
 
       # This class represents a file system synchronized group build phase membership exception set.
       class PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet < AbstractObject
-
         # @return [PBXSourcesBuildPhase] The build phase to which this exception set applies.
         #
         has_one :build_phase, PBXSourcesBuildPhase
@@ -60,7 +57,6 @@ module Xcodeproj
           "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{build_phase.name}\" build phase"
         end
       end
-      
     end
   end
 end

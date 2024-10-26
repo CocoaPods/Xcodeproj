@@ -5,7 +5,6 @@ module Xcodeproj
     module Object
       # This class represents a file system synchronized root group.
       class PBXFileSystemSynchronizedRootGroup < AbstractObject
-        
         # @return [String] the directory to which the path is relative.
         #
         # @note   The accepted values are:
@@ -52,7 +51,7 @@ module Xcodeproj
         #
         attribute :wraps_lines, String
 
-        # @return [Array<PBXFileSystemSynchronizedBuildFileExceptionSet, PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet>] 
+        # @return [Array<PBXFileSystemSynchronizedBuildFileExceptionSet, PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet>]
         #         The list of exceptions applying to this group.
         #
         has_many :exceptions, [PBXFileSystemSynchronizedBuildFileExceptionSet, PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet]

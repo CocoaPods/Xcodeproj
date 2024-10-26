@@ -27,16 +27,16 @@ module Xcodeproj
         #
         has_one :base_configuration_reference, PBXFileReference
 
-        # @return [PBXFileSystemSynchronizedRootGroup] an optional reference to a group 
+        # @return [PBXFileSystemSynchronizedRootGroup] an optional reference to a group
         #         synchronized with the file system that contains a configuration file (`.xcconfig`).
-        # 
+        #
         # @note   the configuration file relative path must be provided in `base_configuration_reference_relative_path`
         #
         has_one :base_configuration_reference_anchor, PBXFileSystemSynchronizedRootGroup
 
         # @return [String] the relative path of a configuration file (`.xcconfig`)
         #         inside a group synchronized with the file system.
-        # 
+        #
         # @note   the configuration file group must be provided in `base_configuration_reference_anchor`
         #
         attribute :base_configuration_reference_relative_path, String
