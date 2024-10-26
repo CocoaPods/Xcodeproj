@@ -55,7 +55,7 @@ module Xcodeproj
 
         #  @return [String] preferred project object version
         #
-        attribute :preferred_project_object_version, String, '77'
+        attribute :preferred_project_object_version, String, '70'
 
         # @return [PBXGroup] the group containing the references to products of
         #         the project.
