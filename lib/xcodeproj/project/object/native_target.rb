@@ -461,6 +461,11 @@ module Xcodeproj
         #
         has_many :build_phases, AbstractBuildPhase
 
+        # @return [ObjectList<PBXFileSystemSynchronizedRootGroup>] the file system synchronized
+        #         groups containing files to include to build this target.
+        #
+        has_many :file_system_synchronized_groups, PBXFileSystemSynchronizedRootGroup
+
         public
 
         # @!group Helpers
@@ -684,18 +689,27 @@ module Xcodeproj
 
         def to_hash_as(method = :to_hash)
           hash_as = super
-          if !hash_as['packageProductDependencies'].nil? && hash_as['packageProductDependencies'].empty?
-            hash_as.delete('packageProductDependencies')
+          excluded_keys_for_serialization_when_empty.each do |key|
+            if !hash_as[key].nil? && hash_as[key].empty?
+              hash_as.delete(key)
+            end
           end
           hash_as
         end
 
         def to_ascii_plist
           plist = super
-          if !plist.value['packageProductDependencies'].nil? && plist.value['packageProductDependencies'].empty?
-            plist.value.delete('packageProductDependencies')
+          excluded_keys_for_serialization_when_empty.each do |key|
+            if !plist.value[key].nil? && plist.value[key].empty?
+              plist.value.delete(key)
+            end
           end
           plist
+        end
+
+        # @return [Array<String>] array of keys to exclude from serialization when the value is empty
+        def excluded_keys_for_serialization_when_empty
+          %w(packageProductDependencies fileSystemSynchronizedGroups)
         end
       end
 

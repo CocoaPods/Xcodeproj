@@ -1,5 +1,6 @@
 require 'xcodeproj/project/object/helpers/groupable_helper'
 require 'xcodeproj/project/object/helpers/file_references_factory'
+require 'xcodeproj/project/object/file_system_synchronized_root_group'
 
 module Xcodeproj
   class Project
@@ -13,7 +14,7 @@ module Xcodeproj
         # @return [ObjectList<PBXGroup, PBXFileReference>]
         #         the objects contained by the group.
         #
-        has_many :children, [PBXGroup, PBXFileReference, PBXReferenceProxy]
+        has_many :children, [PBXGroup, PBXFileReference, PBXReferenceProxy, PBXFileSystemSynchronizedRootGroup]
 
         # @return [String] the directory to which the path is relative.
         #
