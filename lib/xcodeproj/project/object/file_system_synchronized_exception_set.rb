@@ -41,9 +41,9 @@ module Xcodeproj
 
       # This class represents a file system synchronized group build phase membership exception set.
       class PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet < AbstractObject
-        # @return [PBXSourcesBuildPhase] The build phase to which this exception set applies.
+        # @return [PBXSourcesBuildPhase, PBXCopyFilesBuildPhase] The build phase to which this exception set applies.
         #
-        has_one :build_phase, PBXSourcesBuildPhase
+        has_one :build_phase, [PBXSourcesBuildPhase, PBXCopyFilesBuildPhase]
 
         # @return [Array<String>] The list of files in the group that are excluded from the build phase.
         #
