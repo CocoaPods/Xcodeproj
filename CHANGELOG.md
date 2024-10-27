@@ -1,6 +1,6 @@
 # Xcodeproj Changelog
 
-## Master
+## 1.26.0 (2024-10-27)
 
 ##### Enhancements
 
