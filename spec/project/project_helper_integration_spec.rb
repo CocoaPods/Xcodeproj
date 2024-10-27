@@ -110,6 +110,11 @@ module ProjectHelperSpecs
         describe 'in language Objective-C' do
           define :language => :objc
 
+          describe 'for product type Application' do
+            define :product_type => :application
+            behaves_like target_from_fixtures 'Objc_OSX_Native'
+          end
+
           describe 'for product type Dynamic Library' do
             define :product_type => :dynamic_library
             behaves_like target_from_fixtures 'Objc_OSX_DynamicLibrary'
@@ -118,11 +123,6 @@ module ProjectHelperSpecs
           describe 'for product type Framework' do
             define :product_type => :framework
             behaves_like target_from_fixtures 'Objc_OSX_Framework'
-          end
-
-          describe 'for product type Application' do
-            define :product_type => :application
-            behaves_like target_from_fixtures 'Objc_OSX_Native'
           end
 
           describe 'for product type Static Library' do
@@ -134,14 +134,14 @@ module ProjectHelperSpecs
         describe 'in language Swift' do
           define :language => :swift
 
-          describe 'for product type Framework' do
-            define :product_type => :framework
-            behaves_like target_from_fixtures 'Swift_OSX_Framework'
-          end
-
           describe 'for product type Application' do
             define :product_type => :application
             behaves_like target_from_fixtures 'Swift_OSX_Native'
+          end
+
+          describe 'for product type Framework' do
+            define :product_type => :framework
+            behaves_like target_from_fixtures 'Swift_OSX_Framework'
           end
         end
       end
@@ -161,11 +161,6 @@ module ProjectHelperSpecs
           describe 'for product type Framework' do
             define :product_type => :framework
             behaves_like target_from_fixtures 'Objc_iOS_Framework'
-          end
-
-          describe 'for product type Application' do
-            define :product_type => :application
-            behaves_like target_from_fixtures 'Objc_iOS_Native'
           end
 
           describe 'for product type Static Library' do

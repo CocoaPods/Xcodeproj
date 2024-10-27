@@ -603,7 +603,7 @@ module ProjectSpecs
         it 'adds a file reference for a system framework, in a dedicated subgroup of the Frameworks group' do
           @target.add_system_framework('QuartzCore')
           file = @project['Frameworks/iOS'].files.first
-          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/QuartzCore.framework'
+          file.path.should == 'Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/QuartzCore.framework'
           file.source_tree.should == 'DEVELOPER_DIR'
         end
 
@@ -625,21 +625,21 @@ module ProjectSpecs
           @target.build_configuration_list.set_setting('SDKROOT', 'appletvos')
           @target.add_system_framework('TVServices')
           file = @project['Frameworks/tvOS'].files.first
-          file.path.scan(/\d\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
+          file.path.scan(/\d+\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_TVOS_SDK
         end
 
         it 'uses the last known visionOS SDK version if none is specified in the target' do
           @target.build_configuration_list.set_setting('SDKROOT', 'xros')
           @target.add_system_framework('ARKit')
           file = @project['Frameworks/visionOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_VISIONOS_SDK
+          file.path.scan(/\d+.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_VISIONOS_SDK
         end
 
         it 'uses the last known watchOS SDK version if none is specified in the target' do
           @target.build_configuration_list.set_setting('SDKROOT', 'watchos')
           @target.add_system_framework('WatchConnectivity')
           file = @project['Frameworks/watchOS'].files.first
-          file.path.scan(/\d\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_WATCHOS_SDK
+          file.path.scan(/\d+\.\d/).first.should == Xcodeproj::Constants::LAST_KNOWN_WATCHOS_SDK
         end
 
         it "doesn't duplicate references to a frameworks if one already exists" do
