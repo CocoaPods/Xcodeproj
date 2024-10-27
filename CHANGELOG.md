@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.26.0 (2024-10-27)
+
+##### Enhancements
+
 * Add support for file system synchronized groups introduced in Xcode 16.  
   [Brett-Best](https://github.com/Brett-Best), [gui17aume](https://github.com/gui17aume)
   [#985](https://github.com/CocoaPods/Xcodeproj/pull/985)
