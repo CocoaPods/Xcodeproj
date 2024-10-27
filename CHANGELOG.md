@@ -8,6 +8,10 @@
   [Brett-Best](https://github.com/Brett-Best), [gui17aume](https://github.com/gui17aume)
   [#985](https://github.com/CocoaPods/Xcodeproj/pull/985)
 
+* Update default build settings for Xcode 16.0.  
+  [Eric Amorde](https://github.com/amorde)
+  [#987](https://github.com/CocoaPods/Xcodeproj/pull/987)
+
 ##### Bug Fixes
 
 * None.  
