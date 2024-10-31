@@ -1,0 +1,10 @@
+ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication
+ENABLE_PREVIEWS = YES
+INFOPLIST_FILE = ___PACKAGENAME___/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = ___ASSOCIATEDTARGET_bundleIdentifier___.watchkitapp.watchkitextension
+PRODUCT_NAME = ${TARGET_NAME}
+SDKROOT = watchos
+SKIP_INSTALL = YES
+TARGETED_DEVICE_FAMILY = 4
+WATCHOS_DEPLOYMENT_TARGET = latest_watchos
