@@ -8,7 +8,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Revert default build settings changes from https://github.com/CocoaPods/Xcodeproj/pull/987.  
+  [Eric Amorde](https://github.com/amorde)
+  [#992](https://github.com/CocoaPods/Xcodeproj/pull/992)
 
 
 ## 1.26.0 (2024-10-27)
