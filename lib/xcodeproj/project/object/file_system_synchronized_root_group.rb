@@ -68,6 +68,21 @@ module Xcodeproj
           return path if path
           super
         end
+
+        def to_hash_as(method = :to_hash)
+          hash_as = super
+          excluded_keys_for_serialization_when_empty.each do |key|
+            if !hash_as[key].nil? && hash_as[key].empty?
+              hash_as.delete(key)
+            end
+          end
+          hash_as
+        end
+
+        # @return [Array<String>] array of keys to exclude from serialization when the value is empty
+        def excluded_keys_for_serialization_when_empty
+          %w(exceptions)
+        end
       end
     end
   end
