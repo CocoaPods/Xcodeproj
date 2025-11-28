@@ -49,12 +49,16 @@ module Xcodeproj
         #
         attribute :membership_exceptions, Array
 
+        # @return [Hash] The files with specific attributes.
+        #
+        attribute :attributes_by_relative_path, Hash
+
         # @return [Hash] The files with a platform filter.
         #
         attribute :platform_filters_by_relative_path, Hash
 
         def display_name
-          'PBXFileSystemSynchronizedBuildFileExceptionSet'
+          'PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet'
         end
       end
     end
