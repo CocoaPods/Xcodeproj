@@ -27,7 +27,7 @@ module Xcodeproj
       #         the name of the target product.
       #
       # @param  [Symbol] platform
-      #         the platform of the target. Can be `:ios` or `:osx`.
+      #         the platform of the target. Can be `:ios`, `:osx`, `:tvos`, `:visionos`, or `:watchos`.
       #
       # @param  [String] deployment_target
       #         the deployment target for the platform.
@@ -80,7 +80,7 @@ module Xcodeproj
       #         the name of the resources bundle.
       #
       # @param  [Symbol] platform
-      #         the platform of the resources bundle. Can be `:ios` or `:osx`.
+      #         the platform of the resources bundle. Can be `:ios`, `:osx`, `:tvos`, `:visionos`, or `:watchos`.
       #
       # @param  [PBXGroup] product_group
       #         the product group, where to add to a file reference of the
@@ -131,7 +131,7 @@ module Xcodeproj
       #         the name of the aggregate target.
       #
       # @param  [Symbol] platform
-      #         the platform of the aggregate target. Can be `:ios` or `:osx`.
+      #         the platform of the aggregate target. Can be `:ios`, `:osx`, `:tvos`, `:visionos`, or `:watchos`.
       #
       # @param  [String] deployment_target
       #         the deployment target for the platform.
@@ -194,7 +194,7 @@ module Xcodeproj
       #         the project to which the configuration list should be added.
       #
       # @param  [Symbol] platform
-      #         the platform for the configuration list, can be `:ios` or `:osx`.
+      #         the platform for the configuration list, can be `:ios`, `:osx`, `:tvos`, `:visionos`, or `:watchos`.
       #
       # @param  [String] deployment_target
       #         the deployment target for the platform.
@@ -245,7 +245,7 @@ module Xcodeproj
       #         `:debug`.
       #
       # @param  [Symbol] platform
-      #         the platform for the build settings, can be `:ios` or `:osx`.
+      #         the platform for the build settings, can be `:ios`, `:osx`, `:tvos`, `:visionos`, or `:watchos`.
       #
       # @param  [String] deployment_target
       #         the deployment target for the platform.
