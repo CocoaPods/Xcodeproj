@@ -54,7 +54,12 @@ module Xcodeproj
         attribute :platform_filters_by_relative_path, Hash
 
         def display_name
-          "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{build_phase.name}\" build phase"
+          build_phase_identifier = if build_phase.respond_to?(:name) && build_phase.name
+            build_phase.name
+          else
+            build_phase.uuid
+          end
+          "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{build_phase_identifier}\" build phase"
         end
       end
     end
