@@ -18,7 +18,8 @@ module Xcodeproj
         #--------------------------------------#
 
         def ascii_plist_annotation
-          " #{isa} \"#{File.basename(display_name, '.git')}\" "
+          name = extract_package_name(display_name)
+          " #{isa} \"#{name}\" "
         end
 
         # @return [String] the name of the remote Swift package reference.
@@ -26,6 +27,31 @@ module Xcodeproj
         def display_name
           return repositoryURL if repositoryURL
           super
+        end
+
+        private
+
+        # Extracts package name from repository URL
+        # Handles different URL formats:
+        # - https://github.com/owner/repo.git -> repo
+        # - git@github.com:owner/repo.git -> repo
+        # - domain.xyz (custom registry) -> xyz
+        def extract_package_name(url)
+          return url unless url
+
+          # Remove .git extension first
+          name = url.sub(/\.git$/, '')
+          
+          # Check if it's a URL with https:// or git@ prefix
+          if name.start_with?('https://') || name.start_with?('git@')
+            # Extract last path component (handle both / and :)
+            name = name.split(/[\/:]/).last
+          else
+            # For other URLs (e.g., custom registry), split by . and use last component
+            name = name.split('.').last if name.include?('.')
+          end
+          
+          name
         end
       end
     end
