@@ -166,6 +166,8 @@
   [LWX124](https://github.com/LWX124)
   [#865](https://github.com/CocoaPods/Xcodeproj/pull/865)
 
+* Fix workspace schemes doesn't match the result of `xcodebuild -list -workspace`
+  [#869](https://github.com/CocoaPods/Xcodeproj/pull/869)
 
 ## 1.21.0 (2021-08-09)
 
