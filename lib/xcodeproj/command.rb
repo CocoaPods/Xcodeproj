@@ -3,6 +3,7 @@ module Xcodeproj
   require 'claide'
 
   class Command < CLAide::Command
+    require 'xcodeproj/command/create'
     require 'xcodeproj/command/config_dump'
     require 'xcodeproj/command/target_diff'
     require 'xcodeproj/command/project_diff'
