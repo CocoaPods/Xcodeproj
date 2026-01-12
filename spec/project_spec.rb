@@ -639,7 +639,7 @@ module ProjectSpecs
     #-------------------------------------------------------------------------#
 
     describe 'Project schemes' do
-      it 'return project name as scheme if there are no shared schemes' do
+      it 'return project name as scheme if there are no schemes' do
         schemes = Xcodeproj::Project.schemes(fixture_path('SharedSchemes/Pods/Pods.xcodeproj'))
         schemes[0].should == 'Pods'
       end
@@ -647,6 +647,11 @@ module ProjectSpecs
       it "return all project's shared schemes" do
         schemes = Xcodeproj::Project.schemes(fixture_path('SharedSchemes/SharedSchemes.xcodeproj'))
         schemes.sort.should == %w(SharedSchemes SharedSchemesForTest)
+      end
+
+      it 'finds a non-shared scheme' do
+        schemes = Xcodeproj::Project.schemes(fixture_path('Sample Project/Cocoa Application.xcodeproj'))
+        schemes.include?('Cocoa ApplicationImporter').should == true
       end
 
       describe '#recreate_user_schemes' do

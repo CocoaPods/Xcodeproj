@@ -824,7 +824,7 @@ module Xcodeproj
     # @return [Array]
     #
     def self.schemes(project_path)
-      schemes = Dir[File.join(project_path, 'xcshareddata', 'xcschemes', '*.xcscheme')].map do |scheme|
+      schemes = Dir[File.join(project_path, '**', 'xcschemes', '*.xcscheme')].map do |scheme|
         File.basename(scheme, '.xcscheme')
       end
       schemes << File.basename(project_path, '.xcodeproj') if schemes.empty?

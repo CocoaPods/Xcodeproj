@@ -305,6 +305,10 @@
   [nickgravelyn](https://github.com/nickgravelyn)
   [#757](https://github.com/CocoaPods/Xcodeproj/pull/757)
 
+* Include non-shared schemes in `Project.schemes`.  
+  [Serge Lebedev](https://github.com/lebedev)
+  [#680](https://github.com/CocoaPods/Xcodeproj/pull/680)
+
 
 ## 1.16.0 (2020-04-10)
 
