@@ -34,23 +34,28 @@ module Xcodeproj
         # Extracts package name from repository URL
         # Handles different URL formats:
         # - https://github.com/owner/repo.git -> repo
+        # - https://github.com/owner/socket.io-client-swift -> socket
         # - git@github.com:owner/repo.git -> repo
+        # - github.com/owner/repo -> repo
         # - domain.xyz (custom registry) -> xyz
         def extract_package_name(url)
           return url unless url
 
           # Remove .git extension first
           name = url.sub(/\.git$/, '')
-          
-          # Check if it's a URL with https:// or git@ prefix
-          if name.start_with?('https://') || name.start_with?('git@')
+
+          # Check if it's a URL with path (contains /)
+          if name.include?('/')
             # Extract last path component (handle both / and :)
             name = name.split(/[\/:]/).last
-          else
-            # For other URLs (e.g., custom registry), split by . and use last component
-            name = name.split('.').last if name.include?('.')
+            # If name contains a dot, use only the part before the first dot
+            # e.g., socket.io-client-swift -> socket
+            name = name.split('.').first if name.include?('.')
+          elsif name.include?('.')
+            # For other URLs (e.g., custom registry like domain.xyz), split by . and use last component
+            name = name.split('.').last
           end
-          
+
           name
         end
       end
