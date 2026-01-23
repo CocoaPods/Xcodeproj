@@ -19,7 +19,7 @@ module Xcodeproj
         #--------------------------------------#
 
         def ascii_plist_annotation
-          " #{isa} \"#{File.basename(display_name)}\" "
+          " #{isa} \"#{display_name}\" "
         end
 
         # @return [String] the path of the local Swift package reference.
