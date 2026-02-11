@@ -35,7 +35,7 @@ module Xcodeproj
         attribute :platform_filters_by_relative_path, Hash
 
         def display_name
-          "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{target.name}\" target"
+          'PBXFileSystemSynchronizedBuildFileExceptionSet'
         end
       end
 
@@ -49,12 +49,16 @@ module Xcodeproj
         #
         attribute :membership_exceptions, Array
 
+        # @return [Hash] The files with specific attributes.
+        #
+        attribute :attributes_by_relative_path, Hash
+
         # @return [Hash] The files with a platform filter.
         #
         attribute :platform_filters_by_relative_path, Hash
 
         def display_name
-          "Exceptions for \"#{GroupableHelper.parent(self).display_name}\" folder in \"#{build_phase.name}\" build phase"
+          'PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet'
         end
       end
     end
