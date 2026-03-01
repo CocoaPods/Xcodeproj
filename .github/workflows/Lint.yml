@@ -20,14 +20,9 @@ jobs:
     name: Lint
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Set build image var
-        run: echo "ImageVersion=$ImageVersion"  >> $GITHUB_ENV
+      - uses: actions/checkout@v6
 
-      - name: Checkout git
-        uses: actions/checkout@v6
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
