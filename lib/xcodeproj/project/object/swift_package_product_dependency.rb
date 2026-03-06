@@ -23,6 +23,10 @@ module Xcodeproj
           return product_name if product_name
           super
         end
+
+        def ascii_plist_annotation
+          super.sub(/\A plugin:/, ' ')
+        end
       end
     end
   end
