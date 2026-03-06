@@ -83,6 +83,32 @@ module ProjectSpecs
       @target.build_phases[0].files.should.be.empty
     end
 
+    describe 'concerning folder references' do
+      it 'returns full path for display_name when lastKnownFileType is folder with SOURCE_ROOT' do
+        folder = @project.new(PBXFileReference)
+        folder.last_known_file_type = 'folder'
+        folder.path = 'NaverMap_v5Tests/NaviSearch/Fixtures'
+        folder.source_tree = 'SOURCE_ROOT'
+        folder.display_name.should == 'NaverMap_v5Tests/NaviSearch/Fixtures'
+      end
+
+      it 'returns basename for display_name for folder with <group> source tree' do
+        folder = @project.new(PBXFileReference)
+        folder.last_known_file_type = 'folder'
+        folder.path = 'Path/To/Folder'
+        folder.source_tree = '<group>'
+        folder.display_name.should == 'Folder'
+      end
+
+      it 'returns basename for display_name for folder.assetcatalog with <group>' do
+        folder = @project.new(PBXFileReference)
+        folder.last_known_file_type = 'folder.assetcatalog'
+        folder.path = 'Resources/Assets.xcassets'
+        folder.source_tree = '<group>'
+        folder.display_name.should == 'Assets.xcassets'
+      end
+    end
+
     describe 'concerning proxies' do
       it 'returns that it is not a proxy' do
         @file.should.not.be.a.proxy

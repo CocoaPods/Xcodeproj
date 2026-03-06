@@ -131,6 +131,11 @@ module Xcodeproj
         #         needed.
         #
         def display_name
+          # For folder references with SOURCE_ROOT, use full path like Xcode
+          if last_known_file_type&.start_with?('folder') && source_tree == 'SOURCE_ROOT'
+            return path if path
+          end
+
           if name
             name
           elsif (class << GroupableHelper; self; end)::SOURCE_TREES_BY_KEY[:built_products] == source_tree
