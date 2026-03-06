@@ -20,3 +20,6 @@ xcuserdata
 rakelib/doccoverage/
 coverage/
 .coveralls.yml
+
+# omc
+.omc/
