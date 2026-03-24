@@ -26,6 +26,10 @@ module Xcodeproj
         #
         attribute :additional_compiler_flags_by_relative_path, Hash
 
+        # @return [Hash] The files with on demand resource tags.
+        #
+        attribute :asset_tags_by_relative_path, Hash
+
         # @return [Hash] The files with specific attributes.
         #
         attribute :attributes_by_relative_path, Hash
