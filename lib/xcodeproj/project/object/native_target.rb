@@ -729,6 +729,11 @@ module Xcodeproj
         #         target.
         #
         has_many :build_phases, [PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase]
+
+        # @return [ObjectList<XCSwiftPackageProductDependency>] the Swift package products necessary to
+        #         build this target.
+        #
+        has_many :package_product_dependencies, XCSwiftPackageProductDependency
       end
 
       #-----------------------------------------------------------------------#

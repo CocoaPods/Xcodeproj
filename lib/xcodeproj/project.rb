@@ -81,10 +81,9 @@ module Xcodeproj
       unless skip_initialization
         initialize_from_scratch
         @object_version = object_version.to_s
-        unless Constants::COMPATIBILITY_VERSION_BY_OBJECT_VERSION.key?(object_version)
-          raise ArgumentError, "[Xcodeproj] Unable to find compatibility version string for object version `#{object_version}`."
+        if Constants::COMPATIBILITY_VERSION_BY_OBJECT_VERSION.key?(object_version)
+          root_object.compatibility_version = Constants::COMPATIBILITY_VERSION_BY_OBJECT_VERSION[object_version]
         end
-        root_object.compatibility_version = Constants::COMPATIBILITY_VERSION_BY_OBJECT_VERSION[object_version]
       end
     end
 
