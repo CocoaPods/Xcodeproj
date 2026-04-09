@@ -20,3 +20,4 @@ xcuserdata
 rakelib/doccoverage/
 coverage/
 .coveralls.yml
+.idea
