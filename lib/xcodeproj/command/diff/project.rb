@@ -1,6 +1,6 @@
 module Xcodeproj
-  class Command
-    class ProjectDiff < Command
+  class DiffCommand
+    class Project < DiffCommand
       self.summary = 'Shows the difference between two projects'
 
       self.description = summary + <<-EOS.gsub(/ {8}/, '')
