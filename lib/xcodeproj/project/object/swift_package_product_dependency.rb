@@ -20,8 +20,16 @@ module Xcodeproj
         # @return [String] the name of the Swift package product dependency.
         #
         def display_name
-          return product_name if product_name
+          return clean_product_name if product_name
           super
+        end
+
+        def clean_product_name
+          if product_name =~ /^plugin:/
+            product_name.gsub(/^plugin:/, '')
+          else
+            product_name
+          end
         end
       end
     end
