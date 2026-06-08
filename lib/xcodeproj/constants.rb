@@ -133,6 +133,7 @@ module Xcodeproj
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
       77 => 'Xcode 16.0', # with project compatibility set to Xcode 16.0
+      73 => 'Xcode 16.0', # Xcode 16.3
       71 => 'Xcode 16.2',
       70 => 'Xcode 16.0',
       63 => 'Xcode 15.3',
