@@ -34,8 +34,15 @@ module Xcodeproj
         #
         attribute :platform_filters_by_relative_path, Hash
 
+        # Xcode builds the comment by combining the referencing root group (folder)
+        # with the target name, as `Exceptions for "<folder>" folder in "<target>" target`.
         def display_name
-          'PBXFileSystemSynchronizedBuildFileExceptionSet'
+          root_group = referrers.find { |referrer| referrer.is_a?(PBXFileSystemSynchronizedRootGroup) }
+          if root_group && target
+            %(Exceptions for "#{root_group.display_name}" folder in "#{target.display_name}" target)
+          else
+            'PBXFileSystemSynchronizedBuildFileExceptionSet'
+          end
         end
       end
 
@@ -57,8 +64,17 @@ module Xcodeproj
         #
         attribute :platform_filters_by_relative_path, Hash
 
+        # Xcode builds the comment by combining the root group (folder), the build
+        # phase, and the target that owns the build phase, as
+        # `Exceptions for "<folder>" folder in "<phase>" phase from "<target>" target`.
         def display_name
-          'PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet'
+          root_group = referrers.find { |referrer| referrer.is_a?(PBXFileSystemSynchronizedRootGroup) }
+          phase_target = build_phase && build_phase.referrers.find { |referrer| referrer.is_a?(AbstractTarget) }
+          if root_group && build_phase && phase_target
+            %(Exceptions for "#{root_group.display_name}" folder in "#{build_phase.display_name}" phase from "#{phase_target.display_name}" target)
+          else
+            'PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet'
+          end
         end
       end
     end
