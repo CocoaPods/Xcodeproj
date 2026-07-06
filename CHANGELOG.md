@@ -4,6 +4,17 @@
 
 ##### Enhancements
 
+* None.  
+
+##### Bug Fixes
+
+* None.  
+
+
+## 1.28.0 (2026-07-06)
+
+##### Enhancements
+
 * Add objectVersion for Xcode 26.3 compatibility.  
   [Eric Amorde](https://github.com/amorde)
   [#1041](https://github.com/CocoaPods/Xcodeproj/pull/1041)
