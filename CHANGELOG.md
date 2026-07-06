@@ -19,7 +19,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Update minimum required Ruby from 2.0 to 2.6.  
+  [Eric Amorde](https://github.com/amorde)
+  [#1043](https://github.com/CocoaPods/Xcodeproj/pull/1043)
 
 
 ## 1.27.0 (2024-10-31)

@@ -17,7 +17,8 @@ group :development do
   gem 'rake', '~> 12.0'
 
   gem 'codeclimate-test-reporter', '~> 0.4.1', :require => nil
-  gem 'rubocop'
+  gem 'rubocop', '<= 1.10.0'
+  gem 'rubocop-ast', '<= 1.10.0' # pin to prevent pulling deps that drop 2.6 support
   gem 'danger'
   gem 'simplecov'
 end
