@@ -8,6 +8,11 @@
   [Eric Amorde](https://github.com/amorde)
   [#1041](https://github.com/CocoaPods/Xcodeproj/pull/1041)
 
+* Add support for `assetTagsByRelativePath` field on `PBXFileSystemSynchronizedBuildFileExceptionSet`.  
+  [Frederik Seiffert](https://github.com/triplef)
+  [#1035](https://github.com/CocoaPods/Xcodeproj/pull/1035)
+
+
 ##### Bug Fixes
 
 * None.  
