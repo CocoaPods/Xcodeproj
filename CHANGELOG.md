@@ -11,6 +11,19 @@
 * None.  
 
 
+## 1.28.1 (2026-07-06)
+
+##### Enhancements
+
+* None.  
+
+##### Bug Fixes
+
+* Fix `cannot load such file -- kconv`, `cannot load such file -- base64` crash when running on Ruby 3.4.  
+  [Eric Amorde](https://github.com/amorde)
+  [#1046](https://github.com/CocoaPods/Xcodeproj/pull/1046)
+
+
 ## 1.28.0 (2026-07-06)
 
 ##### Enhancements
