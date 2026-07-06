@@ -12,6 +12,10 @@
   [Frederik Seiffert](https://github.com/triplef)
   [#1035](https://github.com/CocoaPods/Xcodeproj/pull/1035)
 
+* Update constants for latest OS versions.  
+  [Eric Amorde](https://github.com/amorde)
+  [#1042](https://github.com/CocoaPods/Xcodeproj/pull/1042)
+
 
 ##### Bug Fixes
 
