@@ -4,7 +4,7 @@ inherit_from:
 
 #- Xcodeproj ------------------------------------------------------------------
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - lib/xcodeproj/project/object/**/*
     - lib/xcodeproj/project/object_attributes.rb

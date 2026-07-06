@@ -70,7 +70,7 @@ Encoding:
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 
 Style/MultilineOperationIndentation:
@@ -147,10 +147,6 @@ AmbiguousRegexpLiteral:
   Exclude:
     - spec/**/*
 
-Performance/RedundantMatch:
-  Exclude:
-    - spec/**/*
-
 # Allow `object.should == object` syntax.
 Void:
   Exclude:
@@ -160,6 +156,6 @@ ClassAndModuleChildren:
   Exclude:
     - spec/**/*
 
-UselessComparison:
+Lint/BinaryOperatorWithIdenticalOperands:
   Exclude:
     - spec/**/*
