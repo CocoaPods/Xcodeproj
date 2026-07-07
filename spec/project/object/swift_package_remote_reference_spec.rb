@@ -24,5 +24,15 @@ module ProjectSpecs
       @proxy.repositoryURL = 'github.com/swift/package.git'
       @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "package" '
     end
+
+    it 'returns the ascii plist annotation with the part before the first dot for URLs with dotted names' do
+      @proxy.repositoryURL = 'https://github.com/socketio/socket.io-client-swift'
+      @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "socket" '
+    end
+
+    it 'returns the ascii plist annotation with the part before the first dot for git@ URLs with dotted names' do
+      @proxy.repositoryURL = 'git@github.com:socketio/socket.io-client-swift.git'
+      @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "socket" '
+    end
   end
 end
