@@ -38,7 +38,6 @@ module ProjectSpecs
         subproject = Xcodeproj::Project.open(path)
         @project.main_group.new_file(path)
         @proxy.container_portal = subproject.root_object.uuid
-
         @proxy.remote?.should.be.true
       end
     end
