@@ -153,7 +153,7 @@ module Xcodeproj
                 real_path(object_parent)
               end
             when 'SOURCE_ROOT'
-              object.project.project_dir
+              object.project.project_dir + object.project.root_object.project_dir_path
             when '<absolute>'
               nil
             else
