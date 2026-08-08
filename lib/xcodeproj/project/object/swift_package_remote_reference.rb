@@ -14,6 +14,10 @@ module Xcodeproj
         #
         attribute :requirement, Hash
 
+        # @return [Array<String>] the traits enabled for this Swift package.
+        #
+        attribute :traits, Array
+
         # @!group AbstractObject Hooks
         #--------------------------------------#
 

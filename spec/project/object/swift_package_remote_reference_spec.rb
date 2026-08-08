@@ -24,5 +24,27 @@ module ProjectSpecs
       @proxy.repositoryURL = 'github.com/swift/package.git'
       @proxy.ascii_plist_annotation.should == ' XCRemoteSwiftPackageReference "package" '
     end
+
+    it 'supports serializing traits' do
+      @proxy.traits = %w(Textual Logging)
+
+      @proxy.to_hash['traits'].should == %w(Textual Logging)
+    end
+
+    it 'supports deserializing traits from plist data' do
+      uuid = 'F00BA4F00BA4F00BA4F00BA4'
+      package_reference = XCRemoteSwiftPackageReference.new(@project, uuid)
+      objects_by_uuid_plist = {
+        uuid => {
+          'isa' => 'XCRemoteSwiftPackageReference',
+          'traits' => %w(Textual Logging),
+        },
+      }
+
+      UI.expects(:warn).never
+      package_reference.configure_with_plist(objects_by_uuid_plist)
+
+      package_reference.traits.should == %w(Textual Logging)
+    end
   end
 end

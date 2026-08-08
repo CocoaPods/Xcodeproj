@@ -19,5 +19,27 @@ module ProjectSpecs
       @proxy.relative_path = '../path'
       @proxy.ascii_plist_annotation.should == ' XCLocalSwiftPackageReference "path" '
     end
+
+    it 'supports serializing traits' do
+      @proxy.traits = %w(Textual Logging)
+
+      @proxy.to_hash['traits'].should == %w(Textual Logging)
+    end
+
+    it 'supports deserializing traits from plist data' do
+      uuid = 'F00BA4F00BA4F00BA4F00BA4'
+      package_reference = XCLocalSwiftPackageReference.new(@project, uuid)
+      objects_by_uuid_plist = {
+        uuid => {
+          'isa' => 'XCLocalSwiftPackageReference',
+          'traits' => %w(Textual Logging),
+        },
+      }
+
+      UI.expects(:warn).never
+      package_reference.configure_with_plist(objects_by_uuid_plist)
+
+      package_reference.traits.should == %w(Textual Logging)
+    end
   end
 end

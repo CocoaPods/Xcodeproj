@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Add support for traits on remote and local Swift package references.  
+  [Paul Schmiedmayer](https://github.com/PSchmiedmayer)
 
 ##### Bug Fixes
 
