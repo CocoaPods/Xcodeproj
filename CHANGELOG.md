@@ -9,8 +9,8 @@
 ##### Bug Fixes
 
 * Support `shellScript` values serialized as an array of lines by Xcode 16.3
-  and later (`objectVersion = 100`), which previously raised a type checking
-  error when opening a project.  
+  and later, which previously raised a type checking error when opening a
+  project.  
   [#1017](https://github.com/CocoaPods/Xcodeproj/issues/1017)
 
 
