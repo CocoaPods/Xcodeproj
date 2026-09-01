@@ -328,14 +328,15 @@ module Xcodeproj
         attribute :shell_script, String, "# Type a script or drag a script file from your workspace to insert its path.\n"
 
         alias simple_shell_script= shell_script=
+        private :simple_shell_script=
 
         # Sets the script to perform.
         #
-        # Projects written by Xcode 16.3 and later (`objectVersion = 100`)
-        # serialize the script as an array of its newline separated lines
-        # instead of a single string, e.g. `shellScript = ("swiftlint", "",);`
-        # for `"swiftlint\n"`. Such values are joined back together so that
-        # the attribute always exposes a string.
+        # Xcode 16.3 and later serialize the script as an array of its
+        # newline separated lines instead of a single string, e.g.
+        # `shellScript = ("swiftlint", "",);` for `"swiftlint\n"`. Such values
+        # are joined back together so that the attribute always exposes a
+        # string.
         #
         # @param  [String, Array<String>] value
         #         the script to perform.
