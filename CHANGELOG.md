@@ -22,6 +22,11 @@
 * Require rexml 3.4.2 or later.  
   [Jerome Lacoste](https://github.com/lacostej)
 
+* Support `shellScript` values serialized as an array of lines by Xcode 16.3
+  and later (`objectVersion = 100`), which previously raised a type checking
+  error when opening a project.  
+  [#1017](https://github.com/CocoaPods/Xcodeproj/issues/1017)
+
 
 ## 1.28.1 (2026-07-06)
 
