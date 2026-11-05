@@ -4,7 +4,9 @@
 
 ##### Enhancements
 
-* None.  
+* Allow colored2 4.x, which no longer modifies a string literal that Ruby 3.4 warns about.  
+  [Jerome Lacoste](https://github.com/lacostej)
+  [#1054](https://github.com/CocoaPods/Xcodeproj/issues/1054)
 
 ##### Bug Fixes
 

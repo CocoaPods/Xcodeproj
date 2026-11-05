@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'atomos',         '~> 0.1.3'
   s.add_runtime_dependency 'CFPropertyList', '>= 2.3.3', '< 4.0'
   s.add_runtime_dependency 'claide',         '>= 1.0.2', '< 2.0'
-  s.add_runtime_dependency 'colored2',       '~> 3.1'
+  s.add_runtime_dependency 'colored2',       '>= 3.1', '< 5'
   s.add_runtime_dependency 'nanaimo',        '~> 0.4.0'
   s.add_runtime_dependency 'rexml',          '>= 3.3.6', '< 4.0'
   s.add_runtime_dependency 'nkf' # required for older CFPropertyList versions on Ruby 3.4
