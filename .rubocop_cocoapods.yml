@@ -6,63 +6,43 @@ AllCops:
   Exclude:
     - ./spec/fixtures/**/*
     - ./vendor/bundle/**/*
+  SuggestExtensions: false
+  NewCops: enable
 
-# At the moment not ready to be used
-# https://github.com/bbatsov/rubocop/issues/947
-Documentation:
+# We're not there yet
+Style/Documentation:
   Enabled: false
 
 #- CocoaPods -----------------------------------------------------------------#
 
-BlockLength:
-  Enabled: false
+Metrics/ParameterLists:
+  CountKeywordArgs: false
 
-VariableNumber:
-  Enabled: false
-
-MultilineHashBraceLayout:
-  Enabled: false
-
-SpaceInLambdaLiteral:
-  Enabled: false
-
-EmptyCaseCondition:
-  Enabled: false
-
-MultilineIfModifier:
-  Enabled: false
-
-TernaryParentheses:
-  Enabled: false
-
-Style/NumericPredicate:
-  Enabled: false
-
-EmptyMethod:
+Style/SafeNavigation:
   Enabled: false
 
 # We adopted raise instead of fail.
-SignalException:
+Style/SignalException:
   EnforcedStyle: only_raise
 
 # They are idiomatic
-AssignmentInCondition:
+Lint/AssignmentInCondition:
   Enabled: false
 
 # Allow backticks
-AsciiComments:
+Style/AsciiComments:
   Enabled: false
 
 # Indentation clarifies logic branches in implementations
-IfUnlessModifier:
+Style/IfUnlessModifier:
   Enabled: false
 
 # No enforced convention here.
-SingleLineBlockParams:
+Style/SingleLineBlockParams:
   Enabled: false
 
 # We only add the comment when needed.
-Encoding:
+Style/Encoding:
   Enabled: false
 
 # Having these make it easier to *not* forget to add one when adding a new
@@ -73,21 +53,28 @@ Style/TrailingCommaInArguments:
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+
 # Clashes with CLAide Command#validate!
-GuardClause:
+Style/GuardClause:
   Enabled: false
 
 # Not always desirable: lib/claide/command/plugins_helper.rb:12:15
-Next:
+Style/Next:
   Enabled: false
 
-# Autocorrect makes this cop much more useful, taking away needless guessing
-Lint/EndAlignment:
-  AutoCorrect: true
-
+# Arbitrary max lengths for classes simply do not work and enabling this will
+# lead to a never ending stream of annoyance and changes.
+Metrics/BlockLength:
+  Enabled: false
 
 # Arbitrary max lengths for classes simply do not work and enabling this will
 # lead to a never ending stream of annoyance and changes.
@@ -125,16 +112,16 @@ Metrics/PerceivedComplexity:
 
 #- CocoaPods support for Ruby 1.8.7 ------------------------------------------#
 
-HashSyntax:
+Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
-Lambda:
+Style/Lambda:
   Enabled: false
 
-DotPosition:
+Layout/DotPosition:
   EnforcedStyle: trailing
 
-EachWithObject:
+Style/EachWithObject:
   Enabled: false
 
 Style/SpecialGlobalVars:
@@ -143,16 +130,16 @@ Style/SpecialGlobalVars:
 #- CocoaPods specs -----------------------------------------------------------#
 
 # Allow for `should.match /regexp/`.
-AmbiguousRegexpLiteral:
+Lint/AmbiguousRegexpLiteral:
   Exclude:
     - spec/**/*
 
 # Allow `object.should == object` syntax.
-Void:
+Lint/Void:
   Exclude:
     - spec/**/*
 
-ClassAndModuleChildren:
+Style/ClassAndModuleChildren:
   Exclude:
     - spec/**/*
 
