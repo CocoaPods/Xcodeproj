@@ -451,6 +451,25 @@ module Xcodeproj
       :plug_ins           => '13',
     }.freeze
 
+    # @return [Hash] The corresponding string value, introduced in Xcode 26,
+    #         of each copy build phase destination.
+    #
+    COPY_FILES_BUILD_PHASE_DST_SUBFOLDERS = {
+      :absolute_path      => 'AbsolutePath',
+      :products_directory => 'ProductsDirectory',
+      :wrapper            => 'Wrapper',
+      :resources          => 'Resources',
+      :executables        => 'Executables',
+      :java_resources     => 'JavaResources',
+      :frameworks         => 'Frameworks',
+      :shared_frameworks  => 'SharedFrameworks',
+      :shared_support     => 'SharedSupport',
+      :plug_ins           => 'PlugIns',
+      :other              => 'Other',
+      :product            => 'Product',
+      :none               => 'None',
+    }.freeze
+
     # @return [Hash] The corresponding numeric value of each proxy type for
     #         PBXContainerItemProxy.
     PROXY_TYPES = {
