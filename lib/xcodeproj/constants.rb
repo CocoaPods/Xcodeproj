@@ -36,7 +36,7 @@ module Xcodeproj
 
     # @return [String] The last known object version to Xcodeproj.
     #
-    LAST_KNOWN_OBJECT_VERSION = 100
+    LAST_KNOWN_OBJECT_VERSION = 110
 
     # @return [String] The last known Xcode version to Xcodeproj.
     #
@@ -132,6 +132,7 @@ module Xcodeproj
     # @return [Hash] The compatibility version string for different object versions.
     #
     COMPATIBILITY_VERSION_BY_OBJECT_VERSION = {
+      110 => 'Xcode 27.0',
       100 => 'Xcode 26.3',
       77 => 'Xcode 16.0', # with project compatibility set to Xcode 16.0
       71 => 'Xcode 16.2',
@@ -449,6 +450,23 @@ module Xcodeproj
       :shared_frameworks  => '11',
       :shared_support     => '12',
       :plug_ins           => '13',
+    }.freeze
+
+    # @return [Hash] The name of each copy build phase destination. Xcode 27.2
+    #         writes this name in the `dstSubfolder` attribute, which replaces
+    #         the number in `dstSubfolderSpec`.
+    #
+    COPY_FILES_BUILD_PHASE_DESTINATION_NAMES = {
+      :absolute_path      => 'None',
+      :products_directory => 'Product',
+      :wrapper            => 'Wrapper',
+      :resources          => 'Resources',
+      :executables        => 'Executables',
+      :java_resources     => 'Java',
+      :frameworks         => 'Frameworks',
+      :shared_frameworks  => 'SharedFrameworks',
+      :shared_support     => 'SharedSupport',
+      :plug_ins           => 'PlugIns',
     }.freeze
 
     # @return [Hash] The corresponding numeric value of each proxy type for

@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0731E898ABAB9C6132DA23E1 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 21A245A70CFA37C73D3A338C /* ArgumentParser */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		3554E67975D2D90BA2FD769C /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.template";
+			fileType = pattern.proxy;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).swift",
+			);
+			script = (
+				"echo \"generate $INPUT_FILE_NAME\"",
+				"cp \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$INPUT_FILE_BASE.swift\"",
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		8AB3660D6CA5A6B81DA14044 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02D787C10FC1D7ECB3DE1979 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A445502A30A3031500C413DF;
+			remoteInfo = App;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3466CD45BF81CBA219CF6F9F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = Frameworks;
+			files = (
+			);
+			name = "Embed Frameworks";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A445502B30A3031500C413DF /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB9E1727DDF90E1697952DBE /* App.xcconfig */ = {isa = PBXFileReference; path = App.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		72CDD03B01DD051F0A582B6E /* Exceptions for "Sources" folder in "App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				main.swift,
+			);
+			target = A445502A30A3031500C413DF /* App */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		106EF54D79B194A9714142AB /* Sources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				72CDD03B01DD051F0A582B6E /* Exceptions for "Sources" folder in "App" target */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		60BC13A5F3DF18D90102ECB3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				0731E898ABAB9C6132DA23E1 /* ArgumentParser in Frameworks */,
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		233D50D75AAF364E89C81FCB = {
+			isa = PBXGroup;
+			children = (
+				3E8FCE4585D2C6CD2FDD1479 /* Products */,
+				106EF54D79B194A9714142AB /* Sources */,
+				D543B99A3A782EC16A686A8F /* Config */,
+			);
+			sourceTree = "<group>";
+		};
+		3E8FCE4585D2C6CD2FDD1479 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A445502B30A3031500C413DF /* App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D543B99A3A782EC16A686A8F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				EB9E1727DDF90E1697952DBE /* App.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A445502A30A3031500C413DF /* App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14C69E43DC971A46FBD6C413 /* Build configuration list for PBXNativeTarget "App" */;
+			buildPhases = (
+				B24A726AE2BB0DBF49C70E31 /* Sources */,
+				60BC13A5F3DF18D90102ECB3 /* Frameworks */,
+				A70F7059653A5F84D3485DB6 /* Resources */,
+				7D2332A78ADC18D8294938F6 /* Run Script */,
+				3466CD45BF81CBA219CF6F9F /* Embed Frameworks */,
+			);
+			buildRules = (
+				3554E67975D2D90BA2FD769C /* PBXBuildRule */,
+			);
+			fileSystemSynchronizedGroups = (
+				106EF54D79B194A9714142AB /* Sources */,
+			);
+			name = App;
+			packageProductDependencies = (
+				21A245A70CFA37C73D3A338C /* ArgumentParser */,
+			);
+			productName = App;
+			productReference = A445502B30A3031500C413DF /* App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A4500AEB30A303170014B481 /* AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A9CB62BCDC9558950E7B7A7 /* Build configuration list for PBXNativeTarget "AppTests" */;
+			buildRules = (
+			);
+			dependencies = (
+				AA390F62BBF6446CE87F0E27 /* PBXTargetDependency */,
+			);
+			name = AppTests;
+			productName = AppTests;
+			productType = "com.apple.product-type.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		02D787C10FC1D7ECB3DE1979 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+			};
+			buildConfigurationList = 5F7D4EF1BA2567000C57D34C /* Build configuration list for PBXProject "App" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 233D50D75AAF364E89C81FCB;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A46BDB2C30A31E7A008190DC /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
+			preferredProjectObjectVersion = 110;
+			productRefGroup = 3E8FCE4585D2C6CD2FDD1479 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A445502A30A3031500C413DF /* App */,
+				A4500AEB30A303170014B481 /* AppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A70F7059653A5F84D3485DB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7D2332A78ADC18D8294938F6 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			name = "Run Script";
+			shellPath = /bin/sh;
+			shellScript = (
+				"echo \"build $CURRENT_PROJECT_VERSION\"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B24A726AE2BB0DBF49C70E31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA390F62BBF6446CE87F0E27 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A445502A30A3031500C413DF /* App */;
+			targetProxy = 8AB3660D6CA5A6B81DA14044 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		268A2AEFB65C261E132B6975 /* Debug configuration for PBXNativeTarget "AppTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4AA2E1F7FC7C8A0332BA58AA /* Release configuration for PBXProject "App" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		695913F6456BD90F4FC9CD42 /* Release configuration for PBXNativeTarget "AppTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		7D95C71B675C2DF4DDABD882 /* Debug configuration for PBXNativeTarget "App" */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB9E1727DDF90E1697952DBE /* App.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A0CADA459952459F67314D32 /* Release configuration for PBXNativeTarget "App" */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB9E1727DDF90E1697952DBE /* App.xcconfig */;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		A9E28025E80F2F768CAFB714 /* Debug configuration for PBXProject "App" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		14C69E43DC971A46FBD6C413 /* Build configuration list for PBXNativeTarget "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D95C71B675C2DF4DDABD882 /* Debug configuration for PBXNativeTarget "App" */,
+				A0CADA459952459F67314D32 /* Release configuration for PBXNativeTarget "App" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		5F7D4EF1BA2567000C57D34C /* Build configuration list for PBXProject "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9E28025E80F2F768CAFB714 /* Debug configuration for PBXProject "App" */,
+				4AA2E1F7FC7C8A0332BA58AA /* Release configuration for PBXProject "App" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		6A9CB62BCDC9558950E7B7A7 /* Build configuration list for PBXNativeTarget "AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				268A2AEFB65C261E132B6975 /* Debug configuration for PBXNativeTarget "AppTests" */,
+				695913F6456BD90F4FC9CD42 /* Release configuration for PBXNativeTarget "AppTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A46BDB2C30A31E7A008190DC /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		21A245A70CFA37C73D3A338C /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A46BDB2C30A31E7A008190DC /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 02D787C10FC1D7ECB3DE1979 /* Project object */;
+	validationLevel = 1;
+}

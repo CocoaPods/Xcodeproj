@@ -235,6 +235,15 @@ module Xcodeproj
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
 
+        # @return [String] the name of the destination where the files should
+        #         be copied to, for example `Frameworks`.
+        #
+        # @note   Xcode 27.2 writes this attribute in place of
+        #         `dst_subfolder_spec`. When a build phase has both, Xcode
+        #         uses this attribute and ignores `dst_subfolder_spec`.
+        #
+        attribute :dst_subfolder, String
+
         # @return [Hash{String => Hash}] A hash suitable to display the build
         #         phase to the user.
         #
@@ -242,7 +251,7 @@ module Xcodeproj
           {
             display_name => {
               'Destination Path' => dst_path,
-              'Destination Subfolder' => Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.key(dst_subfolder_spec).to_s,
+              'Destination Subfolder' => symbol_dst_subfolder_spec.to_s,
               'Files' => files.map(&:pretty_print),
             },
           }
@@ -260,17 +269,20 @@ module Xcodeproj
           numeric_value = Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[value]
           raise "[Xcodeproj] Value checking error: got `#{value.inspect}` for" \
               ' attribute: dst_subfolder_spec' if numeric_value.nil?
+          # Xcode would ignore the new value while the phase has a name.
+          self.dst_subfolder = nil
           self.dst_subfolder_spec = numeric_value
         end
 
-        # Alias method for #dst_subfolder_spec, which returns symbol values
-        # instead of numeric string values.
+        # Returns the destination of the build phase as a symbol. The
+        # destination is the name in #dst_subfolder when the build phase has
+        # one, and the numeric string value in #dst_subfolder_spec otherwise.
         #
         # @return [Symbol]
         #
         def symbol_dst_subfolder_spec
-          key = Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.find { |_, num| num == dst_subfolder_spec }
-          key ? key.first : nil
+          Constants::COPY_FILES_BUILD_PHASE_DESTINATION_NAMES.key(dst_subfolder) ||
+            Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.key(dst_subfolder_spec)
         end
       end
 

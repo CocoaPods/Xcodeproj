@@ -211,12 +211,24 @@ module ProjectSpecs
         @build_phase.dst_subfolder_spec = '42'
         @build_phase.symbol_dst_subfolder_spec.should.be.nil
       end
+
+      it 'prefers the name in dstSubfolder, which Xcode 27.2 writes' do
+        @build_phase.dst_subfolder = 'Frameworks'
+        @build_phase.symbol_dst_subfolder_spec.should == :frameworks
+      end
     end
 
     describe '#symbol_dst_subfolder_spec=' do
       it 'accepts valid values' do
         @build_phase.symbol_dst_subfolder_spec = :frameworks
         @build_phase.symbol_dst_subfolder_spec.should == :frameworks
+      end
+
+      it 'removes the name in dstSubfolder, which Xcode would use instead' do
+        @build_phase.dst_subfolder = 'Frameworks'
+        @build_phase.symbol_dst_subfolder_spec = :plug_ins
+        @build_phase.dst_subfolder.should.be.nil
+        @build_phase.symbol_dst_subfolder_spec.should == :plug_ins
       end
 
       it 'raises if an invalid value is set by #symbol_dst_subfolder_spec=' do

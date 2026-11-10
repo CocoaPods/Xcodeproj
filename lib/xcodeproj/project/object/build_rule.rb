@@ -77,6 +77,25 @@ module Xcodeproj
         #
         attribute :script, String
 
+        alias simple_script= script=
+        private :simple_script=
+
+        # Sets the content of the script.
+        #
+        # Xcode 16.3 and later serialize the script as an array of its
+        # newline separated lines instead of a single string. This method
+        # joins such values, so that the attribute always returns a string.
+        #
+        # @param  [String, Array<String>] value
+        #         the content of the script.
+        #
+        # @return [void]
+        #
+        def script=(value)
+          value = value.join("\n") if value.is_a?(Array)
+          self.simple_script = value
+        end
+
         # @!group Helpers
 
         # Adds an output file with the specified compiler flags.
