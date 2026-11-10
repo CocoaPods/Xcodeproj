@@ -1,0 +1,116 @@
+{
+  "default-configuration": "Release",
+  "configurations": [
+    "Debug",
+    "Release",
+  ],
+  "localizations": {
+    "development": "en",
+    "supported": [
+      "Base",
+    ],
+  },
+  "packages": [
+    {
+      "kind": "remote",
+      "repository": "https://github.com/apple/swift-argument-parser",
+      "version": {
+        "up-to-next-major-version": "1.3.0",
+      },
+    },
+  ],
+  "files": [
+    {
+      "kind": "group",
+      "name": "Products",
+      "children": [
+        { "path": "<PRODUCTS>/App.app", "id": "A445502B30A3031500C413DF", "type": "wrapper.application", "index": false },
+      ],
+    }, {
+      "kind": "folder",
+      "path": "Sources",
+      "target-membership": [
+        "App",
+      ],
+      "membership-exceptions": [
+        {
+          "target": "App",
+          "exclusions": [
+            "main.swift",
+          ],
+        },
+      ],
+    }, {
+      "kind": "group",
+      "path": "Config",
+      "children": [
+        { "path": "App.xcconfig" },
+      ],
+    },
+  ],
+  "targets": [
+    {
+      "name": "App",
+      "id": "A445502A30A3031500C413DF",
+      "product": "Products/App.app",
+      "product-type": "application",
+      "specialized-configurations": [
+        { "name": "Debug", "file": "Config/App.xcconfig" },
+        { "name": "Release", "file": "Config/App.xcconfig" },
+      ],
+      "build-phases": [
+        "compile-sources",
+        "frameworks",
+        "resources",
+        {
+          "kind": "script",
+          "name": "Run Script",
+          "log-environment-variables": true,
+          "shell": "/bin/sh",
+          "script": "echo \"build $CURRENT_PROJECT_VERSION\"",
+        }, {
+          "kind": "copy",
+          "name": "Embed Frameworks",
+          "bundle-base-path": "frameworks-directory",
+        },
+      ],
+      "build-rules": [
+        {
+          "processor": "com.apple.compilers.proxy.script",
+          "file-type": "pattern.proxy",
+          "file-patterns": "*.template",
+          "output-files": [
+            "$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).swift",
+          ],
+          "script": [
+            "echo \"generate $INPUT_FILE_NAME\"",
+            "cp \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$INPUT_FILE_BASE.swift\"",
+          ],
+        },
+      ],
+      "package-product-members": [
+        {
+          "package": "swift-argument-parser",
+          "product-name": "ArgumentParser",
+          "build-phase": { "build-phase": "frameworks" },
+        },
+      ],
+      "build-settings": {
+        "GENERATE_INFOPLIST_FILE": "YES",
+        "MARKETING_VERSION[config=Debug]": "1.0",
+        "MARKETING_VERSION[config=Release]": "1.1",
+        "PRODUCT_NAME": "$(TARGET_NAME)",
+      },
+    }, {
+      "name": "AppTests",
+      "id": "A4500AEB30A303170014B481",
+      "product-type": "unit-test",
+      "dependencies": [
+        "App",
+      ],
+      "build-settings": {
+        "PRODUCT_NAME": "$(TARGET_NAME)",
+      },
+    },
+  ],
+}

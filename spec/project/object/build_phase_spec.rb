@@ -211,12 +211,24 @@ module ProjectSpecs
         @build_phase.dst_subfolder_spec = '42'
         @build_phase.symbol_dst_subfolder_spec.should.be.nil
       end
+
+      it 'prefers the name in dstSubfolder, which Xcode 27.2 writes' do
+        @build_phase.dst_subfolder = 'Frameworks'
+        @build_phase.symbol_dst_subfolder_spec.should == :frameworks
+      end
     end
 
     describe '#symbol_dst_subfolder_spec=' do
       it 'accepts valid values' do
         @build_phase.symbol_dst_subfolder_spec = :frameworks
         @build_phase.symbol_dst_subfolder_spec.should == :frameworks
+      end
+
+      it 'removes the name in dstSubfolder, which Xcode would use instead' do
+        @build_phase.dst_subfolder = 'Frameworks'
+        @build_phase.symbol_dst_subfolder_spec = :plug_ins
+        @build_phase.dst_subfolder.should.be.nil
+        @build_phase.symbol_dst_subfolder_spec.should == :plug_ins
       end
 
       it 'raises if an invalid value is set by #symbol_dst_subfolder_spec=' do
@@ -247,6 +259,28 @@ module ProjectSpecs
       @build_phase.show_env_vars_in_log.should.be.nil
       @build_phase.show_env_vars_in_log = '0'
       @build_phase.show_env_vars_in_log.should == '0'
+    end
+
+    it 'accepts a string shell script' do
+      @build_phase.shell_script = "swiftlint\n"
+      @build_phase.shell_script.should == "swiftlint\n"
+    end
+
+    it 'joins a shell script serialized as an array of lines' do
+      @build_phase.shell_script = ['PATH="/opt/homebrew/bin/:${PATH}"', 'swiftlint', '']
+      @build_phase.shell_script.should == "PATH=\"/opt/homebrew/bin/:${PATH}\"\nswiftlint\n"
+    end
+
+    it 'configures the shell script from a plist with an array value' do
+      build_phase = @project.new(PBXShellScriptBuildPhase)
+      plist = {
+        build_phase.uuid => {
+          'isa' => 'PBXShellScriptBuildPhase',
+          'shellScript' => ['swiftlint', '']
+        }
+      }
+      build_phase.configure_with_plist(plist)
+      build_phase.shell_script.should == "swiftlint\n"
     end
 
     describe '#pretty_print' do

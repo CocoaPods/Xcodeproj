@@ -545,6 +545,8 @@ module ProjectSpecs
 
         Pathname.glob("#{fixture_path}/**/*.xcodeproj").each do |path|
           next if path.to_s.include?('ProjectInMergeConflict/')
+          # Opening this project runs Xcode 27.2, see json_format_spec.rb.
+          next if path.to_s.include?('JSONProject/')
           open_project = ->() do
             Xcodeproj::Project.open(path).tap(&:predictabilize_uuids)
           end

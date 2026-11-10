@@ -3,6 +3,7 @@ require 'atomos'
 require 'fileutils'
 require 'securerandom'
 
+require 'xcodeproj/project/json_format'
 require 'xcodeproj/project/object'
 require 'xcodeproj/project/project_helper'
 require 'xcodeproj/project/uuid_generator'
@@ -208,7 +209,12 @@ module Xcodeproj
     #
     def initialize_from_file
       pbxproj_path = path + 'project.pbxproj'
-      plist = Plist.read_from_path(pbxproj_path.to_s)
+      if json_format? && pbxproj_path.exist?
+        raise Informative, "`#{path}` contains both `project.pbxproj` and `#{JSONFormat::FILE_NAME}`. " \
+          'Xcode treats a project with both files as invalid. Delete the file that the project does not use.'
+      end
+      project_file_path = json_format? ? path + JSONFormat::FILE_NAME : pbxproj_path
+      plist = json_format? ? JSONFormat.read(path) : Plist.read_from_path(project_file_path.to_s)
       root_object.remove_referrer(self) if root_object
       @root_object     = new_from_plist(plist['rootObject'], plist['objects'], self)
       @archive_version = plist['archiveVersion']
@@ -217,7 +223,7 @@ module Xcodeproj
       @dirty           = false
 
       unless root_object
-        raise "[Xcodeproj] Unable to find a root object in #{pbxproj_path}."
+        raise "[Xcodeproj] Unable to find a root object in #{project_file_path}."
       end
 
       if archive_version.to_i > Constants::LAST_KNOWN_ARCHIVE_VERSION
@@ -358,12 +364,17 @@ module Xcodeproj
     #
     def save(save_path = nil)
       save_path ||= path
-      @dirty = false if save_path == path
       FileUtils.mkdir_p(save_path)
-      file = File.join(save_path, 'project.pbxproj')
-      Atomos.atomic_write(file) do |f|
-        Nanaimo::Writer::PBXProjWriter.new(to_ascii_plist, :pretty => true, :output => f, :strict => false).write
+      # Xcode treats a project with both project files as invalid, so a save
+      # deletes the file of the other format that it finds at the save path.
+      if json_format?
+        JSONFormat.write(save_path) { |file| write_pbxproj(file) }
+        FileUtils.rm_f(File.join(save_path, 'project.pbxproj'))
+      else
+        Atomos.atomic_write(File.join(save_path, 'project.pbxproj')) { |file| write_pbxproj(file) }
+        FileUtils.rm_f(File.join(save_path, JSONFormat::FILE_NAME))
       end
+      @dirty = false if save_path == path
     end
 
     # Marks the project as dirty, that is, modified from what is on disk.
@@ -411,6 +422,28 @@ module Xcodeproj
     #
     def self.predictabilize_uuids(projects)
       UUIDGenerator.new(projects).generate!
+    end
+
+    private
+
+    # @return [Boolean] Whether the project at {#path} uses the JSON project
+    #         format, which stores the project in `project.xcproj` instead of
+    #         `project.pbxproj`. A project that is not on disk yet uses the
+    #         `project.pbxproj` format.
+    #
+    def json_format?
+      (path + JSONFormat::FILE_NAME).exist?
+    end
+
+    # Writes the project in the `project.pbxproj` format.
+    #
+    # @param  [IO] file
+    #         The file to write to.
+    #
+    # @return [void]
+    #
+    def write_pbxproj(file)
+      Nanaimo::Writer::PBXProjWriter.new(to_ascii_plist, :pretty => true, :output => file, :strict => false).write
     end
 
     public

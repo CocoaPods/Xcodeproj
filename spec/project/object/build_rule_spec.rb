@@ -45,6 +45,11 @@ module ProjectSpecs
       @rule.script.should == 'echo "BABY COOL"'
     end
 
+    it 'joins the lines of a script that Xcode 16.3 and later store as an array' do
+      @rule.script = ['echo "BABY"', 'echo "COOL"']
+      @rule.script.should == %(echo "BABY"\necho "COOL")
+    end
+
     it 'adds an output file and compiler flags' do
       f = @project.new(PBXFileReference)
       @rule.add_output_file(f, '-w')

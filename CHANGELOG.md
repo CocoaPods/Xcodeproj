@@ -8,11 +8,35 @@
   [Jerome Lacoste](https://github.com/lacostej)
   [#1054](https://github.com/CocoaPods/Xcodeproj/issues/1054)
 
+* Open and save projects that use the JSON project format (`project.xcproj`)
+  from Xcode 27.2. Xcodeproj converts these projects with
+  `xcodebuild -convert-project`, so it needs Xcode 27.2 or later for them.  
+  [#1052](https://github.com/CocoaPods/Xcodeproj/issues/1052)
+
+* Add objectVersion for Xcode 27.0 compatibility.  
+  [#1052](https://github.com/CocoaPods/Xcodeproj/issues/1052)
+
+* Add the `dst_subfolder` attribute to `PBXCopyFilesBuildPhase`. Xcode 27.2
+  writes the destination of a copy files build phase as a name in
+  `dstSubfolder` when it converts a project, and
+  `symbol_dst_subfolder_spec` reads that name.  
+  [#1052](https://github.com/CocoaPods/Xcodeproj/issues/1052)
+
 ##### Bug Fixes
 
 * Update minimum required Ruby from 2.6 to 2.7.  
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
+
+* Support `shellScript` values serialized as an array of lines by Xcode 16.3
+  and later, which previously raised a type checking error when opening a
+  project.  
+  [#1017](https://github.com/CocoaPods/Xcodeproj/issues/1017)
+
+* Support build rule `script` values serialized as an array of lines by Xcode
+  16.3 and later, which previously raised a type checking error when opening
+  a project.  
+  [#1052](https://github.com/CocoaPods/Xcodeproj/issues/1052)
 
 
 ## 1.28.1 (2026-07-06)
