@@ -4,6 +4,10 @@
 
 ##### Enhancements
 
+* Allow colored2 4.x, which no longer modifies a string literal that Ruby 3.4 warns about.  
+  [Jerome Lacoste](https://github.com/lacostej)
+  [#1054](https://github.com/CocoaPods/Xcodeproj/issues/1054)
+
 * Open and save projects that use the JSON project format (`project.xcproj`)
   from Xcode 27.2. Xcodeproj converts these projects with
   `xcodebuild -convert-project`, so it needs Xcode 27.2 or later for them.  
