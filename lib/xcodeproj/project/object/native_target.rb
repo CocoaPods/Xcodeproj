@@ -548,6 +548,22 @@ module Xcodeproj
           end
         end
 
+        # Removes source files from the target.
+        #
+        # @param  [Array<PBXFileReference>] file_references
+        #         the files references of the source files that should be removed
+        #         from the target.
+        #
+        def remove_file_references(file_references)
+          file_references.map do |file|
+            extension = File.extname(file.path).downcase
+            header_extensions = Constants::HEADER_FILES_EXTENSIONS
+            is_header_phase = header_extensions.include?(extension)
+            phase = is_header_phase ? headers_build_phase : source_build_phase
+            phase.remove_file_reference(file)
+          end
+        end
+
         # Adds resource files to the resources build phase of the target.
         #
         # @param  [Array<PBXFileReference>] resource_file_references
