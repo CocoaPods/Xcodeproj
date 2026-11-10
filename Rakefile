@@ -224,9 +224,7 @@ begin
   #-- RuboCop ----------------------------------------------------------------#
 
   require 'rubocop/rake_task'
-  RuboCop::RakeTask.new(:rubocop) do |task|
-    task.patterns = %w(lib spec)
-  end
+  RuboCop::RakeTask.new(:rubocop)
 
 rescue LoadError, NameError => e
   $stderr.puts "\033[0;31m" \

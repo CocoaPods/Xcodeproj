@@ -10,7 +10,9 @@
 
 ##### Bug Fixes
 
-* None.  
+* Update minimum required Ruby from 2.6 to 2.7.  
+  [Connor Tumbleson](https://github.com/iBotPeaches)
+  [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
 
 ## 1.28.1 (2026-07-06)
