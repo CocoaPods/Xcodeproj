@@ -24,6 +24,10 @@
 
 ##### Bug Fixes
 
+* Update minimum required Ruby from 2.6 to 2.7.  
+  [Connor Tumbleson](https://github.com/iBotPeaches)
+  [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
+
 * Support `shellScript` values serialized as an array of lines by Xcode 16.3
   and later, which previously raised a type checking error when opening a
   project.  
