@@ -14,5 +14,15 @@ module ProjectSpecs
       @proxy.product_name = 'NiceSwiftPackage'
       @proxy.display_name.should == 'NiceSwiftPackage'
     end
+
+    it 'strips plugin prefix in ascii plist annotation for plugin products' do
+      @proxy.product_name = 'plugin:SwiftLintBuildToolPlugin'
+      @proxy.ascii_plist_annotation.should == ' SwiftLintBuildToolPlugin '
+    end
+
+    it 'keeps ascii plist annotation unchanged for non-plugin products' do
+      @proxy.product_name = 'NiceSwiftPackage'
+      @proxy.ascii_plist_annotation.should == ' NiceSwiftPackage '
+    end
   end
 end

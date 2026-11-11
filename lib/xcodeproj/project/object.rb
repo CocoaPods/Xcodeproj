@@ -414,7 +414,12 @@ module Xcodeproj
         end
 
         def ascii_plist_annotation
-          " #{display_name} "
+          name = display_name
+          
+          if name && name.is_a?(String) && (name.encoding == Encoding::UTF_8 || name.encoding == Encoding::US_ASCII)
+            name = name.unicode_normalize(:nfd)
+          end
+          " #{name} "
         end
 
         def to_ascii_plist

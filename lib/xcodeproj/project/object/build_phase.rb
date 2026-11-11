@@ -351,6 +351,20 @@ module Xcodeproj
             },
           }
         end
+
+        def to_hash_as(method = :to_hash)
+          hash_as = super
+          included_keys_for_serialization_when_empty.each do |key|
+            if hash_as[key].nil?
+              hash_as[key] = []
+            end
+          end
+          hash_as
+        end
+
+        def included_keys_for_serialization_when_empty
+          %w(inputPaths outputPaths)
+        end
       end
 
       #-----------------------------------------------------------------------#

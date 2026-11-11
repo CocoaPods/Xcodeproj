@@ -21,3 +21,6 @@ rakelib/doccoverage/
 coverage/
 .coveralls.yml
 .idea
+
+# omc
+.omc/
