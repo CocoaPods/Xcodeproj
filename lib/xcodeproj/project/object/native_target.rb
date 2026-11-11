@@ -711,6 +711,19 @@ module Xcodeproj
         def excluded_keys_for_serialization_when_empty
           %w(packageProductDependencies fileSystemSynchronizedGroups)
         end
+
+        # In addition to removing the target, this removes its product
+        # reference unless a build file of another target still uses it.
+        #
+        # @see AbstractObject#remove_from_project
+        #
+        # @return [void]
+        #
+        def remove_from_project
+          product = product_reference
+          super
+          product.remove_from_project if product && product.referrers.all? { |r| r.is_a?(PBXGroup) }
+        end
       end
 
       #-----------------------------------------------------------------------#

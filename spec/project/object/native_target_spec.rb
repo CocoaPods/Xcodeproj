@@ -832,6 +832,30 @@ module ProjectSpecs
           ]
         end
       end
+
+      describe '#remove_from_project' do
+        it 'removes its product reference' do
+          product = @target.product_reference
+          @target.remove_from_project
+          @project.products_group.files.should.not.include product
+          @project.objects_by_uuid[product.uuid].should.be.nil
+        end
+
+        it 'leaves a single product when the target is created again' do
+          @target.remove_from_project
+          @project.new_target(:static_library, 'Pods', :ios)
+          @project.products_group.files.map(&:path).should == ['libPods.a']
+        end
+
+        it 'keeps its product reference when another target embeds it' do
+          app = @project.new_target(:application, 'App', :ios)
+          product = @target.product_reference
+          app.frameworks_build_phase.add_file_reference(product)
+          @target.remove_from_project
+          @project.products_group.files.should.include product
+          app.frameworks_build_phase.files_references.should.include product
+        end
+      end
     end
 
     #----------------------------------------#

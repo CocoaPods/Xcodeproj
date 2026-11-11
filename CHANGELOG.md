@@ -10,6 +10,11 @@
 
 ##### Bug Fixes
 
+* Remove a native target's product reference with the target, unless another target still uses it,
+  so a target created again with the same name does not get a second product.  
+  [Jerome Lacoste](https://github.com/lacostej)
+  [#1009](https://github.com/CocoaPods/Xcodeproj/issues/1009)
+
 * Update minimum required Ruby from 2.6 to 2.7.  
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
