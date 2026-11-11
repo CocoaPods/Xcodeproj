@@ -1046,4 +1046,31 @@ module ProjectSpecs
   end
 
   #---------------------------------------------------------------------------#
+
+  describe PBXAggregateTarget do
+    extend SpecHelper::TemporaryDirectory
+
+    before do
+      @target = @project.new_aggregate_target('Tools')
+    end
+
+    it 'keeps its file system synchronized groups when the project is saved and opened again' do
+      folder = @project.new(PBXFileSystemSynchronizedRootGroup)
+      folder.path = 'Scripts'
+      @project.main_group.children << folder
+      @target.file_system_synchronized_groups << folder
+      path = temporary_directory + 'Aggregate.xcodeproj'
+      @project.save(path)
+
+      target = Xcodeproj::Project.open(path).targets.find { |t| t.name == 'Tools' }
+      target.file_system_synchronized_groups.map(&:path).should == ['Scripts']
+    end
+
+    it 'does not write an empty list of file system synchronized groups' do
+      @target.to_hash['fileSystemSynchronizedGroups'].should.be.nil
+      @target.to_ascii_plist.value['fileSystemSynchronizedGroups'].should.be.nil
+    end
+  end
+
+  #---------------------------------------------------------------------------#
 end
