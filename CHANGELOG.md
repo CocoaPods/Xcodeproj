@@ -14,6 +14,10 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Read binary plists that are not valid UTF-8 instead of raising `ArgumentError`.  
+  [Jerome Lacoste](https://github.com/lacostej)
+  [Nanaimo#63](https://github.com/CocoaPods/Nanaimo/issues/63)
+
 
 ## 1.28.1 (2026-07-06)
 

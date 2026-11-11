@@ -17,10 +17,12 @@ module Xcodeproj
         raise Informative, "The plist file at path `#{path}` doesn't exist."
       end
       contents = File.read(path)
-      if file_in_conflict?(contents)
+      # Before any regex: binary plists are often not valid UTF-8, and matching one raises ArgumentError (Nanaimo#63).
+      binary = contents.start_with?('bplist')
+      if !binary && file_in_conflict?(contents)
         raise Informative, "The file `#{path}` is in a merge conflict."
       end
-      case Nanaimo::Reader.plist_type(contents)
+      case binary ? :binary : Nanaimo::Reader.plist_type(contents)
       when :xml, :binary
         CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
       else
