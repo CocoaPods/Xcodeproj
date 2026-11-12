@@ -145,8 +145,11 @@ module Xcodeproj
 
       result = @includes.map do |incl|
         path = File.expand_path(incl, @filepath.dirname)
-        if File.readable? path
-          Xcodeproj::Config.new(path).to_hash
+        chain = include_chain + [File.expand_path(@filepath)]
+        if File.readable?(path) && !chain.include?(path)
+          config = Xcodeproj::Config.new(path)
+          config.include_chain = chain
+          config.to_hash
         else
           {}
         end
@@ -250,6 +253,17 @@ module Xcodeproj
     end
 
     #-------------------------------------------------------------------------#
+
+    protected
+
+    # @return [Array<String>] The expanded paths of the files that include this
+    #         one, used to skip include cycles.
+    #
+    attr_writer :include_chain
+
+    def include_chain
+      @include_chain || []
+    end
 
     private
 

@@ -348,6 +348,21 @@ Y = 123
       }
     end
 
+    it 'skips a file that includes itself' do
+      xcconfig = Xcodeproj::Config.new(fixture_path('include-cycle-self.xcconfig'))
+      xcconfig.to_hash.should == { 'SELF_SETTING' => 'YES' }
+    end
+
+    it 'skips include cycles across files' do
+      xcconfig = Xcodeproj::Config.new(fixture_path('include-cycle-a.xcconfig'))
+      xcconfig.to_hash.should == { 'A_SETTING' => 'YES', 'B_SETTING' => 'YES' }
+    end
+
+    it 'still processes a file included by two different includes' do
+      xcconfig = Xcodeproj::Config.new(fixture_path('include-diamond.xcconfig'))
+      xcconfig.to_hash.should == { 'SHARED_SETTING' => 'BASE' }
+    end
+
     it 'allows using ${inherited} when there are multiple instances of a key in the file' do
       file = stub(:read => "A = 1\nA=2 ${inherited} ${inherited} 2\n", :to_path => 'A.xcconfig')
       xcconfig = Xcodeproj::Config.new(file)

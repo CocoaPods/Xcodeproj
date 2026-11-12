@@ -1,0 +1,3 @@
+#include "include-diamond-base.xcconfig"
+
+SHARED_SETTING = LEFT

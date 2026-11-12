@@ -1,0 +1,2 @@
+#include "include-diamond-left.xcconfig"
+#include "include-diamond-right.xcconfig"
