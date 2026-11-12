@@ -8,6 +8,11 @@
   [Jerome Lacoste](https://github.com/lacostej)
   [#1054](https://github.com/CocoaPods/Xcodeproj/issues/1054)
 
+* Run the specs on Ruby 4.0 in CI. The development Gemfile moves to rake 13 and drops the unused
+  CodeClimate reporter, which needed `ostruct` and `logger`, and the spec task no longer nests
+  `bundle exec`.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 ##### Bug Fixes
 
 * Update minimum required Ruby from 2.6 to 2.7.  

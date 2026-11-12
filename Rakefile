@@ -197,7 +197,9 @@ begin
       if ENV['COCOAPODS_CI_TASKS'].nil? || ENV['COCOAPODS_CI_TASKS'].include?('SPEC')
         puts "\n\033[0;32mUsing #{`ruby --version`.chomp}\033[0m"
         title 'Running the specs'
-        sh "bundle exec bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
+        # Not `bundle exec`: the locked Bundler 2.4.13 exits 15 after passing specs on Ruby 4.0,
+        # and newer Bundlers need Ruby 3.2. Xcodeproj 2: update the locked Bundler.
+        sh "ruby -rbundler/setup -S bacon #{FileList['spec/**/*_spec.rb'].join(' ')}"
       end
 
       if ENV['COCOAPODS_CI_TASKS'].nil? || ENV['COCOAPODS_CI_TASKS'].include?('LINT')
@@ -212,7 +214,7 @@ begin
 
     desc 'Run single spec'
     task :single, :spec_file do |_t, args|
-      sh "bundle exec bacon #{args.spec_file}"
+      sh "ruby -rbundler/setup -S bacon #{args.spec_file}"
     end
   end
 
