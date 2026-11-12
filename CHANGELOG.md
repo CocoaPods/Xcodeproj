@@ -14,6 +14,10 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Write `*/` in a name's comment as `(*)/`, as Xcode does, so a project with a
+  name containing `*/` can be opened again after it is saved.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 
