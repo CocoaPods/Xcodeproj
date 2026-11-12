@@ -14,6 +14,11 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Opening a project that has no products group no longer sets one, and no
+  longer creates a `Products` group, so saving it leaves it as it was.
+  `Project#products_group` sets it on first use.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 
