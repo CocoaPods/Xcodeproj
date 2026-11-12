@@ -259,6 +259,18 @@ module ProjectSpecs
         }
       end
 
+      it 'does not split a value that would not read back the same, such as one with a trailing space' do
+        @configuration.build_settings = {
+          'OTHER_LDFLAGS' => '-fprofile-instr-generate ',
+        }
+        @configuration.to_hash.should == {
+          'isa' => 'XCBuildConfiguration',
+          'buildSettings' => {
+            'OTHER_LDFLAGS' => '-fprofile-instr-generate ',
+          },
+        }
+      end
+
       it 'keeps empty strings when splitting arrays' do
         @configuration.build_settings = {
           'OTHER_LDFLAGS' => %('' a ""),
