@@ -14,6 +14,11 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Split an array build setting such as `OTHER_LDFLAGS` only when its parts,
+  joined with a space, give back the value, so a value with a trailing space
+  no longer gains a second one.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 
