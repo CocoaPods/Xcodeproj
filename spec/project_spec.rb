@@ -169,6 +169,15 @@ module ProjectSpecs
         obj.to_hash.should == expected
       end
 
+      it 'only instantiates Xcodeproj object classes from an ISA' do
+        ['File', 'Xcodeproj::Workspace', 'AbstractObject', 'GroupableHelper'].each do |isa|
+          objects_by_uuid_plist = { 'UUID' => { 'isa' => isa } }
+          lambda do
+            @project.new_from_plist('UUID', objects_by_uuid_plist)
+          end.should.raise(NameError)
+        end
+      end
+
       it 'recognizes merge conflicts' do
         @path = @dir + 'ProjectInMergeConflict/ProjectInMergeConflict.xcodeproj'
         lambda do

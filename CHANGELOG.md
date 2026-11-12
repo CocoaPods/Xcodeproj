@@ -14,6 +14,9 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Treat an `isa` that is not an Xcodeproj object class as unknown when opening a project.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 

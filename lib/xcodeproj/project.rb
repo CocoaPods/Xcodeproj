@@ -265,7 +265,11 @@ module Xcodeproj
     def new_from_plist(uuid, objects_by_uuid_plist, root_object = false)
       attributes = objects_by_uuid_plist[uuid]
       if attributes
-        klass = Object.const_get(attributes['isa'])
+        klass = Object.const_get(attributes['isa'], false)
+        unless klass.is_a?(Class) && klass < Object::AbstractObject
+          raise NameError, "uninitialized constant #{Object}::#{attributes['isa']}"
+        end
+
         object = klass.new(self, uuid)
         objects_by_uuid[uuid] = object
         object.add_referrer(self) if root_object
