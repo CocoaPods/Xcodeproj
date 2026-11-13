@@ -236,7 +236,8 @@ module Xcodeproj
             when String
               next unless array_settings.include?(stripped_key)
               array_value = split_build_setting_array_to_string(value)
-              next unless array_value.size > 1
+              # Only when Xcode, which joins the values with a space, reads back the same string.
+              next unless array_value.size > 1 && array_value.join(' ') == value
               settings[key] = array_value
             when Array
               next if value.size > 1 && array_settings.include?(stripped_key)
