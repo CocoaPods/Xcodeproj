@@ -227,9 +227,6 @@ module Xcodeproj
       if object_version.to_i > Constants::LAST_KNOWN_OBJECT_VERSION
         UI.warn "[Xcodeproj] Xcode project version (#{object_version.to_i}) is higher than the latest supported by xcodeproj (#{Constants::LAST_KNOWN_OBJECT_VERSION})."
       end
-
-      # Projects can have product_ref_groups that are not listed in the main_groups["Products"]
-      root_object.product_ref_group ||= root_object.main_group['Products'] || root_object.main_group.new_group('Products')
     end
 
     public
@@ -612,9 +609,12 @@ module Xcodeproj
     end
 
     # @return [PBXGroup] The group which holds the product file references.
+    #         A project opened without one gets the `Products` group, created
+    #         if necessary, on first use, so that saving a project that does
+    #         not use it leaves it as it was.
     #
     def products_group
-      root_object.product_ref_group
+      root_object.product_ref_group ||= root_object.main_group['Products'] || root_object.main_group.new_group('Products')
     end
 
     # @return [ObjectList<PBXFileReference>] A list of the product file

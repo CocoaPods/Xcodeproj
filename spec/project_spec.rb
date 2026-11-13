@@ -129,13 +129,26 @@ module ProjectSpecs
         product_ref_group.class.should == PBXGroup
       end
 
-      it 'initializes the root object products group also from projects that don\'t have an explicit reference' do
+      it 'does not set the products group of a project that has none, so that saving it leaves it as it was' do
+        path = fixture_path('Cocoa Application Without productRefGroup.xcodeproj')
+        project = Xcodeproj::Project.open(path)
+        project.root_object.product_ref_group.should.be.nil
+
+        Dir.mktmpdir do |dir|
+          project.save(File.join(dir, 'Saved.xcodeproj'))
+          plist = Xcodeproj::Plist.read_from_path(File.join(dir, 'Saved.xcodeproj', 'project.pbxproj'))
+          plist['objects'][plist['rootObject']].key?('productRefGroup').should.be.false
+        end
+      end
+
+      it 'uses the Products group as the products group of a project that has none, on first use' do
         path = fixture_path('Cocoa Application Without productRefGroup.xcodeproj')
         project = Xcodeproj::Project.open(path)
 
-        product_ref_group = project.root_object.product_ref_group
-        product_ref_group.class.should == PBXGroup
-        project.root_object.main_group.children.should.include?(product_ref_group)
+        products_group = project.products_group
+        products_group.uuid.should == 'E525238D16245A900012E2BA'
+        project.root_object.product_ref_group.should == products_group
+        project.root_object.main_group.children.should.include?(products_group)
       end
 
       # It implicitly checks that all the attributes for the known ISAs.
