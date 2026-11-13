@@ -122,6 +122,15 @@ EOS
         Plist.read_from_path(@plist).should == { 'uhoh' => Time.parse('2004-03-03T01:02:03Z') }
       end
 
+      it 'reads a binary plist file that is not valid UTF-8' do
+        hash = { 'CFBundleName' => 'Café', 'CFBundleShortVersionString' => '1.0' }
+        list = CFPropertyList::List.new
+        list.value = CFPropertyList.guess(hash)
+        list.save(@plist.to_s, CFPropertyList::List::FORMAT_BINARY)
+        @plist.read.should.not.be.valid_encoding
+        Plist.read_from_path(@plist).should == hash
+      end
+
       it 'serializes dictionaries in order' do
         Plist.write_to_path({ 'z' => 'z', 'a' => 'a' }, @plist)
         expected = <<-EOS
