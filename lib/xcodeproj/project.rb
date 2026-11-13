@@ -294,7 +294,7 @@ module Xcodeproj
       objects
         .sort_by { |o| [o.isa, o.uuid] }
         .each do |obj|
-          key = Nanaimo::String.new(obj.uuid, obj.ascii_plist_annotation)
+          key = Nanaimo::String.new(obj.uuid, obj.ascii_plist_comment)
           value = obj.to_ascii_plist.tap { |a| a.annotation = nil }
           objects_dictionary[key] = value
         end
@@ -302,7 +302,7 @@ module Xcodeproj
       plist['classes']        =  classes
       plist['objectVersion']  =  object_version.to_s
       plist['objects']        =  objects_dictionary
-      plist['rootObject']     =  Nanaimo::String.new(root_object.uuid, root_object.ascii_plist_annotation)
+      plist['rootObject']     =  Nanaimo::String.new(root_object.uuid, root_object.ascii_plist_comment)
       Nanaimo::Plist.new.tap { |p| p.root_object = plist }
     end
 

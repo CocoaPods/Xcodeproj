@@ -290,6 +290,13 @@ module ProjectSpecs
         contents.should.include('わくわく')
         contents.should.include('Cédric')
       end
+
+      it 'saves a name containing */ so that the project can be opened again' do
+        @project.main_group.new_group('Group */ Name')
+        @project.save(@tmp_path)
+        File.read(@tmp_path + 'project.pbxproj').should.include('/* Group (*)/ Name */')
+        Xcodeproj::Project.open(@tmp_path).main_group.groups.map(&:name).should.include 'Group */ Name'
+      end
     end
 
     #-------------------------------------------------------------------------#

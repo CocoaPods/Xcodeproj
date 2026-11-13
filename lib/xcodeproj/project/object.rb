@@ -407,7 +407,7 @@ module Xcodeproj
         def nested_object_for_hash(object, method)
           case method
           when :to_ascii_plist
-            Nanaimo::String.new(object.uuid, object.ascii_plist_annotation)
+            Nanaimo::String.new(object.uuid, object.ascii_plist_comment)
           else
             object.uuid
           end
@@ -417,8 +417,14 @@ module Xcodeproj
           " #{display_name} "
         end
 
+        # The annotation with */ written as (*)/, as Xcode does, so the comment does not end early.
+        def ascii_plist_comment
+          annotation = ascii_plist_annotation
+          annotation && annotation.gsub('*/', '(*)/')
+        end
+
         def to_ascii_plist
-          Nanaimo::Dictionary.new(to_hash_as(:to_ascii_plist), ascii_plist_annotation)
+          Nanaimo::Dictionary.new(to_hash_as(:to_ascii_plist), ascii_plist_comment)
         end
 
         # Returns a cascade representation of the object without UUIDs.
