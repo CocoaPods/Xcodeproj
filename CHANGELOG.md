@@ -19,6 +19,10 @@
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Keep `fileSystemSynchronizedGroups` on aggregate targets when saving.  
+  [Jerome Lacoste](https://github.com/lacostej)
+  [#1058](https://github.com/CocoaPods/Xcodeproj/issues/1058)
+
 
 ## 1.28.1 (2026-07-06)
 

@@ -422,6 +422,31 @@ module Xcodeproj
             },
           }
         end
+
+        def to_hash_as(method = :to_hash)
+          hash_as = super
+          excluded_keys_for_serialization_when_empty.each do |key|
+            if !hash_as[key].nil? && hash_as[key].empty?
+              hash_as.delete(key)
+            end
+          end
+          hash_as
+        end
+
+        def to_ascii_plist
+          plist = super
+          excluded_keys_for_serialization_when_empty.each do |key|
+            if !plist.value[key].nil? && plist.value[key].empty?
+              plist.value.delete(key)
+            end
+          end
+          plist
+        end
+
+        # @return [Array<String>] array of keys to exclude from serialization when the value is empty
+        def excluded_keys_for_serialization_when_empty
+          %w(packageProductDependencies fileSystemSynchronizedGroups)
+        end
       end
 
       #-----------------------------------------------------------------------#
@@ -686,31 +711,6 @@ module Xcodeproj
             end
           end
         end
-
-        def to_hash_as(method = :to_hash)
-          hash_as = super
-          excluded_keys_for_serialization_when_empty.each do |key|
-            if !hash_as[key].nil? && hash_as[key].empty?
-              hash_as.delete(key)
-            end
-          end
-          hash_as
-        end
-
-        def to_ascii_plist
-          plist = super
-          excluded_keys_for_serialization_when_empty.each do |key|
-            if !plist.value[key].nil? && plist.value[key].empty?
-              plist.value.delete(key)
-            end
-          end
-          plist
-        end
-
-        # @return [Array<String>] array of keys to exclude from serialization when the value is empty
-        def excluded_keys_for_serialization_when_empty
-          %w(packageProductDependencies fileSystemSynchronizedGroups)
-        end
       end
 
       #-----------------------------------------------------------------------#
@@ -729,6 +729,11 @@ module Xcodeproj
         #         target.
         #
         has_many :build_phases, [PBXCopyFilesBuildPhase, PBXShellScriptBuildPhase]
+
+        # @return [ObjectList<PBXFileSystemSynchronizedRootGroup>] the file system synchronized
+        #         groups that are members of this target.
+        #
+        has_many :file_system_synchronized_groups, PBXFileSystemSynchronizedRootGroup
       end
 
       #-----------------------------------------------------------------------#
