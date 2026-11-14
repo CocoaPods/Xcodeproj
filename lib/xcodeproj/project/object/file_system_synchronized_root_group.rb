@@ -19,9 +19,13 @@ module Xcodeproj
         #
         attribute :source_tree, String, '<group>'
 
-        # @return [String] the path to a folder in the file system.
+        # @return [String] The path to a folder in the file system.
         #
         attribute :path, String
+
+        # @return [String] The display name of the folder.
+        #
+        attribute :name, String
 
         # @return [String] Whether Xcode should use tabs for text alignment.
         #
