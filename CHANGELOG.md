@@ -8,15 +8,26 @@
   [Jerome Lacoste](https://github.com/lacostej)
   [#1054](https://github.com/CocoaPods/Xcodeproj/issues/1054)
 
+* Run the specs on Ruby 4.0 in CI. The development Gemfile moves to rake 13 and drops the unused
+  CodeClimate reporter, which needed `ostruct` and `logger`, and the spec task no longer nests
+  `bundle exec`.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 ##### Bug Fixes
 
 * Update minimum required Ruby from 2.6 to 2.7.  
   [Connor Tumbleson](https://github.com/iBotPeaches)
   [#1053](https://github.com/CocoaPods/Xcodeproj/pull/1053)
 
+* Require rexml 3.4.2 or later.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 * Split an array build setting such as `OTHER_LDFLAGS` only when its parts,
   joined with a space, give back the value, so a value with a trailing space
-  no longer gains a second one.  
+  no longer gains a second one. Values with two spaces in a row, a trailing `\`
+  or a newline also stay strings now, including the ones `resolve_build_setting`
+  reads from an xcconfig file: these were split into arrays that lost part of
+  the value.  
   [Jerome Lacoste](https://github.com/lacostej)
 
 
