@@ -22,6 +22,9 @@
 * Require rexml 3.4.2 or later.  
   [Jerome Lacoste](https://github.com/lacostej)
 
+* Skip xcconfig `#include` cycles instead of raising `SystemStackError`.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 

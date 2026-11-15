@@ -1,0 +1,3 @@
+#include "include-cycle-a.xcconfig"
+
+B_SETTING = YES
