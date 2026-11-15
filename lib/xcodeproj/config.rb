@@ -145,8 +145,8 @@ module Xcodeproj
 
       result = @includes.map do |incl|
         path = File.expand_path(incl, @filepath.dirname)
-        chain = include_chain + [File.expand_path(@filepath)]
-        if File.readable?(path) && !chain.include?(path)
+        chain = include_chain + [canonical_path(@filepath)]
+        if File.readable?(path) && !chain.include?(canonical_path(path))
           config = Xcodeproj::Config.new(path)
           config.include_chain = chain
           config.to_hash
@@ -256,8 +256,8 @@ module Xcodeproj
 
     protected
 
-    # @return [Array<String>] The expanded paths of the files that include this
-    #         one, used to skip include cycles.
+    # @return [Array<String>] The canonical paths of the files that include
+    #         this one, used to skip include cycles.
     #
     attr_writer :include_chain
 
@@ -268,6 +268,13 @@ module Xcodeproj
     private
 
     # @!group Private Helpers
+
+    # @return [String] The path with symlinks resolved, or only expanded when
+    #         the file does not exist (a Config can be built from a stub).
+    #
+    def canonical_path(path)
+      File.exist?(path) ? File.realpath(path) : File.expand_path(path)
+    end
 
     # Returns a hash from the given argument reading it from disk if necessary.
     #

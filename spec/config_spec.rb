@@ -358,6 +358,20 @@ Y = 123
       xcconfig.to_hash.should == { 'A_SETTING' => 'YES', 'B_SETTING' => 'YES' }
     end
 
+    it 'skips a file that includes a symlink to itself without reading it again' do
+      (temporary_directory + 'self.xcconfig').write(%(#include "self_link.xcconfig"\nSELF_SETTING = YES\n))
+      File.symlink('self.xcconfig', temporary_directory + 'self_link.xcconfig')
+      xcconfig = Xcodeproj::Config.new(temporary_directory + 'self.xcconfig')
+      Xcodeproj::Config.expects(:new).never
+      xcconfig.to_hash.should == { 'SELF_SETTING' => 'YES' }
+    end
+
+    it 'processes the includes of a file that is not on disk' do
+      content = %(#include "include-diamond-base.xcconfig"\nA = 1\n)
+      file = stub(:read => content, :to_path => fixture_path('Missing.xcconfig').to_s)
+      Xcodeproj::Config.new(file).to_hash.should == { 'SHARED_SETTING' => 'BASE', 'A' => '1' }
+    end
+
     it 'still processes a file included by two different includes' do
       xcconfig = Xcodeproj::Config.new(fixture_path('include-diamond.xcconfig'))
       xcconfig.to_hash.should == { 'SHARED_SETTING' => 'BASE' }
