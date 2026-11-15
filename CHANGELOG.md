@@ -22,6 +22,14 @@
 * Require rexml 3.4.2 or later.  
   [Jerome Lacoste](https://github.com/lacostej)
 
+* Split an array build setting such as `OTHER_LDFLAGS` only when its parts,
+  joined with a space, give back the value, so a value with a trailing space
+  no longer gains a second one. Values with two spaces in a row, a trailing `\`
+  or a newline also stay strings now, including the ones `resolve_build_setting`
+  reads from an xcconfig file: these were split into arrays that lost part of
+  the value.  
+  [Jerome Lacoste](https://github.com/lacostej)
+
 
 ## 1.28.1 (2026-07-06)
 
