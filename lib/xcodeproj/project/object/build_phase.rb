@@ -364,6 +364,20 @@ module Xcodeproj
       end
 
       #-----------------------------------------------------------------------#
+
+      # The phase responsible for compiling AppleScript files.
+      #
+      class PBXAppleScriptBuildPhase < AbstractBuildPhase
+        # @return [String] the name of the AppleScript context.
+        #
+        attribute :context_name, String, ''
+
+        # @return [String] whether the AppleScript context is shared.
+        #
+        attribute :is_shared_context, String, '0'
+      end
+
+      #-----------------------------------------------------------------------#
     end
   end
 end
