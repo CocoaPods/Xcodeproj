@@ -96,6 +96,12 @@ module ProjectSpecs
           @configuration.resolve_build_setting('FOOS').should == %w(a b c d I nested nested)
         end
 
+        it 'does not split an xcconfig value that would not read back the same' do
+          xcconfig = @project.new_file(fixture_path('array-setting-two-spaces.xcconfig'))
+          @configuration.base_configuration_reference = xcconfig
+          @configuration.resolve_build_setting('OTHER_CFLAGS').should == '-DA  -DB'
+        end
+
         it 'resolves values that are the name of another setting to the value, not the other setting' do
           @configuration.resolve_build_setting('plain_i').should == 'i'
         end
@@ -269,6 +275,17 @@ module ProjectSpecs
             'OTHER_LDFLAGS' => '-fprofile-instr-generate ',
           },
         }
+      end
+
+      {
+        'two spaces in a row' => '-la  -lb',
+        'a trailing backslash' => '-la -lb -lc\\',
+        'a newline' => "-la\n-lb -lc",
+      }.each do |description, value|
+        it "does not split a value with #{description}" do
+          @configuration.build_settings = { 'OTHER_LDFLAGS' => value }
+          @configuration.to_hash['buildSettings']['OTHER_LDFLAGS'].should == value
+        end
       end
 
       it 'keeps empty strings when splitting arrays' do
