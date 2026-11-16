@@ -223,6 +223,39 @@ module ProjectSpecs
         lambda { @build_phase.symbol_dst_subfolder_spec = :watch_faces }.should.raise?(StandardError)
       end
     end
+
+    it 'has no default dstSubfolder' do
+      @build_phase.dst_subfolder.should.be.nil
+    end
+
+    it 'preserves an arbitrary dstSubfolder value' do
+      @build_phase.dst_subfolder = 'InvalidSubfolder'
+      @build_phase.dst_subfolder.should == 'InvalidSubfolder'
+    end
+
+    describe '#symbol_dst_subfolder' do
+      it 'returns the matching value' do
+        @build_phase.dst_subfolder = 'Frameworks'
+        @build_phase.symbol_dst_subfolder.should == :frameworks
+      end
+
+      it 'returns nil if the key is unknown' do
+        @build_phase.dst_subfolder = 'InvalidSubfolder'
+        @build_phase.symbol_dst_subfolder.should.be.nil
+      end
+    end
+
+    describe '#symbol_dst_subfolder=' do
+      it 'accepts valid values' do
+        @build_phase.symbol_dst_subfolder = :frameworks
+        @build_phase.symbol_dst_subfolder.should == :frameworks
+        @build_phase.dst_subfolder.should == 'Frameworks'
+      end
+
+      it 'raises if an invalid value is set by #symbol_dst_subfolder=' do
+        lambda { @build_phase.symbol_dst_subfolder = :watch_faces }.should.raise?(StandardError)
+      end
+    end
   end
 
   describe PBXShellScriptBuildPhase do
