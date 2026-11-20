@@ -17,14 +17,19 @@ module Xcodeproj
         raise Informative, "The plist file at path `#{path}` doesn't exist."
       end
       contents = File.read(path)
-      if file_in_conflict?(contents)
-        raise Informative, "The file `#{path}` is in a merge conflict."
-      end
-      case Nanaimo::Reader.plist_type(contents)
-      when :xml, :binary
+      begin
+        if file_in_conflict?(contents)
+          raise Informative, "The file `#{path}` is in a merge conflict."
+        end
+        case Nanaimo::Reader.plist_type(contents)
+        when :xml, :binary
+          CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
+        else
+          Nanaimo::Reader.new(contents).parse!.as_ruby
+        end
+      rescue => e
+        # Handles "Invalid byte sequence in UTF-8" error while reading binary Plist
         CFPropertyList.native_types(CFPropertyList::List.new(:data => contents).value)
-      else
-        Nanaimo::Reader.new(contents).parse!.as_ruby
       end
     end
 
