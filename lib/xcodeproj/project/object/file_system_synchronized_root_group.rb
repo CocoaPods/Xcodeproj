@@ -64,6 +64,24 @@ module Xcodeproj
         #
         attribute :explicit_folders, Array
 
+        #---------------------------------------------------------------------#
+
+        public
+
+        # @return [Pathname] the absolute path of the file resolving the
+        # source tree.
+        #
+        def real_path
+            GroupableHelper.real_path(self)
+        end
+
+        # @return [Pathname] the path of the file without resolving the
+        # source tree.
+        #
+        def full_path
+            GroupableHelper.full_path(self)
+        end
+
         def display_name
           return path if path
           super
