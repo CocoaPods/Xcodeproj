@@ -82,6 +82,14 @@ module Xcodeproj
     def self.from_s(xml, workspace_path = '')
       document = REXML::Document.new(xml)
       instance = new(document)
+      # Load projects reference in "Pods/" if needed
+      pods_path = "#{File.expand_path("..", workspace_path)}/Pods"
+      pods_abs_path = File.absolute_path(pods_path)
+      Dir.children(pods_path).each do |sub_path|
+        if File.extname(sub_path) == '.xcodeproj'
+          instance << FileReference.new(File.join(pods_abs_path, sub_path), 'absolute')
+        end
+      end
       instance.load_schemes(workspace_path)
       instance
     end
