@@ -1,6 +1,6 @@
 module Xcodeproj
-  class Command
-    class TargetDiff < Command
+  class DiffCommand
+    class Target < DiffCommand
       self.summary = 'Shows the difference between two targets'
 
       def self.options
