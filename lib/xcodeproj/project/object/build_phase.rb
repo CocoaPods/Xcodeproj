@@ -235,6 +235,12 @@ module Xcodeproj
         #
         attribute :dst_subfolder_spec, String, Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS[:resources]
 
+        # @return [String] the path (destination) where the files should be
+        #         copied to, using the string-based format introduced in
+        #         Xcode 26.
+        #
+        attribute :dst_subfolder, String
+
         # @return [Hash{String => Hash}] A hash suitable to display the build
         #         phase to the user.
         #
@@ -270,6 +276,31 @@ module Xcodeproj
         #
         def symbol_dst_subfolder_spec
           key = Constants::COPY_FILES_BUILD_PHASE_DESTINATIONS.find { |_, num| num == dst_subfolder_spec }
+          key ? key.first : nil
+        end
+
+        # Alias method for #dst_subfolder=, which accepts symbol values
+        # instead of raw string values.
+        #
+        # @param [Symbol] value
+        #        one of `COPY_FILES_BUILD_PHASE_DST_SUBFOLDERS.keys`
+        #
+        # @raise [StandardError] if value is not a valid known key
+        #
+        def symbol_dst_subfolder=(value)
+          string_value = Constants::COPY_FILES_BUILD_PHASE_DST_SUBFOLDERS[value]
+          raise "[Xcodeproj] Value checking error: got `#{value.inspect}` for" \
+              ' attribute: dst_subfolder' if string_value.nil?
+          self.dst_subfolder = string_value
+        end
+
+        # Alias method for #dst_subfolder, which returns symbol values
+        # instead of raw string values.
+        #
+        # @return [Symbol]
+        #
+        def symbol_dst_subfolder
+          key = Constants::COPY_FILES_BUILD_PHASE_DST_SUBFOLDERS.find { |_, string| string == dst_subfolder }
           key ? key.first : nil
         end
       end
