@@ -13,6 +13,10 @@
   `bundle exec`.  
   [Jerome Lacoste](https://github.com/lacostej)
 
+* Add `PBXAppleScriptBuildPhase`, so projects with an AppleScript build phase can be opened.  
+  [Rafay Qayyum](https://github.com/rafayqayyum)
+  [#1048](https://github.com/CocoaPods/Xcodeproj/issues/1048)
+
 ##### Bug Fixes
 
 * Update minimum required Ruby from 2.6 to 2.7.  

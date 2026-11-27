@@ -264,4 +264,31 @@ module ProjectSpecs
       end
     end
   end
+
+  describe PBXAppleScriptBuildPhase do
+    it 'is a AbstractBuildPhase' do
+      @project.new(PBXAppleScriptBuildPhase).should.be.kind_of AbstractBuildPhase
+    end
+
+    it 'is read from plist data with its context attributes' do
+      uuid = 'F00BA4F00BA4F00BA4F00BA4'
+      objects_by_uuid_plist = {
+        uuid => {
+          'isa' => 'PBXAppleScriptBuildPhase',
+          'buildActionMask' => '2147483647',
+          'contextName' => 'MyContext',
+          'files' => [],
+          'isSharedContext' => '1',
+          'runOnlyForDeploymentPostprocessing' => '0',
+        },
+      }
+
+      UI.expects(:warn).never
+      build_phase = @project.new_from_plist(uuid, objects_by_uuid_plist)
+
+      build_phase.context_name.should == 'MyContext'
+      build_phase.is_shared_context.should == '1'
+      build_phase.to_hash.should == objects_by_uuid_plist[uuid]
+    end
+  end
 end
